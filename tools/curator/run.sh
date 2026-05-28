@@ -200,7 +200,13 @@ open('$candidate','w').write(json.dumps(d, indent=2))
 
     # Stage 3: draft
     log_section "stage 3: draft via claude --print"
-    DRAFT_PATH=$(mktemp /tmp/curator_draft.XXXXXX.astro)
+    # macOS mktemp requires X's at the END of the template; suffixes after
+    # X's are treated as literal. Create-then-rename pattern (incident
+    # 2026-05-26: literal `/tmp/curator_draft.XXXXXX.astro` collided across
+    # runs because mktemp didn't substitute the X's).
+    _draft_base=$(mktemp /tmp/curator_draft.XXXXXX) || { log_error "mktemp failed"; continue; }
+    DRAFT_PATH="${_draft_base}.astro"
+    mv "$_draft_base" "$DRAFT_PATH"
     if ! draft_candidate "$candidate" > "$DRAFT_PATH"; then
         log_error "drafting failed; marking candidate held"
         python3 -c "
@@ -216,7 +222,9 @@ open('$candidate','w').write(json.dumps(d, indent=2))
 
     # Stage 4: judges
     log_section "stage 4: judges"
-    JUDGES_OUT=$(mktemp /tmp/curator_judges.XXXXXX.json)
+    _judges_base=$(mktemp /tmp/curator_judges.XXXXXX) || { log_error "mktemp failed"; continue; }
+    JUDGES_OUT="${_judges_base}.json"
+    mv "$_judges_base" "$JUDGES_OUT"
     if ! judge_draft "$DRAFT_PATH" "$candidate" > "$JUDGES_OUT"; then
         HELD_REASON=$(python3 -c "import json; print(json.load(open('$JUDGES_OUT')).get('held_reason', 'judges held'))")
         log_warn "judges held the draft: $HELD_REASON"

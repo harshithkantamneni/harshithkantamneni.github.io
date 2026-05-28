@@ -152,8 +152,11 @@ PYEOF
     # Forbidden phrase check — delegate to the word-boundary helper
     # (which properly filters comments and blank lines from the phrase file).
     [ "$(type -t forbidden_check)" = "function" ] || . "$CURATOR_DIR/lib/forbidden_check.sh"
-    local teaser_tmpfile
-    teaser_tmpfile=$(mktemp /tmp/linkedin_teaser.XXXXXX.txt)
+    # macOS mktemp requires X's at END of template (incident 2026-05-26).
+    local teaser_tmpfile _teaser_base
+    _teaser_base=$(mktemp /tmp/linkedin_teaser.XXXXXX)
+    teaser_tmpfile="${_teaser_base}.txt"
+    mv "$_teaser_base" "$teaser_tmpfile"
     echo "$teaser" > "$teaser_tmpfile"
     local forbidden_hits=0
     if ! forbidden_check "$teaser_tmpfile" "$CURATOR_DIR/forbidden_phrases.txt" 2>/dev/null; then

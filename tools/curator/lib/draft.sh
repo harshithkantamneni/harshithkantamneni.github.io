@@ -72,8 +72,26 @@ for sa in artifacts:
     if not os.path.exists(full):
         sys.exit(f'source artifact missing: {full}')
 
-    with open(full) as f:
-        content = f.read()
+    # Skip binary asset extensions — they're referenced for provenance /
+    # figure inclusion, not as text source for drafting. Reading them as
+    # UTF-8 crashes (e.g., PDFs have 0xac in their header). Manifest still
+    # records the artifact link; drafter just doesn't try to extract text.
+    BINARY_EXTS = {'.pdf', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg',
+                   '.ico', '.zip', '.tar', '.gz', '.mp4', '.webm', '.mp3',
+                   '.wav', '.ttf', '.woff', '.woff2'}
+    ext = os.path.splitext(full)[1].lower()
+    if ext in BINARY_EXTS:
+        parts.append(f'--- SOURCE: {full} ---\n[binary asset, {ext} — referenced for provenance only]\n')
+        continue
+
+    # Read text sources; tolerate occasional non-UTF-8 bytes in otherwise-
+    # text files by replacing them rather than crashing the whole draft.
+    try:
+        with open(full, encoding='utf-8') as f:
+            content = f.read()
+    except UnicodeDecodeError:
+        with open(full, encoding='utf-8', errors='replace') as f:
+            content = f.read()
     parts.append(f'--- SOURCE: {full} ---\n{content}\n')
 
 print('\n\n'.join(parts))
@@ -86,15 +104,31 @@ print('\n\n'.join(parts))
 
     log_info "draft_candidate: source content $(echo -n "$sources_content" | wc -c) chars from $(echo -n "$sources_content" | grep -c '^--- SOURCE:') file(s)"
 
-    # Build prompt by substituting placeholders
+    # Write sources_content to a temp file rather than inlining via bash
+    # heredoc — embedded Python files commonly contain triple-quoted
+    # docstrings + non-ASCII chars (e.g., §, σ), and bash interpolation
+    # into a Python heredoc breaks out of the outer string and corrupts
+    # the script. File-based passing is invariant under content shape.
+    local sources_tmp
+    sources_tmp=$(mktemp -t curator-sources-XXXXXX) || { log_error "mktemp failed"; return 1; }
+    printf '%s' "$sources_content" > "$sources_tmp"
+
+    # Build prompt by substituting placeholders. All inputs read from
+    # files; nothing interpolated into the Python source.
     local prompt
-    prompt=$(python3 <<PYEOF
-import json
-template = open('$CURATOR_DIR/prompts/draft.txt').read()
-voice = open('$voice_md').read()
-forbidden = open('$CURATOR_DIR/forbidden_phrases.txt').read()
-candidate_json = open('$candidate').read()
-sources = """$sources_content"""
+    prompt=$(SOURCES_TMP="$sources_tmp" \
+             CURATOR_DIR_ENV="$CURATOR_DIR" \
+             VOICE_MD_ENV="$voice_md" \
+             CANDIDATE_ENV="$candidate" \
+             python3 <<'PYEOF'
+import json, os
+curator_dir = os.environ['CURATOR_DIR_ENV']
+template = open(os.path.join(curator_dir, 'prompts/draft.txt'), encoding='utf-8').read()
+voice = open(os.environ['VOICE_MD_ENV'], encoding='utf-8').read()
+forbidden = open(os.path.join(curator_dir, 'forbidden_phrases.txt'), encoding='utf-8').read()
+candidate_json = open(os.environ['CANDIDATE_ENV'], encoding='utf-8').read()
+with open(os.environ['SOURCES_TMP'], encoding='utf-8', errors='replace') as f:
+    sources = f.read()
 
 # Note: candidate's type is filtered into the {{TYPE}} marker.
 candidate_type = json.loads(candidate_json)['type']
@@ -109,6 +143,7 @@ prompt = template \
 print(prompt)
 PYEOF
 )
+    rm -f "$sources_tmp"
 
     if [ -z "$prompt" ]; then
         log_error "draft_candidate: failed to build prompt"

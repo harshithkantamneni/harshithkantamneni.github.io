@@ -157,8 +157,11 @@ publish_draft() {
             log_info "publish_draft: tier 1 → opening PR (human merge required)"
             local body
             body=$(_build_pr_body "$candidate" "$judges_json" "${CURATOR_RUN_ID:-manual}")
-            local body_file
-            body_file=$(mktemp /tmp/pr_body.XXXXXX.md)
+            # macOS mktemp requires X's at END of template (incident 2026-05-26).
+            local body_file _body_base
+            _body_base=$(mktemp /tmp/pr_body.XXXXXX)
+            body_file="${_body_base}.md"
+            mv "$_body_base" "$body_file"
             echo "$body" > "$body_file"
             _run gh pr create --title "Publish: $title" --body-file "$body_file" --base main --head "$branch"
             rm -f "$body_file"
@@ -167,8 +170,11 @@ publish_draft() {
             log_info "publish_draft: tier 2 → opening PR + enabling auto-merge"
             local body
             body=$(_build_pr_body "$candidate" "$judges_json" "${CURATOR_RUN_ID:-manual}")
-            local body_file
-            body_file=$(mktemp /tmp/pr_body.XXXXXX.md)
+            # macOS mktemp requires X's at END of template (incident 2026-05-26).
+            local body_file _body_base
+            _body_base=$(mktemp /tmp/pr_body.XXXXXX)
+            body_file="${_body_base}.md"
+            mv "$_body_base" "$body_file"
             echo "$body" > "$body_file"
             _run gh pr create --title "Publish: $title" --body-file "$body_file" --base main --head "$branch"
             _run gh pr merge --auto --squash "$branch" || log_warn "auto-merge enable failed (PR may still merge manually)"
@@ -182,8 +188,11 @@ publish_draft() {
             log_info "publish_draft: tier 3 → opening PR + enabling auto-merge (dashboard review already approved)"
             local body
             body=$(_build_pr_body "$candidate" "$judges_json" "${CURATOR_RUN_ID:-manual}")
-            local body_file
-            body_file=$(mktemp /tmp/pr_body.XXXXXX.md)
+            # macOS mktemp requires X's at END of template (incident 2026-05-26).
+            local body_file _body_base
+            _body_base=$(mktemp /tmp/pr_body.XXXXXX)
+            body_file="${_body_base}.md"
+            mv "$_body_base" "$body_file"
             echo "$body" > "$body_file"
             _run gh pr create --title "Publish: $title" --body-file "$body_file" --base main --head "$branch"
             _run gh pr merge --auto --squash "$branch" || log_warn "auto-merge enable failed (PR may still merge manually)"

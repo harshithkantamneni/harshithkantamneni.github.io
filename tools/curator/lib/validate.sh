@@ -111,7 +111,11 @@ validate_build() {
     # restored if build fails.
     local was_new=0
     if [ -f "$target_path" ]; then
-        backup=$(mktemp /tmp/validate_build_backup.XXXXXX.astro)
+        # macOS mktemp requires X's at END of template (incident 2026-05-26).
+        local _backup_base
+        _backup_base=$(mktemp /tmp/validate_build_backup.XXXXXX)
+        backup="${_backup_base}.astro"
+        mv "$_backup_base" "$backup" 2>/dev/null
         if [ -z "$backup" ] || [ ! -f "$backup" ]; then
             log_error "validate_build: could not create backup tempfile; REFUSING to proceed (would risk clobbering live page)"
             return 1
