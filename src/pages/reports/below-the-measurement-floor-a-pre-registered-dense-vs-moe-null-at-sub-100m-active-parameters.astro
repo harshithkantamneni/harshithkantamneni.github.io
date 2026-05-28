@@ -1,0 +1,162 @@
+---
+import Default from '../../layouts/Default.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import PullQuote from '../../components/PullQuote.astro';
+import MetaStrip from '../../components/MetaStrip.astro';
+
+export const meta = {
+  title: "Below the Measurement Floor: A Pre-Registered Dense-vs-MoE Null at Sub-100M Active Parameters",
+  date: "2026-05-19",
+  type: "report",
+  length: "~2500w",
+  description: "Pre-registered compute-matched comparison of 34.7M dense vs 62.99M-total/34.7M-active MoE on an 18 GB laptop. All 12 factorial cells × 3 benchmarks fall below the σ-above-chance floors; max per-pair |Δ| is 0.6314pp, six times below the 4pp threshold. Verdict O4 ('Below the measurement floor') binds at the pre-registered four-outcome paper-title pre-commit. The construct-validity null is the principled output, not a post-hoc retreat.",
+};
+---
+
+{/*
+  curator-provenance:
+    lab: agi
+    type: report
+    id: below-the-measurement-floor-a-pre-registered-dense-vs-moe-null-at-sub-100m-active-parameters
+    ratified_at: closure_memo_2026-05-19
+    ratified_date: 2026-05-19
+    risk_tier: 1
+    source_artifacts:
+      - programs/program_2_dense_vs_moe_sub100m/closure_memo.md
+      - programs/program_2_dense_vs_moe_sub100m/paper_draft_v3_cosmetic.md
+      - programs/program_2_dense_vs_moe_sub100m/figures/figure_1_sigma_gate_bitmap.pdf
+      - programs/program_2_dense_vs_moe_sub100m/figures/figure_2_delta_forest.pdf
+      - programs/program_2_dense_vs_moe_sub100m/benchmark_scores.json
+      - programs/program_2_dense_vs_moe_sub100m/question.md
+      - programs/program_2_dense_vs_moe_sub100m/phase3_p6_prereg.md
+    drafted_by: claude-opus-4-7 via claude-cli
+    judged_by:
+      voice: mlx-community/Qwen2.5-Coder-14B-Instruct-4bit (score 9/10)
+      factcheck: deterministic numeric (verified 97/97)
+      novelty: mlx-community/Qwen2.5-7B-Instruct-4bit (score 9/10)
+    curator_run: 20260528-022744-29699
+    curator_run_iso: 2026-05-28T07:40:15.542967+00:00
+    cost_local_seconds: 751
+*/}
+
+<Default title="Below the Measurement Floor: A Pre-Registered Dense-vs-MoE Null at Sub-100M Active Parameters · Harshith Kantamneni" description="Pre-registered compute-matched comparison of 34.7M dense vs 62.99M-total/34.7M-active MoE on an 18 GB laptop. All 12 factorial cells × 3 benchmarks fall below the σ-above-chance floors; max per-pair |Δ| is 0.6314pp, six times below the 4pp threshold. Verdict O4 ('Below the measurement floor') binds at the pre-registered four-outcome paper-title pre-commit. The construct-validity null is the principled output, not a post-hoc retreat." current="reports">
+
+  <div class="page-grid">
+    <div class="full-bleed" style="padding: var(--space-7) var(--space-4) var(--space-3); max-width: var(--grid-max); margin: 0 auto;">
+      <MetaStrip items={['REPORT', 'May 19, 2026']} />
+      <h1 style="margin-top: var(--space-3); font-size: clamp(2rem, 5.5vw, 4rem); line-height: 1.05;">Below the Measurement Floor: A Pre-Registered Dense-vs-MoE Null at Sub-100M Active Parameters</h1>
+    </div>
+  </div>
+
+  <div class="page-grid">
+    <div class="extended measure-tight drop-cap" style="margin-top: var(--space-5);">
+      <p>An autonomous research lab running on a single 18 GB laptop spent about a month on one pre-registered question: at sub-100M active parameters, does a compute-matched Mixture-of-Experts transformer outperform a parameter-equivalent dense transformer on standardized benchmarks? It trained 12 models, scored them on four benchmarks, and landed on an answer it had named in advance as one of four possible verdicts. The answer was O4: below the measurement floor.</p>
+      <p>The comparison set a 34.7M-parameter dense transformer against a 62.99M-total / 34.7M-active MoE, both trained for 5000 steps at 10.24M tokens per arm. All 12 factorial cells across three evaluable benchmarks fell below the pre-registered σ-above-chance interpretability floors. The maximum per-pair difference anywhere in the 18-cell evaluable matrix was 0.6314pp, six times below the 4pp decision threshold and three times below the 2pp aggregate threshold. That verdict was not a surprise the lab had to explain away: O4 was one of four outcomes named at pre-registration, the negative one carrying a prior of 0.17, all written down before a single benchmark was scored.</p>
+      <p>The paper claims three contributions. The first published compute-matched Dense-vs-MoE comparison at ≤100M active parameters under a pre-registered decision rule. A worked example of two instruments, a frequentist counter and a Bayesian factor matrix, converging on the same below-the-discriminating-regime reading. And a reusable convention the lab calls the CASE-A connector, for reconciling training-loss-stage evidence with benchmark-stage verdicts.</p>
+    </div>
+  </div>
+
+  <SectionHead marker="SCOPE" title="What this is not" />
+
+  <div class="page-grid">
+    <div class="extended measure-tight">
+      <p>The paper opens with three scoping disclaimers, placed up front to preempt the three most predictable misreadings of a pre-registered null.</p>
+      <p>First, this is not a claim that MoE is worse than dense at sub-100M. None of the 18 evaluable per-pair differences exceeds 1pp. The data shows no dense-favoring verdict and no MoE-favoring verdict; it shows both arms falling below the interpretability floors on all four benchmarks, so the benchmark construct cannot bind a directional result either way.</p>
+      <p>Second, this is not a proposal to relax the gates or amend the pre-registration. The four floors (MMLU 27.0%, HellaSwag 28.0%, GSM8K 5.0%, WinoGrande 54.0%) were locked before any final-checkpoint scoring, grounded in random-baseline binomial standard error and prior small-model literature. A reader who thinks the floors are miscalibrated for a 35M-active, 5000-step regime is directed to a new pre-registered program, not an edit to this one.</p>
+      <p>Third, this is not a generalization beyond the regime that was trained: 34.7M-parameter dense against 62.99M-total / 34.7M-active MoE, 5000 steps, 10.24M tokens per arm with 2.56M per expert at k=2/K=8 load-balanced routing. Architecture, scale, token-budget, and routing transferability are not asserted. The predicted crossover at higher token budgets is named as future work, not claimed as established.</p>
+    </div>
+  </div>
+
+  <SectionHead marker="GAP" title="A measurement nobody had taken" />
+
+  <div class="page-grid">
+    <div class="extended measure-tight">
+      <p>To the lab's knowledge, no published compute-matched Dense-vs-MoE comparison exists at ≤100M total parameters as of April 2026. The closest published work operates near 2B (Krajewski et al., 2025) and at 1B-active / 7B-total (OLMoE, Muennighoff et al., 2024). Three scaling-law extrapolations (Ludziejewski et al., 2025; Tian et al., 2025; Krajewski et al., 2025) predict that MoE should lose to compute-matched dense below 100M, because router undertraining, expert redundancy, and per-expert data-budget starvation dominate. None of those is a measurement at this scale; all are extrapolations from fits in the 400M-3B range.</p>
+      <p>The closest methodology analogue is FLAME-MoE (Kang, Yu, Xiong, 2025), an open MoE suite spanning 38M-1.7B active parameters with FLOP-matched dense baselines. Its smallest cell, at 38M active, reports a per-cell architectural difference of +0.69pp aggregate (-0.06pp HellaSwag, +0.00pp WinoGrande), an order of magnitude below the +3.4pp cross-scale aggregate it reports across its full span. The combination this program implements, a pre-registered falsifiability gate with locked σ-above-chance floors, a compute-matched Dense-vs-MoE comparison at ≤100M, and a four-outcome decision map that explicitly pre-commits to a below-the-floor verdict as one of its outcomes, is novel to the lab's knowledge.</p>
+      <p>This is the lab's second program. Its first, an envelope paper on laptop-scale frontier-equivalent modeling, established the falsifiability-gate discipline this one inherits; Program 2 applies that discipline to a measurement rather than a feasibility survey.</p>
+    </div>
+  </div>
+
+  <SectionHead marker="METHOD" title="The apparatus and the design" />
+
+  <div class="page-grid">
+    <div class="extended measure-tight">
+      <p>The compute envelope is a single Apple M3 Pro laptop with 18 GB unified memory. No cloud compute, no external API. Training and scoring run on CPU-AMX dispatch at FP16; Metal matmul is disabled in the codebase after a measurement found the M3 Pro GPU 3-100× slower than CPU-AMX at every tested matrix size. Working-set memory per arm is 6.23 GB for the dense model and 6.95 GB for the MoE, below the 18 GB ceiling. This is the only program in the lab's portfolio that runs at full FP16 with no quantization or offload, because the models are small enough to fit natively.</p>
+      <p>Both architectures share an 8-layer, 512-dimension, 8-head transformer backbone with a 32,768-token vocabulary. The dense control uses a standard feed-forward block (intermediate dimension 768) and totals 34.7M parameters, all active per token. The MoE replaces that block with an 8-expert, top-2 sparsely-gated layer, totals 62.99M parameters, and activates 34.7M per token. Active parameters are identical on both arms by construction; the MoE's roughly 1.8× total-parameter advantage is a confound the program names as out-of-scope rather than attempting to disentangle. Measured wall-clock per step kept the cross-architecture ratio inside the pre-registered [0.85, 1.20] compute-match band.</p>
+      <p>The design is a 2×2×3 factorial: architecture (dense, MoE) by learning rate (1e-3, 2e-3) by seed (42, 43, 44), for 12 cells. Four benchmarks were pre-registered: MMLU (5-shot, N=14,042), HellaSwag (0-shot, acc_norm, N=10,042), GSM8K (5-shot, N=1,319), and WinoGrande (0-shot, N=1,267). Two amendments are on file: a step-time measurement refresh, and a switch of WinoGrande's primary metric from acc_norm to acc after the normalized field proved empirically absent from the harness task definition across nine harness versions. Neither amendment touches the gates or the decision rule.</p>
+      <p>The σ-above-chance gates were locked before any scoring: MMLU 27.0%, HellaSwag 28.0%, GSM8K 5.0% (with a max-arm above 10% companion), WinoGrande 54.0%. Each floor is a minimum threshold for interpretability, not a significance test. A score below the gate cannot be read as a difference on the construct, because the model's per-choice softmax sits in a near-chance regime where seed and routing variance dominate. Both arms must clear a gate for that benchmark to count.</p>
+    </div>
+  </div>
+
+  <SectionHead marker="PRE-COMMIT" title="Four outcomes, named in advance" />
+
+  <div class="page-grid">
+    <div class="extended measure-tight">
+      <p>The decision rule and the paper's own title were pre-committed before any data existed. MoE is abandoned only if the maximum per-benchmark difference falls below 4pp and the mean difference falls below 2pp. A counter, K, tracks how many benchmarks clear their gate on both arms; the value of K, together with the magnitude and sign of the differences, maps mechanically through a 16-row truth table onto one of four pre-committed paper titles, each assigned an honest non-zero prior before scoring.</p>
+      <p>O1 (prior 0.31): 'Architecture earns its complexity at sub-100M: Dense beats MoE under LR-pinned compute-matched evaluation.' O2 (prior 0.22): 'Architecture × LR interaction at sub-100M: dense-vs-MoE comparison is LR-conditional.' O3 (prior 0.18): 'MoE earns its complexity at sub-100M when LR is matched per architecture: reproducing FLAME-MoE direction.' O4 (prior 0.17): 'Below the measurement floor: dense-vs-MoE comparison at sub-100M and 2.56M training tokens is below the discriminating regime.'</p>
+      <p>Naming all four verdicts in advance, with a non-zero prior on the negative one, is what makes the below-floor result a pre-committed honest output rather than an embarrassed reframe of an intended different result. The lab records this as the program's deepest methodological lesson: name the outcome space exhaustively at pre-registration, and assign honest non-zero priors to the negative results.</p>
+    </div>
+  </div>
+
+  <SectionHead marker="RESULTS" title="Below every floor" />
+
+  <div class="page-grid">
+    <div class="extended measure-tight">
+      <p>The production run finished in 19h31m of wall time with zero deaths, on a per-cell-resumable orchestrator built after an earlier silent-death event during evaluation; that design cut the cost of a mid-run failure from most of a day to under an hour. It produced 48 records under a single harness commit pin (lm-evaluation-harness v0.4.3, commit 3fa4fd725c8a428710109f1d6c14eda37e95baea): 36 evaluable plus 12 for GSM8K. GSM8K is excluded from the counter per the pre-registration, because at 35M active parameters the model falls below the text-generation viability threshold the benchmark's exact-match scoring requires; all 12 GSM8K records carry a partial-blocked status, within the pre-registered 10% exclusion budget.</p>
+      <p>All 12 cells across the three evaluable benchmarks fail their σ-above-chance gates. The margins are bench-dependent but decisive in every case: 10.8σ on MMLU, roughly 4σ on HellaSwag acc_norm, and roughly 1.5-3σ on WinoGrande at the harness-task sample sizes, with absolute midpoint margins of 1.8-4.5pp. MMLU's best cell reaches 23.16pp, 3.84pp under the 27.0pp floor. Per-cell means cluster within 0.09pp on MMLU and 0.02pp on HellaSwag, far tighter than the binomial standard error would predict, a signature of seed noise damped in the near-chance regime.</p>
+      <p>The difference matrix tells the same story from the other side. The maximum absolute per-pair difference anywhere in the 18-cell evaluable matrix is 0.6314pp, and that maximum is a learning-rate contrast inside the dense arm, not an architecture contrast. The architecture contrasts themselves span 0.0150 to 0.3420pp absolute, more than ten times below the 4pp threshold. Under both pre-registered forms of the counter, K=0; rows 4, 8, 12, and 16 of the truth table fire; verdict O4 binds. The title the data selected was the title already written for this outcome.</p>
+    </div>
+  </div>
+
+  <PullQuote attribution="Program 2 closure">
+    Outcome O4 was named and bound at pre-registration with a prior of 0.17, before any score existed. The construct-validity null is the principled output, not a post-hoc retreat.
+  </PullQuote>
+
+  <SectionHead marker="STATISTICS" title="Three instruments, one reading" />
+
+  <div class="page-grid">
+    <div class="extended measure-tight">
+      <p>Three pre-registered analyses converge on one reading. The mixed-effects model, specified on a four-component router-health vector, fails with a singular matrix. This is the anticipated outcome rather than a defect: the load-balancing stack pins three of the four components uniform across all cells (load is equal by construction, the kill safety-net never fires, expert occupancy sits at the uniform 1/8), and the fourth is schedule-determined identically, so the design column carries no variance to fit. The singular matrix is the empirical confirmation of the pre-registered null. A supplementary entropy-augmented fit, reported as discussion only and gating no decision, returns a marginal R² of 0.88%, with about 94% of variance left as within-cell noise. Its degeneracy was forecast before the fit ran and its discussion-only slot was fixed before scoring, so it is a confirmed prediction, not a post-hoc fishing pass.</p>
+      <p>The Bayes-factor matrix, computed at three priors (skeptical σ=1pp, non-committal σ=2pp as primary, and a FLAME-informed σ=3.4pp), corroborates. MMLU returns BF10 of 0.0898 / 0.0450 / 0.0265 across the three priors and HellaSwag returns 0.0388 / 0.0194 / 0.0114, both below 1/3 under every prior: robust evidence for the null. WinoGrande returns 0.6726 / 0.4136 / 0.2581 and leans null only under the widest prior. The interpretation the lab commits to is careful. This is the data sitting below the discriminating regime for an architecture main effect at these prior magnitudes, not a conclusive ruling-out of an effect at higher token budgets. The two instruments fail in different ways, and their joint failure is informative about regime, not architecture. The paper does not read this as evidence that the FLAME extrapolations are miscalibrated; the FLAME-prior column is informative given the prior.</p>
+      <p>A fourth pre-registered check, a perplexity-divergence trigger, was declared suggestive but not binding until the benchmark-score phase. It does not fire there, because the maximum benchmark difference is far below 4pp.</p>
+    </div>
+  </div>
+
+  <SectionHead marker="ANCHORS" title="The in-house cross-check" />
+
+  <div class="page-grid">
+    <div class="extended measure-tight">
+      <p>The result was cross-checked against the lab's own earlier measurements at higher parameter counts, on the same training mix and tokenizer but not the same harness apparatus version. A 50M dense model from an earlier cycle scored MMLU 27.37%, HellaSwag 24.00%, GSM8K 24.64%, WinoGrande 49.64%. A 62.99M-total MoE from a later cycle scored MMLU 28.95%, HellaSwag 23.00%, GSM8K 25.00%, WinoGrande 47.50%, byte-identical across two distinct router-health states. Both clear the 27.0% MMLU floor at their slightly larger total-parameter counts; the current 34.7M-active run scores 22.95-23.04% on MMLU, 4-6pp under that anchor band.</p>
+      <p>The paper reads the drop two ways and refuses to choose. Under the regime-driven reading, a smaller model has less per-token capacity for the academic-knowledge construct, so the score falls below the discrimination regime. Under the apparatus-version reading, evaluation-pipeline changes between the prior measurements and this run could lower MMLU scores systematically; a clean end-to-end smoke test against the current pinned commit, after those changes, was not performed. HellaSwag and WinoGrande show no comparable gap, so the cross-check strengthens the regime reading on those two and stays ambiguous on MMLU. The verdict binds on the gates regardless of which reading is correct; only the mechanism interpretation carries the apparatus-version caveat.</p>
+    </div>
+  </div>
+
+  <SectionHead marker="MECHANISM" title="Data-budget starvation and the CASE-A connector" />
+
+  <div class="page-grid">
+    <div class="extended measure-tight">
+      <p>The mechanism narrative is structural data-budget-per-expert starvation under load-balanced k=2/K=8 routing in the 10.24M-token regime, held at a calibrated confidence of 0.85, revised down from an initial 0.92. Each MoE expert receives k/K × 10.24M = 2.56M tokens, a quarter of the dense feed-forward block's full 10.24M, a 4× per-expert deficit. Specialization does not compensate: the router runs at 75-80% of maximum entropy, roughly 4.7-5.1 effective experts of 8. The router is healthy by every pre-registered measure; the failure is not collapse onto a few experts but that every expert is undertrained at the per-expert level. The narrative predicts the sign of the gap (dense over MoE) and the direction of the learning-rate interaction, but explicitly not its magnitude, which would need a controlled per-expert-budget intervention to pin.</p>
+      <p>This gap shows up at the language-modeling-loss stage and not at the benchmark stage, and the paper names a convention to reconcile the two honestly: the CASE-A connector. At the loss stage the direction reproduces (a +162% best-perplexity divergence in an earlier phase, a +0.388 nat average-loss gap here, roughly +47% perplexity inflation). At the benchmark stage it does not propagate, because both arms sit below the construct floors. The two scales are consistent under one mechanism: per-expert starvation predicts both arms below the floors at 2.56M per-expert tokens, so the loss stage is the only rung of the ladder where the gap is visible. The connector carries an explicit identification limit. 42% of the training mix (30% Python, 12% MATH) is off-benchmark, so the aggregated loss gap could be driven partly by the dense arm learning that slice better rather than by a uniform architecture effect; the per-source decomposition that would separate them was deferred. The connector is named as an identification at the aggregated-loss scale, not asserted as architecture-driven at the per-source scale.</p>
+    </div>
+  </div>
+
+  <SectionHead marker="THREATS" title="Ten limitations" />
+
+  <div class="page-grid">
+    <div class="extended measure-tight">
+      <p>The paper enumerates ten limitations. The load-bearing one is that all 12 cells across three evaluable benchmarks fall below the gates, so per-pair differences cannot be read as construct-level architecture differences; the construct-validity issue is a property of the regime, not the architecture. GSM8K is partial-blocked because the 35M-active model is below the generation-viability threshold. The predicted Dense-vs-MoE crossover at higher token budgets is untestable in the 18 GB envelope, which cannot reach the 10-100× token budget a crossover would require. The four-component router-health vector is degenerate under the load-balancing stack, which is what yields the singular fit. The supplementary entropy fit has near-zero explanatory power, which neither confirms nor rejects the mechanism.</p>
+      <p>WinoGrande's primary metric is acc, not acc_norm, after the normalized field proved absent across nine harness versions; the floors are metric-invariant and the acc-vs-acc_norm divergence is bounded below the binomial standard error. The MMLU-Redux disagreement check does not fire, since the secondary metric is vacuous at a regime where the primary gate already fails. An anneal-schedule and step-number entanglement leaves one router-health component identically determined across cells. The harness left the per-item count and standard-error fields unpopulated on all 48 records, mitigated downstream with the canonical task-definition sample sizes and binomial standard error, and the gate margins are robust to any plausible recovery. Finally, an end-to-end smoke test of a reference model against the current pinned commit, after the apparatus changes, was not re-run, so the apparatus-version effect on the MMLU anchor mismatch is not ruled out.</p>
+    </div>
+  </div>
+
+  <SectionHead marker="FORWARD" title="What is named and what is sealed" />
+
+  <div class="page-grid">
+    <div class="extended measure-tight">
+      <p>Five forward-work items are named, none a blocker for closing the program. A total-parameter comparator, a dense model at 62.9M total, would separate total parameters from active compute per token. A reasoning-benchmark regime would test whether sparsity regresses reasoning independently of memorization. A scale-transfer to 100M-300M, enabled by quantization or a larger token budget, would test the crossover prediction directly. A per-expert-budget intervention, varying expert count, routing, or token budget independently, would test the mechanism's magnitude claim. And a two-part apparatus cross-check would re-run the reference smoke test against the current pinned commit and decompose the loss gap per training source, separating the regime reading from the apparatus-version reading and the architecture reading from the data-mix reading.</p>
+      <p>What closes does not reopen. The program question, the four-benchmark set, the σ-gate floors, the 4pp decision rule, the four-outcome pre-commit, and the truth-table mapping are sealed. Anyone who wants to revisit them is invited to open a new pre-registered program with its own gate calibration and its own lock, not to amend this one. The crossover the mechanism predicts is a future-work pointer, not a backdoor for reopening the verdict.</p>
+      <p>The paper is sole-authored, with the autonomous multi-agent lab named as instrument and its 30 agent roles credited by phase, and it passed an internal three-reviewer chain (scientific, statistical, and adversarial red-team) and unanimous sign-off before release. The honest disposition is O4. The paper's title is O4, verbatim. That is what the pre-registration locked, and what the data dictated.</p>
+    </div>
+  </div>
+
+</Default>
