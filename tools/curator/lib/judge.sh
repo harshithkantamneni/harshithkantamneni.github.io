@@ -110,18 +110,28 @@ ROOTS = {
 }
 own_lab = candidate['lab']
 
-# Read sources
+# Read sources — skip binary asset extensions (PDFs, images, etc.) and
+# tolerate occasional non-UTF-8 bytes in otherwise-text files.
+BINARY_EXTS = {'.pdf', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg',
+               '.ico', '.zip', '.tar', '.gz', '.mp4', '.webm', '.mp3',
+               '.wav', '.ttf', '.woff', '.woff2'}
 source_text = ""
 for sa in artifacts:
     if isinstance(sa, str):
         full = os.path.join(ROOTS[own_lab], sa.split('#')[0])
     else:
         full = os.path.join(ROOTS[sa['lab']], sa['path'])
-    if os.path.exists(full):
-        source_text += open(full).read() + "\n"
+    if not os.path.exists(full):
+        continue
+    if os.path.splitext(full)[1].lower() in BINARY_EXTS:
+        continue
+    try:
+        source_text += open(full, encoding='utf-8').read() + "\n"
+    except UnicodeDecodeError:
+        source_text += open(full, encoding='utf-8', errors='replace').read() + "\n"
 
 # Read draft
-draft_text = open('$draft').read()
+draft_text = open('$draft', encoding='utf-8').read()
 
 # Strip Astro tags from draft so we only check the prose
 prose = re.sub(r'<[^>]+>', ' ', draft_text)
@@ -162,14 +172,14 @@ def extract_numbers(text):
 draft_numbers = extract_numbers(prose)
 source_numbers = extract_numbers(source_text)
 
-# Filter out trivial / structural numbers from draft that we don't need to verify:
-# - Single digits 1-9 (often used in "First, second, third" enumerations)
-# - 0
-# - Years (e.g. 2026, 2025) — keep these checked actually
-# Actually let's not filter; let the source's coverage determine.
-
-# Find unverified
-unverified_numbers = sorted(draft_numbers - source_numbers, key=lambda x: (len(x), x))
+# Verify draft numbers against source. A draft number is unverified only if the
+# source has no exact, percent<->proportion, or rounding-compatible twin — so a
+# faithful "0.0601 -> 6.01%" conversion passes while a hallucinated value is
+# still caught. See lib/factcheck_numbers.py + tests/test_factcheck_numbers.py.
+import sys
+sys.path.insert(0, os.path.join(os.environ['CURATOR_DIR'], 'lib'))
+from factcheck_numbers import compute_unverified
+unverified_numbers = compute_unverified(draft_numbers, source_numbers)
 
 # Also catch [VERIFY] markers
 verify_markers = re.findall(r'\[VERIFY[^\]]*\]', draft_text)
