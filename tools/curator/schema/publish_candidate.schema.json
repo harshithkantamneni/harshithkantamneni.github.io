@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://drogon4231.github.io/harshithkantamneni.github.io/schemas/publish_candidate.schema.json",
+  "$id": "https://harshithkantamneni.github.io/schemas/publish_candidate.schema.json",
   "title": "Publish Candidate",
   "description": "A lab artifact eligible for publication on the portfolio site. Each lab appends one of these to its publish_candidates/ directory when an artifact ratifies.",
   "type": "object",

@@ -31,7 +31,7 @@ export async function GET(context) {
     title: 'Harshith Kantamneni',
     description: 'I design and run autonomous AI labs. Reports, notes, and operating decisions.',
     site: context.site,
-    stylesheet: '/harshithkantamneni.github.io/rss.xsl',
+    stylesheet: '/rss.xsl',
     items,
     customData: '<language>en-us</language>',
   });

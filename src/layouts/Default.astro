@@ -14,10 +14,10 @@ const {
   title,
   description = 'Autonomous AI labs running in cycles. Reports, notes, and observations from inside the systems.',
   current = '',
-  ogImage = '/harshithkantamneni.github.io/og-default.png',
+  ogImage = '/og-default.png',
 } = Astro.props;
 
-const siteUrl = 'https://drogon4231.github.io';
+const siteUrl = 'https://harshithkantamneni.github.io';
 const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
 ---
 <!DOCTYPE html>
@@ -29,14 +29,14 @@ const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
   <meta name="description" content={description}>
   <link rel="canonical" href={canonicalURL}>
 
-  <link rel="icon" type="image/svg+xml" href="/harshithkantamneni.github.io/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content={canonicalURL}>
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
-  <meta property="og:image" content={new URL(ogImage, `${siteUrl}/harshithkantamneni.github.io/`).toString()}>
+  <meta property="og:image" content={new URL(ogImage, `${siteUrl}/`).toString()}>
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
 
@@ -44,16 +44,16 @@ const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content={title}>
   <meta name="twitter:description" content={description}>
-  <meta name="twitter:image" content={new URL(ogImage, `${siteUrl}/harshithkantamneni.github.io/`).toString()}>
+  <meta name="twitter:image" content={new URL(ogImage, `${siteUrl}/`).toString()}>
 
   <!-- JSON-LD: Person schema -->
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'Person',
     'name': 'Harshith Kantamneni',
-    'url': `${siteUrl}/harshithkantamneni.github.io/`,
+    'url': `${siteUrl}/`,
     'sameAs': [
-      'https://github.com/Drogon4231',
+      'https://github.com/harshithkantamneni',
       'https://www.linkedin.com/in/hk4231',
     ],
     'jobTitle': 'Builder of autonomous AI labs',
@@ -69,6 +69,6 @@ const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
     <slot />
   </main>
   <Footer />
-  <script is:inline src="/harshithkantamneni.github.io/motion.js"></script>
+  <script is:inline src="/motion.js"></script>
 </body>
 </html>

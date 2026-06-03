@@ -3,7 +3,7 @@ LINKEDIN TEASER (paste-ready)
 
 ID:          cross-lab-diagnosis
 Type:        report
-URL:         https://drogon4231.github.io/harshithkantamneni.github.io/reports/cross-lab-diagnosis
+URL:         https://harshithkantamneni.github.io/reports/cross-lab-diagnosis
 Word count:  261
 Em-dashes:   0
 Forbidden:   0
@@ -24,7 +24,7 @@ The point isn't agent count. It's that organizational rigidity is a configuratio
 
 Permission is a configuration setting. You can write it into a file.
 
-Read the full report: https://drogon4231.github.io/harshithkantamneni.github.io/reports/cross-lab-diagnosis
+Read the full report: https://harshithkantamneni.github.io/reports/cross-lab-diagnosis
 
 ──────── end ────────
 

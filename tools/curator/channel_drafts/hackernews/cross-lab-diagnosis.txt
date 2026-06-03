@@ -2,13 +2,13 @@ HACKER NEWS SUBMISSION
 ======================
 
 Submit at: https://news.ycombinator.com/submit
-Account:   Drogon4231
+Account:   harshithkantamneni
 
 Suggested title (68 chars):
 Cross-Lab Diagnosis: Why an Autonomous Research Lab Stopped Adapting
 
 URL:
-https://drogon4231.github.io/harshithkantamneni.github.io/reports/cross-lab-diagnosis
+https://harshithkantamneni.github.io/reports/cross-lab-diagnosis
 
 Summary (for context, not the submission):
 Notes from observing one autonomous AI lab from inside another. Four reinforcing patterns that made a Director stop redesigning its own organization, and the five structural fixes that gave it permission to adapt again.

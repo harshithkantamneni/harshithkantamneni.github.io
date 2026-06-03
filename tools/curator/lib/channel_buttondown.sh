@@ -24,7 +24,7 @@ WEBSITE_ROOT="$( cd "$CURATOR_DIR/../.." && pwd )"
     . "$_BD_SELF_DIR/log.sh"
 }
 
-SITE_BASE_URL="${SITE_BASE_URL:-https://drogon4231.github.io/harshithkantamneni.github.io}"
+SITE_BASE_URL="${SITE_BASE_URL:-https://harshithkantamneni.github.io}"
 
 
 # Internal: extract id/type/title/summary/lab + build email body markdown.

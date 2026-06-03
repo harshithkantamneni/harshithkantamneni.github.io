@@ -124,7 +124,7 @@ Use exactly one PullQuote per report, placed near the strongest single statement
       <!-- continue paragraphs; do NOT use SectionHead in notes -->
 
       <p style="margin-top: var(--space-7); color: var(--ink-low); font-size: var(--fs-small);">
-        <a href="/harshithkantamneni.github.io/notes">← All notes</a>
+        <a href="/notes">← All notes</a>
       </p>
 
     </div>

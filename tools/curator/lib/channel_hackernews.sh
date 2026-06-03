@@ -14,8 +14,8 @@ export CURATOR_DIR
     . "$_HN_SELF_DIR/log.sh"
 }
 
-HN_USERNAME="${HN_USERNAME:-Drogon4231}"
-SITE_BASE_URL="${SITE_BASE_URL:-https://drogon4231.github.io/harshithkantamneni.github.io}"
+HN_USERNAME="${HN_USERNAME:-harshithkantamneni}"
+SITE_BASE_URL="${SITE_BASE_URL:-https://harshithkantamneni.github.io}"
 
 # channel_hackernews <candidate.json> [out_path]
 # Default output: channel_drafts/hackernews/<id>.txt

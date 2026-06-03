@@ -3,7 +3,7 @@ LINKEDIN TEASER (paste-ready)
 
 ID:          byte-identical-builds
 Type:        note
-URL:         https://drogon4231.github.io/harshithkantamneni.github.io/notes/byte-identical-builds
+URL:         https://harshithkantamneni.github.io/notes/byte-identical-builds
 Word count:  229
 Em-dashes:   0
 Forbidden:   17
@@ -26,7 +26,7 @@ The point isn't the bytes. It's that drift in the build is now legible to an out
 
 Without that, a build-pass streak is just another self-reported number.
 
-Read the full report: https://drogon4231.github.io/harshithkantamneni.github.io/notes/byte-identical-builds
+Read the full report: https://harshithkantamneni.github.io/notes/byte-identical-builds
 
 ──────── end ────────
 

@@ -7,23 +7,23 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>RSS Feed · <xsl:value-of select="/rss/channel/title"/></title>
-        <link rel="stylesheet" href="/harshithkantamneni.github.io/_astro/rss-feed.css"/>
+        <link rel="stylesheet" href="/_astro/rss-feed.css"/>
         <style>
           @font-face {
             font-family: 'Bricolage Grotesque';
-            src: url('/harshithkantamneni.github.io/fonts/bricolage-grotesque-variable.woff2') format('woff2-variations');
+            src: url('/fonts/bricolage-grotesque-variable.woff2') format('woff2-variations');
             font-weight: 200 800;
             font-display: swap;
           }
           @font-face {
             font-family: 'Newsreader';
-            src: url('/harshithkantamneni.github.io/fonts/newsreader-variable.woff2') format('woff2-variations');
+            src: url('/fonts/newsreader-variable.woff2') format('woff2-variations');
             font-weight: 200 800;
             font-display: swap;
           }
           @font-face {
             font-family: 'JetBrains Mono';
-            src: url('/harshithkantamneni.github.io/fonts/jetbrains-mono-variable.woff2') format('woff2-variations');
+            src: url('/fonts/jetbrains-mono-variable.woff2') format('woff2-variations');
             font-weight: 100 800;
             font-display: swap;
           }
@@ -173,7 +173,7 @@
           <div class="readers">
             <p>Pick any reader. The setup is the same: paste this page's URL.</p>
             <p>
-              <a href="https://feedly.com/i/subscription/feed/https%3A%2F%2Fdrogon4231.github.io%2Fharshithkantamneni.github.io%2Frss.xml">Feedly</a>
+              <a href="https://feedly.com/i/subscription/feed/https%3A%2F%2Fharshithkantamneni.github.io%2Frss.xml">Feedly</a>
               <xsl:text>  ·  </xsl:text>
               <a href="https://netnewswire.com/">NetNewsWire</a> (macOS / iOS)
               <xsl:text>  ·  </xsl:text>
@@ -182,7 +182,7 @@
               <a href="https://inoreader.com/">Inoreader</a>
             </p>
             <p>Or paste the feed URL directly:</p>
-            <p><code>https://drogon4231.github.io/harshithkantamneni.github.io/rss.xml</code></p>
+            <p><code>https://harshithkantamneni.github.io/rss.xml</code></p>
           </div>
 
           <p class="section-marker">CONTENTS</p>
@@ -202,7 +202,7 @@
           </div>
 
           <p style="margin-top: 4rem;">
-            <a class="home-link" href="/harshithkantamneni.github.io/">← RETURN HOME</a>
+            <a class="home-link" href="/">← RETURN HOME</a>
           </p>
         </div>
       </body>

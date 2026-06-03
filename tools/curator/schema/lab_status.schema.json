@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://drogon4231.github.io/harshithkantamneni.github.io/schemas/lab_status.schema.json",
+  "$id": "https://harshithkantamneni.github.io/schemas/lab_status.schema.json",
   "title": "Lab Status",
   "description": "Per-lab live status block read by the website's /now page at build time. Each lab writes this at every cycle close. The website fetches both at build, renders a small status block above the existing timeline.",
   "type": "object",

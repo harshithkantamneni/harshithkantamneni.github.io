@@ -2,13 +2,13 @@ HACKER NEWS SUBMISSION
 ======================
 
 Submit at: https://news.ycombinator.com/submit
-Account:   Drogon4231
+Account:   harshithkantamneni
 
 Suggested title (38 chars):
 Twelve cycles of byte-identical builds
 
 URL:
-https://drogon4231.github.io/harshithkantamneni.github.io/notes/byte-identical-builds
+https://harshithkantamneni.github.io/notes/byte-identical-builds
 
 Summary (for context, not the submission):
 What it takes for an autonomous lab to produce reproducible binaries across cycles, and why it matters for verification.

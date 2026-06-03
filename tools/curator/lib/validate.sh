@@ -6,7 +6,7 @@
 #   1. em-dash count must be 0
 #   2. forbidden-phrase lint must be clean
 #   3. [VERIFY] markers must be 0
-#   4. all internal hrefs must use /harshithkantamneni.github.io/ base path
+#   4. all internal hrefs must use / base path
 #   5. npm run build must succeed when this draft replaces the live page
 #
 # Usage:
@@ -26,7 +26,7 @@ export CURATOR_DIR
 # Source forbidden_check too (we reuse it below)
 [ "$(type -t forbidden_check)" = "function" ] || . "$_VALIDATE_SELF_DIR/forbidden_check.sh"
 
-BASE_PATH="${BASE_PATH:-/harshithkantamneni.github.io/}"
+BASE_PATH="${BASE_PATH:-/}"
 
 # 1. em-dash check (no — anywhere in the draft)
 validate_em_dash() {

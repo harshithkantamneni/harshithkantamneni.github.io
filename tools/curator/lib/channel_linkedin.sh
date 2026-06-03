@@ -17,7 +17,7 @@ export CURATOR_DIR
     . "$_LI_SELF_DIR/log.sh"
 }
 
-SITE_BASE_URL="${SITE_BASE_URL:-https://drogon4231.github.io/harshithkantamneni.github.io}"
+SITE_BASE_URL="${SITE_BASE_URL:-https://harshithkantamneni.github.io}"
 
 # Extract prose from an Astro page. Strips JSX tags, frontmatter, JSX
 # expressions, and astro-cid attributes.

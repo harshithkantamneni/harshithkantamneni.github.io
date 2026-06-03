@@ -592,13 +592,13 @@ def parse_hn_draft(text: str) -> dict:
         ======================
 
         Submit at: https://news.ycombinator.com/submit
-        Account:   Drogon4231
+        Account:   harshithkantamneni
 
         Suggested title (38 chars):
         Twelve cycles of byte-identical builds
 
         URL:
-        https://drogon4231.github.io/...
+        https://harshithkantamneni.github.io/...
     """
     out = {"title": "", "url": ""}
     lines = text.splitlines()
