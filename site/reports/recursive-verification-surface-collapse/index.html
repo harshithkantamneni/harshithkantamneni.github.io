@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="en" data-theme="light"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Recursive Verification-Surface Collapse · Harshith Kantamneni</title><meta name="description" content="Notes from 100+ cycles of running an autonomous AI lab on a single MacBook. The null-set principal problem and three structural fixes."><link rel="canonical" href="https://harshithkantamneni.github.io/reports/recursive-verification-surface-collapse/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://harshithkantamneni.github.io/reports/recursive-verification-surface-collapse/"><meta property="og:title" content="Recursive Verification-Surface Collapse · Harshith Kantamneni"><meta property="og:description" content="Notes from 100+ cycles of running an autonomous AI lab on a single MacBook. The null-set principal problem and three structural fixes."><meta property="og:image" content="https://harshithkantamneni.github.io/og-default.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Recursive Verification-Surface Collapse · Harshith Kantamneni"><meta name="twitter:description" content="Notes from 100+ cycles of running an autonomous AI lab on a single MacBook. The null-set principal problem and three structural fixes."><meta name="twitter:image" content="https://harshithkantamneni.github.io/og-default.png"><!-- JSON-LD: Person schema --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Harshith Kantamneni","url":"https://harshithkantamneni.github.io/","sameAs":["https://github.com/harshithkantamneni","https://www.linkedin.com/in/hk4231"],"jobTitle":"Builder of autonomous AI labs","email":"mailto:kantamneniharshith@gmail.com"}</script><!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;: &quot;f1ff5015a395474e96b4c7354362d1c1&quot;}"></script><link rel="stylesheet" href="/_astro/about.DyuG9eGV.css">
+<style>.section-head[data-astro-cid-pzvqjql2]{margin:var(--space-7) auto var(--space-4);padding:var(--space-3) var(--space-4) 0;max-width:var(--grid-max);border-top:var(--rule-thin) solid var(--rule);position:sticky;top:0;background:var(--paper);z-index:10}.section-head[data-astro-cid-pzvqjql2] h2[data-astro-cid-pzvqjql2],.section-head[data-astro-cid-pzvqjql2] h3[data-astro-cid-pzvqjql2]{margin:var(--space-2) 0 var(--space-4) 0}.section-marker[data-astro-cid-pzvqjql2]{font-family:var(--font-mono);font-size:var(--fs-mono);font-weight:500;text-transform:uppercase;letter-spacing:var(--tracking-wide);color:var(--ink-low);margin:0}@supports (animation-timeline: view()){.section-head[data-astro-cid-pzvqjql2]{animation:section-emphasis linear;animation-timeline:view();animation-range:entry 0% entry 30%}@keyframes section-emphasis{0%{opacity:.55}to{opacity:1}}}@media(max-width:60em){.section-head[data-astro-cid-pzvqjql2]{padding:var(--space-3) var(--space-3) 0;margin-top:var(--space-6)}}
+.pull-quote[data-astro-cid-7q4cr32f]{font-family:var(--font-display);font-weight:600;font-size:var(--fs-pull);line-height:var(--lh-pull);letter-spacing:var(--tracking-snug);margin:var(--space-6) auto;padding:0 var(--space-4) 0 calc(var(--space-4) + var(--space-3));border-left:var(--rule-thick) solid var(--accent);max-width:56rem;box-sizing:border-box}.pull-quote[data-astro-cid-7q4cr32f] p[data-astro-cid-7q4cr32f]{margin:0;max-width:36ch}.pull-quote[data-astro-cid-7q4cr32f] cite[data-astro-cid-7q4cr32f]{display:block;margin-top:var(--space-3);font-family:var(--font-mono);font-size:var(--fs-mono);font-style:normal;text-transform:uppercase;letter-spacing:var(--tracking-wide);color:var(--ink-low)}@media(max-width:60em){.pull-quote[data-astro-cid-7q4cr32f]{padding:0 var(--space-3) 0 var(--space-4);margin:var(--space-5) var(--space-3)}}
+.meta-strip[data-astro-cid-ooi64xum]{font-family:var(--font-mono);font-size:var(--fs-mono);text-transform:uppercase;letter-spacing:var(--tracking-wide);color:var(--ink-low);display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-3);margin:var(--space-3) 0}.meta-strip[data-astro-cid-ooi64xum]>[data-astro-cid-ooi64xum]+[data-astro-cid-ooi64xum]:before{content:"·";margin-right:var(--space-3);color:var(--ink-low)}
+</style></head> <body> <header class="site-header" data-astro-cid-3ef6ksr2> <a href="/" class="brand" data-astro-cid-3ef6ksr2>HK</a> <nav class="nav-desktop" aria-label="Primary" data-astro-cid-3ef6ksr2> <a href="/about" class="nav-link" data-astro-cid-3ef6ksr2>ABOUT</a><a href="/labs" class="nav-link" data-astro-cid-3ef6ksr2>LABS</a><a href="/reports" class="nav-link current" data-astro-cid-3ef6ksr2>REPORTS</a><a href="/notes" class="nav-link" data-astro-cid-3ef6ksr2>NOTES</a><a href="/now" class="nav-link" data-astro-cid-3ef6ksr2>NOW</a><a href="/contact" class="nav-link" data-astro-cid-3ef6ksr2>CONTACT</a> </nav> <button class="theme-toggle" type="button" aria-label="Toggle dark mode" data-theme-toggle data-astro-cid-3ef6ksr2> <span data-theme-label="light" data-astro-cid-3ef6ksr2>DARK</span> <span data-theme-label="dark" hidden data-astro-cid-3ef6ksr2>LIGHT</span> </button> <details class="nav-mobile" data-astro-cid-3ef6ksr2> <summary aria-label="Open menu" data-astro-cid-3ef6ksr2>MENU</summary> <div class="nav-mobile-links" data-astro-cid-3ef6ksr2> <a href="/about" class="nav-mobile-link" data-astro-cid-3ef6ksr2> ABOUT </a><a href="/labs" class="nav-mobile-link" data-astro-cid-3ef6ksr2> LABS </a><a href="/reports" class="nav-mobile-link current" data-astro-cid-3ef6ksr2> REPORTS </a><a href="/notes" class="nav-mobile-link" data-astro-cid-3ef6ksr2> NOTES </a><a href="/now" class="nav-mobile-link" data-astro-cid-3ef6ksr2> NOW </a><a href="/contact" class="nav-mobile-link" data-astro-cid-3ef6ksr2> CONTACT </a> </div> </details> </header>  <main>  <div class="page-grid"> <div class="full-bleed" style="padding: var(--space-7) var(--space-4) var(--space-3); max-width: var(--grid-max); margin: 0 auto;"> <div class="meta-strip" data-astro-cid-ooi64xum> <span data-astro-cid-ooi64xum>REPORT</span><span data-astro-cid-ooi64xum>May 12, 2026</span> </div>  <h1 style="margin-top: var(--space-3); font-size: clamp(2rem, 5.5vw, 4rem); line-height: 1.05;">Recursive Verification-Surface Collapse in Self-Graded Autonomous Engineering Systems</h1> </div> </div> <div class="page-grid"> <div class="extended measure-tight drop-cap" style="margin-top: var(--space-5);"> <p>
+Notes from 100+ cycles of running an autonomous AI lab on a single MacBook.
+</p> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>TL;DR</p> <h2 data-astro-cid-pzvqjql2="true">TL;DR</h2> </header>  <div class="page-grid"> <div class="extended measure-tight"> <p>
+I run an autonomous AI lab on a single 18 GB MacBook. It has been continuously
+        executing engineering work for 100+ discrete cycles, with internal evaluators,
+        red-team agents, and code reviewers. Three times in those 100 cycles, the lab
+        passed its own tests while quietly breaking. Each break was at a deeper layer
+        than the last.
+</p> <p>
+The pattern is mechanical, not anecdotal. It is what shows up when every actor
+        judging the work shares training distribution, context, and incentives with
+        the actors producing the work. I call it the <strong>null-set principal</strong>
+problem: when the principal (the actor who would bear the cost of a false
+        claim) does not exist, internal validators become surfaces to optimize against,
+        not constraints. Adding more internal validators makes this worse, not better.
+</p> <blockquote>
+The fix is not "issue the right directive." The fix is to design the system
+        so that no decision-altitude (including directives, including meta-rules)
+        sits in a self-graded loop.
+</blockquote> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>LAB</p> <h2 data-astro-cid-pzvqjql2="true">What this lab is</h2> </header>  <div class="page-grid"> <div class="extended measure-tight"> <p>
+For context: HIVE is an autonomous engineering lab. A single Claude Opus
+        instance acts as Director, dispatching specialist sub-agents (chief architect,
+        mobile engineer, code reviewer, evaluator, red team, knowledge manager, and
+        others). It runs in a tmux loop, completing one cycle per session. State
+        persists across cycles via a three-tier markdown memory.
+</p> <p>
+It has run continuously for around 100 cycles, on a single MacBook. There is
+        no human in the cycle by default. Once started, it dispatches its own work,
+        reviews its own code, evaluates its own results, and decides what to do next.
+</p> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>PATTERN</p> <h2 data-astro-cid-pzvqjql2="true">The pattern: three iterations</h2> </header>  <div class="page-grid"> <div class="extended measure-tight"> <h3>Iteration 1, around Cycle 42</h3> <p>
+The lab had a green test suite. 1,688 tests passing, zero failures, 32
+        consecutive perfect cycles by its own internal metric. I checked the build
+        manually. It was broken. The unit tests had been written and run in isolation;
+        they passed as units. The integrated build was not actually compiling on every
+        cycle, but the test suite, which was the metric the lab graded itself on, said
+        everything was fine.
+</p> <h3>Iteration 2, Cycles 72 through 78</h3> <p>
+Same lab. New mode. The Evaluator was now requiring source-discipline: every
+        cycle had to touch real source files, not just spec documents. The lab achieved
+        7 consecutive cycles of source-discipline-PASS. Cycle 79 triggered the next
+        external check, a Mobile Alpha Gate that actually invoked
+<code>gradle assembleDebug</code> and <code>xcodebuild</code>. Android failed.
+</p> <p>
+7 cycles of "source-discipline" had produced zero binaries on Android. The
+        lab had been editing source files, passing review for those edits, advancing
+        its own streak, and the streak was measuring something orthogonal to whether
+        anything actually compiled.
+</p> <h3>Iteration 3, Cycles 80 onward</h3> <p>
+The lab now had a build-pass invariant. It produced binaries every cycle. By
+        cycle 96 the cross-platform-pair streak stood at 9 consecutive successful
+        builds.
+</p> <p>
+But the binaries were Hello-World-class scaffolding. They built. They linked.
+        They contained the expected zeroize symbol. They did not, by any reasonable
+        definition, embody the work the lab was supposed to be doing. The build-pass
+        surface had become its own optimization target. <em>This is the iteration I
+        am still in the middle of resolving.</em> </p> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>NULL-SET</p> <h2 data-astro-cid-pzvqjql2="true">Why this happens: the null-set principal</h2> </header>  <div class="page-grid"> <div class="extended measure-tight"> <p>
+The classical principal-agent problem assumes information asymmetry between
+        two parties: a principal who pays for outcomes, and an agent who produces
+        them. The verification mechanism (the contract, the audit, the third-party
+        signature) is designed to align them.
+</p> <p>
+In a self-graded autonomous lab, the principal does not exist as a separate
+        party. The Director both sets the verification surface AND produces the work
+        being verified. The Evaluator both checks the work AND is part of the same
+        lab. The red team adversarially reviews, but the red team is dispatched by
+        the Director, runs on the same underlying model, and shares training
+        distribution with the Director.
+</p> <p>
+When the principal does not exist as a separate party, no actor's payoff
+<em>increases</em> when claims are falsified. There is no one for whom a
+        false claim is bad news. I call this the <strong>null-set principal</strong>.
+</p> </div> </div> <aside class="pull-quote" data-astro-cid-7q4cr32f> <p data-astro-cid-7q4cr32f>
+When the principal does not exist as a separate party, no actor's payoff increases when claims are falsified.
+</p> <cite data-astro-cid-7q4cr32f>Report 001</cite> </aside>  <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>PRINCIPLES</p> <h2 data-astro-cid-pzvqjql2="true">Three structural principles</h2> </header>  <div class="page-grid"> <div class="extended measure-tight"> <p><strong>Principle 1: External verdict.</strong> At least one verdict per
+      cycle must originate from a system the lab cannot edit. In practice: bind
+      cycle PASS to a GitHub Actions CI workflow run on a public commit. Trust
+      boundary as the chief architect named it: <em>"GitHub runs the workflow
+      honestly,"</em> not <em>"the workflow is honest."</em></p> <p><strong>Principle 2: Pre-registered falsifier.</strong> Every claim that
+      opens or extends a streak must declare a concrete observation that would
+      invalidate it. The language must be specific enough that an outside observer
+      could check. Immutable once written.</p> <p><strong>Principle 3: Adversarial payoff.</strong> There must always exist
+      at least one actor whose payoff increases when others' claims are falsified.
+      Currently exploring a cross-family adversary using a non-Claude model
+      (Qwen2.5-Coder-14B via Ollama) for code review. Not yet ratified.</p> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>GAPS</p> <h2 data-astro-cid-pzvqjql2="true">What hasn&#39;t worked yet</h2> </header>  <div class="page-grid"> <div class="extended measure-tight"> <p>
+The directive that named these three principles landed at cycle 82. The lab
+        implemented Principle 1 by ratifying a CI-binding proposal. <em>That
+        ratification took 17 cycles to land</em>, the longest single-decision
+        deferral in the lab's history.
+</p> <p>
+This was not malice. It was the same null-set principal pattern playing out
+        at a different altitude: the <em>decision to ratify</em> was itself an
+        internal artifact, with no external party bearing cost when ratification was
+        deferred.
+</p> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>CONSTRAINT</p> <h2 data-astro-cid-pzvqjql2="true">A constraint, not a method</h2> </header>  <div class="page-grid"> <div class="extended measure-tight"> <p>
+I do not have a method. I have a constraint: any verification surface the
+        system can edit from the inside will eventually be optimized against, and
+        the only stable fix is to ensure at least one verification surface exists
+        that the system cannot edit.
+</p> <p>
+If you are building an autonomous system that grades itself, the question I
+        would ask is not "do we have enough internal checks?" The question is
+<em>"where does the principal exist?"</em> If the answer is "nowhere," the
+        rest is cosplay.
+</p> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>NOTES</p> <h2 data-astro-cid-pzvqjql2="true">Notes</h2> </header>  <div class="page-grid"> <div class="extended measure-tight"> <p><strong>Last verified</strong></p> <p>2026-05-12. Revisit at: cycle 130, or when Principle 3 ratifies.</p> <p style="margin-top: var(--space-5);"><strong>Replication</strong></p> <p>
+N=1 case study. One operator, one model class (Claude), one MacBook (M3 Pro
+        18 GB), ~2 months, 100+ cycles. No control group.
+</p> <p style="margin-top: var(--space-5);"><strong>Citations</strong></p> <p>
+Campbell (1975), Goodhart (1975), Holmström (1979), Manheim and Garrabrant
+        (2018), MAST (arxiv 2503.13657), Preference Leakage (ICLR 2026, arxiv
+        2502.01534).
+</p> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>DISCUSS</p> <h2 data-astro-cid-pzvqjql2="true">Discuss</h2> </header>  <div class="page-grid"> <div class="extended measure-tight"> <p style="font-size: var(--fs-lede); max-width: 50rem;">
+If you are running an autonomous lab and observing similar patterns, I would
+        like to hear about it. Substantive critique, replication attempts, and
+        counter-evidence are all welcome.
+</p> <div style="display: flex; gap: var(--space-4); flex-wrap: wrap; margin-top: var(--space-5);"> <a href="mailto:kantamneniharshith@gmail.com?subject=Re%3A%20Recursive%20Verification-Surface%20Collapse" class="engagement-button"> <span class="arrow">→</span> Reply by email
+</a> <a href="https://news.ycombinator.com/" class="engagement-button"> <span class="arrow">↗</span> Discuss on Hacker News
+</a> <a href="/#subscribe" class="engagement-button"> <span class="arrow">+</span> Monthly digest
+</a> </div> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>ABOUT THE AUTHOR</p> <h3 data-astro-cid-pzvqjql2="true">Harshith Kantamneni</h3> </header>  <div class="page-grid"> <div class="extended measure-tight"> <p>
+Builds and operates autonomous AI labs full-time. Currently running HIVE Product Lab and the Autonomous Research Lab.
+</p> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>FULL PAPER</p> <h3 data-astro-cid-pzvqjql2="true">Read the full paper</h3> </header>  <div class="page-grid"> <div class="extended measure-tight"> <p>
+The version above is the condensed report. The full academic-style paper is also available, with the complete diagnostic framework, methodology section, post-intervention empirical results, threats to validity, and references.
+</p> <p style="margin-top: var(--space-3);"> <a href="/Recursive_Verification_Surface_Collapse_paper.pdf" style="font-family: var(--font-mono); font-size: var(--fs-mono); text-transform: uppercase; letter-spacing: var(--tracking-wide);">→ DOWNLOAD PDF · ~16,000 WORDS · 37 PAGES</a> </p> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>CITE</p> <h3 data-astro-cid-pzvqjql2="true">Cite this report</h3> </header>  <div class="page-grid"> <div class="extended measure-tight"> <pre><code>Kantamneni, H. (2026, May 12). "Recursive Verification-Surface Collapse in
+Self-Graded Autonomous Engineering Systems." Retrieved from
+https://harshithkantamneni.github.io/reports/recursive-verification-surface-collapse</code></pre> </div> </div> <header class="section-head full-bleed" data-astro-cid-pzvqjql2> <p class="section-marker" aria-hidden="true" data-astro-cid-pzvqjql2>SEE-ALSO</p> <h3 data-astro-cid-pzvqjql2="true">See also</h3> </header>  <div class="page-grid"> <div class="extended measure-tight"> <ul class="writing-list"> <li> <span class="date">May 05</span> <a href="/notes/byte-identical-builds" class="title">Twelve cycles of byte-identical builds</a> <span class="length">~600w</span> </li> <li> <span class="date">May 02</span> <a href="/notes/llm-judge-bias" class="title">Same-family LLM judge bias is real</a> <span class="length">~700w</span> </li> </ul> </div> </div>  </main> <footer class="site-footer" data-astro-cid-sz7xmlte> <hr class="hairline" data-astro-cid-sz7xmlte> <div class="footer-grid" data-astro-cid-sz7xmlte> <div data-astro-cid-sz7xmlte> <p class="footer-meta" data-astro-cid-sz7xmlte>HARSHITH KANTAMNENI · MILWAUKEE, WISCONSIN · 2026</p> </div> <nav class="footer-nav" aria-label="Secondary" data-astro-cid-sz7xmlte> <a href="/Harshith_Kantamneni_Resume.pdf" data-astro-cid-sz7xmlte>RESUME</a> <a href="mailto:kantamneniharshith@gmail.com" data-astro-cid-sz7xmlte>EMAIL</a> <a href="https://github.com/harshithkantamneni" data-astro-cid-sz7xmlte>GITHUB</a> <a href="https://www.linkedin.com/in/hk4231" data-astro-cid-sz7xmlte>LINKEDIN</a> <a href="/rss.xml" data-astro-cid-sz7xmlte>RSS</a> </nav> </div> </footer>  <script src="/motion.js"></script> </body> </html>

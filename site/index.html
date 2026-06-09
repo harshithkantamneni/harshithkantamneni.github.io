@@ -6,15 +6,17 @@
 <title>Harshith Kantamneni · AI Systems Engineer</title>
 <meta name="description" content="AI systems engineer across the stack, from CUDA and Triton kernels to LLM inference, retrieval, and agent infrastructure. M.S. ECE, UW-Madison.">
 <meta name="theme-color" content="#060708">
+<link rel="canonical" href="https://harshithkantamneni.github.io/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="Harshith Kantamneni · AI Systems Engineer">
-<meta property="og:description" content="From GPU kernels to autonomous agents.">
+<meta property="og:description" content="From GPU kernels to autonomous agents. 215 TFLOP/s Triton kernels, 0.745 nDCG retrieval, autonomous multi-agent labs.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://harshithkantamneni.github.io/">
+<meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdnjs.cloudflare.com"><link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <style>
   :root{--bg:#060708;--ink:#EEEFF1;--mid:#9398A0;--dim:#7C828B;--line:rgba(255,255,255,.08);
     --k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,5vw,72px)}
@@ -27,9 +29,8 @@
   .skip{position:fixed;left:8px;top:-60px;z-index:200;background:var(--ink);color:#060708;padding:10px 16px;border-radius:8px;font-family:var(--mono);font-size:13px;transition:top .2s}
   .skip:focus{top:8px}
   .grain{position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.045;mix-blend-mode:overlay}
-  .cursor{position:fixed;width:480px;height:480px;left:-300px;top:-300px;z-index:1;pointer-events:none;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(120,170,255,.06),transparent 60%)}
-  .spine{position:fixed;left:18px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:7px;pointer-events:none}
-  .spine .sp{width:3px;height:38px;border-radius:3px;background:var(--c);opacity:.2;transition:opacity .55s cubic-bezier(.2,.7,.2,1),box-shadow .55s,transform .55s}
+  .spine{position:fixed;left:18px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:7px}
+  .spine .sp{display:block;cursor:pointer;width:3px;height:38px;border-radius:3px;background:var(--c);opacity:.2;transition:opacity .55s cubic-bezier(.2,.7,.2,1),box-shadow .55s,transform .55s}
   .spine .sp.on{opacity:1;transform:scaleX(1.7);box-shadow:0 0 16px -2px var(--c)}
   @media(max-width:1180px){.spine{display:none}}
   canvas#field{position:fixed;inset:0;z-index:0;opacity:.5}
@@ -168,10 +169,10 @@
   .pc .pp{color:var(--mid);font-size:14px;line-height:1.55}
 
   .wlist{margin-top:28px;border-top:1px solid var(--line)}
-  .wrow{display:grid;grid-template-columns:84px 1fr auto;gap:18px;align-items:center;padding:22px 4px;border-bottom:1px solid var(--line);transition:.25s}
+  .wrow{display:grid;grid-template-columns:84px 1fr auto;gap:18px;align-items:baseline;padding:22px 4px;border-bottom:1px solid var(--line);transition:.25s}
   .wrow:hover{padding-left:16px;background:rgba(255,255,255,.015)}
   .wrow .wd{font-family:var(--mono);font-size:12px;color:var(--dim)}
-  .wrow .wt{font-size:19px;font-weight:500}.wrow:hover .wt{color:var(--ink)}
+  .wrow .wt{font-size:19px;font-weight:500;display:flex;flex-direction:column;gap:4px}.wrow:hover .wt{color:var(--ink)}.wsub{font-size:13px;font-weight:400;color:var(--dim);line-height:1.45;letter-spacing:0;text-transform:none}
   .wrow .wm{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase}
 
   footer{padding:clamp(64px,8vh,96px) 0 48px;border-top:1px solid var(--line);margin-top:clamp(56px,7vh,88px)}
@@ -182,8 +183,9 @@
   .foot-links a{color:var(--mid);border-bottom:1px solid transparent;transition:.2s}.foot-links a:hover{color:#fff;border-color:#fff}
   .foot-meta{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
 
-  @media(max-width:1024px){.hero{grid-template-columns:minmax(0,1fr);gap:36px;padding:104px 0 50px}}
+  @media(max-width:1024px){.hero{grid-template-columns:minmax(0,1fr);gap:36px;padding:104px 0 50px}.bento{grid-template-columns:repeat(2,1fr)}.pgrid{grid-template-columns:repeat(2,1fr)}.span3{grid-column:span 1}.span2{grid-column:span 1}.span6,.proj.feat{grid-column:span 2}}
   @media(max-width:880px){.scrolly{grid-template-columns:1fr}.viz{position:relative;height:auto;min-height:auto;top:0}.step{min-height:auto;padding:36px 0;opacity:1!important}.ann{display:none}.tframe{position:relative;opacity:1!important}.tframes{display:flex;flex-direction:column;gap:22px;margin:14px 0}.bento,.princ{grid-template-columns:repeat(2,1fr)}.pgrid{grid-template-columns:1fr}.span3,.span2,.span6{grid-column:auto}.proj.feat{flex-direction:column;align-items:flex-start;gap:16px}.proj.feat .pbig{text-align:left}.nl{gap:16px}.nl a:nth-child(-n+4){display:none}.herometa{flex-direction:column;gap:10px;margin-top:32px}h1{font-size:clamp(32px,8.4vw,56px)}.hero .btn{font-size:12px}.tbar .rb{transform:none!important}}
+  @media(max-width:768px){.grain{display:none}}
   @media(prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
     .reveal{opacity:1!important;transform:none!important}
@@ -200,8 +202,7 @@
 <body>
 <a href="#main" class="skip">Skip to content</a>
 <canvas id="field" aria-hidden="true"></canvas>
-<div class="cursor" id="cursor" aria-hidden="true"></div>
-<div class="spine" aria-hidden="true"><span class="sp" data-l="0" style="--c:var(--a)"></span><span class="sp" data-l="1" style="--c:var(--r)"></span><span class="sp" data-l="2" style="--c:var(--i)"></span><span class="sp" data-l="3" style="--c:var(--k)"></span></div>
+<div class="spine"><a class="sp" data-l="0" href="#stack" aria-label="Agents and the stack" style="--c:var(--a)"></a><a class="sp" data-l="1" href="#bert" aria-label="Retrieval, the bert case study" style="--c:var(--r)"></a><a class="sp" data-l="2" href="#triton" aria-label="GPU kernels, the Triton case study" style="--c:var(--i)"></a><a class="sp" data-l="3" href="#work" aria-label="Selected work" style="--c:var(--k)"></a></div>
 
 <nav>
   <a class="brand" href="#">HK / HARSHITH KANTAMNENI</a>
@@ -211,7 +212,7 @@
 <main id="main">
 <header class="wrap hero" id="top">
   <div>
-    <span class="chip reveal"><span class="dot"></span> Available · 2026</span>
+    <span class="chip reveal"><span class="dot"></span> Open to full-time roles</span>
     <div class="eyebrow reveal">AI systems · silicon to agents</div>
     <h1 class="reveal">From <span class="g">GPU kernels</span><br>to <span class="g">autonomous agents.</span></h1>
     <p class="lede reveal">M.S. ECE. I optimize <b>CUDA &amp; Triton kernels</b> and <b>LLM inference</b> at the bottom of the stack, and build <b>agent infrastructure, retrieval, and evaluation</b> on top.</p>
@@ -221,8 +222,8 @@
   <div class="reveal">
     <div class="stackhead"><span>Fig.01 · The Stack</span><span>Silicon → Agents</span></div>
     <div class="stack">
-      <div class="layer" style="--c:var(--a)"><div class="ix">04</div><div><div class="nm">Agents &amp; Orchestration</div><div class="tc">multi-agent · MCP · governance</div></div><div class="lm"><span class="n">31</span><span class="s">autonomous agents</span></div></div>
-      <div class="layer" style="--c:var(--r)"><div class="ix">03</div><div><div class="nm">Retrieval &amp; Memory</div><div class="tc">sqlite-vec · BM25 · RRF · rerank</div></div><div class="lm"><span class="n">0.745</span><span class="s">bert · nDCG@10</span></div></div>
+      <div class="layer" style="--c:var(--a)"><div class="ix">04</div><div><div class="nm">Agents &amp; Orchestration</div><div class="tc">multi-agent · MCP · governance</div></div><div class="lm"><span class="n">30</span><span class="s">autonomous agents</span></div></div>
+      <div class="layer" style="--c:var(--r)"><div class="ix">03</div><div><div class="nm">Retrieval &amp; Memory</div><div class="tc">sqlite-vec · BM25 · RRF · rerank</div></div><div class="lm"><span class="n">0.745</span><span class="s">nDCG@10 · vs .665 BM25</span></div></div>
       <div class="layer" style="--c:var(--i)"><div class="ix">02</div><div><div class="nm">LLM Inference</div><div class="tc">FlashAttention · KV-cache · quant</div></div><div class="lm"><span class="n">15.4K</span><span class="s">Jetson · decode kernel</span></div></div>
       <div class="layer" style="--c:var(--k)"><div class="ix">01</div><div><div class="nm">GPU Kernels · Silicon</div><div class="tc">CUDA · Triton · GEMM fusion</div></div><div class="lm"><span class="n">215</span><span class="s">Triton · TFLOP/s</span></div></div>
     </div>
@@ -236,10 +237,10 @@
 
 <!-- STACK DESCENT -->
 <section class="wrap case" id="stack">
-  <div class="case-top"><div><div class="case-tag">The whole column</div><h2 class="case-title">I work the whole stack.</h2><p class="case-sub">From hand-written GPU kernels at the bottom to multi-agent systems at the top. The bottleneck is rarely where you would guess. Working every layer is how I find the one that owns the latency.</p></div></div>
+  <div class="case-top"><div><div class="case-tag">The whole column</div><h2 class="case-title">I work the whole stack.</h2><p class="case-sub">From hand-written GPU kernels at the bottom to multi-agent systems at the top. Working every layer is how I find the one that owns the latency.</p></div></div>
   <div class="scrolly">
     <div class="viz sv">
-      <div class="dl act" data-l="0" style="--c:var(--a)"><div class="di">04</div><div><div class="dn">Agents &amp; Orchestration</div><div class="dt">multi-agent · MCP · governance</div></div><div class="dm">31</div></div>
+      <div class="dl act" data-l="0" style="--c:var(--a)"><div class="di">04</div><div><div class="dn">Agents &amp; Orchestration</div><div class="dt">multi-agent · MCP · governance</div></div><div class="dm">30</div></div>
       <div class="dl" data-l="1" style="--c:var(--r)"><div class="di">03</div><div><div class="dn">Retrieval &amp; Memory</div><div class="dt">sqlite-vec · BM25 · RRF · rerank</div></div><div class="dm">0.745</div></div>
       <div class="dl" data-l="2" style="--c:var(--i)"><div class="di">02</div><div><div class="dn">LLM Inference</div><div class="dt">FlashAttention · KV-cache · quant</div></div><div class="dm">15.4K</div></div>
       <div class="dl" data-l="3" style="--c:var(--k)"><div class="di">01</div><div><div class="dn">GPU Kernels · Silicon</div><div class="dt">CUDA · Triton · GEMM fusion</div></div><div class="dm">215</div></div>
@@ -280,9 +281,9 @@
     <div class="steps" id="sy-bert">
       <div class="step" data-step="0"><div class="k">The problem</div><h3>A 3M-token codebase does not fit in a 1M-token window.</h3><p>At 3M tokens the project is 3× the window, so full-context is not an option. Truncate to fit and you drop the file the answer lives in. Accuracy collapses toward 0.00.</p></div>
       <div class="step" data-step="1"><div class="k">The build</div><h3>Hybrid retrieval, fully local.</h3><p>Dense vectors (sqlite-vec + bge-base-en-v1.5) and BM25 keyword search, fused by reciprocal-rank fusion, reranked by a cross-encoder. No API keys, no LLM calls. The host model only sees the slice that matters.</p></div>
-      <div class="step" data-step="2"><div class="k">The result</div><h3>Accuracy holds as the codebase grows.</h3><p>When the project fits in the window, full-context stuffing wins outright. Past the window, truncation has to drop code and accuracy falls toward <b style="color:var(--k)">0.00</b>. bert retrieves the relevant slice instead, holding around <b style="color:var(--ink)">0.75 to 0.85</b> on a span-validated gold set while reading roughly 4.6× fewer input tokens.</p></div>
+      <div class="step" data-step="2"><div class="k">The result</div><h3>Accuracy holds as the codebase grows.</h3><p>When the project fits in the window, full-context stuffing wins outright. Past it, bert retrieves only the relevant slice and holds <b style="color:var(--ink)">0.75 to 0.85</b> on a span-validated gold set, reading 4.6× fewer input tokens than truncation.</p></div>
       <div class="step" data-step="3"><div class="k">The debugging win</div><h3>A silent bug had pinned it at near-random.</h3><div class="big"><span id="cnt">0.10</span> <span class="to">→ 0.85</span></div><p>A dict-key mismatch zeroed the dense signal and a 240-char truncation dropped answer spans. Root-caused and fixed, accuracy went from 0.10 to 0.85 on a span-validated gold set.</p></div>
-      <div class="step" data-step="4"><div class="k">Validated</div><h3>0.745 nDCG@10 on a public IR benchmark.</h3><p>Across three BEIR datasets (scifact, nfcorpus, fiqa) bge-base matches the published reference on all three. On scifact the full stack (bge-base-en-v1.5 dense vectors plus BM25, reranked by a cross-encoder) scores 0.745 against a published BM25 baseline of 0.665, on par with bge-base-en-v1.5's own published scifact result. A real benchmark, not a self-defined one. The program is built to falsify itself and publishes its own nulls.</p></div>
+      <div class="step" data-step="4"><div class="k">Validated</div><h3>0.745 nDCG@10 on a public IR benchmark.</h3><p>Across three BEIR datasets (scifact, nfcorpus, fiqa) bge-base matches the published reference on all three. On scifact the full stack (bge-base-en-v1.5 dense vectors plus BM25, reranked by a cross-encoder) scores 0.745 against a published BM25 baseline of 0.665, on par with bge-base-en-v1.5's own published scifact result (0.741). A public benchmark on public datasets, not a self-defined one.</p></div>
     </div>
   </div>
   <div class="bento">
@@ -341,9 +342,9 @@
 <section class="wrap" id="work">
   <div class="shead reveal"><span class="mk">02</span><h2>Selected work</h2><span class="srule"></span></div>
   <div class="pgrid">
-    <a class="proj span6 feat" href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling" target="_blank" rel="noopener" style="--c:var(--i)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">LLM Inference · Edge · Featured</div><div class="pn">Jetson Orin Nano profiling</div><div class="pd">Attention &amp; KV-cache decode profiled with Nsight. Fused SDPA measured 5.6× over unfused manual attention, on a 7W edge GPU.</div></div><div class="pbig" style="color:var(--i)">15.4K<span>tok/s · decode µbench</span></div></a>
-    <a class="proj span3" href="https://github.com/harshithkantamneni/agi-lab-framework" target="_blank" rel="noopener" style="--c:var(--a)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">Autonomous Lab</div><div class="pn">31-agent ML research lab</div><div class="pd">Agents write a from-scratch MoE transformer in C17: hand-written tensors, backprop, 4-bit QAT, plus Apple Metal kernels wired in. No PyTorch.</div></div><div class="pm">C17 · MoE + 4-bit QAT</div></a>
-    <a class="proj span3" href="https://github.com/harshithkantamneni/hive-engine" target="_blank" rel="noopener" style="--c:var(--a)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">Autonomous Org</div><div class="pn">HIVE</div><div class="pd">A privacy-first peer-to-peer reasoning engine in Rust: Rete-II + JTMS, local differential privacy, libp2p gossip. Built by a 45-role agent org I designed and run.</div></div><div class="pm">Rust · 62K LoC</div></a>
+    <a class="proj span6 feat" href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling" target="_blank" rel="noopener" style="--c:var(--i)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">LLM Inference · Edge · Featured</div><div class="pn">Jetson Orin Nano profiling</div><div class="pd">Attention and KV-cache decode kernels profiled with Nsight on a 15W edge SoC. Fused SDPA measured 5.6× over naive attention. Single-stream KV-cache decode held ~15.4K tok/s on synthetic shapes before the cache-growth knee.</div></div><div class="pbig" style="color:var(--i)">5.6×<span>fused SDPA vs naive</span></div></a>
+    <a class="proj span3" href="https://github.com/harshithkantamneni/agi-lab-framework" target="_blank" rel="noopener" style="--c:var(--a)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">Autonomous Lab</div><div class="pn">30-agent ML research lab</div><div class="pd">Agents write a from-scratch MoE transformer in C17: hand-written tensors, backprop, 4-bit QAT, plus Apple Metal kernels wired in. No PyTorch.</div></div><div class="pm">C17 · MoE + 4-bit QAT</div></a>
+    <a class="proj span3" href="https://github.com/harshithkantamneni/hive-engine" target="_blank" rel="noopener" style="--c:var(--a)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">Autonomous Org</div><div class="pn">HIVE</div><div class="pd">A privacy-first peer-to-peer reasoning engine in Rust: Rete-II + JTMS, local differential privacy, libp2p gossip. Built by a 45-role agent org I designed and run.</div></div><div class="pm">Rust · 1,300+ tests</div></a>
     <a class="proj span3" href="https://github.com/harshithkantamneni/Ml-Guided-CUDA-Config" target="_blank" rel="noopener" style="--c:var(--k)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">CUDA Autotuning</div><div class="pn">ML-guided kernel config</div><div class="pd">A PyTorch MLP surrogate predicts kernel runtime and replaces exhaustive autotuning with argmin-over-grid.</div></div><div class="pm">R² = 0.96 · MAE 0.018 ms</div></a>
     <div class="proj span3" style="--c:var(--k);cursor:default"><div><div class="pl">Memory Systems</div><div class="pn">MI300X + gem5 modeling</div><div class="pd">Characterized the AMD MI300X memory hierarchy and calibrated full-system gem5 to within 5% MAPE.</div></div><div class="pm">5% MAPE · 4.6 to 4.8 TB/s</div></div>
   </div>
@@ -352,7 +353,7 @@
 <!-- ABOUT -->
 <section class="wrap about" id="about">
   <div class="shead reveal"><span class="mk">03</span><h2>About</h2><span class="srule"></span></div>
-  <p class="abig reveal">I'm an <em>M.S. ECE</em> engineer who optimizes AI systems at the level where the bottlenecks actually live, from the GEMM on the GPU up to the inference and retrieval running on top of it. Writing CUDA and Triton kernels taught me where the hardware hurts. Building the layers on top (LLM inference, retrieval, multi-agent systems) taught me which of those bottlenecks the real workload even cares about. I measure all of it end to end and <em>keep the results that disagree with me</em>.</p>
+  <p class="abig reveal">I <em>keep the results that disagree with me</em>. Writing CUDA and Triton kernels taught me which operations are memory-bound and which are compute-bound. Building the layers on top, LLM inference, retrieval, and multi-agent systems, taught me which of those bottlenecks the real workload <em>actually cares about</em>. I measure all of it end to end.</p>
   <div class="princ">
     <div class="pc reveal"><div class="pi">01</div><div class="ph">Kernels to agents</div><div class="pp">CUDA and Triton GEMMs at the bottom, retrieval and multi-agent systems at the top. Every layer on this page has a project behind it.</div></div>
     <div class="pc reveal"><div class="pi">02</div><div class="ph">Everything is benchmarked</div><div class="pp">Each number here traces to a benchmark in the repo. bert grades its own retrieval and logs the runs where it loses.</div></div>
@@ -364,10 +365,10 @@
 <section class="wrap" id="writing" style="padding:40px 0 0">
   <div class="shead reveal"><span class="mk">04</span><h2>Writing</h2><span class="srule"></span></div>
   <div class="wlist">
-    <a class="wrow reveal" href="https://harshithkantamneni.github.io/reports/recursive-verification-surface-collapse" target="_blank" rel="noopener"><span class="wd">Jun 2026</span><span class="wt">Recursive Verification-Surface Collapse</span><span class="wm">Report</span></a>
-    <a class="wrow reveal" href="https://harshithkantamneni.github.io/reports/below-the-measurement-floor-a-pre-registered-dense-vs-moe-null-at-sub-100m-active-parameters" target="_blank" rel="noopener"><span class="wd">Jun 2026</span><span class="wt">Below the Measurement Floor: a pre-registered dense-vs-MoE null</span><span class="wm">Report</span></a>
-    <a class="wrow reveal" href="https://harshithkantamneni.github.io/notes/llm-judge-bias" target="_blank" rel="noopener"><span class="wd">May 2026</span><span class="wt">When the LLM judge is biased</span><span class="wm">Note</span></a>
-    <a class="wrow reveal" href="https://harshithkantamneni.github.io/notes/tier-per-task" target="_blank" rel="noopener"><span class="wd">May 2026</span><span class="wt">Tier-per-task: routing models by the job</span><span class="wm">Note</span></a>
+    <a class="wrow reveal" href="https://harshithkantamneni.github.io/reports/below-the-measurement-floor-a-pre-registered-dense-vs-moe-null-at-sub-100m-active-parameters" target="_blank" rel="noopener"><span class="wd">Jun 2026</span><span class="wt">Below the Measurement Floor: a pre-registered dense-vs-MoE null<span class="wsub">Pre-registered compute-matched comparison. Every cell lands below the measurement floor, and the null is the result.</span></span><span class="wm">Report</span></a>
+    <a class="wrow reveal" href="https://harshithkantamneni.github.io/reports/recursive-verification-surface-collapse" target="_blank" rel="noopener"><span class="wd">Jun 2026</span><span class="wt">Recursive Verification-Surface Collapse<span class="wsub">The null-set principal problem in self-grading labs, and three structural fixes, from 100+ autonomous cycles.</span></span><span class="wm">Report</span></a>
+    <a class="wrow reveal" href="https://harshithkantamneni.github.io/notes/llm-judge-bias" target="_blank" rel="noopener"><span class="wd">May 2026</span><span class="wt">When the LLM judge is biased<span class="wsub">Same-family preference leakage when four Claude instances grade each other, tested against an ICLR 2026 result.</span></span><span class="wm">Note</span></a>
+    <a class="wrow reveal" href="https://harshithkantamneni.github.io/notes/tier-per-task" target="_blank" rel="noopener"><span class="wd">May 2026</span><span class="wt">Tier-per-task: routing models by the job<span class="wsub">Why model tiering belongs at the task level, not the role level.</span></span><span class="wm">Note</span></a>
   </div>
 </section>
 
@@ -383,27 +384,29 @@
 
 <svg class="grain"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script>
 (function(){
 if(new URLSearchParams(location.search).has('static')) return;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const cur=document.getElementById('cursor'); let mx=innerWidth/2,my=innerHeight/2;
-if(!reduce)addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+let mx=innerWidth/2,my=innerHeight/2;
+if(!reduce)addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
 const cv=document.getElementById('field'),ctx=cv.getContext('2d');
 function size(){cv.width=innerWidth;cv.height=innerHeight;} size(); addEventListener('resize',size);
-const gap=46; let tt=0;
-function draw(){if(document.hidden){requestAnimationFrame(draw);return;}tt+=0.006;ctx.clearRect(0,0,cv.width,cv.height);
+const gap=46; let tt=0, running=false;
+function draw(){if(document.hidden){running=false;return;}running=true;tt+=0.006;ctx.clearRect(0,0,cv.width,cv.height);
   for(let x=gap;x<cv.width;x+=gap)for(let y=gap;y<cv.height;y+=gap){
     const d=Math.hypot(x-mx,y-my),infl=Math.max(0,1-d/240);
     if(infl===0&&((x/gap+y/gap)&1))continue;
     const r=0.7+infl*2.4+Math.sin(tt*2+x*0.01+y*0.01)*0.3;
     ctx.beginPath();ctx.arc(x,y,Math.max(0.2,r),0,6.28);ctx.fillStyle='rgba(150,170,200,'+(0.05+infl*0.5)+')';ctx.fill();}
   requestAnimationFrame(draw);}
-if(!reduce) draw();
+if(!reduce){draw();document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!running)draw();});}
 
-const mag=document.getElementById('magnet');
-if(mag&&!reduce){mag.addEventListener('mousemove',e=>{const r=mag.getBoundingClientRect();mag.style.transform='translate('+((e.clientX-r.left-r.width/2)*0.25)+'px,'+((e.clientY-r.top-r.height/2)*0.35)+'px)';});mag.addEventListener('mouseleave',()=>mag.style.transform='');}
+/* magnet hover effect removed in review pass */
 
 if(!reduce && window.gsap){
   gsap.registerPlugin(ScrollTrigger);
@@ -442,8 +445,8 @@ if(!reduce && window.gsap){
   scrolly('#sy-stack',i=>{dls.forEach(d=>d.classList.toggle('act',+d.dataset.l===i));spine(i);});
   ScrollTrigger.create({trigger:'.hero',start:'top 50%',end:'bottom 35%',onToggle:s=>{if(s.isActive)spineAll(true);}});
   ScrollTrigger.create({trigger:'#bert',start:'top 55%',end:'bottom 45%',onToggle:s=>{if(s.isActive)spine(1);}});
-  ScrollTrigger.create({trigger:'#triton',start:'top 55%',end:'bottom 45%',onToggle:s=>{if(s.isActive)spine(3);}});
-  ScrollTrigger.create({trigger:'#work',start:'top 65%',onToggle:s=>{if(s.isActive)spineAll(false);}});
+  ScrollTrigger.create({trigger:'#triton',start:'top 55%',end:'bottom 45%',onToggle:s=>{if(s.isActive)spine(2);}});
+  ScrollTrigger.create({trigger:'#work',start:'top 65%',onToggle:s=>{if(s.isActive)spine(3);}});
   let tdone=false;
   scrolly('#sy-triton',i=>{
     document.querySelectorAll('#triton .tframe').forEach(f=>{const on=+f.dataset.f===i;f.style.opacity=on?1:0;f.setAttribute('aria-hidden',on?'false':'true');});
