@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://harshithkantamneni.github.io/sitemap.xml

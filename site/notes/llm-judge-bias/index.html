@@ -1,13 +1,117 @@
-<!DOCTYPE html><html lang="en" data-theme="light"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Same-family LLM judge bias is real · Harshith Kantamneni</title><meta name="description" content="ICLR 2026 paper on preference leakage in LLM-as-judge, applied to a quartet of Claude opus instances reviewing each other."><link rel="canonical" href="https://harshithkantamneni.github.io/notes/llm-judge-bias/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Open Graph --><meta property="og:type" content="website"><meta property="og:url" content="https://harshithkantamneni.github.io/notes/llm-judge-bias/"><meta property="og:title" content="Same-family LLM judge bias is real · Harshith Kantamneni"><meta property="og:description" content="ICLR 2026 paper on preference leakage in LLM-as-judge, applied to a quartet of Claude opus instances reviewing each other."><meta property="og:image" content="https://harshithkantamneni.github.io/og-default.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><!-- Twitter --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Same-family LLM judge bias is real · Harshith Kantamneni"><meta name="twitter:description" content="ICLR 2026 paper on preference leakage in LLM-as-judge, applied to a quartet of Claude opus instances reviewing each other."><meta name="twitter:image" content="https://harshithkantamneni.github.io/og-default.png"><!-- JSON-LD: Person schema --><script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Harshith Kantamneni","url":"https://harshithkantamneni.github.io/","sameAs":["https://github.com/harshithkantamneni","https://www.linkedin.com/in/hk4231"],"jobTitle":"Builder of autonomous AI labs","email":"mailto:kantamneniharshith@gmail.com"}</script><!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;: &quot;f1ff5015a395474e96b4c7354362d1c1&quot;}"></script><link rel="stylesheet" href="/_astro/about.DyuG9eGV.css">
-<style>.meta-strip[data-astro-cid-ooi64xum]{font-family:var(--font-mono);font-size:var(--fs-mono);text-transform:uppercase;letter-spacing:var(--tracking-wide);color:var(--ink-low);display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-3);margin:var(--space-3) 0}.meta-strip[data-astro-cid-ooi64xum]>[data-astro-cid-ooi64xum]+[data-astro-cid-ooi64xum]:before{content:"·";margin-right:var(--space-3);color:var(--ink-low)}
-</style></head> <body> <header class="site-header" data-astro-cid-3ef6ksr2> <a href="/" class="brand" data-astro-cid-3ef6ksr2>HK</a> <nav class="nav-desktop" aria-label="Primary" data-astro-cid-3ef6ksr2> <a href="/about" class="nav-link" data-astro-cid-3ef6ksr2>ABOUT</a><a href="/labs" class="nav-link" data-astro-cid-3ef6ksr2>LABS</a><a href="/reports" class="nav-link" data-astro-cid-3ef6ksr2>REPORTS</a><a href="/notes" class="nav-link current" data-astro-cid-3ef6ksr2>NOTES</a><a href="/now" class="nav-link" data-astro-cid-3ef6ksr2>NOW</a><a href="/contact" class="nav-link" data-astro-cid-3ef6ksr2>CONTACT</a> </nav> <button class="theme-toggle" type="button" aria-label="Toggle dark mode" data-theme-toggle data-astro-cid-3ef6ksr2> <span data-theme-label="light" data-astro-cid-3ef6ksr2>DARK</span> <span data-theme-label="dark" hidden data-astro-cid-3ef6ksr2>LIGHT</span> </button> <details class="nav-mobile" data-astro-cid-3ef6ksr2> <summary aria-label="Open menu" data-astro-cid-3ef6ksr2>MENU</summary> <div class="nav-mobile-links" data-astro-cid-3ef6ksr2> <a href="/about" class="nav-mobile-link" data-astro-cid-3ef6ksr2> ABOUT </a><a href="/labs" class="nav-mobile-link" data-astro-cid-3ef6ksr2> LABS </a><a href="/reports" class="nav-mobile-link" data-astro-cid-3ef6ksr2> REPORTS </a><a href="/notes" class="nav-mobile-link current" data-astro-cid-3ef6ksr2> NOTES </a><a href="/now" class="nav-mobile-link" data-astro-cid-3ef6ksr2> NOW </a><a href="/contact" class="nav-mobile-link" data-astro-cid-3ef6ksr2> CONTACT </a> </div> </details> </header>  <main>  <div class="page-grid"> <div class="full-bleed" style="padding: var(--space-7) var(--space-4) var(--space-3); max-width: var(--grid-max); margin: 0 auto;"> <div class="meta-strip" data-astro-cid-ooi64xum> <span data-astro-cid-ooi64xum>NOTE</span><span data-astro-cid-ooi64xum>May 02, 2026</span><span data-astro-cid-ooi64xum>AUTONOMOUS RESEARCH</span> </div>  <h1 style="margin-top: var(--space-3); font-size: clamp(1.75rem, 4.5vw, 3.25rem); line-height: 1.1;">Same-family LLM judge bias is real</h1> </div> </div> <div class="page-grid"> <div class="extended measure-tight drop-cap" style="margin-top: var(--space-5);"> <p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Same-family LLM judge bias is real · Harshith Kantamneni</title>
+<meta name="description" content="ICLR 2026 paper on preference leakage in LLM-as-judge, applied to a quartet of Claude opus instances reviewing each other."/>
+<meta name="theme-color" content="#060708">
+<link rel="canonical" href="https://harshithkantamneni.github.io/notes/llm-judge-bias/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Same-family LLM judge bias is real · Harshith Kantamneni">
+<meta property="og:description" content="ICLR 2026 paper on preference leakage in LLM-as-judge, applied to a quartet of Claude opus instances reviewing each other.">
+<meta property="og:url" content="https://harshithkantamneni.github.io/notes/llm-judge-bias/">
+<meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#060708;--ink:#EEEFF1;--mid:#9398A0;--dim:#7C828B;--line:rgba(255,255,255,.08);
+    --k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.6}
+  ::selection{background:var(--a);color:#04111f}
+  a{color:inherit}
+  a:focus-visible{outline:2px solid var(--a);outline-offset:3px;border-radius:4px}
+  .topgrad{height:3px;background:linear-gradient(96deg,var(--k),var(--i) 33%,var(--r) 66%,var(--a))}
+  .topbar{position:sticky;top:0;z-index:10;background:rgba(6,7,8,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .topbar .in{max-width:760px;margin:0 auto;padding:15px 24px;display:flex;justify-content:space-between;align-items:center}
+  .back{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);text-decoration:none;transition:color .2s}
+  .back:hover{color:#fff}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  article{padding:54px 0 40px}
+  .meta{font-family:var(--mono);font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);display:flex;flex-wrap:wrap;align-items:center;gap:0 14px;margin-bottom:20px}
+  .meta .kind{color:var(--r)}
+  .meta span+span::before{content:"·";margin-right:14px;color:var(--line)}
+  h1{font-family:var(--sans);font-size:clamp(28px,4.6vw,44px);line-height:1.12;font-weight:600;letter-spacing:-.025em}
+  .prose{margin-top:34px;font-size:17px;line-height:1.78;color:#cfd3d9}
+  .prose>*+*{margin-top:22px}
+  .prose h2{font-family:var(--sans);font-size:clamp(22px,3vw,28px);font-weight:600;letter-spacing:-.02em;color:var(--ink);margin-top:50px;line-height:1.2}
+  .prose h3{font-family:var(--sans);font-size:19px;font-weight:600;color:var(--ink);margin-top:34px}
+  .prose strong{color:var(--ink);font-weight:600}
+  .prose em{font-style:italic}
+  .prose a{color:var(--r);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--r) 40%,transparent);transition:border-color .2s}
+  .prose a:hover{border-color:var(--r)}
+  .prose ul,.prose ol{padding-left:24px}
+  .prose li{margin-top:8px}
+  .prose li::marker{color:var(--dim)}
+  .prose blockquote{border-left:2px solid var(--r);padding-left:18px;color:var(--mid);font-style:italic}
+  .prose code{font-family:var(--mono);font-size:.86em;background:rgba(255,255,255,.06);border:1px solid var(--line);padding:1px 6px;border-radius:5px;color:var(--i)}
+  .prose pre{background:#0b0d10;border:1px solid var(--line);border-radius:12px;padding:18px 20px;overflow-x:auto;margin-top:22px}
+  .prose pre code{background:none;border:none;padding:0;color:#cfd3d9;font-size:13.5px;line-height:1.6}
+  .prose table{width:100%;border-collapse:collapse;font-size:14px;margin-top:22px;font-family:var(--mono)}
+  .prose th,.prose td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+  .prose th{color:var(--mid);text-transform:uppercase;font-size:11px;letter-spacing:.08em}
+  .prose hr{border:none;border-top:1px solid var(--line);margin:34px 0}
+  .prose figure{margin-top:22px}
+  .prose img{max-width:100%;border-radius:10px;border:1px solid var(--line)}
+  .prose figcaption{font-family:var(--mono);font-size:12px;color:var(--dim);margin-top:8px}
+  footer{border-top:1px solid var(--line);margin-top:56px;padding:30px 0 54px}
+  .foot{max-width:760px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+  .foot .links{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+  .foot a{color:var(--mid);text-decoration:none;border-bottom:1px solid transparent;transition:.2s}
+  .foot a:hover{color:#fff;border-color:#fff}
+  .foot .fmeta{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+  @media(max-width:560px){article{padding:40px 0 32px}.foot{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="topgrad"></div>
+<header class="topbar"><div class="in">
+  <a class="back" href="/#writing">← Harshith Kantamneni</a>
+  <a class="back" href="/">Portfolio ↗</a>
+</div></header>
+
+<div class="wrap">
+<article>
+  <div class="meta"><span class="kind">NOTE</span><span>May 02, 2026</span><span>AUTONOMOUS RESEARCH</span></div>
+  <h1>Same-family LLM judge bias is real</h1>
+  <div class="prose">
+<p>
 ICLR 2026 published a paper called <em>Preference Leakage: A Contamination Problem in LLM-as-a-judge</em> (arxiv 2502.01534). The finding, in plain English: when an LLM judges another LLM's output, and the two share training distribution, the judge measurably prefers the related model. Same model, inheritance relationship, or just same family is enough to produce the bias.
-</p> <p>
+</p>
+<p>
 I run a multi-agent ratification gate that uses four separate Claude Opus instances (chief architect, CPO, red team, applied researcher) reviewing META-altitude proposals. The gate is 4 of 4 NON-REJECT to ratify. The intuition behind the design was diversity through structural role differentiation, not model diversity. The four agents see the proposal from different angles: architecture, product, adversarial, research.
-</p> <p>
+</p>
+<p>
 The ICLR 2026 paper makes me less confident that's enough. Even with different roles, all four are Claude. They share training distribution, format preferences, vocabulary biases, and probably the same blind spots about Claude-shaped reasoning. Empirically, when proposals get split votes, the dissent tends to be on framing details, not on whether the proposal is sound. Convergent verdicts on substance with role-flavored decoration on top.
-</p> <p>
+</p>
+<p>
 The fix is structural: at least one verifier in the ratification chain needs to be cross-family. Currently exploring Qwen2.5-Coder-14B via Ollama on the same MacBook. Different training distribution, different vocabulary biases, different blind spots. Whether it's strong enough to be a real adversary on subtle judgment calls is what the next few cycles are about.
-</p> <p>
+</p>
+<p>
 The general principle: same-family is a different problem from sample-size. Adding more Claude instances to a Claude review board does not give you cross-family diversity. It gives you the same review board with more chairs.
-</p> <p style="margin-top: var(--space-7); color: var(--ink-low); font-size: var(--fs-small);"> <a href="/notes">← All notes</a> </p> </div> </div>  </main> <footer class="site-footer" data-astro-cid-sz7xmlte> <hr class="hairline" data-astro-cid-sz7xmlte> <div class="footer-grid" data-astro-cid-sz7xmlte> <div data-astro-cid-sz7xmlte> <p class="footer-meta" data-astro-cid-sz7xmlte>HARSHITH KANTAMNENI · MILWAUKEE, WISCONSIN · 2026</p> </div> <nav class="footer-nav" aria-label="Secondary" data-astro-cid-sz7xmlte> <a href="/Harshith_Kantamneni_Resume.pdf" data-astro-cid-sz7xmlte>RESUME</a> <a href="mailto:kantamneniharshith@gmail.com" data-astro-cid-sz7xmlte>EMAIL</a> <a href="https://github.com/harshithkantamneni" data-astro-cid-sz7xmlte>GITHUB</a> <a href="https://www.linkedin.com/in/hk4231" data-astro-cid-sz7xmlte>LINKEDIN</a> <a href="/rss.xml" data-astro-cid-sz7xmlte>RSS</a> </nav> </div> </footer>  <script src="/motion.js"></script> </body> </html>
+</p>
+  </div>
+</article>
+</div>
+
+<footer><div class="foot">
+  <span class="fmeta">Harshith Kantamneni · Milwaukee, WI · MMXXVI</span>
+  <span class="links">
+    <a href="/#writing">← More writing</a>
+    <a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a>
+    <a href="mailto:kantamneniharshith@gmail.com">Email</a>
+    <a href="https://github.com/harshithkantamneni">GitHub</a>
+    <a href="https://www.linkedin.com/in/hk4231">LinkedIn</a>
+  </span>
+</div></footer>
+
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2e4646d7e5e149c0a3c87132e9fa66f1"}'></script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
