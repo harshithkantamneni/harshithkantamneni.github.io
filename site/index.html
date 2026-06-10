@@ -216,7 +216,7 @@
     <div class="eyebrow reveal">AI systems · silicon to agents</div>
     <h1 class="reveal">From <span class="g">GPU kernels</span><br>to <span class="g">autonomous agents.</span></h1>
     <p class="lede reveal">M.S. ECE. I optimize <b>CUDA &amp; Triton kernels</b> and <b>LLM inference</b> at the bottom of the stack, and build <b>agent infrastructure, retrieval, and evaluation</b> on top.</p>
-    <div class="cta reveal"><a href="#stack" class="btn p" id="magnet">Explore the stack →</a><a href="https://harshithkantamneni.github.io/Harshith_Kantamneni_Resume.pdf" class="btn g">Résumé</a></div>
+    <div class="cta reveal"><a href="#stack" class="btn p">Explore the stack →</a><a href="https://harshithkantamneni.github.io/Harshith_Kantamneni_Resume.pdf" class="btn g">Résumé</a></div>
     <div class="herometa reveal"><span><b>M.S. ECE · UW-Madison '25</b></span><span><b>Milwaukee, WI</b></span><span>Targeting <b>GPU · Inference · AI-Infra</b></span></div>
   </div>
   <div class="reveal">
@@ -224,7 +224,7 @@
     <div class="stack">
       <div class="layer" style="--c:var(--a)"><div class="ix">04</div><div><div class="nm">Agents &amp; Orchestration</div><div class="tc">multi-agent · MCP · governance</div></div><div class="lm"><span class="n">30</span><span class="s">autonomous agents</span></div></div>
       <div class="layer" style="--c:var(--r)"><div class="ix">03</div><div><div class="nm">Retrieval &amp; Memory</div><div class="tc">sqlite-vec · BM25 · RRF · rerank</div></div><div class="lm"><span class="n">0.745</span><span class="s">nDCG@10 · vs .665 BM25</span></div></div>
-      <div class="layer" style="--c:var(--i)"><div class="ix">02</div><div><div class="nm">LLM Inference</div><div class="tc">FlashAttention · KV-cache · quant</div></div><div class="lm"><span class="n">15.4K</span><span class="s">Jetson · decode kernel</span></div></div>
+      <div class="layer" style="--c:var(--i)"><div class="ix">02</div><div><div class="nm">LLM Inference</div><div class="tc">FlashAttention · KV-cache · quant</div></div><div class="lm"><span class="n">15.4K</span><span class="s">Jetson · single-stream decode</span></div></div>
       <div class="layer" style="--c:var(--k)"><div class="ix">01</div><div><div class="nm">GPU Kernels · Silicon</div><div class="tc">CUDA · Triton · GEMM fusion</div></div><div class="lm"><span class="n">215</span><span class="s">Triton · TFLOP/s</span></div></div>
     </div>
   </div>
@@ -282,7 +282,7 @@
       <div class="step" data-step="0"><div class="k">The problem</div><h3>A 3M-token codebase does not fit in a 1M-token window.</h3><p>At 3M tokens the project is 3× the window, so full-context is not an option. Truncate to fit and you drop the file the answer lives in. Accuracy collapses toward 0.00.</p></div>
       <div class="step" data-step="1"><div class="k">The build</div><h3>Hybrid retrieval, fully local.</h3><p>Dense vectors (sqlite-vec + bge-base-en-v1.5) and BM25 keyword search, fused by reciprocal-rank fusion, reranked by a cross-encoder. No API keys, no LLM calls. The host model only sees the slice that matters.</p></div>
       <div class="step" data-step="2"><div class="k">The result</div><h3>Accuracy holds as the codebase grows.</h3><p>When the project fits in the window, full-context stuffing wins outright. Past it, bert retrieves only the relevant slice and holds <b style="color:var(--ink)">0.75 to 0.85</b> on a span-validated gold set, reading 4.6× fewer input tokens than truncation.</p></div>
-      <div class="step" data-step="3"><div class="k">The debugging win</div><h3>A silent bug had pinned it at near-random.</h3><div class="big"><span>0.10</span> <span class="to">→ <span id="cnt">0.85</span></span></div><p>A dict-key mismatch zeroed the dense signal and a 240-char truncation dropped answer spans. Root-caused and fixed, accuracy went from 0.10 to 0.85 on a span-validated gold set.</p></div>
+      <div class="step" data-step="3"><div class="k">The debugging win</div><h3>A silent bug had pinned it at near-random.</h3><div class="big"><span>0.10</span> <span class="to">→ <span id="cnt">0.85</span></span></div><p>A dict-key mismatch zeroed the dense signal and a 240-char truncation dropped answer spans. Root-caused and fixed, accuracy went from 0.10 to 0.85.</p></div>
       <div class="step" data-step="4"><div class="k">Validated</div><h3>0.745 nDCG@10 on a public IR benchmark.</h3><p>Across three BEIR datasets (scifact, nfcorpus, fiqa) bge-base matches the published reference on all three. On scifact the full stack (bge-base-en-v1.5 dense vectors plus BM25, reranked by a cross-encoder) scores 0.745 against a published BM25 baseline of 0.665, on par with bge-base-en-v1.5's own published scifact result (0.741). A public benchmark on public datasets, not a self-defined one.</p></div>
     </div>
   </div>
@@ -442,8 +442,9 @@ if(!reduce && window.gsap){
   const sps=document.querySelectorAll('.spine .sp');
   const spine=i=>sps.forEach(s=>s.classList.toggle('on',+s.dataset.l===i));
   const spineAll=v=>sps.forEach(s=>s.classList.toggle('on',v));
-  scrolly('#sy-stack',i=>{dls.forEach(d=>d.classList.toggle('act',+d.dataset.l===i));spine(i);});
+  scrolly('#sy-stack',i=>{dls.forEach(d=>d.classList.toggle('act',+d.dataset.l===i));});
   ScrollTrigger.create({trigger:'.hero',start:'top 50%',end:'bottom 35%',onToggle:s=>{if(s.isActive)spineAll(true);}});
+  ScrollTrigger.create({trigger:'#stack',start:'top 55%',end:'bottom 45%',onToggle:s=>{if(s.isActive)spine(0);}});
   ScrollTrigger.create({trigger:'#bert',start:'top 55%',end:'bottom 45%',onToggle:s=>{if(s.isActive)spine(1);}});
   ScrollTrigger.create({trigger:'#triton',start:'top 55%',end:'bottom 45%',onToggle:s=>{if(s.isActive)spine(2);}});
   ScrollTrigger.create({trigger:'#work',start:'top 65%',onToggle:s=>{if(s.isActive)spine(3);}});
