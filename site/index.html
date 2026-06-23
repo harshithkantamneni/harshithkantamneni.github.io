@@ -247,7 +247,7 @@
     </div>
     <div class="steps" id="sy-stack">
       <div class="step" data-step="0"><div class="k" style="color:var(--a)">04 · Agents</div><h3>Autonomous systems that build software.</h3><p>An autonomous ML research lab and HIVE, a multi-agent org, ship from pre-registered plans. I built their orchestration and anti-forgery sign-off governance.</p></div>
-      <div class="step" data-step="1"><div class="k" style="color:var(--r)">03 · Retrieval</div><h3>Memory that beats the context wall.</h3><p>bert gives agents a searchable memory of a whole codebase. Hybrid retrieval, fully local, built for projects that outgrow a 1M-token window.</p></div>
+      <div class="step" data-step="1"><div class="k" style="color:var(--r)">03 · Retrieval</div><h3>Memory that beats the context wall.</h3><p>bert gives agents a searchable memory of a whole project. Hybrid retrieval, fully local, built for projects that outgrow the context window.</p></div>
       <div class="step" data-step="2"><div class="k" style="color:var(--i)">02 · Inference</div><h3>LLM inference, profiled and tuned.</h3><p>Attention and KV-cache decode profiled on edge silicon: fused SDPA (FlashAttention backend) vs naive attention. 15.4K tok/s on a single-stream KV-cache decode microbenchmark, Jetson Orin Nano.</p></div>
       <div class="step" data-step="3"><div class="k" style="color:var(--k)">01 · Kernels</div><h3>Down to the metal.</h3><p>Hand-written Triton kernels, GEMM fusion, removing HBM round-trips. Up to 1.73× lower latency than the unfused path on memory-bound FFN. The bare autotuned GEMM peaks at 213 TFLOP/s on an A100.</p></div>
     </div>
@@ -259,29 +259,29 @@
   <div class="case-top"><div><div class="case-tag" style="color:var(--r)">Layer 03 · Retrieval &amp; Memory · Case 01</div><h2 class="case-title">bert</h2><p class="case-sub">A local MCP server that gives AI coding assistants a searchable memory of an entire codebase. Past the context window, full-context stuffing fails and truncation drops the answer. Retrieval reads only the slice that matters.</p></div><a href="https://github.com/harshithkantamneni/bert" class="btn g">View the repo →</a></div>
   <div class="scrolly">
     <div class="viz">
-      <div class="vh"><span>Accuracy vs. codebase size</span><span id="vizlabel">httpx + starlette corpus (padded to 3M)</span></div>
+      <div class="vh"><span>Accuracy vs. project-memory size</span><span id="vizlabel">one Claude reader · only the memory method varies</span></div>
       <div class="chartwrap">
-        <svg viewBox="0 0 460 360" width="100%" height="100%" font-family="JetBrains Mono" role="img" aria-label="Answer accuracy versus codebase size. As the codebase grows past the 1M-token context window, truncation accuracy falls from about 0.85 to 0.00, while bert hybrid retrieval holds between 0.85 and 0.75. On BEIR scifact the full stack scores 0.745 nDCG at 10.">
+        <svg viewBox="0 0 460 360" width="100%" height="100%" font-family="JetBrains Mono" role="img" aria-label="Answer accuracy versus project-memory size, with a single Claude reader so only the memory method varies. Once the memory exceeds the context window, full-context stuffing collapses from 0.90 to 0.08, while bert hybrid retrieval holds from 0.96 to 0.90. bert ties agentic grep at about half the token cost and beats naive vector retrieval by 0.50.">
           <g stroke="#20242a" stroke-width="1"><line x1="60" y1="30" x2="430" y2="30"/><line x1="60" y1="100" x2="430" y2="100"/><line x1="60" y1="170" x2="430" y2="170"/><line x1="60" y1="240" x2="430" y2="240"/><line x1="60" y1="310" x2="430" y2="310"/></g>
           <g fill="#7C828B" font-size="9" text-anchor="end"><text x="52" y="33">1.0</text><text x="52" y="103">.75</text><text x="52" y="173">.50</text><text x="52" y="243">.25</text><text x="52" y="313">0</text></g>
-          <g fill="#7C828B" font-size="9" text-anchor="middle"><text x="60" y="328">10K</text><text x="155" y="328">100K</text><text x="250" y="328">1M</text><text x="360" y="328">3M</text></g>
-          <text x="245" y="350" fill="#7C828B" font-size="9" text-anchor="middle">codebase size · tokens, log scale</text>
-          <line x1="250" y1="30" x2="250" y2="310" stroke="#FF6A4D" stroke-width="1" stroke-dasharray="3 3" opacity=".55"/>
-          <text x="255" y="44" fill="#FF6A4D" font-size="9">1M window</text>
-          <path class="advfill" d="M250,80 C330,92 370,100 430,103 L430,310 L360,296 L250,150 Z" fill="rgba(65,214,195,.08)"/>
-          <path class="truncline" d="M60,74 C130,82 205,96 250,150 C300,235 345,290 430,310" fill="none" stroke="#7C828B" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="760"/>
-          <path class="bertline" d="M60,69 C150,72 230,77 250,80 C330,92 370,100 430,103" fill="none" stroke="#41D6C3" stroke-width="3" stroke-linecap="round" stroke-dasharray="760"/>
-          <circle class="pt bert" cx="430" cy="103" r="5" fill="#41D6C3"/><circle class="pt trunc" cx="430" cy="310" r="5" fill="#7C828B"/><circle class="pt" cx="60" cy="69" r="4" fill="#41D6C3"/><text class="pt" x="68" y="62" fill="#41D6C3" font-size="10" font-weight="700">bert 0.85</text>
-          <text class="pt" x="384" y="92" fill="#41D6C3" font-size="11" font-weight="700" text-anchor="end">0.75</text>
-          <text class="pt" x="345" y="280" fill="#9398A0" font-size="10" text-anchor="end">truncation → 0</text>
+          <g fill="#7C828B" font-size="9" text-anchor="middle"><text x="60" y="328">10K</text><text x="155" y="328">100K</text><text x="250" y="328">1M</text><text x="360" y="328">1.3M</text></g>
+          <text x="245" y="350" fill="#7C828B" font-size="9" text-anchor="middle">project-memory size · tokens, log scale</text>
+          <line x1="225" y1="30" x2="225" y2="310" stroke="#FF6A4D" stroke-width="1" stroke-dasharray="3 3" opacity=".55"/>
+          <text x="230" y="44" fill="#FF6A4D" font-size="9">context window</text>
+          <path class="advfill" d="M225,52 C310,55 380,57 430,58 L430,288 C370,283 300,250 225,160 Z" fill="rgba(65,214,195,.08)"/>
+          <path class="truncline" d="M60,52 C140,60 205,118 225,160 C300,250 350,282 430,288" fill="none" stroke="#7C828B" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="760"/>
+          <path class="bertline" d="M60,41 C160,46 290,53 430,58" fill="none" stroke="#41D6C3" stroke-width="3" stroke-linecap="round" stroke-dasharray="760"/>
+          <circle class="pt bert" cx="430" cy="58" r="5" fill="#41D6C3"/><circle class="pt trunc" cx="430" cy="288" r="5" fill="#7C828B"/><circle class="pt" cx="60" cy="41" r="4" fill="#41D6C3"/><text class="pt" x="68" y="34" fill="#41D6C3" font-size="10" font-weight="700">bert 0.96</text>
+          <text class="pt" x="424" y="52" fill="#41D6C3" font-size="11" font-weight="700" text-anchor="end">0.90</text>
+          <text class="pt" x="352" y="266" fill="#9398A0" font-size="10" text-anchor="end">full-context → .08</text>
         </svg>
       </div>
-      <div class="bigstat"><span class="num" id="vstat">0.85</span><span class="cap" id="vcap">answer accuracy · span-validated gold set</span></div>
+      <div class="bigstat"><span class="num" id="vstat">0.90</span><span class="cap" id="vcap">answer accuracy past the window · single Claude reader</span></div>
     </div>
     <div class="steps" id="sy-bert">
-      <div class="step" data-step="0"><div class="k">The problem</div><h3>A 3M-token codebase does not fit in a 1M-token window.</h3><p>At 3M tokens the project is 3× the window, so full-context is not an option. Truncate to fit and you drop the file the answer lives in. Accuracy collapses toward 0.00.</p></div>
+      <div class="step" data-step="0"><div class="k">The problem</div><h3>A project's memory outgrows the model's window.</h3><p>Months of decisions, designs and post-mortems run to millions of tokens, far past any context window. Stuff it all in and the call fails; keep only the most-recent slice and you drop the fact the answer needs. Accuracy collapses.</p></div>
       <div class="step" data-step="1"><div class="k">The build</div><h3>Hybrid retrieval, fully local.</h3><p>Dense vectors (sqlite-vec + bge-base-en-v1.5) and BM25 keyword search, fused by reciprocal-rank fusion, reranked by a cross-encoder. No API keys, no LLM calls. The host model only sees the slice that matters.</p></div>
-      <div class="step" data-step="2"><div class="k">The result</div><h3>Accuracy holds as the codebase grows.</h3><p>When the project fits in the window, full-context stuffing wins outright. Past it, bert retrieves only the relevant slice and holds <b style="color:var(--ink)">0.85 down to 0.75 at 3M</b> on a span-validated gold set, reading 4.6× fewer input tokens than truncation.</p></div>
+      <div class="step" data-step="2"><div class="k">The result</div><h3>Memory holds where stuffing the context collapses.</h3><p>Held to one model (Claude), only the memory method changing: on a 1.26M-token project memory (~7× the window), full-context falls to <b style="color:var(--ink)">0.08</b> while bert holds <b style="color:var(--ink)">0.90</b>. It ties an agent grepping the raw files at <b style="color:var(--ink)">~half the tokens</b>, and beats a naive vector lookup by <b style="color:var(--ink)">+0.50</b>. (On source code, where files re-read cheaply, grep wins — bert is built for accumulated memory, not code search.)</p></div>
       <div class="step" data-step="3"><div class="k">The debugging win</div><h3>A silent bug had pinned it at near-random.</h3><div class="big"><span>0.10</span> <span class="to">→ <span id="cnt">0.85</span></span></div><p>A dict-key mismatch zeroed the dense signal and a 240-char truncation dropped answer spans. Root-caused and fixed, accuracy went from 0.10 to 0.85.</p></div>
       <div class="step" data-step="4"><div class="k">Validated</div><h3>0.745 nDCG@10 on a public IR benchmark.</h3><p>Across three BEIR datasets (scifact, nfcorpus, fiqa) bge-base matches the published reference on all three. On scifact the full stack (bge-base-en-v1.5 dense vectors plus BM25, reranked by a cross-encoder) scores 0.745 against a published BM25 baseline of 0.665, on par with bge-base-en-v1.5's own published scifact result (0.741). A public benchmark on public datasets, not a self-defined one.</p></div>
     </div>
@@ -289,8 +289,8 @@
   <div class="bento">
     <div class="b reveal"><div class="bl">Interface</div><div class="bn">MCP</div><div class="bd">Local stdio server, JSON-RPC 2.0. Drops into Claude Code, Cursor, Codex.</div></div>
     <div class="b accent reveal"><div class="bl">BEIR scifact</div><div class="bn">0.745</div><div class="bd">nDCG@10, bge-base + BM25 + cross-encoder rerank. +0.080 over BM25 (0.665).</div></div>
-    <div class="b reveal"><div class="bl">Over-window</div><div class="bn">0.75</div><div class="bd">Accuracy on a blind-authored, span-validated set (small n) at 3M tokens, where full-context is infeasible and truncation is 0.00.</div></div>
-    <div class="b reveal"><div class="bl">Cost</div><div class="bn">~3.3K</div><div class="bd">Input tokens per query. ~4.6× fewer than truncation, higher accuracy.</div></div>
+    <div class="b reveal"><div class="bl">Over-window</div><div class="bn">0.90</div><div class="bd">Accuracy on a 1.26M-token project memory (~7× the window), single Claude reader, where full-context falls to 0.08.</div></div>
+    <div class="b reveal"><div class="bl">vs. baselines</div><div class="bn">+0.50</div><div class="bd">Over naive vector-RAG; ties an agent grepping the raw files at ~half the token cost.</div></div>
   </div>
 </section>
 
@@ -435,7 +435,7 @@ if(!reduce && window.gsap){
       steps.forEach(x=>gsap.to(x,{opacity:x===st?1:.5,duration:.3}));cb&&cb(+st.dataset.step);}}}));}
 
   const stat=document.getElementById('vstat'),cap=document.getElementById('vcap'),vl=document.getElementById('vizlabel');
-  const states=[{s:'3M',c:'codebase tokens vs a 1M window',l:'the problem'},{s:'3',c:'stages · dense + BM25 fused, then rerank',l:'hybrid retrieval'},{s:'0.75',c:'accuracy past the window, where truncation is 0.00',l:'accuracy vs codebase size'},{s:'0.85',c:'recovered from a silent dense-signal bug',l:'the fix'},{s:'0.745',c:'nDCG@10 · BEIR scifact · +0.08 over BM25',l:'validated'}];
+  const states=[{s:'1.26M',c:'project-memory tokens vs the context window',l:'the problem'},{s:'3',c:'stages · dense + BM25 fused, then rerank',l:'hybrid retrieval'},{s:'0.90',c:'held by bert where full-context falls to 0.08',l:'accuracy vs memory size'},{s:'0.85',c:'recovered from a silent dense-signal bug',l:'the fix'},{s:'0.745',c:'nDCG@10 · BEIR scifact · +0.08 over BM25',l:'validated'}];
   scrolly('#sy-bert',i=>{const d=states[i];stat.textContent=d.s;cap.textContent=d.c;vl.textContent=d.l;});
   ScrollTrigger.create({trigger:'#sy-bert .step[data-step="3"]',start:'top 55%',once:true,onEnter:()=>{const o={v:.1};gsap.to(o,{v:.85,duration:1.4,ease:'power2.out',onUpdate:()=>document.getElementById('cnt').textContent=o.v.toFixed(2)});}});
 
