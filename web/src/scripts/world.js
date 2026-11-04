@@ -741,7 +741,7 @@ function frame(now) {
   }
 }
 resize();
-if (LITE) Object.assign(goal, { cx: 26, cy: 46, cz: 58, lx: 0, ly: -6, lz: 0, ox: 0, oy: -0.16, occ: 0.5, sl: 0, ty: 6 });
+if (LITE) Object.assign(goal, { cx: 26, cy: 46, cz: 62, lx: 0, ly: -6, lz: 0, ox: 0, oy: -0.34, die: 0.6, occ: 0.42, sl: 0, ty: 6 });
 else readScroll();
 Object.assign(K, goal);
 canvas.classList.add('on');
