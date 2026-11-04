@@ -1,0 +1,8 @@
+<div class="beat lane"><p class="say">So I moved the record out of the agent's reach.</p><p class="note">It relies on the runner's sandbox settings, which I've only tested on a stub harness, not yet on a live lab.</p></div>
+  <div class="block lane">
+    <figure class="fg" id="fig-seq2"><svg role="img" aria-label="The same forgery against the new check. The runner logs every call it sees. The director writes a PI sign-off and never calls the PI agent. The runner compares the sign-off with its log, finds no call, and blocks the session."></svg><figcaption>The same forgery, replayed against the new check.</figcaption></figure>
+  </div>
+  <div class="beat lane">
+    <p class="say">A required sign-off now counts only if the system running the agents saw that agent run and give that answer. Replay the forgery, and the session is blocked.</p>
+    <p class="note">171 new tests, and 62 of them fail on the old code. A record shows that an agent ran and what it replied, not that its review was any good. The repo lists what's still open.</p>
+  </div>

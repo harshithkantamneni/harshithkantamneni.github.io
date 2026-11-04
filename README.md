@@ -1,38 +1,28 @@
 # harshithkantamneni.github.io
 
-Personal site for Harshith Kantamneni. Built with [Astro](https://astro.build).
+Personal site for Harshith Kantamneni, live at [harshithkantamneni.github.io](https://harshithkantamneni.github.io).
 
-Live at [harshithkantamneni.github.io](https://harshithkantamneni.github.io).
-
-## Local development
-
-```bash
-npm install
-npm run dev      # http://localhost:4321
-npm run build    # outputs ./dist
-npm run preview  # preview build locally
-```
+It's a static site. Pushing to `main` deploys the `site/` folder to GitHub Pages.
 
 ## Structure
 
 ```
-src/
-├── layouts/Default.astro    shared layout (header + footer + meta)
-├── components/              header, footer
-├── pages/                   one .astro file per route
-│   ├── index.astro          home
-│   ├── about.astro
-│   ├── now.astro
-│   ├── contact.astro
-│   ├── labs/                lab modules (each lab = one file)
-│   ├── reports/             long-form reports
-│   ├── notes/               short observations
-│   └── rss.xml.js           RSS feed
-└── styles/                  CSS tokens + components
-
-public/                      static assets (PDFs, favicon, motion.js)
+site/          what gets deployed
+tools/home/    sources for the home page
+tools/         build_pages.py builds /work/, /60/ and /numbers/; check_*.py are the checks
+data/          claims.json holds every number with its conditions and source; work/ holds the write-ups
 ```
 
-## Deploy
+`site/numbers/num.js` and the fonts, Lenis and PDFs under `site/` are edited or added directly.
 
-Pushed to `main` → GitHub Actions builds and deploys to GitHub Pages automatically.
+## Build and check
+
+Run from the repo root:
+
+```bash
+python3 tools/home/build.py
+python3 tools/build_pages.py
+python3 tools/check_claims.py
+python3 tools/check_site.py
+python3 -m http.server 4321 --directory site
+```
