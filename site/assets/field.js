@@ -93,8 +93,8 @@ function draw(now){
       if(p.pu){const u=Math.abs(p.ox/zw-ph);boost=u<.1?2.4-u*14:1;}
     }else{
       tx=p.hx;ty=p.hy;tc=tint;
-      if(p.vis<0||(!p.vis&&infl===0)){ta=0;tr=.7;}
-      else{tr=.7+infl*2.4+Math.sin(tt*2+p.hx*.01+p.hy*.01)*.3;ta=(.2+infl*.6)*.62;}
+      if(p.vis<0){ta=0;tr=.7;}
+      else{tr=1.05+infl*2.4+Math.sin(tt*2+p.hx*.01+p.hy*.01)*.25;ta=(p.vis?.3:.16)+infl*.5;}
     }
     const ke=1-Math.pow(1-p.e,dt);p.x+=(tx-p.x)*ke;p.y+=(ty-p.y)*ke;p.r+=(tr-p.r)*k14;p.a+=(ta-p.a)*k10;p.sq+=(p.tsq-p.sq)*k20;
     p.c[0]+=(tc[0]-p.c[0])*k10;p.c[1]+=(tc[1]-p.c[1])*k10;p.c[2]+=(tc[2]-p.c[2])*k10;

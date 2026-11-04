@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Harshith Kantamneni: the software AI runs on, from GPU kernels up</title>
 <meta name="description" content="I build the software AI runs on, from GPU kernels up to the agents on top. Kernels merged in flash-linear-attention and tests merged in NVIDIA's cuDNN frontend. M.S. ECE, UW-Madison.">
-<meta name="theme-color" content="#0a0b0e">
+<meta name="theme-color" content="#14171e">
 <link rel="canonical" href="https://harshithkantamneni.github.io/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="Harshith Kantamneni: the software AI runs on, from GPU kernels up">
@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0b0e;--ink:#EEEFF1;--mid:#9398A0;--dim:#7C828B;--line:rgba(255,255,255,.09);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2));--sheet:clamp(12px,2.6vw,40px);--side:0px;--sgap:0px;--ml:var(--edge);--c:var(--ink);color-scheme:dark}
+:root{--bg:#14171e;--ink:#EEEFF1;--mid:#A2A7AF;--dim:#8D939C;--line:rgba(255,255,255,.09);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2));--sheet:clamp(12px,2.6vw,40px);--side:0px;--sgap:0px;--ml:var(--edge);--c:var(--ink);color-scheme:dark}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
 html.dlg{overflow:hidden}
@@ -28,7 +28,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 .skip{position:fixed;left:8px;top:-60px;z-index:200;background:var(--ink);color:#060708;padding:10px 16px;border-radius:8px;font-family:var(--mono);font-size:13px;transition:top .2s}.skip:focus{top:8px}
 .grain{position:fixed;inset:0;width:100%;height:100%;z-index:90;pointer-events:none;opacity:.04;mix-blend-mode:overlay}
 canvas#field,canvas#fieldTop{position:fixed;inset:0;pointer-events:none}canvas#field{z-index:0}canvas#fieldTop{z-index:30}
-.ground{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(100vw 80vh at 82% -8%,rgba(122,146,190,.14),transparent 70%),radial-gradient(70vw 60vh at -6% 104%,rgba(122,146,190,.07),transparent 70%)}
+.ground{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(100vw 85vh at 82% -8%,rgba(122,146,190,.22),transparent 72%),radial-gradient(70vw 60vh at -6% 104%,rgba(122,146,190,.12),transparent 70%)}
 .glow{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s}
 main,footer,.marquee{position:relative;z-index:2}
 
@@ -94,10 +94,10 @@ h1{font-size:clamp(38px,6.6vw,104px);line-height:1.02;font-weight:500;letter-spa
 .pline{font-size:clamp(22px,2.8vw,40px);line-height:1.18;letter-spacing:-.02em;font-weight:500;margin-top:20px}
 
 /* the story's vocabulary */
-.story{position:relative;margin:clamp(40px,7vh,76px) calc(var(--edge) - var(--sheet)) 0 calc(var(--ml) - var(--sheet));border:1px solid color-mix(in srgb,var(--c) 30%,rgba(255,255,255,.09));border-radius:22px;overflow:clip;background:radial-gradient(120% 80vh at 78% 0,color-mix(in srgb,var(--c) 8%,transparent),transparent 72%),rgba(255,255,255,.032)}
+.story{position:relative;margin:clamp(40px,7vh,76px) calc(var(--edge) - var(--sheet)) 0 calc(var(--ml) - var(--sheet));border:1px solid color-mix(in srgb,var(--c) 30%,rgba(255,255,255,.09));border-radius:22px;overflow:clip;background:radial-gradient(120% 80vh at 78% 0,color-mix(in srgb,var(--c) 8%,transparent),transparent 72%),rgba(255,255,255,.04)}
 .story .lane{padding-inline:var(--sheet)}
 .story+.plate{margin-top:clamp(60px,10vh,110px)}
-.shead{position:sticky;top:64px;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;padding:0 var(--sheet);background:color-mix(in srgb,var(--c) 8%,#111317);border-bottom:1px solid color-mix(in srgb,var(--c) 24%,rgba(255,255,255,.06))}
+.shead{position:sticky;top:64px;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;padding:0 var(--sheet);background:color-mix(in srgb,var(--c) 8%,#1a1d24);border-bottom:1px solid color-mix(in srgb,var(--c) 24%,rgba(255,255,255,.06))}
 .shead::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--c);transform:scaleX(var(--sp,0));transform-origin:left}
 .sname{font-size:clamp(20px,2.1vw,30px);line-height:1.15;font-weight:600;letter-spacing:-.018em;color:var(--c)}
 .skind{flex:none;font-size:14px;font-weight:500;line-height:1;padding:7px 10px;border-radius:7px;color:var(--c);border:1px solid color-mix(in srgb,var(--c) 45%,transparent);white-space:nowrap}
@@ -228,7 +228,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 </head>
 <body>
 <a href="#main" class="skip">Skip to content</a>
-<div class="ground"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,106,77,.19),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,106,77,.08),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,180,84,.15),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,180,84,.07),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(106,168,255,.24),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(106,168,255,.11),transparent 70%)"></div>
+<div class="ground"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,106,77,.24),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,106,77,.11),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,180,84,.19),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,180,84,.09),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(106,168,255,.27),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(106,168,255,.13),transparent 70%)"></div>
 <canvas id="field" aria-hidden="true"></canvas><canvas id="fieldTop" aria-hidden="true"></canvas>
 <aside class="idx" aria-label="Projects on this page"><div class="ig" style="--c:var(--k)"><a class="ih" href="#ch-k">Kernels</a><a class="it" href="#kernels"><b>Stick-breaking kernels</b><span>2 merged PRs</span></a><a class="it" href="#gqa"><b>Grouped-query attention</b><span>Closed PR, merged tests</span></a><a class="it" href="#triton"><b>Triton vs cuBLAS</b><span>Personal project</span></a><a class="it" href="#yourgpu"><b>Try it on your GPU</b><span>Live demo</span></a></div><div class="ig" style="--c:var(--i)"><a class="ih" href="#ch-i">Inference</a><a class="it" href="#seconds"><b>Where the Seconds Go</b><span>Research project</span></a><a class="it" href="#jetson"><b>Jetson Orin Nano</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--a)"><a class="ih" href="#ch-a">Agents</a><a class="it" href="#bert"><b>bert</b><span>Personal project</span></a><a class="it" href="#lab"><b>Lab audit</b><span>Personal project</span></a></div></aside>
 <div class="pbar" aria-hidden="true"></div>
@@ -251,7 +251,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 </header>
 
 <section class="glance" id="glance" aria-label="The short version"><div class="lane">
-  <a class="gr" style="--c:var(--k)" href="#ch-k"><div class="grn">52.7×</div><div><h2>GPU kernels</h2><p>The low-level code that does an AI model's math. Kernels merged in flash-linear-attention and tests merged in NVIDIA's cuDNN. One kernel step ran 52.7× faster than recomputing.</p></div><span class="go">See the work</span></a>
+  <a class="gr" style="--c:var(--k)" href="#ch-k"><div class="grn">52.7×</div><div><h2>GPU kernels</h2><p>The low-level code that does an AI model's math. Kernels merged in flash-linear-attention and tests merged in NVIDIA's cuDNN. At 64K keys, one kernel step ran 52.7× faster than recomputing.</p></div><span class="go">See the work</span></a>
   <a class="gr" style="--c:var(--i)" href="#ch-i"><div class="grn">11 of 12</div><div><h2>LLM inference</h2><p>Running AI models fast, even when they don't fit on the GPU. I built a cache for llama.cpp that ran faster than FreeToken in 11 of 12 test setups.</p></div><span class="go">See the work</span></a>
   <a class="gr" style="--c:var(--a)" href="#ch-a"><div class="grn">5 forged</div><div><h2>Agent systems</h2><p>AI that acts on its own, and whether you can trust it. In my research lab, an agent forged 5 approvals, so I built a check, audited it and rebuilt it. Also bert, searchable memory for coding agents.</p></div><span class="go">See the work</span></a>
 </div></section>
@@ -441,7 +441,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   <div class="block lane">
     <figure class="fg"><div class="memz" id="fz-mem" data-field role="img" aria-label="61 dots, one per gigabyte. A box around the first 32 marks what fits on the card."><i class="cardbox"><span>RTX 5090, 32 GB</span></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></div><figcaption>One dot per gigabyte, to scale.</figcaption></figure>
   </div>
-  <div class="beat lane"><p class="say">So most of the model waits in slower system memory, and each word stalls while it's fetched.</p></div>
+  <div class="beat lane"><p class="say">So the rest of the model waits in slower system memory, and each word stalls while it's fetched.</p></div>
   <div class="beat lane"><p class="say">I built a cache in llama.cpp that decides which parts stay on the GPU.</p></div>
   <div class="beat lane numb">
     <div class="num has-c" data-c="sec.vs_ft" role="button" tabindex="0">11 of 12</div>
@@ -508,7 +508,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
     <figure class="fg" id="fig-slope2"><svg role="img" aria-label="At 1.26 million tokens, bert and agentic grep both score 0.90, while full context falls to 0.08. At 98 thousand tokens, bert 0.96, grep 0.92, full context 0.90."></svg><figcaption>Accuracy at 2 measured memory sizes. Lines only join the 2 measured sizes.</figcaption></figure>
     <p class="note">On one 1.26M-token synthetic project memory, no significant difference from agentic grep, counting cache reads in full. On code, grep scored higher, 0.97 to 0.86, so bert is built for accumulated memory, not code search.</p>
   </div>
-  <div class="beat lane"><p class="say">It scored the same as an agent searching with grep, and grep used a median 1.46× the tokens.</p></div>
+  <div class="beat lane"><p class="say">At 1.26M tokens, it scored the same as an agent searching with grep, and grep used a median 1.46× bert's tokens.</p></div>
   <div class="beat lane"><p class="say">It didn't start that way. Early on, a silent bug held its score at 0.10.</p></div>
   <div class="block lane">
     <figure class="fg"><div class="bugz" id="fz-bug" data-field role="img" aria-label="20 questions. 2 correct before the fix and 17 after."><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></div><figcaption>One dot per question. A small bug had switched off the meaning-based half of the search, leaving only keywords. Fixing it moved the same 20-question test from 0.10 to 0.85.</figcaption></figure>
@@ -567,8 +567,8 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 <section class="close" id="next"><div class="lane">
   <h2 class="say">Three questions I haven't answered yet.</h2>
   <div class="chase">
-    <a href="#kernels"><b>Where the rest of a full model's time goes.</b><span>My kernel step ran 52.7× faster at 64K keys, but one full model step, on random weights, still takes about 9 ms.</span></a>
-    <a href="#kernels"><b>How to match the original authors' speed.</b><span>My merged kernels take 1.04-1.42× the time of theirs, on an H100 GPU.</span></a>
+    <a href="#kernels"><b>Where the rest of a full model's time goes.</b><span>My kernel step ran 52.7× faster than recomputing at 64K keys, but one full model step, on random weights, still takes about 9 ms.</span></a>
+    <a href="#kernels"><b>How to match the original authors' speed.</b><span>The merged forward and backward kernels take 1.04-1.42× the time of the original authors', for both passes together on an H100 GPU.</span></a>
     <a href="#seconds"><b>How much slowdown better caching can never remove.</b><span>Even when the engine could see the future, 36% of the gap to the limit stayed, on one machine.</span></a>
   </div>
 </div></section>
