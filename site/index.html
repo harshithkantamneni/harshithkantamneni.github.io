@@ -469,7 +469,7 @@ if(!reduce && window.gsap){
       steps.forEach(x=>gsap.to(x,{opacity:x===st?1:.85,duration:.3}));cb&&cb(+st.dataset.step);}}}));}
 
   const stat=document.getElementById('vstat'),cap=document.getElementById('vcap'),vl=document.getElementById('vizlabel');
-  const states=[{s:'1.26M',c:'synthetic project-memory tokens vs a 200K reader window',l:'the problem'},{s:'3',c:'dense + BM25 fused, then reranked',l:'hybrid retrieval'},{s:'0.90',c:'bert and agentic grep, no significant difference',l:'the result'},{s:'0.85',c:'held-out eval after a silent dense-signal bug was fixed',l:'the fix'},{s:'0.745',c:'nDCG@10 on BEIR scifact, 0.740 dense alone',l:'validated'}];
+  const states=[{s:'1.26M',c:'synthetic project-memory tokens vs a 200K reader window',l:'the problem'},{s:'3',c:'dense + BM25 fused, then reranked',l:'hybrid retrieval'},{s:'0.90',c:'bert and agentic grep, no significant difference',l:'the result'},{s:'0.85',c:'same 20-question eval after a silent dense-signal bug was fixed',l:'the fix'},{s:'0.745',c:'nDCG@10 on BEIR scifact, 0.740 dense alone',l:'validated'}];
   scrolly('#sy-bert',i=>{const d=states[i];stat.textContent=d.s;cap.textContent=d.c;vl.textContent=d.l;});
   ScrollTrigger.create({trigger:'#sy-bert .step[data-step="3"]',start:'top 55%',once:true,onEnter:()=>{const o={v:.1};gsap.to(o,{v:.85,duration:1.4,ease:'power2.out',onUpdate:()=>document.getElementById('cnt').textContent=o.v.toFixed(2)});}});
 
