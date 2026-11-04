@@ -213,9 +213,9 @@ body60 = f"""<main style="--c:var(--k)">
 <h1 style="font-size:clamp(30px,4.6vw,64px);line-height:1.08;font-weight:500">I build the software AI runs on, from GPU kernels up to the agents on top.</h1>
 <p class="state" style="font-size:13px">Open to full-time roles. Milwaukee, WI (open to relocation). M.S. ECE, UW-Madison, Dec 2025.</p></div>
 <div class="s60">
-{row('52.7×', 'GPU kernels', "The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, where one step ran 52.7× faster than recomputing at 64K keys. Tests merged in NVIDIA's cuDNN frontend, which catch 3 injected bugs that NVIDIA's tests missed.", '/Harshith_Kantamneni_Resume.pdf', 'var(--k)', '/#ch-k')}
-{row('11 of 12', 'LLM inference', 'A cache in llama.cpp for AI models too big for the GPU. Faster than FreeToken in 11 of 12 test setups at batch 1, on 2 RTX 5090 hosts.', '/resume/inference/Harshith_Kantamneni_Resume.pdf', 'var(--i)', '/#ch-i')}
-{row('5 forged', 'Agent systems', "A research lab of 31 Claude Code agent roles, where I caught an agent forging another agent's approvals, audited my own check against the logs, and rebuilt it so the same forgery is refused. And bert, searchable memory for coding agents.", '/resume/agents/Harshith_Kantamneni_Resume.pdf', 'var(--a)', '/#ch-a')}
+{row('52.7×', 'GPU kernels', "The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, where one step on an H200 ran 52.7× faster than recomputing at 64K keys, a gain any cache gets. Tests merged in NVIDIA's cuDNN frontend, which catch 3 injected bugs that NVIDIA's SM80 tests missed.", '/Harshith_Kantamneni_Resume.pdf', 'var(--k)', '/#ch-k')}
+{row('11 of 12', 'LLM inference', 'A cache in llama.cpp for AI models too big for the GPU. Faster than FreeToken in 11 of 12 test setups at batch 1, on 2 RTX 5090 hosts. With FreeToken tuned, on a separate machine: 0.98-1.17×.', '/resume/inference/Harshith_Kantamneni_Resume.pdf', 'var(--i)', '/#ch-i')}
+{row('5 forged', 'Agent systems', "A research lab of 31 Claude Code agent roles, where I caught an agent forging another agent's approvals, audited my own check against the logs, and rebuilt it so the same forgery is blocked in tests, not yet live. And bert, searchable memory for coding agents.", '/resume/agents/Harshith_Kantamneni_Resume.pdf', 'var(--a)', '/#ch-a')}
 </div>
 <div class="a60"><a class="b60 p" href="mailto:kantamneniharshith@gmail.com">Email me</a><a class="b60" href="/#intro">Read the full story</a><a class="b60" href="/work/">See all work</a></div>
 </main>"""
@@ -268,18 +268,19 @@ body_work = f"""<main style="--c:var(--k)">
 </section>
 <section class="wsec" id="kernels" style="--c:var(--k)"><h2>GPU kernels</h2>
 {study('stick-breaking-kernels', 'Stick-breaking attention kernels', 'Forward, backward and KV-cache decoding kernels in Triton, merged in flash-linear-attention.')}
-{study('cudnn-gqa', 'GQA in NVIDIA cuDNN', 'What removing K/V head copies did on an A100, why that code closed, and the tests that merged.')}
+{study('cudnn-gqa', 'Grouped-query attention in NVIDIA cuDNN', 'What removing K/V head copies did on an A100, why that code closed, and the tests that merged.')}
+<a class="wk" href="https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks"><h3>Triton vs cuBLAS</h3><p>A measurement of whether one fused Triton kernel runs faster than the usual separate steps, across 76 matrix sizes on an A100.</p><span>Personal project, public repo</span></a>
 {card_row(by_name["moe-kernels: a timing model of vLLM's fused MoE kernel"])}
 <h3 class="wh">Team projects</h3>
 {card_row(by_name['ML-guided kernel config'])}{card_row(by_name['MI300X + gem5 modeling'])}
 </section>
 <section class="wsec" id="inference" style="--c:var(--i)"><h2>LLM inference</h2>
-{study('where-the-seconds-go', 'Where the Seconds Go', "A llama.cpp expert cache for batch-1 MoE decode when the model doesn't fit on the GPU, and a computed limit to read it against.")}
+{study('where-the-seconds-go', 'Where the Seconds Go', "A llama.cpp cache for batch-1 decode when the model doesn't fit on the GPU, and a computed limit to read it against.")}
 {card_row(by_name['vLLM on H100 NVL'])}{card_row(by_name['Speculative decoding on MoE'])}
 <a class="wk" href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling"><h3>Jetson Orin Nano profiling</h3><p>Attention and KV-cache decode kernels profiled with Nsight on a 15 W edge board.</p><span>Public repo</span></a>
 </section>
 <section class="wsec" id="agents" style="--c:var(--a)"><h2>Agent systems</h2>
-{study('lab-verification', 'Lab verification and audit', 'Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and an improved detector.')}
+{study('lab-verification', 'Lab verification and audit', 'Sign-off verification for a lab of Claude Code agent roles, an audit of it against its logs, and a rebuilt check.')}
 {study('bert', 'bert', 'A local MCP server that gives a coding agent searchable memory of a project, measured against agentic grep, including where grep scored higher.')}
 {card_row(by_name['The Obsidian Archive'])}{card_row(by_name['HIVE'])}
 </section>
