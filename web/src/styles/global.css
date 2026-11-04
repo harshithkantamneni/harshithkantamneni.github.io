@@ -64,7 +64,7 @@ html:not(.story) .wscrim { display: none; }
 .world:not(.lite) .hero .trace { display: none; }
 .world:not(.lite) .hero { grid-template-columns: minmax(0, 46%); min-height: calc(100vh - 61px); }
 .lite .hero { position: relative; }
-.lite main > *:not(.hero) { position: relative; background: var(--g0); }
+.lite main > *:not(.hero):not(.bright) { position: relative; background: var(--g0); }
 .world:not(.lite) .opener { min-height: 100vh; display: flex; align-items: center; }
 .world:not(.lite) .opener > .wrap { width: 100%; }
 .world:not(.lite) .opener:not(.bright) { background: none; }
