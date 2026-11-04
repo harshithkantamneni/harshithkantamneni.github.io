@@ -519,7 +519,9 @@
     "64/8 heads",
     "128K KV cache",
     "7.28 ms",
-    "6.0-6.7 ms"
+    "6.0-6.7 ms",
+    "64 query heads and 8 KV heads",
+    "128K cache"
    ],
    "means": "K/V copy time against the attention kernel",
    "value": {
@@ -1027,6 +1029,29 @@
    "checked": "Recomputed from the CSV"
   },
   {
+   "id": "tri.bf16best",
+   "page": "home",
+   "shows": [
+    "1.39×"
+   ],
+   "means": "Best fused against unfused in bf16",
+   "value": {
+    "value": 1.39,
+    "unit": "x"
+   },
+   "conditions": "bf16, M=128, N=13824, K=5120. Read from the raw CSV. A100-SXM4-80GB. Baseline is cuBLAS GEMM plus separate bias and GeLU, PyTorch eager",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/data/llm_rect_linear_bias_bench_NVIDIA_A100-SXM4-80GB_2026-01-15_22-31-08.csv#L42",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "data/llm_rect_linear_bias_bench_NVIDIA_A100-SXM4-80GB_2026-01-15_22-31-08.csv",
+     "line": 42
+    }
+   ],
+   "checked": "Read from the raw CSV"
+  },
+  {
    "id": "tri.median",
    "page": "home",
    "shows": [
@@ -1500,7 +1525,8 @@
    "id": "jet.power",
    "page": "home",
    "shows": [
-    "15 W"
+    "15 W",
+    "15 watts"
    ],
    "means": "Power mode",
    "value": {
@@ -1901,6 +1927,88 @@
     }
    ],
    "checked": "Matched the PR table"
+  },
+  {
+   "id": "mk.parts",
+   "page": "home",
+   "shows": [
+    "0.51%",
+    "0.69%",
+    "0.54%",
+    "2%",
+    "2.35%",
+    "5.3%",
+    "9.5%",
+    "13.4%",
+    "19.5%",
+    "Mixtral-8x7B",
+    "Phi-3.5-MoE"
+   ],
+   "means": "Per-model error behind the timing model chart",
+   "value": {
+    "v3": {
+     "mixtral-8x7b": 0.51,
+     "phi-3.5-moe": 0.69,
+     "olmoe-1b-7b": 0.54
+    },
+    "bar_v3": 2,
+    "decode": {
+     "deepseek-v2-lite": 2.35,
+     "qwen1.5": 5.3,
+     "phi-3.5": 9.5,
+     "granite-3b": 13.4,
+     "jetmoe": 19.5
+    }
+   },
+   "conditions": "One GH200, bf16, 700 W. v3 at 1710 MHz on the 32x64x64 test tile, bar rms at most 2%. Decode blind test, bar rms at most 1.5%",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/b2fb34021eb6a2030cf76b8a9cbe7270ec353c51/scripts/scoring/decode/blind.score.txt#L18",
+     "commit": "b2fb34021eb6a2030cf76b8a9cbe7270ec353c51",
+     "path": "scripts/scoring/decode/blind.score.txt",
+     "line": 18
+    }
+   ],
+   "checked": "Recomputed from the scorer JSON"
+  },
+  {
+   "id": "jet.decode",
+   "page": "home",
+   "shows": [
+    "398.1",
+    "63.1",
+    "63.9",
+    "64.9",
+    "114.6",
+    "209.4",
+    "256",
+    "512",
+    "1024",
+    "2048",
+    "4096",
+    "8192"
+   ],
+   "means": "KV-cache decode time per token by context length",
+   "value": {
+    "256": 63.1,
+    "512": 63.9,
+    "1024": 64.9,
+    "2048": 114.6,
+    "4096": 209.4,
+    "8192": 398.1
+   },
+   "conditions": "Jetson Orin Nano, 15 W mode, B=1, H=8, D=64, fp16, single stream. A sweep of kernels, not serving throughput, and no counter data in the repo",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/edge-llm-gpu-profiling/blob/b1b796490e7de80a2babfa9189b6fc06eeeb9362/results/raw_csv/decode_kv_sweep.csv#L7",
+     "commit": "b1b796490e7de80a2babfa9189b6fc06eeeb9362",
+     "path": "results/raw_csv/decode_kv_sweep.csv",
+     "line": 7
+    }
+   ],
+   "checked": "Read from the raw CSV"
   },
   {
    "id": "bertc.arms",
@@ -3495,6 +3603,10 @@
    "id": "sbk.op",
    "page": "work/stick-breaking-kernels",
    "shows": [
+    "T=1024",
+    "T=4096",
+    "T=16384",
+    "T=65536",
     "B=1, T=1024",
     "72.4",
     "72.8",

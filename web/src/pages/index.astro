@@ -1,63 +1,56 @@
 ---
 import Base from '../layouts/Base.astro';
-import Lanes from '../components/Lanes.astro';
-import WorkList from '../components/WorkList.astro';
-import { LANES, WORK, LOG, WRITING, OLDER, CHECKED, prState } from '../data/site.mjs';
-import { rich, pct, fmtDate } from '../lib/rich.mjs';
+import Hero from '../components/Hero.astro';
+import ChapterKernels from '../components/ChapterKernels.astro';
+import ChapterInference from '../components/ChapterInference.astro';
+import ChapterAgents from '../components/ChapterAgents.astro';
+import { LOG, WRITING, OLDER, CHECKED, prState } from '../data/site.mjs';
+import { rich, fmtDate } from '../lib/rich.mjs';
 
-const blurbs = {
-  k: 'Attention and GEMM kernels, in CUDA and Triton, with the hardware named and the limits stated.',
-  i: 'Decode, measured: where the time goes when the model doesn\'t fit, and what serving settings change.',
-  a: 'Multi-agent labs, retrieval and evaluation, including an audit of my own sign-off gate.',
-};
+const stateOf = (r) => r.state || prState(r.pr);
+const merged = (r) => /merged/i.test(stateOf(r)) && !/not merged/i.test(stateOf(r));
 ---
 <Base
-  title="Harshith Kantamneni: GPU kernels, LLM inference, agent systems"
-  description="GPU kernel, LLM inference and agent systems engineer. M.S. ECE, UW-Madison. Merged Triton kernels in flash-linear-attention and tests in NVIDIA cuDNN frontend."
+  home
+  title="Harshith Kantamneni: AI-systems infrastructure, from GPU kernels up"
+  description="I build AI-systems infrastructure, from CUDA and Triton kernels and inference profiling up to retrieval and multi-agent systems. Every result names its hardware and its limits."
 >
-  <div class="home">
-  <div class="hero wrap">
-    <h1>Harshith Kantamneni</h1>
-    <p class="role">GPU kernel, LLM inference and agent systems engineer. I find what limits AI systems, measure it and build the fix.</p>
-    <div class="meta">
-      <span>Milwaukee, WI (open to relocation)</span>
-      <span>Open to full-time roles</span>
-      <span class="wide" set:html={rich('M.S. ECE, UW-Madison, [[profile.degree|Dec 2025]]')} />
-      <a class="wide" href="mailto:kantamneniharshith@gmail.com">Email</a>
-      <a class="wide" href="https://github.com/harshithkantamneni">GitHub</a>
-      <a class="wide" href="https://www.linkedin.com/in/hk4231">LinkedIn</a>
-    </div>
-  </div>
-
-  <Lanes />
+  <Hero />
+  <nav class="gauge" aria-label="Layers">
+    <a class="a" data-l="a" href="#agents" aria-label="Agents"></a>
+    <a class="i" data-l="i" href="#inference" aria-label="Inference"></a>
+    <a class="k" data-l="k" href="#kernels" aria-label="Kernels"></a>
+    <span class="tok" aria-hidden="true"></span>
+  </nav>
+  <ChapterKernels />
+  <ChapterInference />
+  <ChapterAgents />
 
   <section id="log" class="section wrap">
-    <div class="sec-head"><h2>2026 log</h2><span class="ld">States checked {fmtDate(CHECKED)}</span></div>
-    <ol class="log">
-      {LOG.map((r) => (
-        <li class={r.opt ? 'opt' : undefined}>
-          <a class={`logrow ${r.lane}`} href={r.href}>
-            <span class="ld">{r.date}</span>
-            <span class="mini" aria-hidden="true">{r.start && <i style={`left:${pct(r.start, CHECKED).toFixed(1)}%;width:${(pct(r.end || CHECKED, CHECKED) - pct(r.start, CHECKED)).toFixed(1)}%`}></i>}</span>
-            <span class="lw">{r.layer}</span>
-            <span class="lt">{r.title}</span>
-            <span class="ls">{r.state || prState(r.pr)}</span>
-          </a>
-        </li>
-      ))}
-    </ol>
+    <div class="sec-head"><h2>All of it, with its state</h2><span class="ld">States checked {fmtDate(CHECKED)}</span></div>
+    <div class="filters" id="filters" role="group" aria-label="Filter the list">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="merged" aria-pressed="false">Merged</button>
+      <button type="button" data-f="k" aria-pressed="false">Kernels</button>
+      <button type="button" data-f="i" aria-pressed="false">Inference</button>
+      <button type="button" data-f="a" aria-pressed="false">Agents</button>
+    </div>
+    {LOG.map((r) => (
+      <details class={`lrow ${r.lane}`} data-layers={r.layers || r.lane} data-merged={merged(r) ? '1' : '0'}>
+        <summary>
+          <span class="ld">{r.date}</span>
+          <span class="lw">{r.layer}</span>
+          <span class="lt">{r.title}</span>
+          <span class="ls">{stateOf(r)}</span>
+          <span class="chev" aria-hidden="true"></span>
+        </summary>
+        <div class="lbody">
+          <p set:html={rich(r.blurb)} />
+          <a class="go" href={r.href}>Open it</a>
+        </div>
+      </details>
+    ))}
   </section>
-
-  {LANES.map((l) => (
-    <section id={l.id} class={`section wrap ${l.cls}`}>
-      <div class="sec-head">
-        <h2 class="layer"><a href={l.track} style="text-decoration:none">{l.title}</a></h2>
-        <a class="res" href={l.resume.href}>{l.resume.label}</a>
-      </div>
-      <p class="sec-note">{blurbs[l.cls]}</p>
-      <WorkList items={WORK[l.cls]} />
-    </section>
-  ))}
 
   <section id="writing" class="section wrap">
     <div class="sec-head"><h2>Writing</h2></div>
@@ -73,36 +66,34 @@ const blurbs = {
   </section>
 
   <section id="older" class="section wrap">
-    <div class="sec-head"><h2>Older work</h2><a href="/archive/">Archive</a></div>
-    <div class="older">
+    <div class="sec-head"><h2>Team projects</h2><a href="/archive/">Archive</a></div>
+    <div class="alsos">
       {OLDER.map((o) => (
         <div id={o.id}>
-          <h3><a href={o.href}>{o.title}</a></h3>
-          <div class="tag">{o.tag}</div>
+          <h4><a href={o.href}>{o.title}</a></h4>
           <p set:html={rich(o.blurb)} />
+          <p class="st">{o.tag}</p>
         </div>
       ))}
     </div>
   </section>
 
   <section id="about" class="section wrap">
-    <div class="sec-head"><h2>About</h2></div>
     <div class="about">
-      <p class="lead-line">I keep the results that disagree with me.</p>
-      <p>Working on CUDA and Triton kernels taught me to test bottleneck stories against counts. Building the layers on top taught me which of those bottlenecks a real workload cares about. Each result here names its hardware and shape, and says what I didn't measure. PRs and public repos are open to read. Not public: the lab's logs, the floor report's sources, the RFC results, some Nsight reports and course reports.</p>
-      <p>M.S. ECE, UW-Madison. NVIDIA certificates of competency: <a href="/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf">Getting Started with Accelerated Computing in Modern CUDA C++</a> (<span set:html={rich('[[cert.cuda|Jul 2025]]')} />) and <a href="/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf">The Art of Compressing LLMs</a> (<span set:html={rich('[[cert.llm|Feb 2026]]')} />).</p>
+      <p class="lead-line">Each result here names its hardware and shape, and says what I didn't measure.</p>
+      <p style="margin-top:16px">Working on CUDA and Triton kernels taught me to test bottleneck stories against counts. Building the layers on top taught me which bottlenecks a real workload cares about. PRs and public repos are open to read. Not public: the lab's logs, the floor report's sources, the RFC results, some Nsight reports and course reports.</p>
+      <p>M.S. ECE, UW-Madison, <span set:html={rich('[[profile.degree|Dec 2025]]')} />. NVIDIA certificates of competency: <a href="/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf">Getting Started with Accelerated Computing in Modern CUDA C++</a> (<span set:html={rich('[[cert.cuda|Jul 2025]]')} />) and <a href="/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf">The Art of Compressing LLMs</a> (<span set:html={rich('[[cert.llm|Feb 2026]]')} />).</p>
     </div>
   </section>
 
   <section id="contact" class="section wrap">
-    <div class="sec-head"><h2>Contact</h2></div>
-    <p class="sec-note">Open to full-time roles. Milwaukee, WI (open to relocation).</p>
+    <div class="sec-head"><h2>Get in touch</h2></div>
+    <p class="sec-note">Open to AI-infrastructure, LLM-inference, GPU-performance and agentic-tooling roles. Milwaukee, WI (open to relocation).</p>
     <div class="contact">
+      <a class="btn" href="/Harshith_Kantamneni_GPU_Kernel_Resume.pdf">Résumé</a>
       <a href="mailto:kantamneniharshith@gmail.com">Email</a>
       <a href="https://github.com/harshithkantamneni">GitHub</a>
       <a href="https://www.linkedin.com/in/hk4231">LinkedIn</a>
-      {LANES.map((l) => <a class="res-link" href={l.resume.href}>{l.resume.label}</a>)}
     </div>
   </section>
-  </div>
 </Base>

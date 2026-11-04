@@ -38,22 +38,22 @@ for (const width of WIDTHS) {
   await ctx.close();
 }
 
-// A recruiter on a phone sees the 3 roles, location, availability and the right resume before scrolling.
+// A recruiter on a phone sees the positioning, location, availability and the résumé before scrolling.
 {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 664 }, isMobile: true, hasTouch: true });
   const page = await ctx.newPage();
   await page.goto(BASE + '/', { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
   const r = await page.evaluate(() => ({
-    res: [...document.querySelectorAll('.lane .res')].map((e) => [e.textContent, e.getBoundingClientRect().bottom]),
+    res: [...document.querySelectorAll('.hero .btn')].map((e) => [e.textContent, e.getBoundingClientRect().bottom]),
     height: document.documentElement.scrollHeight,
     text: document.querySelector('.hero').innerText,
-    tap: [...document.querySelectorAll('.nav a, .lane .res')].filter((e) => e.getBoundingClientRect().width > 0 && e.getBoundingClientRect().height < 44).map((e) => e.textContent),
+    tap: [...document.querySelectorAll('.nav a, .hero .btn')].filter((e) => e.getBoundingClientRect().width > 0 && e.getBoundingClientRect().height < 44).map((e) => e.textContent),
   }));
   for (const [t, b] of r.res) if (b > 664) errors.push(`first screen: ${t} ends at ${Math.round(b)} px, past 664`);
   if (!/open to relocation/i.test(r.text)) errors.push('first screen: location missing');
   if (!/open to full-time/i.test(r.text)) errors.push('first screen: availability missing');
-  if (r.height > 5064) errors.push(`home is ${r.height} px on a phone, over 5064`);
+  if (r.height > 17000) errors.push(`home is ${r.height} px on a phone, over 17000`);
   if (r.tap.length) errors.push(`controls under 44 px: ${r.tap.join(', ')}`);
   console.log(`phone home: ${r.height} px, resume links end at ${r.res.map((x) => Math.round(x[1])).join(', ')}`);
   await ctx.close();
@@ -63,7 +63,7 @@ for (const width of WIDTHS) {
 {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto(BASE + '/', { waitUntil: 'load' });
-  const n = page.locator('.lane a.n').first();
+  const n = page.locator('.opener a.n').first();
   await n.focus();
   await page.keyboard.press('Enter');
   const open = await page.evaluate(() => document.getElementById('pop').open);
@@ -81,7 +81,7 @@ for (const width of WIDTHS) {
   const page = await ctx.newPage();
   await page.goto(BASE + '/', { waitUntil: 'load' });
   const txt = await page.locator('main').innerText();
-  if (!/Agents résumé/.test(txt) || !/2026 log/.test(txt)) errors.push('scripts off: content missing');
+  if (!/Résumé/.test(txt) || !/All of it, with its state/.test(txt) || !/0 of 270/.test(txt)) errors.push('scripts off: content missing');
   await ctx.close();
   const p2 = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await p2.addInitScript(() => {
