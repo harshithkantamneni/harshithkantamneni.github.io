@@ -10,12 +10,16 @@ const byId = new Map(claims.map((c) => [c.id, c]));
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+// Facts that aren't measurements stay plain text
+const PLAIN = new Set(['profile.degree', 'cert.cuda', 'cert.llm', 'gem5.team', 'ml.team', 'lab.memory', 'count.roles']);
+
 function link(id, text) {
   const c = byId.get(id);
   if (!c) throw new Error(`Unknown claim: ${id}`);
   if (text && !c.shows.some((s) => text.includes(s) || s.includes(text))) {
     throw new Error(`"${text}" is not in the shown values of ${id}: ${c.shows.join(' | ')}`);
   }
+  if (PLAIN.has(id) && text) return text;
   return `<a class="n" href="/numbers/#${id}" data-m="${esc(c.means)}" data-c="${esc(c.conditions)}">${text || 'conditions'}</a>`;
 }
 

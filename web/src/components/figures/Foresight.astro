@@ -1,6 +1,5 @@
 ---
 import { rich as r } from '../../lib/rich.mjs';
-import { bars } from '../../lib/viz.mjs';
 
 const { f } = Astro.props;
 ---
@@ -14,20 +13,8 @@ const { f } = Astro.props;
   <p class="f-note" set:html={r('The white tick is the computed limit, [[wsg.breakdown|10.02]] ms, relative to my own bandwidth probe.')} />
   <p class="f-sub" id="fs-n" role="status" style="margin:12px 0 0">The deployed cache, with no foresight.</p>
   <div class="sws">
-    <button type="button" class="sw" aria-pressed="false">Cache exactly what a perfect oracle would</button>
-    <button type="button" class="sw" aria-pressed="false">Read each cached expert only once</button>
-    <button type="button" class="sw" aria-pressed="false" disabled>Also issue the copies ahead of time</button>
+    <button type="button" class="sw" role="switch" aria-checked="false"><span>Follow the oracle's cache schedule</span><span class="sw-k" aria-hidden="true"></span></button>
+    <button type="button" class="sw" role="switch" aria-checked="false"><span>Read each cached expert only once</span><span class="sw-k" aria-hidden="true"></span></button>
+    <button type="button" class="sw" role="switch" aria-checked="false" disabled><span>Also issue the copies ahead of time<span class="sw-h"> (needs both above)</span></span><span class="sw-k" aria-hidden="true"></span></button>
   </div>
-  <details class="more">
-    <summary>All measured states</summary>
-    <Fragment set:html={bars([
-      { label: 'Deployed cache', value: 20.59, text: '20.59', tone: 'dim' },
-      { label: 'Read once', value: 20.18, text: '20.18', tone: 'dim' },
-      { label: 'Oracle set', value: 20.11, text: '20.11', tone: 'dim' },
-      { label: 'Both', value: 15.13, text: '15.13' },
-      { label: 'Both, copies ahead', value: 13.78, text: '13.78' },
-      { label: 'Computed limit', value: 10.02, text: '10.02', tone: 'mid' },
-    ], { max: 21 })} />
-    <p class="f-note" set:html={r('Teacher-forced, one machine. [[wsg.breakdown]]')} />
-  </details>
 </figure>

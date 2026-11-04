@@ -3,10 +3,11 @@ import Base from '../layouts/Base.astro';
 import { claims, asOf, fmtDate } from '../lib/rich.mjs';
 
 const label = (s) => {
-  if (s.type === 'not_public') return null;
-  if (s.type === 'pr') return s.locator ? `PR, ${s.locator}` : 'PR';
-  if (s.type === 'comment') return 'Comment';
-  return s.path ? `Repo: ${s.path}` : 'Source';
+  const pr = s.url && s.url.match(/github\.com\/[^/]+\/([^/]+)\/(?:pull|issues)\/(\d+)/);
+  if (pr) return `${pr[1]} #${pr[2]}`;
+  const repo = s.url && s.url.match(/github\.com\/[^/]+\/([^/]+)\//);
+  if (repo && s.path) return `${repo[1]}: ${s.path}`;
+  return 'Source';
 };
 ---
 <Base
@@ -26,8 +27,8 @@ const label = (s) => {
     <div class="claims lframe">
       {claims.map((c) => (
         <article class="claim" id={c.id}>
-          <h3>{c.shows.join(', ')}</h3>
-          <p>{c.means}</p>
+          <h3>{c.means}</h3>
+          <p class="claim-v">{c.shows.join(', ')}</p>
           <p class="quiet">{c.conditions}</p>
           <p>
             {c.source.map((s, i) => (

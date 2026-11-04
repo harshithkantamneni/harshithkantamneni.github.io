@@ -81,7 +81,7 @@ for (const width of WIDTHS) {
   const page = await ctx.newPage();
   await page.goto(BASE + '/', { waitUntil: 'load' });
   const txt = await page.locator('main').innerText();
-  if (!/Résumé/.test(txt) || !/All of it, with its state/.test(txt) || !/0 of 270/.test(txt)) errors.push('scripts off: content missing');
+  if (!/Résumé/.test(txt) || !/Everything, and where it stands/.test(txt) || !/0 of 270/.test(txt)) errors.push('scripts off: content missing');
   await ctx.close();
   const p2 = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await p2.addInitScript(() => {

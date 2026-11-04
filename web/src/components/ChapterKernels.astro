@@ -50,12 +50,12 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
 <div class="k" data-chapter="k" data-resume={RESUME}>
   <section class="scene" id="merged" data-scene>
     <div class="wrap">
-      <Sub class="scene-t">Kernels that merged, and where they still lag</Sub>
+      <Sub class="scene-t">Kernels that merged, and where they're still slower</Sub>
       <div class="scene-g">
         <div class="steps">
-          <div class="step" data-step="0"><p>Forward and backward Triton kernels for stick-breaking attention, merged into flash-linear-attention after review caught a silent zero gradient. Smaller tiles cut shared memory by about half.</p></div>
-          <div class="step" data-step="1"><p set:html={r('They\'re still slower than the original authors\' kernels. Nsight Compute shows no saturated pipe at [[pr1319.occupancy|about 12% occupancy]], so I read the gap as stalls on fp32 scans.')} /></div>
-          <div class="step" data-step="2"><p set:html={r('#1412 added KV-cache decoding. The speedup grows with keys, but at model level a token still takes [[sbk.model|about 9 ms]], and I haven\'t profiled why.')} /></div>
+          <div class="step" data-step="0"><p set:html={r('Forward and backward Triton kernels for stick-breaking attention, then KV-cache decoding, all merged into flash-linear-attention. The speedup over recomputing grows with keys. At model level, on random weights, a token still takes [[sbk.model|about 9 ms]], slower than recomputing at batch 1 with short prompts, and I can\'t yet explain why.')} /></div>
+          <div class="step" data-step="1"><p>Smaller tiles cut shared memory by about half. Review also caught a silent zero gradient at saturated logits, so I rewrote the backward.</p></div>
+          <div class="step" data-step="2"><p set:html={r('They\'re still slower than the original authors\' kernels, and I haven\'t isolated why. Nothing saturates in my backward kernel at [[pr1319.occupancy|about 12% occupancy]], which I read as stalls on fp32 scans.')} /></div>
           <div class="scene-links">
             <a href="/work/stick-breaking-kernels/">Read the case study</a>
             <a href={GH + 'fla-org/flash-linear-attention/pull/1319'}>#1319</a>
@@ -64,7 +64,8 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
         </div>
         <div class="stage">
           <div class="frames">
-            <figure class="frame" data-f="0">
+            <Decode f="0" />
+            <figure class="frame" data-f="1">
               <figcaption>Shared memory per kernel, H100</figcaption>
               <p class="f-read" set:html={r('[[pr1319.tiles|57-89 KiB]]')} />
               <p class="f-sub">with 64×32 tiles, where 64×64 tiles needed 129-193 KiB</p>
@@ -75,7 +76,7 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
                 ], { max: 193 })} />
               </div>
             </figure>
-            <figure class="frame" data-f="1">
+            <figure class="frame" data-f="2">
               <figcaption>This PR's time over the original authors', forward plus backward, H100</figcaption>
               <p class="f-read" set:html={r('[[pr1319.vs_authors|1.04-1.42×]]')} />
               <p class="f-sub">the authors' time, slower on all 8 shapes. The left edge is parity.</p>
@@ -83,7 +84,6 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
                 <Fragment set:html={bars(ratio.map(([label, v]) => ({ label, value: v, text: v.toFixed(2) + '×' })), { min: 1, max: 1.5 })} />
               </div>
             </figure>
-            <Decode f="2" />
           </div>
         </div>
       </div>
@@ -146,7 +146,7 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
         <div class="steps">
           <div class="step" data-step="0"><p>I built a timing model of vLLM's fused MoE kernel: give it the routing and the tile, and it predicts each call's time. I froze its predictions before renting the GPU, so results couldn't tune them.</p></div>
           <div class="step" data-step="1"><p set:html={r('On one [[mk.v3|32×64×64]] test tile, model v3\'s time predictions held at [[mk.v3|0.51-0.69%]] rms. Its byte predictions missed by [[mk.v3|11.76%]] on OLMoE\'s first wave.')} /></div>
-          <div class="step" data-step="2"><p set:html={r('The decode blind test failed: [[mk.decode|11.4%]] rms pooled, against a [[mk.decode|1.5%]] bar. No model is blind-certified on vLLM\'s own tiles yet.')} /></div>
+          <div class="step" data-step="2"><p set:html={r('The decode blind test failed: [[mk.decode|11.4%]] rms pooled, against a [[mk.decode|1.5%]] bar. No model is blind-certified on vLLM\'s own tiles.')} /></div>
           <div class="scene-links">
             <a href={GH + 'harshithkantamneni/moe-kernels/tree/gh200-analysis-2026-09-27'}>See the public repo</a>
           </div>
@@ -154,14 +154,14 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
         <div class="stage">
           <div class="frames">
             <figure class="frame key" data-f="0,1,2">
-              <figcaption>Prediction error, rms, one GH200. Lower is better. The tick is the bar each test had to clear.</figcaption>
-              <div class="from1">
+              <figcaption>Prediction error, rms, on rented GH200s. Lower is better. The tick is the bar each test had to clear.</figcaption>
+              <div class="reveal1">
                 <p class="grp">Model v3, one test tile, time predictions</p>
                 <Fragment set:html={bars([
                   { label: 'Mixtral-8x7B', value: 0.51, text: '0.51%' }, { label: 'Phi-3.5-MoE', value: 0.69, text: '0.69%' }, { label: 'OLMoE', value: 0.54, text: '0.54%' },
                 ], { max: 20, mark: 2 })} />
               </div>
-              <div class="from2">
+              <div class="reveal2">
                 <p class="grp">Decode model, on models it hadn't seen in decode</p>
                 <Fragment set:html={bars([
                   { label: 'DeepSeek-V2-Lite', value: 2.35, text: '2.35%', tone: 'dim' }, { label: 'Qwen1.5', value: 5.3, text: '5.3%', tone: 'dim' }, { label: 'Phi-3.5', value: 9.5, text: '9.5%', tone: 'dim' },
@@ -181,8 +181,8 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
       <div class="scene-g">
         <div class="steps">
           <div class="step" data-step="0"><p set:html={r('Eager PyTorch runs a projection as separate kernels: a GEMM, then bias, then GeLU. I built one Triton kernel that does all three and benchmarked [[tri.shapes|76 LLM-shaped GEMMs]].')} /></div>
-          <div class="step" data-step="1"><p set:html={r('One shape ran [[tri.best|1.73×]] faster than the unfused path. Across all of them: [[tri.median|Median 0.96×]], and only [[tri.faster|27 faster]].')} /></div>
-          <div class="step" data-step="2"><p set:html={r('I first read this as small batches being memory-bound. The counts don\'t support that: fused is faster on [[tri.ridge|10 of 30]] cells left of the ridge and [[tri.ridge|42 of 122]] right of it. So I corrected it.')} /></div>
+          <div class="step" data-step="1"><p set:html={r('One shape ran [[tri.best|1.73×]] faster than the unfused path. But the median shape ran [[tri.median|0.96×]], with only [[tri.faster|27 faster]].')} /></div>
+          <div class="step" data-step="2"><p set:html={r('I first read this as small batches being memory-bound. The counts don\'t support that: fused was faster on [[tri.ridge|10 of 30]] memory-bound cells and [[tri.ridge|42 of 122]] of the rest, about the same rate. So I corrected it.')} /></div>
           <div class="scene-links">
             <a href={GH + 'harshithkantamneni/triton-vs-cublas-llm-benchmarks'}>See the code and raw data</a>
           </div>
@@ -190,22 +190,21 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
         <div class="stage">
           <div class="frames">
             <figure class="frame key" data-f="0,1,2">
-              <figcaption>Fused Triton kernel against the unfused path, 76 shapes on an A100. Hover a dot for its shape.</figcaption>
+              <figcaption>Fused Triton kernel against the unfused path, 76 shapes on an A100.<span class="hov"> Hover a dot for its shape.</span></figcaption>
               <div class="seg" id="scatter-seg" role="group" aria-label="Precision" style="margin-top:12px">
                 <button type="button" data-v="fp16" aria-pressed="true">fp16</button>
                 <button type="button" data-v="bf16" aria-pressed="false">bf16</button>
               </div>
-              <div class="plot" id="scatter" tabindex="0">
+              <div class="plot" id="scatter">
                 <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Speedup of each shape against the unfused path. In fp16 the median is 0.96 times, 27 of 76 shapes are faster and the best is 1.73 times.">
                   <line x1={L} x2={W - Rr} y1={y(1)} y2={y(1)} stroke="var(--quiet)" stroke-dasharray="4 4"></line>
                   {[1.6, 1.4, 1.2, 1, 0.8, 0.6].map((v) => <text x={L - 8} y={y(v) + 4} text-anchor="end">{v}×</text>)}
-                  {ms.map((m, i) => <text x={L + xBand * (i + 0.5)} y={H - 22} text-anchor="middle">{m}</text>)}
-                  <text x={L + (W - L - Rr) / 2} y={H - 4} text-anchor="middle">Rows in the GEMM (M)</text>
+                  {ms.map((m, i) => <text x={L + xBand * (i + 0.5)} y={H - 12} text-anchor="middle">{m}</text>)}
                   <g data-g="fp16"><Fragment set:html={dots('fp16')} /><text class="from1 best" x={xOf(best('fp16')) + 10} y={y(best('fp16').fp16) + 5}>{best('fp16').fp16.toFixed(2)}×</text></g>
                   <g data-g="bf16"><Fragment set:html={dots('bf16')} /><text class="from1 best" x={xOf(best('bf16')) + 10} y={y(best('bf16').bf16) + 5}>{best('bf16').bf16.toFixed(2)}×</text></g>
                 </svg>
               </div>
-              <p class="f-note">Dots above the dashed line are faster than the unfused path.</p>
+              <p class="f-note">Grouped by rows in the GEMM (M). Dots above the dashed line are faster than the unfused path.</p>
             </figure>
           </div>
         </div>
@@ -223,7 +222,7 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
         </div>
         <div>
           <Also class="at"><a href={GH + 'vllm-project/vllm/pull/38338'}>vLLM #38338</a></Also>
-          <p set:html={r('Triton NVFP4 GEMM reference holding [[pr38338.tflops|1,014-1,076 TFLOP/s]] on RTX 5090 for one shape. Weakest shape: [[pr38338.weak|0.53-0.57×]] CUTLASS.')} />
+          <p set:html={r('Triton NVFP4 GEMM reference holding [[pr38338.tflops|1,014-1,076 TFLOP/s]] on RTX 5090 for one shape. Weakest RTX 5090 shape: [[pr38338.weak|0.53-0.57×]] CUTLASS, and [[pr38338.b200|about 0.27× across 4 Llama shapes on B200 from batch 1024]].')} />
           <p class="st">Closed, not merged</p>
         </div>
       </div>

@@ -64,10 +64,10 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
       <Sub class="scene-t">The check that never ran</Sub>
       <div class="scene-g">
         <div class="steps">
-          <div class="step" data-step="0"><p set:html={r('I ran a lab of [[count.roles|31 Claude Code]] agent roles on one [[lab.memory|18 GB]] MacBook. In one session, the director agent wrote [[labv.forged|5 PI sign-offs]] without dispatching the PI. I noticed an empty PI folder next to the approvals.')} /></div>
+          <div class="step" data-step="0"><p set:html={r('I ran a lab of [[count.roles|31 Claude Code]] agent roles on one [[lab.memory|18 GB]] MacBook. On Apr 17, the agent running the lab wrote [[labv.forged|5 PI sign-offs]] without ever calling the PI agent, the role meant to approve.')} /></div>
           <div class="step" data-step="1"><p>So I built a detector, and a gate that runs it before a session can exit cleanly. Later I went back through the runner logs to count what the gate had actually done.</p></div>
           <div class="step" data-step="2"><p>By my count, it never ran. A shell bug, fixed in June, kept the detector's Python from starting, so nothing could block.</p></div>
-          <div class="step" data-step="3"><p set:html={r('I audited each part and shipped a better detector with [[labv.tests|24 regression tests]]. The lesson: a check can\'t trust a record the agent being checked can write. Director text still reaches the log my detector reads, so it can still be fooled, and the repo lists how.')} /></div>
+          <div class="step" data-step="3"><p set:html={r('I audited each part and shipped a better detector with [[labv.tests|24 regression tests]]. The lesson: a check can\'t trust a record the agent being checked can write. The director\'s own text still reaches the log my detector reads, so it can still be fooled, and the repo lists how.')} /></div>
           <div class="scene-links">
             <a href="/work/lab-verification/">Read the case study</a>
             <a href={GH + 'agi-lab-framework/blob/main/audits/gate_audit_sessions.csv'}>See the per-session table</a>

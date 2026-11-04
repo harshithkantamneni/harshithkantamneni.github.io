@@ -82,22 +82,24 @@
   var fs = document.getElementById('foresight');
   if (fs) {
     var MS = { '000': 20.59, '010': 20.18, '100': 20.11, '110': 15.13, '111': 13.78 };
-    var NAME = { '000': 'The deployed cache, with no foresight.', '010': 'The deployed cache\'s set, each expert read once.', '100': 'The oracle\'s set, still read twice.', '110': 'The oracle\'s set, each expert read once.', '111': 'The oracle\'s set, read once, with copies issued ahead.' };
-    var TOP = 20.59;
+    var NAME = { '000': 'The deployed cache, with no foresight.', '010': 'The deployed cache\'s choices, each expert read once.', '100': 'The oracle\'s schedule, each expert read twice.', '110': 'The oracle\'s schedule, each expert read once.', '111': 'The oracle\'s schedule, read once, with copies issued ahead.' };
+    var TOP = 20.59, fsTouched = false;
     var sw = [].slice.call(fs.querySelectorAll('.sw')), out = document.getElementById('fs-v'), bar = document.getElementById('fs-b');
     var note = document.getElementById('fs-n');
-    function read() { return sw.map(function (b) { return b.getAttribute('aria-pressed') === 'true' ? '1' : '0'; }).join(''); }
-    function paint() {
-      var ok = sw[0].getAttribute('aria-pressed') === 'true' && sw[1].getAttribute('aria-pressed') === 'true';
+    var isOn = function (b) { return b.getAttribute('aria-checked') === 'true'; };
+    var read = function () { return sw.map(function (b) { return isOn(b) ? '1' : '0'; }).join(''); };
+    var paint = function () {
+      var ok = isOn(sw[0]) && isOn(sw[1]);
       sw[2].disabled = !ok;
-      if (!ok) sw[2].setAttribute('aria-pressed', 'false');
+      if (!ok) sw[2].setAttribute('aria-checked', 'false');
       var v = MS[read()];
       out.textContent = v.toFixed(2);
       bar.style.transform = 'scaleX(' + (v / TOP).toFixed(4) + ')';
       note.textContent = NAME[read()];
-    }
-    sw.forEach(function (b) { b.addEventListener('click', function () { b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); paint(); }); });
-    hooks.fs = function (key) { sw.forEach(function (b, i) { b.setAttribute('aria-pressed', key[i] === '1' ? 'true' : 'false'); }); paint(); };
+    };
+    sw.forEach(function (b) { b.addEventListener('click', function () { fsTouched = true; b.setAttribute('aria-checked', isOn(b) ? 'false' : 'true'); paint(); }); });
+    /* Scrolling walks the states until the reader takes over */
+    hooks.fs = function (key) { if (fsTouched) return; sw.forEach(function (b, i) { b.setAttribute('aria-checked', key[i] === '1' ? 'true' : 'false'); }); paint(); };
   }
 
   /* Two formulas, one head mapping */
@@ -129,17 +131,17 @@
   /* Cache grid explorer */
   var gx = document.getElementById('gridx');
   if (gx) {
-    var pick = { host: 'B', model: 'gpt' };
-    function showGrid() { gx.querySelectorAll('[data-combo]').forEach(function (c) { c.hidden = c.dataset.combo !== pick.host + pick.model; }); }
+    var pick = { host: 'B', model: 'gpt' }, gridTouched = false;
+    var showGrid = function () {
+      gx.querySelectorAll('[data-combo]').forEach(function (c) { c.hidden = c.dataset.combo !== pick.host + pick.model; });
+      gx.querySelectorAll('.seg').forEach(function (seg) { seg.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x.dataset.v === pick[seg.dataset.k] ? 'true' : 'false'); }); });
+    };
     gx.querySelectorAll('.seg').forEach(function (seg) {
       seg.querySelectorAll('button').forEach(function (b) {
-        b.addEventListener('click', function () {
-          seg.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-          pick[seg.dataset.k] = b.dataset.v;
-          showGrid();
-        });
+        b.addEventListener('click', function () { gridTouched = true; pick[seg.dataset.k] = b.dataset.v; showGrid(); });
       });
     });
+    hooks.grid = function (k) { if (gridTouched) return; pick.host = k.charAt(0); pick.model = k.slice(1); showGrid(); };
     showGrid();
   }
 

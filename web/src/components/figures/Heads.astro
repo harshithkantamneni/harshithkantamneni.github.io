@@ -19,8 +19,8 @@ const cell = (x) => `<i class="c${x % 4}" data-n="${x}"></i>`;
   </div>
   <p class="f-h">Correct formula</p>
   <div class="cells" id="hm-a" style={`grid-template-columns:repeat(${q0},minmax(0,1fr))`} aria-label={`Correct mapping: ${good.join(' ')}`} role="img" set:html={good.map(cell).join('')} />
-  <p class="f-h">The bug NVIDIA's tests missed</p>
+  <p class="f-h">A planted bug NVIDIA's tests missed</p>
   <div class="cells" id="hm-b" style={`grid-template-columns:repeat(${q0},minmax(0,1fr))`} aria-label={`Buggy mapping: ${bad.join(' ')}`} role="img" set:html={bad.map(cell).join('')} />
   <p class="verdict" id="hm-v" role="status">Different mapping. A test at this shape catches the bug.</p>
-  <p class="f-note" set:html={r('With bugs planted, NVIDIA\'s SM80 suite still reported [[gqa.planted|All 411 pass]]. My tests caught all [[pr1287.bugs|3 injected bugs]].')} />
+  <p class="f-note" set:html={r('With bugs planted, NVIDIA\'s SM80 suite still passed [[gqa.planted|all 411 cases]] on the first two and [[gqa.planted|all 60 d256 cases]] on the third. My tests caught all [[pr1287.bugs|3 injected bugs]].')} />
 </figure>

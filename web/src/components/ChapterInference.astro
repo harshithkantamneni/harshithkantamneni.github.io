@@ -39,9 +39,8 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
       <div class="scene-g">
         <div class="steps">
           <div class="step" data-step="0" data-run="fs:000"><p set:html={r('gpt-oss-120b needs [[wsg.size|about 61 GB]] and the card has [[wsg.size|32 GB]], so most experts wait in host memory and each token stalls on reads. I built an expert cache in llama.cpp for this, for batch-1 decode.')} /></div>
-          <div class="step" data-step="1" data-run="fs:100"><p>How close is it to the best possible? I computed a limit and added oracles to the engine. Knowing what to cache barely moves it alone. Flip the switches yourself.</p></div>
-          <div class="step" data-step="2" data-run="fs:110"><p set:html={r('Knowing what to cache and also reading each expert once takes it to [[wsg.breakdown|15.13]] ms. Neither does much alone.')} /></div>
-          <div class="step" data-step="3" data-run="fs:111"><p set:html={r('Across the test machines, [[wsg.gap|43-52%]] of the gap stayed even after all three. Policies without foresight recovered [[wsg.online|at most 6%]] of the read-ahead oracle\'s gain.')} /></div>
+          <div class="step" data-step="1" data-run="fs:110"><p set:html={r('How close is that to the best possible? I computed a limit and added oracles to the engine, with its copy table on. An oracle\'s cache schedule barely moves it alone, and neither does reading each expert once, but together they reach [[wsg.breakdown|15.13]] ms. Flip the switches yourself.')} /></div>
+          <div class="step" data-step="2" data-run="fs:111"><p set:html={r('On this machine, [[wsg.breakdown|36%]] of the gap stayed even after all three, and [[wsg.gap|43-52%]] averaged over three groups of machines. Four policies without foresight got [[wsg.online|at most 6%]] of what the read-ahead oracle gained, on [[wsg.online|5 fast-link machines]].')} /></div>
           <div class="scene-links">
             <a href="/work/where-the-seconds-go/">Read the case study</a>
             <a href={GH + 'moe-speed-of-light'}>See the code and data</a>
@@ -50,7 +49,7 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
         </div>
         <div class="stage">
           <div class="frames">
-            <Foresight f="0,1,2,3" />
+            <Foresight f="0,1,2" />
           </div>
         </div>
       </div>
@@ -62,8 +61,8 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
       <Sub class="scene-t">What the cache bought</Sub>
       <div class="scene-g">
         <div class="steps">
-          <div class="step" data-step="0"><p set:html={r('Faster than FreeToken in [[sec.vs_ft|11 of 12]] configurations, and [[wsg.grid|2.0-4.0×]] stock llama.cpp in all of them. With FreeToken tuned, the ratio is [[wsg.ft_tuned|0.98-1.17×]].')} /></div>
-          <div class="step" data-step="1"><p set:html={r('The one slower cell is [[wsg.slower|0.97×]], at the largest Qwen3 budget on the stock-clock host. Most of the lead is the admission policy, stock is a weak baseline, and this is batch 1 only.')} /></div>
+          <div class="step" data-step="0" data-run="grid:Bgpt"><p set:html={r('Faster than FreeToken in [[sec.vs_ft|11 of 12]] configurations, and [[wsg.grid|2.0-4.0×]] stock llama.cpp in all of them. On a separate rental with FreeToken tuned, across six cells, the ratio is [[wsg.ft_tuned|0.98-1.17×]].')} /></div>
+          <div class="step" data-step="1" data-run="grid:Sqwen"><p set:html={r('The one slower cell is [[wsg.slower|0.97×]], at the largest Qwen3 budget on the stock-clock host. On that host, swapping my admission rule for LRU ran [[wsg.lru|6-21%]] slower, so I read most of the difference as that rule. This is batch 1 only, and stock is a weak baseline.')} /></div>
         </div>
         <div class="stage">
           <div class="frames">
@@ -110,7 +109,7 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
           <div class="frames">
             <figure class="frame key" data-f="0,1">
               <figcaption>KV-cache decode on a Jetson Orin Nano, single stream, microseconds per token, by context length</figcaption>
-              <p class="f-read" set:html={r('[[jet.decode|398.1]]<small> us</small>')} />
+              <p class="f-read" set:html={r('[[jet.decode|398.1]]<small> microseconds</small>')} />
               <p class="f-sub" set:html={r('at [[jet.decode|8192]], from [[jet.decode|63.1]] at [[jet.decode|256]]')} />
               <Fragment set:html={bars(jet.decode.map((d) => ({ label: String(d.S), value: d.us, text: d.us.toFixed(1) })), { max: decMax })} />
             </figure>
