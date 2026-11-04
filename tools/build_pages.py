@@ -213,9 +213,9 @@ body60 = f"""<main style="--c:var(--k)">
 <h1 style="font-size:clamp(30px,4.6vw,64px);line-height:1.08;font-weight:500">I build the software AI runs on, from GPU kernels up to the agents on top.</h1>
 <p class="state" style="font-size:13px">Open to full-time roles. Milwaukee, WI (open to relocation). M.S. ECE, UW-Madison, Dec 2025.</p></div>
 <div class="s60">
-{row('52.7×', 'GPU kernels', "The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, where one step on an H200 ran 52.7× faster than recomputing at 64K keys, a gain any cache gets. Tests merged in NVIDIA's cuDNN frontend, which catch 3 injected bugs that NVIDIA's SM80 tests missed.", '/Harshith_Kantamneni_Resume.pdf', 'var(--k)', '/#ch-k')}
+{row('3 merged', 'GPU kernels', "The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, where one step on an H200 ran 52.7× faster than recomputing at 64K keys, a gain any cache gets. Tests merged in NVIDIA's cuDNN frontend, which catch 3 injected bugs that NVIDIA's SM80 tests missed, reproduced by a maintainer.", '/Harshith_Kantamneni_Resume.pdf', 'var(--k)', '/#ch-k')}
 {row('11 of 12', 'LLM inference', 'A cache in llama.cpp for AI models too big for the GPU. Faster than FreeToken in 11 of 12 test setups at batch 1, on 2 RTX 5090 hosts. With FreeToken tuned, on a separate machine: 0.98-1.17×.', '/resume/inference/Harshith_Kantamneni_Resume.pdf', 'var(--i)', '/#ch-i')}
-{row('5 forged', 'Agent systems', "A research lab of 31 Claude Code agent roles, where I caught an agent forging another agent's approvals, audited my own check against the logs, and rebuilt it so the same forgery is blocked in tests, not yet live. And bert, searchable memory for coding agents.", '/resume/agents/Harshith_Kantamneni_Resume.pdf', 'var(--a)', '/#ch-a')}
+{row('31 roles', 'Agent systems', "A research lab of 31 Claude Code agent roles, where I caught an agent forging another agent's approvals, audited my own check against the logs, and rebuilt it so the same forgery is blocked in tests, not yet live. And bert, searchable memory for coding agents.", '/resume/agents/Harshith_Kantamneni_Resume.pdf', 'var(--a)', '/#ch-a')}
 </div>
 <div class="a60"><a class="b60 p" href="mailto:kantamneniharshith@gmail.com">Email me</a><a class="b60" href="/#intro">Read the full story</a><a class="b60" href="/work/">See all work</a></div>
 </main>"""
@@ -244,7 +244,7 @@ up = (parts / 'upstream.html').read_text()
 def up_row(m):
     href, dt, title, sub, cls, state = m.groups()
     st = 'ok' if 'st-ok' in cls else 'open' if 'st-open' in cls else 'closed'
-    return f'<a class="wk pr" href="{href}"><h3><i class="st {st}"></i>{title}</h3><p>{sub}</p><span>{state}. {dt}</span></a>'
+    return f'<a class="wk pr" href="{href}"><h3><i class="st {st}"></i>{title}</h3><p>{sub}</p><span>{state if state == dt else state + ". " + dt}</span></a>'
 
 
 rows_up = ''.join(up_row(m) for m in re.finditer(r'<a class="wrow reveal"[^>]*href="([^"]+)"[^>]*><span class="wd">([^<]*)</span><span class="wt">(.*?)<span class="wsub">(.*?)</span></span><span class="wm([^"]*)">([^<]*)</span></a>', up))

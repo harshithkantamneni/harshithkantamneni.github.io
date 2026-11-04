@@ -25,7 +25,7 @@
    "shows": [
     "3 PRs merged",
     "3 merged",
-    "3 merged, 1 in review, 2 closed, across 4 projects"
+    "3 merged, 1 open, 2 closed, across 4 projects"
    ],
    "means": "Merged upstream PRs",
    "value": 3,
@@ -126,7 +126,7 @@
    ],
    "means": "Date PR states were last read",
    "value": "2026-11-03",
-   "conditions": "Hand-checked. Phase 3 replaces this with a deploy-time fetch",
+   "conditions": "Checked by hand against each PR page. #1412 and #1319 also confirmed in the repo's git history",
    "source": [
     {
      "type": "pr",
@@ -4709,6 +4709,28 @@
      "commit": "9ef4b1d13d8812eaf8a1932d148d26de4b4ab601",
      "path": "tests/test_signoff_gaps.py",
      "line": 1
+    }
+   ]
+  },
+  {
+   "id": "pr1287.repro",
+   "page": "home",
+   "shows": [
+    "31 of 68",
+    "6 of 12"
+   ],
+   "means": "New tests failing in a maintainer's own run with the second planted bug in the kernel",
+   "value": {
+    "cute_sweep": "31/68",
+    "prepared_ratio": "6/12"
+   },
+   "conditions": "Posted on the PR by the maintainer who approved and merged it, Oct 2, 2026, on an A100. The existing tests still passed. This reproduces one of the planted bugs, not all of them",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/1287",
+     "locator": "Maintainer comment, Oct 2, 2026",
+     "checked": "2026-11-04"
     }
    ]
   }
