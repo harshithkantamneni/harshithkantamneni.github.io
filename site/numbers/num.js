@@ -22,7 +22,8 @@
     const c = m.get(el.dataset.c);
     if (!c) return;
     if (e) e.preventDefault();
-    q('.numd-v').textContent = el.textContent.trim() || c.shows[0];
+    const num = el.classList.contains('cond') && el.closest('.numb') && el.closest('.numb').querySelector('.num');
+    q('.numd-v').textContent = (num ? num.textContent : el.textContent).trim() || c.shows[0];
     q('.numd-m').textContent = c.means;
     q('.numd-c').textContent = c.conditions;
     q('.numd-s').innerHTML = c.source.map((s) => s.html).join(', ');
