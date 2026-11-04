@@ -1,5 +1,5 @@
 <h2>What I built</h2>
-<p>bert is a local MCP server with hybrid retrieval. sqlite-vec stores bge-base-en-v1.5 dense vectors, BM25 covers exact keywords, reciprocal-rank fusion merges the two lists, and a cross-encoder reranks the top hits. It runs as a single-user stdio process over JSON-RPC 2.0. Retrieval needs no API keys and makes no model calls. The host calls memory_search, gets chunks back, and its own model answers.</p>
+<p>bert is a local MCP server with hybrid retrieval. sqlite-vec stores bge-base-en-v1.5 dense vectors, BM25 covers exact keywords, reciprocal-rank fusion merges the two lists, and a cross-encoder reranks the top hits. It runs as a single-user stdio process over JSON-RPC 2.0. Retrieval needs no API keys and makes no LLM calls. The host calls memory_search, gets chunks back, and its own model answers.</p>
 <p>The repo also carries an orchestration harness. The server registers [[bertc.tools|12 tools]], and the memory and code runs use memory_search.</p>
 
 <h2>What I measured</h2>

@@ -18,7 +18,7 @@
 <tr><td>32/2 d256</td><td class="num">17.15</td><td class="num">12.55</td><td class="num">{{bar:1.37/2.19}}</td><td class="num">9.96</td></tr>
 <tr><td>8/1 d128</td><td class="num">7.59</td><td class="num">6.63</td><td class="num">{{bar:1.15/2.19}}</td><td class="num">3.30</td></tr>
 </tbody></table></div>
-<p>I read the gain as following the copy's size. At d128, the expansion is [[gqa.expansion|8x smaller at 8/1 heads]] than at [[pr1223.copy|64/8 heads]], and the kernel takes about the same time.</p>
+<p>I read the time saved as following the copy's size. At d128, the expansion is [[gqa.expansion|8x smaller at 8/1 heads]] than at [[pr1223.copy|64/8 heads]], and the kernel takes about the same time.</p>
 <p>Develop ran out of memory on [[gqa.batch|10 of the 16 batched rows]], because it needed a [[gqa.batch|64-512 GiB]] expanded K/V workspace. The prototype ran [[gqa.batch|all 10]].</p>
 <div class="tw" tabindex="0"><table class="t"><caption>The 6 batched rows are 3 configs and the 10 out-of-memory rows are 5 configs, shown here at S_q=8. [[gqa.batch]]</caption>
 <thead><tr><th>Heads, d and batch</th><th class="num">Develop (ms)</th><th class="num">Prototype (ms)</th><th class="num">Faster by</th><th class="num">cuDNN backend (ms)</th></tr></thead>
@@ -48,6 +48,7 @@
 
 <h2>What it doesn't show</h2>
 <ul>
+<li>Output at 128K. The timings don't check it.</li>
 <li>It doesn't show a fast kernel. At [[gqa.mtp|64/8 d128]] the prototype takes [[gqa.mtp|6.66 ms]] against the backend's [[gqa.mtp|3.30 ms]].</li>
 <li>It doesn't explain that gap. I named a non-split KV walk and a mostly empty Q tile as other causes, but never timed either alone.</li>
 <li>The [[pr1223.copy|7.28 ms]] is [[gqa.copyshape|64/8 d128 at S_q=4]], and develop's run there was bimodal. At [[gqa.mtp|8/1 d128]] the gain is only [[gqa.mtp|1.15×]].</li>

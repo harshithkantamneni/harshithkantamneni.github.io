@@ -1800,7 +1800,8 @@
    "shows": [
     "32×64×64",
     "0.51-0.69%",
-    "3 models"
+    "3 models",
+    "11.76%"
    ],
    "means": "Timing error of model v3 on one test tile, with predictions frozen before the rental",
    "value": {
@@ -1810,7 +1811,7 @@
      "olmoe-1b-7b": 0.54
     }
    },
-   "conditions": "One GH200, bf16, 700 W limit, 1710 MHz lock, skewed routing, R3's 32x64x64 test tile. Rentals 6 and 7. This is not one of vLLM's own tiles",
+   "conditions": "One GH200, bf16, 700 W limit, 1710 MHz lock, skewed routing, R3's 32x64x64 test tile. Rentals 6 and 7. This is not one of vLLM's own tiles. Byte predictions on OLMoE w1 failed their open test, 11.76% rms, scored apart",
    "source": [
     {
      "type": "repo",
@@ -1827,7 +1828,7 @@
    "page": "home",
    "shows": [
     "11.4%",
-    "5 unseen models",
+    "5 models unseen in decode",
     "1.5%"
    ],
    "means": "Decode blind test, pooled rms, against the bar registered then",
@@ -1838,7 +1839,7 @@
     "models": 5,
     "bar": 0.015
    },
-   "conditions": "One GH200, bf16, 700 W, 220 cells. Predicted too slow on average, mean +6.0%, worst 39.2%. Per model: DeepSeek-V2-Lite 2.35%, Qwen1.5 5.3%, Phi-3.5 9.5%, Granite-3B 13.4%, JetMoE 19.5%. No model certified",
+   "conditions": "One GH200, bf16, 700 W, 220 cells. Predicted too slow on average, mean +6.0%, worst 39.2%. Per model: DeepSeek-V2-Lite 2.35%, Qwen1.5 5.3%, Phi-3.5 9.5%, Granite-3B 13.4%, JetMoE 19.5%. No model certified. Phi-3.5 was also in the v3 test, so unseen means unseen in decode",
    "source": [
     {
      "type": "repo",
@@ -1864,12 +1865,37 @@
     ],
     "unit": "x"
    },
-   "conditions": "A100, bf16, batch 1, S_q=2, S_kv=128K, 5 shapes. The gain follows how much the copy writes: 2.19x at 64/8 d128, 1.15x at 8/1 d128, where the expansion is 8x smaller",
+   "conditions": "A100, bf16, batch 1, S_q=2, S_kv=128K, 5 shapes. The time saved follows how much the copy writes: 2.19x at 64/8 d128, 1.15x at 8/1 d128, where the expansion is 8x smaller",
    "source": [
     {
      "type": "pr",
      "url": "https://github.com/NVIDIA/cudnn-frontend/pull/1223",
      "commit": "3de9ba6c625ec5a189a339ec1a5f4b3811ab7ffb",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched the PR table"
+  },
+  {
+   "id": "pr38338.weak",
+   "page": "home",
+   "shows": [
+    "0.53-0.57×"
+   ],
+   "means": "Weakest shape against CUTLASS",
+   "value": {
+    "range": [
+     0.53,
+     0.57
+    ]
+   },
+   "conditions": "RTX 5090, GEMM only, gate_up, large M, with hot L2",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/vllm-project/vllm/pull/38338",
+     "commit": "f0cee106a639f6b71194b98a5057a5a410973f01",
      "locator": "PR description",
      "checked": "2026-11-03"
     }

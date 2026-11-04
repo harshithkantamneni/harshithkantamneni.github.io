@@ -59,7 +59,7 @@
 <tr><td>The oracle's reads beyond MIN's</td><td class="num">18 [14, 23]</td><td class="num">21 [20, 23]</td><td class="num">18 [15, 20]</td></tr>
 <tr><td>Residual</td><td class="num">0 [-11, 12]</td><td class="num">4 [-6, 13]</td><td class="num">1 [-3, 4]</td></tr>
 </tbody></table></div>
-<p>With the table on, it puts misses the cache didn't choose into its slots, so MIN's set read twice closes about none of the gap. With it off, that set closes [[wsg.gap|19%]]. Either way, [[wsg.gap|43-52%]] stays, and [[wsg.gap|42-48%]] at [[wsg.grid|25%]].</p>
+<p>At 11%, with the table on, it puts misses the cache didn't choose into its slots, so MIN's set read twice closes about none of the gap. With it off, that set closes [[wsg.gap|19%]]. Either way, [[wsg.gap|43-52%]] stays, and [[wsg.gap|42-48%]] at [[wsg.grid|25%]].</p>
 <p>Policies without foresight recovered [[wsg.online|at most 6%]] of an oracle's gain on [[wsg.online|5 fast-link machines]], against a loose registered bound.</p>
 <p>I read this as: closing the rest would take reads issued before routing, at MIN's count.</p>
 <h2>What it doesn't show</h2>
@@ -68,7 +68,7 @@
 <li>A production part. A GPU wait on a stuck helper aborts the process, after a [[wsg.abort|default of 2 s]].</li>
 <li>A physical limit. It's relative to my probe and assumes exact routing, whole experts, per-layer slots and one token per step. A reader faster than my probe could go below it. None of [[wsg.under|302 timed runs]] did, the closest at [[wsg.under|1.33×]] the limit, but a closed-form estimate puts the implied read rate [[wsg.implied|more than 5%]] above the probe on [[wsg.implied|12 of 84]] launch and cache-size pairs.</li>
 <li>A registered range. The [[sec.limit|31-54%]] is post hoc and covers gpt-oss's smallest cache only, [[wsg.shares|median 47%]]. At [[wsg.grid|25%]], consumer machines reach [[wsg.shares|23-36%]]. My machine list drops [[wsg.excluded|5 unstable rentals]], all server processors, so the drop can only touch the server range. The [[wsg.shares|3 server machines]] left reach [[wsg.shares|12-46%]], and I haven't established why.</li>
-<li>Other setups. Rented hosts, one engine, two models, AIME prompts also used in development.</li>
+<li>Other setups. Rented hosts as a convenience sample, clocks unlocked, one engine, two models, AIME prompts also used in development.</li>
 <li>Task accuracy. I didn't measure it.</li>
 <li>A clean prediction record. [[wsg.scorecard|142 of 553]] scored prediction clauses failed, all in the <a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/prereg/scorecard.json">scorecard</a>.</li>
 <li>Review. This is a public manuscript, not peer reviewed. The patch is not upstream.</li>
@@ -76,7 +76,7 @@
 <h2>Links</h2>
 <ul>
 <li><a href="https://github.com/harshithkantamneni/moe-speed-of-light">Code and data</a></li>
-<li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper/paper.pdf">Manuscript PDF</a></li>
+<li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper/ieee-paper.pdf">Manuscript PDF</a></li>
 <li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/prereg/scorecard.json">Prediction scorecard</a></li>
 <li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/runtime/llama.cpp-expert-cache-4da6337.patch">The llama.cpp patch</a></li>
 </ul>

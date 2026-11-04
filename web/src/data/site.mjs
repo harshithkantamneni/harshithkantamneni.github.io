@@ -44,7 +44,7 @@ export const LANES = [
     id: 'inference', cls: 'i', name: 'Inference', track: '/inference/',
     title: 'LLM inference', role: 'LLM inference engineer',
     resume: { label: 'Inference résumé', href: '/Harshith_Kantamneni_LLM_Inference_Resume.pdf' },
-    proof: 'Built a llama.cpp expert cache for MoE decode, measured on [[count.gpus|3 GPU models]]. vLLM RFC measurement and load tests.',
+    proof: 'Built a llama.cpp expert cache for batch-1 MoE decode, measured on [[count.gpus|3 GPU models]]. vLLM RFC measurement and load tests.',
     spans: [
       { label: 'vLLM serving benchmark', start: '2026-06-01', end: '2026-06-30', top: 20, href: GH + 'llm-inference-benchmarking' },
       { label: 'MoE decode: Where the Seconds Go', start: '2026-09-01', end: null, top: 20, right: true, href: '/work/where-the-seconds-go/' },
@@ -86,7 +86,7 @@ export const WORK = {
     },
     {
       title: 'moe-kernels: a timing model of vLLM\'s fused MoE kernel', href: GH + 'moe-kernels/tree/gh200-analysis-2026-09-27', state: 'Public repo. Decode blind test failed',
-      blurb: 'Built a model that predicts each call\'s DRAM bytes and time from the routing and the tile, and tested it by freezing predictions before each GH200 rental. Model v3 held on one [[mk.v3|32×64×64]] test tile, at [[mk.v3|0.51-0.69%]] rms on [[mk.v3|3 models]]. The decode blind test failed: [[mk.decode|11.4%]] rms pooled over [[mk.decode|5 unseen models]], against a [[mk.decode|1.5%]] bar. No model is blind-certified on vLLM\'s own tiles yet.',
+      blurb: 'Built a model that predicts each call\'s DRAM bytes and time from the routing and the tile, and tested it by freezing predictions before each GH200 rental. Model v3's time predictions held on one [[mk.v3|32×64×64]] test tile, at [[mk.v3|0.51-0.69%]] rms on [[mk.v3|3 models]], while its byte predictions missed by [[mk.v3|11.76%]] rms on OLMoE's first wave. The decode blind test failed: [[mk.decode|11.4%]] rms pooled over [[mk.decode|5 models unseen in decode]], against a [[mk.decode|1.5%]] bar. No model is blind-certified on vLLM\'s own tiles yet.',
     },
     {
       title: 'TransformerEngine #3591: grouped NVFP4 dequantization', href: prUrl('te3591'), pr: 'te3591',
@@ -94,17 +94,17 @@ export const WORK = {
     },
     {
       title: 'vLLM #38338: Triton NVFP4 GEMM reference', href: prUrl('vllm38338'), pr: 'vllm38338',
-      blurb: 'Ordered grouped tiles and autotuned tile sizes, holding [[pr38338.tflops|1,014-1,076 TFLOP/s]] on RTX 5090 for one shape from [[pr38338.tflops|batch 8192 up]], where the first revision [[pr38338.first|fell to 418]]. On Llama QKV with hot L2: [[pr38338.hot|1.38-3.04× CUTLASS up to batch 128]], [[pr38338.hot|0.77-0.91× above]], and [[pr38338.b200|about 0.27× across 4 Llama shapes on B200 from batch 1024]]. I closed it after #21014 was closed as not planned.',
+      blurb: 'Ordered grouped tiles and autotuned tile sizes, holding [[pr38338.tflops|1,014-1,076 TFLOP/s]] on RTX 5090 for one shape from [[pr38338.tflops|batch 8192 up]], where the first revision [[pr38338.first|fell to 418]]. On Llama QKV with hot L2: [[pr38338.hot|1.38-3.04× CUTLASS up to batch 128]], [[pr38338.hot|0.77-0.91× above]], and [[pr38338.b200|about 0.27× across 4 Llama shapes on B200 from batch 1024]]. The weakest shape was [[pr38338.weak|0.53-0.57×]]. I closed it after #21014 was closed as not planned.',
     },
   ],
   i: [
     {
       title: 'Where the Seconds Go: MoE decode from host memory', href: '/work/where-the-seconds-go/', state: 'Public manuscript and code, not peer reviewed',
-      blurb: 'Built a llama.cpp expert cache for batch-1 MoE decode when the model doesn\'t fit on the GPU. On RTX 5090 hosts, gpt-oss-120b ran at [[sec.speed|58-153 tokens/s]] with [[sec.speed|11-40%]] of its experts on the GPU, and the cache ran faster than FreeToken in [[sec.vs_ft|11 of 12]] configurations. At gpt-oss\'s smallest cache on [[sec.limit|25 consumer machines]], it reached [[sec.limit|31-54%]] of a computed speed limit. I chose that consumer scope after seeing the data.',
+      blurb: 'Built a llama.cpp expert cache for batch-1 MoE decode when the model doesn\'t fit on the GPU. On RTX 5090 hosts, gpt-oss-120b ran at [[sec.speed|58-153 tokens/s]] with [[sec.speed|11-40%]] of its experts on the GPU, and the cache ran faster than FreeToken in [[sec.vs_ft|11 of 12]] configurations, or [[wsg.ft_tuned|0.98-1.17×]] with FreeToken tuned. At gpt-oss\'s smallest cache on [[sec.limit|25 consumer machines]], it reached [[sec.limit|31-54%]] of a computed speed limit. I chose that consumer scope after seeing the data.',
     },
     {
       title: 'vLLM RFC #46295: speculative decoding on MoE', href: 'https://github.com/vllm-project/vllm/issues/46295#issuecomment-5788867616', state: 'Comment on someone else\'s RFC',
-      blurb: 'On [[rfc.oracle|one H200]] with CPU ngram drafts, offline and synthetic, a per-workload oracle improved on the best static batch-size table by [[rfc.oracle|at most 1.8%]]. vLLM\'s MFU byte model overcounted expert reads, [[rfc.mfu|up to 3×]] in the worst cell.',
+      blurb: 'On [[rfc.oracle|one H200]] with CPU ngram drafts, offline and synthetic, a per-workload oracle improved on the best static batch-size table by [[rfc.oracle|at most 1.8%]]. vLLM\'s MFU byte model overcounted expert reads, [[rfc.mfu|up to 3×]] in the worst cell. It's one model, and I built no controller.',
     },
     {
       title: 'flash-linear-attention #1412: KV-cache decoding', href: '/work/stick-breaking-kernels/', state: 'Merged Oct 27, also in Kernels',
@@ -112,7 +112,7 @@ export const WORK = {
     },
     {
       title: 'GQA\'s KV-cache rows in cuDNN', href: '/work/cudnn-gqa/', state: 'Same page as the Kernels entry',
-      blurb: 'The same copy removal, seen from decode. Multi-token steps ran [[pr1223.kv|1.15-2.19×]] faster at a 128K KV cache, with the gain following how much the copy writes. The caveats are on the case study.',
+      blurb: 'The same copy removal, seen from decode. Multi-token steps ran [[pr1223.kv|1.15-2.19×]] faster at a 128K KV cache, with the time saved following the copy's size, by my reading. The caveats are on the case study.',
     },
     {
       title: 'vLLM serving benchmark, first pass', href: GH + 'llm-inference-benchmarking', state: 'Public repo',
@@ -130,7 +130,7 @@ export const WORK = {
     },
     {
       title: 'The Obsidian Archive', href: GH + 'obsidian-engine', state: 'Public repo',
-      blurb: 'A [[obs.stages|13-stage]] pipeline that researches, writes, renders and uploads a documentary from one topic, with atomic checkpoints and resume, automatic retries, an optional budget cap on Claude spend and failure alerts.',
+      blurb: 'A [[obs.stages|13-stage]] pipeline that researches, writes, renders and uploads a documentary from one topic, with atomic checkpoints and resume, automatic retries, an optional budget cap on Claude spend and failure alerts. A crash during upload can publish twice, and the cap resets on resume.',
     },
   ],
 };

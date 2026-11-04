@@ -8,7 +8,7 @@ import { rich, pct, fmtDate } from '../lib/rich.mjs';
 const blurbs = {
   k: 'Attention and GEMM kernels, in CUDA and Triton, with the hardware named and the limits stated.',
   i: 'Decode, measured: where the time goes when the model doesn\'t fit, and what serving settings change.',
-  a: 'Multi-agent labs, retrieval and evaluation, including the audit that found my own gate wasn\'t running.',
+  a: 'Multi-agent labs, retrieval and evaluation, including an audit of my own sign-off gate.',
 };
 ---
 <Base
@@ -89,7 +89,7 @@ const blurbs = {
     <div class="sec-head"><h2>About</h2></div>
     <div class="about">
       <p class="lead-line">I keep the results that disagree with me.</p>
-      <p>Working on CUDA and Triton kernels taught me to test bottleneck stories against counts. Building the layers on top taught me which of those bottlenecks a real workload cares about. Each result here names its hardware and shape, and says what I didn't measure. PRs, repos and data are open to read, except the lab's internal logs and the floor report's sources.</p>
+      <p>Working on CUDA and Triton kernels taught me to test bottleneck stories against counts. Building the layers on top taught me which of those bottlenecks a real workload cares about. Each result here names its hardware and shape, and says what I didn't measure. PRs and public repos are open to read. Not public: the lab's logs, the floor report's sources, the RFC results, some Nsight reports and course reports.</p>
       <p>M.S. ECE, UW-Madison. NVIDIA certificates of competency: <a href="/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf">Getting Started with Accelerated Computing in Modern CUDA C++</a> (<span set:html={rich('[[cert.cuda|Jul 2025]]')} />) and <a href="/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf">The Art of Compressing LLMs</a> (<span set:html={rich('[[cert.llm|Feb 2026]]')} />).</p>
     </div>
   </section>
