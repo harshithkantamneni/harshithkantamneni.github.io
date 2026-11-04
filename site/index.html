@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Harshith Kantamneni: the software AI runs on, from GPU kernels up</title>
 <meta name="description" content="I build the software AI runs on, from GPU kernels up to the agents on top. Kernels merged in flash-linear-attention and tests merged in NVIDIA's cuDNN frontend. M.S. ECE, UW-Madison.">
-<meta name="theme-color" content="#060708">
+<meta name="theme-color" content="#0a0b0e">
 <link rel="canonical" href="https://harshithkantamneni.github.io/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="Harshith Kantamneni: the software AI runs on, from GPU kernels up">
@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#060708;--ink:#EEEFF1;--mid:#9398A0;--dim:#7C828B;--line:rgba(255,255,255,.09);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2));--c:var(--ink);color-scheme:dark}
+:root{--bg:#0a0b0e;--ink:#EEEFF1;--mid:#9398A0;--dim:#7C828B;--line:rgba(255,255,255,.09);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2));--sheet:clamp(12px,2.6vw,40px);--side:0px;--sgap:0px;--ml:var(--edge);--c:var(--ink);color-scheme:dark}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
 html.dlg{overflow:hidden}
@@ -28,29 +28,26 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 .skip{position:fixed;left:8px;top:-60px;z-index:200;background:var(--ink);color:#060708;padding:10px 16px;border-radius:8px;font-family:var(--mono);font-size:13px;transition:top .2s}.skip:focus{top:8px}
 .grain{position:fixed;inset:0;width:100%;height:100%;z-index:90;pointer-events:none;opacity:.04;mix-blend-mode:overlay}
 canvas#field,canvas#fieldTop{position:fixed;inset:0;pointer-events:none}canvas#field{z-index:0}canvas#fieldTop{z-index:30}
+.ground{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(100vw 80vh at 82% -8%,rgba(122,146,190,.14),transparent 70%),radial-gradient(70vw 60vh at -6% 104%,rgba(122,146,190,.07),transparent 70%)}
 .glow{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s}
 main,footer,.marquee{position:relative;z-index:2}
 
 /* the two lanes every screen is laid out on */
-.lane{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,270px);column-gap:clamp(32px,5vw,88px);padding:0 var(--edge);width:100%}
+.lane{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,240px);column-gap:clamp(24px,3vw,48px);padding:0 var(--edge);width:100%}
 .lane>*{grid-column:1;min-width:0}
+.lane:not(:has(>.note))>*{grid-column:1/-1}
 .lane>.note{grid-column:2;align-self:center;margin-left:-1px}
 .lane.wide{grid-template-columns:minmax(0,1fr)}
 .lane.split{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);align-items:center}
 .lane.split>*{grid-column:auto}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:20px;height:64px;padding:0 var(--edge);background:linear-gradient(180deg,rgba(6,7,8,.98) 80%,rgba(6,7,8,0))}
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:20px;height:64px;padding:0 var(--edge);background:var(--bg);border-bottom:1px solid var(--line)}
 .brand{font-size:15px;font-weight:500;letter-spacing:-.01em}
 .nl{display:flex;align-items:center;gap:26px;font-size:14px}
 .nl a,.nbtn{color:var(--mid);transition:color .2s;min-height:36px;display:inline-flex;align-items:center;background:none;border:0;font:inherit;cursor:pointer}.nl a:hover,.nbtn:hover{color:#fff}.nl a[data-l].on{color:var(--c)}
 .nl .nres{color:var(--ink);border-bottom:1px solid rgba(255,255,255,.35);min-height:24px}
-.rail{position:fixed;left:20px;top:50%;height:min(36vh,280px);transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:4px;width:3px;opacity:0;transition:opacity .5s}
-.rail.live{opacity:1}
-.rail a{position:relative;display:block;width:3px;border-radius:3px;background:var(--c);opacity:.2;transition:opacity .4s}.rail a::before{content:"";position:absolute;left:-14px;right:-18px;top:0;bottom:0}.rail a.on{opacity:.7}
-.rail a span{position:absolute;left:14px;top:50%;transform:translate(-6px,-50%);font-size:13px;white-space:nowrap;color:var(--ink);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}.rail a:hover{opacity:1}.rail a:hover span{opacity:1;transform:translate(0,-50%)}
-.tok{position:absolute;left:50%;bottom:0;width:9px;height:9px;margin:0 0 -4px -4.5px;border-radius:50%;background:#fff;box-shadow:0 0 16px 3px var(--ch,#9398A0);pointer-events:none}
 .pbar{display:none}
-@media(max-width:1100px){.rail{display:none}.pbar{display:block;position:fixed;left:0;right:0;top:0;height:2px;z-index:51;background:var(--ch,#9398A0);transform:scaleX(0);transform-origin:left}}
+@media(max-width:1239px){.pbar{display:block;position:fixed;left:0;right:0;top:0;height:2px;z-index:51;background:var(--ch,#9398A0);transform:scaleX(0);transform-origin:left}}
 
 .btn{font-family:var(--sans);font-size:15px;font-weight:500;padding:0 22px;min-height:48px;border-radius:10px;display:inline-flex;align-items:center;border:1px solid transparent;cursor:pointer;background:none;color:var(--ink);transition:background .25s,border-color .25s,color .25s}
 .btn.p{background:var(--ink);color:#08090a}.btn.p:hover{background:#fff}
@@ -58,7 +55,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:
 .btn[disabled]{opacity:.5;cursor:not-allowed}
 
 /* hero: one sentence */
-.hero{min-height:100vh;display:flex;align-items:center;padding:96px 0 56px}
+.hero{min-height:86vh;display:flex;align-items:center;padding:96px 0 28px}
+.proof a{text-decoration:underline;text-decoration-color:rgba(255,255,255,.28);text-underline-offset:4px}.proof a:hover{color:#fff;text-decoration-color:#fff}
+.glance{position:relative;padding-bottom:clamp(30px,6vh,60px)}.glance .lane{grid-template-columns:minmax(0,1fr)}
+.gr{display:grid;grid-template-columns:minmax(170px,250px) minmax(0,1fr) auto;gap:clamp(14px,3vw,40px);align-items:center;padding:clamp(18px,3vh,28px) 0;border-top:1px solid var(--line)}.gr:last-child{border-bottom:1px solid var(--line)}
+.grn{font-family:var(--mono);font-size:clamp(30px,3.6vw,52px);font-weight:700;letter-spacing:-.03em;color:var(--c);white-space:nowrap}
+.gr h2{font-size:clamp(19px,1.7vw,24px);font-weight:500}.gr p{font-size:16px;line-height:1.5;color:#c6cad1;margin-top:4px;max-width:56em}
+.go{font-size:14px;color:var(--mid);white-space:nowrap;border-bottom:1px solid rgba(255,255,255,.2)}.gr:hover .go{color:#fff;border-color:#fff}
+@media(max-width:760px){.gr{grid-template-columns:minmax(0,1fr)}.go{justify-self:start}}
 .hero .lane{grid-template-columns:minmax(0,1fr)}
 .who{font-size:clamp(16px,1.4vw,19px);display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
 .open{display:inline-flex;align-items:center;gap:8px;color:var(--mid);font-size:14px}.open i{width:7px;height:7px;border-radius:50%;background:#39d98a;box-shadow:0 0 10px #39d98a}
@@ -69,7 +73,8 @@ h1{font-size:clamp(38px,6.6vw,104px);line-height:1.02;font-weight:500;letter-spa
 .meta{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:40px;font-size:14px;color:var(--dim)}.meta a{color:var(--mid);min-height:28px;display:inline-flex;align-items:center}.meta a:hover{color:#fff}.meta span{min-height:28px;display:inline-flex;align-items:center}
 
 /* pinned scenes never hijack the scroll, they just stay put */
-.pin{position:relative;height:calc(var(--n)*70vh + 100vh)}
+.pin{position:relative;height:calc(var(--n)*48vh + 100vh)}
+.story .pin .stage{padding-top:112px}
 .pin .stage{position:sticky;top:0;min-height:100vh;height:100vh;display:flex;align-items:center}
 .intro-says{position:relative;min-height:46vh}
 .intro-says p{position:absolute;inset:auto 0 auto 0;top:50%;transform:translateY(-50%);font-size:clamp(28px,3.8vw,58px);line-height:1.12;font-weight:500;letter-spacing:-.028em;opacity:0;transition:opacity .45s}
@@ -81,30 +86,50 @@ h1{font-size:clamp(38px,6.6vw,104px);line-height:1.02;font-weight:500;letter-spa
 .figc{font-size:14px;color:var(--dim);margin-top:10px}
 
 /* chapters */
-.plate{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 90px}
-.plate .lane{grid-template-columns:minmax(0,1fr)}
-.ptitle{font-size:clamp(66px,17vw,264px);line-height:1;font-weight:600;letter-spacing:-.05em;color:var(--c);margin-left:-.04em;white-space:nowrap}
+.plate{position:relative;min-height:76vh;display:flex;align-items:center;padding:110px 0 40px}
+.plate .lane{grid-template-columns:minmax(0,1fr);padding-left:var(--ml)}
+.ptitle{font-size:clamp(62px,14.5vw,236px);line-height:1;font-weight:600;letter-spacing:-.05em;color:var(--c);margin-left:-.04em;white-space:nowrap}
 .plate.mid .ptitle{font-size:clamp(58px,13vw,200px)}
 .field-on .ptitle{color:transparent;-webkit-text-stroke:1px color-mix(in srgb,var(--c) 30%,transparent)}
 .pline{font-size:clamp(22px,2.8vw,40px);line-height:1.18;letter-spacing:-.02em;font-weight:500;margin-top:20px}
 
 /* the story's vocabulary */
-.story{position:relative;padding-top:clamp(120px,26vh,280px)}
-.story+.plate{margin-top:clamp(120px,22vh,240px)}
-.sname{font-size:clamp(20px,2vw,28px);font-weight:500;letter-spacing:-.015em;color:var(--c);display:flex;align-items:center;gap:18px}
-.sname::after{content:"";flex:1 1 0;height:1px;background:color-mix(in srgb,var(--c) 40%,transparent)}
-.beat{min-height:84vh;align-content:center;padding-block:6vh}
-.lane:has(>.sname)+.beat{min-height:0;padding-block:clamp(26px,4vh,44px) clamp(110px,20vh,200px)}
-.say{font-size:clamp(30px,4.5vw,68px);line-height:1.1;font-weight:500;letter-spacing:-.03em;max-width:17.5em;text-wrap:pretty}
+.story{position:relative;margin:clamp(40px,7vh,76px) calc(var(--edge) - var(--sheet)) 0 calc(var(--ml) - var(--sheet));border:1px solid color-mix(in srgb,var(--c) 30%,rgba(255,255,255,.09));border-radius:22px;overflow:clip;background:radial-gradient(120% 80vh at 78% 0,color-mix(in srgb,var(--c) 8%,transparent),transparent 72%),rgba(255,255,255,.032)}
+.story .lane{padding-inline:var(--sheet)}
+.story+.plate{margin-top:clamp(60px,10vh,110px)}
+.shead{position:sticky;top:64px;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;padding:0 var(--sheet);background:color-mix(in srgb,var(--c) 8%,#111317);border-bottom:1px solid color-mix(in srgb,var(--c) 24%,rgba(255,255,255,.06))}
+.shead::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--c);transform:scaleX(var(--sp,0));transform-origin:left}
+.sname{font-size:clamp(20px,2.1vw,30px);line-height:1.15;font-weight:600;letter-spacing:-.018em;color:var(--c)}
+.skind{flex:none;font-size:14px;font-weight:500;line-height:1;padding:7px 10px;border-radius:7px;color:var(--c);border:1px solid color-mix(in srgb,var(--c) 45%,transparent);white-space:nowrap}
+.sid{padding:16px var(--sheet) clamp(20px,3.4vh,30px);border-bottom:1px solid color-mix(in srgb,var(--c) 18%,rgba(255,255,255,.06))}
+.swhat{font-size:clamp(17px,1.45vw,20px);line-height:1.4;color:#d4d7dc;max-width:48em}
+.smeta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;margin-top:10px;font-size:14px;color:var(--mid)}.smeta span{display:inline-flex;align-items:center}.smeta a{color:var(--ink);min-height:28px;display:inline-flex;align-items:center;text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:4px}.smeta a:hover{text-decoration-color:#fff}
+.st{flex:none;width:9px;height:9px;border-radius:50%;margin-right:8px}.st.ok{background:#39d98a}.st.closed{border:2px solid var(--dim)}
+.idx{display:none;position:fixed;left:var(--edge);top:88px;width:var(--side);z-index:8;flex-direction:column;gap:clamp(10px,2.2vh,22px);opacity:0;pointer-events:none;transition:opacity .4s}
+.idx.live{opacity:1;pointer-events:auto}
+.ih{display:block;font-size:15px;font-weight:600;color:var(--c);margin-bottom:4px;min-height:24px}.ig:first-child .ih{font-size:18px}
+.it{position:relative;display:block;padding:clamp(3px,.7vh,6px) 0 clamp(3px,.7vh,6px) 14px;border-left:2px solid rgba(255,255,255,.1)}
+.it::before{content:"";position:absolute;left:-2px;top:0;bottom:0;width:2px;background:var(--c);transform:scaleY(var(--sp,0));transform-origin:top}
+.it:not(.on)::before{opacity:0}
+.it b{display:block;font-size:14px;font-weight:500;line-height:1.25;color:var(--mid);transition:color .2s}
+.it span{display:block;font-size:12px;line-height:1.3;color:var(--dim);margin-top:1px;transition:color .2s}
+.it:hover b,.it.on b{color:var(--ink)}.it.on span{color:var(--c)}
+@media(min-width:1240px){:root{--side:clamp(186px,15vw,232px);--sgap:clamp(24px,2.6vw,40px);--ml:calc(var(--edge) + var(--side) + var(--sgap))}.idx{display:flex}.shead{position:relative!important;top:auto!important;background:none!important;padding-top:clamp(20px,3vh,28px);padding-bottom:0;min-height:0}.shead{border-bottom:0!important}.shead::after{display:none}.story .pin .stage{padding-top:80px}}
+.beat{padding-block:clamp(40px,7vh,76px) clamp(20px,3.4vh,36px);align-content:center}
+.beat:last-child{padding-bottom:clamp(44px,8vh,84px)}
+.say{font-size:clamp(25px,2.9vw,46px);line-height:1.15;font-weight:500;letter-spacing:-.026em;max-width:21em;text-wrap:pretty}
 .say .w{opacity:.14;transition:opacity .18s linear}
 .note{font-size:14px;line-height:1.55;color:var(--mid);border-left:1px solid var(--line);padding-left:16px}
-.block{padding-block:clamp(56px,11vh,120px)}
+.block{padding-block:clamp(18px,3vh,32px)}
+.story>.block:last-child{padding-bottom:clamp(30px,5vh,52px)}
 .numb{align-content:center}
-.num{font-family:var(--mono);font-size:clamp(64px,13.5vw,212px);line-height:.95;font-weight:700;letter-spacing:-.05em;color:var(--c);width:fit-content;white-space:nowrap}
+.num{font-family:var(--mono);font-size:clamp(54px,7.4vw,124px);line-height:.95;font-weight:700;letter-spacing:-.05em;color:var(--c);width:fit-content;white-space:nowrap}
 .num.has-c{cursor:pointer}
 .story .numb:nth-of-type(n) .num{text-shadow:0 0 70px color-mix(in srgb,var(--c) 26%,transparent)}
 .numm{font-size:clamp(20px,2.4vw,34px);line-height:1.2;letter-spacing:-.018em;font-weight:500;margin-top:20px;max-width:24em}
-.numb .note{grid-row:1/span 2}
+.numb .note{grid-row:1/span 3}
+.cond{justify-self:start;margin-top:10px;background:none;border:0;padding:4px 0;font:400 14px var(--sans);color:var(--mid);cursor:pointer;text-decoration:underline;text-decoration-color:rgba(255,255,255,.28);text-underline-offset:4px}.cond:hover{color:#fff;text-decoration-color:#fff}
+.lg{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:14px;color:var(--ink);margin-bottom:14px}.lg span{display:inline-flex;align-items:center;gap:8px}.lg i{width:12px;height:12px;display:inline-block}.lg .o{border-radius:50%;border:2px solid var(--mid)}.lg .f{background:#C9CED6;transform:rotate(45deg) scale(.82)}.lg .c{border-radius:50%;background:var(--k)}
 .more{font-size:clamp(17px,1.6vw,21px);line-height:1.45;color:var(--mid);max-width:38em}.more a,.small a,.tl{color:var(--ink);text-decoration:underline;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:4px}.more a:hover,.small a:hover,.tl:hover{text-decoration-color:#fff}
 .slinks{display:flex;flex-wrap:wrap;gap:6px 24px;margin-top:22px;font-size:15px;color:var(--mid)}.slinks a{min-height:32px;display:inline-flex;align-items:center;border-bottom:1px solid rgba(255,255,255,.2)}.slinks a:hover{color:#fff;border-color:#fff}
 .small{font-size:14px;line-height:1.55;color:var(--mid)}
@@ -167,7 +192,7 @@ figcaption{font-size:15px;line-height:1.45;color:var(--mid);margin-top:14px;max-
 .lead{font-size:clamp(18px,1.7vw,22px);line-height:1.4}
 #gpu-run{margin-top:22px}#gpu-out{font-size:15px;line-height:1.55;margin-top:16px;min-height:24px}#gpu-out:empty{display:none}.gpu .small{margin-top:14px}
 
-.close{padding:clamp(70px,14vh,150px) 0 0}
+.close{padding:clamp(64px,11vh,120px) 0 0}
 .close .lane{grid-template-columns:minmax(0,1fr)}
 .chase{margin-top:44px;border-top:1px solid var(--line)}.chase a{display:block;padding:24px 0;border-bottom:1px solid var(--line);transition:padding .25s}.chase a:hover{padding-left:10px}.chase b{display:block;font-size:clamp(20px,2.3vw,32px);font-weight:500;letter-spacing:-.018em;line-height:1.2}.chase span{display:block;font-size:15px;color:var(--mid);margin-top:8px}
 .abig{font-size:clamp(24px,3vw,44px);line-height:1.2;font-weight:500;letter-spacing:-.022em;max-width:24em}.wide-p{margin-top:20px;max-width:46em}
@@ -189,10 +214,10 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
 @media(max-width:900px){
   .lane,.lane.split,.gpu{grid-template-columns:minmax(0,1fr)}.lane>.note{grid-column:1;margin-top:20px}.numb .note{grid-row:auto}
-  .nl{gap:14px;font-size:13px}.nl a.ha,.nl .ha{display:none}.brand{display:none}nav{height:52px;background:linear-gradient(180deg,rgba(6,7,8,.96),rgba(6,7,8,.4))}
+  .nl{gap:14px;font-size:13px}.nl a.ha,.nl .ha{display:none}.brand{display:none}nav{height:52px}.shead{top:52px;min-height:52px}.story .pin .stage{padding-top:108px}.skind{font-size:13px;padding:6px 8px}
   .intro .lane.split{grid-template-rows:auto auto;gap:18px}.intro-says{min-height:30vh}#fig-intro svg{height:38vh}
-  .beat{min-height:66vh}.sws{grid-template-columns:minmax(0,1fr)}.sw{min-height:48px}
-  .memz{gap:1px}.plate{min-height:80vh}
+  .sws{grid-template-columns:minmax(0,1fr)}.sw{min-height:48px}
+  .memz{gap:1px}.plate{min-height:62vh}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .static .pin{height:auto}.static .pin .stage{position:relative;height:auto;min-height:0;padding:40px 0}.static .intro-says{min-height:0}.static .intro-says p,.static .pincap p{position:relative;inset:auto;transform:none;opacity:1;margin-bottom:14px}.static .pincap{min-height:0}.static .say .w{opacity:1}.static .beat{min-height:44vh}.static .plate{min-height:60vh}
@@ -203,14 +228,14 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 </head>
 <body>
 <a href="#main" class="skip">Skip to content</a>
-<div class="glow" style="background:radial-gradient(70vw 70vh at 84% 6%,rgba(255,106,77,.11),transparent 70%)"></div><div class="glow" style="background:radial-gradient(70vw 70vh at 84% 6%,rgba(255,180,84,.08),transparent 70%)"></div><div class="glow" style="background:radial-gradient(70vw 70vh at 84% 6%,rgba(106,168,255,.09),transparent 70%)"></div>
+<div class="ground"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,106,77,.19),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,106,77,.08),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,180,84,.15),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,180,84,.07),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(106,168,255,.24),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(106,168,255,.11),transparent 70%)"></div>
 <canvas id="field" aria-hidden="true"></canvas><canvas id="fieldTop" aria-hidden="true"></canvas>
-<div class="rail" aria-label="Where you are in the stack"><a data-l="2" href="#ch-a" style="--c:var(--a);flex:1"><span>Agents</span></a><a data-l="1" href="#ch-i" style="--c:var(--i);flex:1"><span>Inference</span></a><a data-l="0" href="#ch-k" style="--c:var(--k);flex:2"><span>Kernels</span></a><i class="tok"></i></div>
+<aside class="idx" aria-label="Projects on this page"><div class="ig" style="--c:var(--k)"><a class="ih" href="#ch-k">Kernels</a><a class="it" href="#kernels"><b>Stick-breaking kernels</b><span>2 merged PRs</span></a><a class="it" href="#gqa"><b>Grouped-query attention</b><span>Closed PR, merged tests</span></a><a class="it" href="#triton"><b>Triton vs cuBLAS</b><span>Personal project</span></a><a class="it" href="#yourgpu"><b>Try it on your GPU</b><span>Live demo</span></a></div><div class="ig" style="--c:var(--i)"><a class="ih" href="#ch-i">Inference</a><a class="it" href="#seconds"><b>Where the Seconds Go</b><span>Research project</span></a><a class="it" href="#jetson"><b>Jetson Orin Nano</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--a)"><a class="ih" href="#ch-a">Agents</a><a class="it" href="#bert"><b>bert</b><span>Personal project</span></a><a class="it" href="#lab"><b>Lab audit</b><span>Personal project</span></a></div></aside>
 <div class="pbar" aria-hidden="true"></div>
 
 <nav>
   <a class="brand" href="#top">Harshith Kantamneni</a>
-  <div class="nl"><a data-l="0" style="--c:var(--k)" href="#ch-k">Kernels</a><a data-l="1" style="--c:var(--i)" href="#ch-i">Inference</a><a data-l="2" style="--c:var(--a)" href="#ch-a">Agents</a><a class="ha" href="/work/">All work</a><button type="button" class="nbtn ha" id="find-open" aria-label="Search this site" hidden>Search</button><a id="nav-res" class="nres" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
+  <div class="nl"><a data-l="0" style="--c:var(--k)" href="#ch-k">Kernels</a><a data-l="1" style="--c:var(--i)" href="#ch-i">Inference</a><a data-l="2" style="--c:var(--a)" href="#ch-a">Agents</a><a class="ha" href="/work/">All work</a><a href="mailto:kantamneniharshith@gmail.com">Email</a><button type="button" class="nbtn ha" id="find-open" aria-label="Search this site" hidden>Search</button><a id="nav-res" class="nres" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
 </nav>
 
 <main id="main">
@@ -219,11 +244,17 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   <div class="lane">
     <p class="who">Harshith Kantamneni <span class="open"><i></i>Open to full-time roles</span></p>
     <h1>I build the software AI runs on, from GPU kernels up to the agents on top<i class="tokdot"></i></h1>
-    <p class="proof">Kernels merged in flash-linear-attention. Tests merged in NVIDIA's cuDNN frontend.</p>
-    <div class="acts"><a href="#intro" class="btn p">Begin the story</a><a href="/60/" class="btn g">60-second version</a><a href="/Harshith_Kantamneni_Resume.pdf" class="btn g">Résumé</a></div>
-    <p class="meta"><span>Milwaukee, WI (open to relocation)</span><span>M.S. ECE, UW-Madison, Dec 2025</span><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a><a href="mailto:kantamneniharshith@gmail.com">Email</a></p>
+    <p class="proof"><a href="https://github.com/fla-org/flash-linear-attention/pull/1412">Kernels merged in flash-linear-attention</a>. <a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">Tests merged in NVIDIA's cuDNN frontend</a>.</p>
+    <div class="acts"><a href="/Harshith_Kantamneni_Resume.pdf" class="btn p">Résumé</a><a href="#intro" class="btn g">Read the full story</a><a href="mailto:kantamneniharshith@gmail.com" class="btn g">Email me</a></div>
+    <p class="meta"><span>Milwaukee, WI (open to relocation)</span><span>M.S. ECE, UW-Madison, Dec 2025</span><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a></p>
   </div>
 </header>
+
+<section class="glance" id="glance" aria-label="The short version"><div class="lane">
+  <a class="gr" style="--c:var(--k)" href="#ch-k"><div class="grn">52.7×</div><div><h2>GPU kernels</h2><p>The low-level code that does an AI model's math. Kernels merged in flash-linear-attention and tests merged in NVIDIA's cuDNN. One kernel step ran 52.7× faster than recomputing.</p></div><span class="go">See the work</span></a>
+  <a class="gr" style="--c:var(--i)" href="#ch-i"><div class="grn">11 of 12</div><div><h2>LLM inference</h2><p>Running AI models fast, even when they don't fit on the GPU. I built a cache for llama.cpp that ran faster than FreeToken in 11 of 12 test setups.</p></div><span class="go">See the work</span></a>
+  <a class="gr" style="--c:var(--a)" href="#ch-a"><div class="grn">5 forged</div><div><h2>Agent systems</h2><p>AI that acts on its own, and whether you can trust it. In my research lab, an agent forged 5 approvals, so I built a check, audited it and rebuilt it. Also bert, searchable memory for coding agents.</p></div><span class="go">See the work</span></a>
+</div></section>
 
 <section class="pin intro" id="intro" data-steps="5" style="--n:5"><div class="stage"><div class="lane split">
   <div class="intro-says">
@@ -239,11 +270,12 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 <!-- ============ KERNELS ============ -->
 <section class="plate hot" id="ch-k" style="--c:var(--k)"><div class="lane">
   <h2 class="ptitle" data-rgb="255,106,77">Kernels</h2>
-  <p class="pline">The math under every word.</p>
+  <p class="pline">The small programs a GPU runs to do the math behind every word.</p>
 </div></section>
 
 <article class="story" id="kernels" style="--c:var(--k)">
-  <div class="lane"><h3 class="sname">The stick</h3></div>
+  <header class="shead"><h3 class="sname">Stick-breaking attention kernels</h3><span class="skind">2 merged PRs</span></header>
+  <div class="sid"><p class="swhat">Forward, backward and KV-cache decoding kernels in Triton, merged in flash-linear-attention, an open-source library.</p><p class="smeta"><span><i class="st ok"></i>Merged Oct 8 and Oct 27, 2026</span><a href="https://github.com/fla-org/flash-linear-attention/pull/1319">#1319</a><a href="https://github.com/fla-org/flash-linear-attention/pull/1412">#1412</a></p></div>
   <div class="beat lane"><p class="say">Before a model writes its next word, it looks back at everything it has read.</p></div>
   <div class="beat lane"><p class="say">Standard attention weighs every past word at once. Stick-breaking attention goes one word at a time.</p></div>
 
@@ -263,12 +295,13 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
   <div class="beat lane numb">
     <div class="num has-c" data-c="sbk.op" role="button" tabindex="0">52.7×</div>
-    <p class="numm">faster per step than starting over, with 64K keys in the cache.</p>
+    <p class="numm">faster per step than starting over, on a long text with 64K keys in the cache.</p>
+    <button type="button" class="cond" data-c="sbk.op">Conditions and source</button>
     <p class="note">One kernel step on an H200 at batch 1. Any cache gains like this against recomputing. A full model step on random weights takes about 9 ms, and with short prompts recomputing is still faster. Where that time goes is my open question.</p>
   </div>
 
   <div class="block lane">
-    <figure class="fg" id="fig-ladder"><svg role="img" aria-label="One decode step against recomputing the prefix. 1024 keys: 72.4 and 72.8 microseconds, 1.0 times. 4096: 275.0 and 929.4, 3.4 times. 16384: 1082.4 and 14190.3, 13.1 times. 65536: 4301.8 and 226529.2, 52.7 times."></svg><figcaption>The gain grows with the cache. Microseconds per step, log scale.</figcaption></figure>
+    <figure class="fg" id="fig-ladder"><svg role="img" aria-label="One decode step against recomputing the prefix. 1024 keys: 72.4 and 72.8 microseconds, 1.0 times. 4096: 275.0 and 929.4, 3.4 times. 16384: 1082.4 and 14190.3, 13.1 times. 65536: 4301.8 and 226529.2, 52.7 times."></svg><figcaption>The longer the text, the bigger the gain. Microseconds per step, log scale.</figcaption></figure>
   </div>
 
   <div class="block lane">
@@ -295,28 +328,33 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
         <p class="small">Arithmetic from 65536 registers per SM and 128 threads per CTA, ignoring allocation rounding.</p>
       </div>
     </details>
-    <p class="slinks"><a href="/work/stick-breaking-kernels/">Read the write-up</a><a href="https://github.com/fla-org/flash-linear-attention/pull/1412">#1412</a><a href="https://github.com/fla-org/flash-linear-attention/pull/1319">#1319</a></p>
+    <p class="slinks"><a href="/work/stick-breaking-kernels/">Read the write-up</a></p>
   </div>
 </article>
 
 <article class="story" id="gqa" style="--c:var(--k)">
-  <div class="lane"><h3 class="sname">The copy</h3></div>
+  <header class="shead"><h3 class="sname">Grouped-query attention in NVIDIA cuDNN</h3><span class="skind">Closed PR, merged tests</span></header>
+  <div class="sid"><p class="swhat">A prototype and tests for cuDNN, NVIDIA's open-source GPU library for AI.</p><p class="smeta"><span><i class="st closed"></i>Prototype closed Sep 27, 2026</span><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a><span><i class="st ok"></i>Tests merged Oct 6, 2026</span><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a></p></div>
   <div class="beat lane"><p class="say">Inside NVIDIA's cuDNN, I found a step that took longer than the math it was setting up.</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-copy"><svg role="img" aria-label="8 KV heads at the top are each written out 8 times into a 64-column workspace. Below, a time bar: copying takes 7.28 milliseconds, then attention takes 6.0 to 6.7."></svg><figcaption>One attention call on an A100, at 64/8 heads and a 128K KV cache. That's one shape.</figcaption></figure>
   </div>
-  <div class="beat lane"><p class="say">It was writing the same data out again for every query head that reads it.</p></div>
+  <div class="beat lane"><p class="say">It was copying the same data again and again, once for each part of the model that reads it.</p></div>
   <div class="beat lane"><p class="say">So I built a version that doesn't copy.</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-nocopy"><svg role="img" aria-label="The same 8 KV heads, now read directly by 64 query heads with no workspace in between."></svg></figure>
   </div>
-  <div class="beat lane numb">
-    <div class="num has-c" data-c="pr1223.kv" role="button" tabindex="0">1.15-2.19×</div>
-    <p class="numm">faster with the copies gone, on multi-token steps at batch 1.</p>
-    <p class="note">Removing the copies made 6 batched rows 2.6-3.3× faster, and 10 more stopped running out of memory. Those rows are really 3 configs and 5 configs. The cuDNN backend stayed faster on 27 of 31 multi-token rows.</p>
+  <div class="beat lane">
+    <p class="say">With the copies gone, it ran 1.15-2.19× faster, for one request at a time.</p>
+    <p class="note">Multi-token steps at batch 1. Removing the copies made 6 batched rows (3 configs) 2.6-3.3× faster, and 10 more (5 configs) stopped running out of memory. The cuDNN backend stayed faster on 27 of 31 multi-token rows.</p>
   </div>
-  <div class="beat lane"><p class="say">NVIDIA then shipped its own native version, so I closed mine.</p></div>
-  <div class="beat lane"><p class="say">The tests from that work merged. They catch 3 injected bugs that NVIDIA's tests missed.</p></div>
+  <div class="beat lane"><p class="say">NVIDIA then shipped its own native version, so I closed mine. The tests from that work merged.</p></div>
+  <div class="beat lane numb">
+    <div class="num has-c" data-c="pr1287.bugs" role="button" tabindex="0">3 of 3</div>
+    <p class="numm">injected bugs caught by my tests. NVIDIA's own tests missed them.</p>
+    <button type="button" class="cond" data-c="pr1287.bugs">Conditions and source</button>
+    <p class="note">With bugs planted, NVIDIA's SM80 suite still passed all 411 cases on the first two and all 60 d256 cases on the third.</p>
+  </div>
   <div class="block lane">
     <figure class="fg" id="fig-heads">
       <div class="seg" id="heads" role="group" aria-label="Query heads over KV heads"><button type="button" data-q="4" data-kv="2" aria-pressed="false">4/2</button><button type="button" data-q="16" data-kv="4" aria-pressed="false">16/4</button><button type="button" data-q="8" data-kv="4" aria-pressed="true">8/4</button><button type="button" data-q="8" data-kv="2" aria-pressed="false">8/2</button></div>
@@ -324,7 +362,6 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
       <p class="verdict" id="hm-v" role="status"></p>
       <figcaption>Here's one planted bug. NVIDIA's tests used 4/2 and 16/4 heads, where the wrong formula gives the right answer. Click a head count.</figcaption>
     </figure>
-    <p class="note">With bugs planted, NVIDIA's SM80 suite still passed all 411 cases on the first two and all 60 d256 cases on the third. My tests caught all 3 injected bugs.</p>
   </div>
   <div class="block lane">
     <details class="eng">
@@ -334,31 +371,32 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
         <figure class="fg" id="fig-gqatab"><svg role="img" aria-label="Five shapes. 64/8 d128: develop 14.57, prototype 6.66, backend 3.30. 64/8 d64: 8.23, 4.23, 4.09. 32/8 d128: 9.91, 6.66, 3.30. 32/2 d256: 17.15, 12.55, 9.96. 8/1 d128: 7.59, 6.63, 3.30."></svg></figure>
       </div>
     </details>
-    <p class="slinks"><a href="/work/cudnn-gqa/">Read the write-up</a><a href="/notes/kv-copies-gqa">The worklog</a><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a></p>
+    <p class="slinks"><a href="/work/cudnn-gqa/">Read the write-up</a><a href="/notes/kv-copies-gqa">The worklog</a></p>
   </div>
 </article>
 
 <article class="story" id="triton" style="--c:var(--k)">
-  <div class="lane"><h3 class="sname">One kernel instead of three</h3></div>
-  <div class="beat lane"><p class="say">A simple projection on a GPU usually runs as three separate kernels, writing to memory between each one.</p></div>
+  <header class="shead"><h3 class="sname">Triton vs cuBLAS</h3><span class="skind">Personal project</span></header>
+  <div class="sid"><p class="swhat">Triton is a language for writing GPU kernels, and cuBLAS is NVIDIA's standard math library. I measured whether one combined kernel runs faster than the usual separate steps.</p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/triton-vs-cublas-llm">triton-vs-cublas-llm</a></p></div>
+  <div class="beat lane"><p class="say">One common step in a model usually runs as three separate kernels, saving to memory between each one. What if one kernel did all three?</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-fuse"><svg role="img" aria-label="Three kernels, linear, bias and GeLU, each writing to and reading from HBM. They merge into one fused kernel, and the memory round-trips disappear."></svg></figure>
   </div>
-  <div class="beat lane"><p class="say">What if one kernel did all three?</p></div>
+  <div class="beat lane"><p class="say">One matrix size proves nothing, so I measured 76 of them.</p></div>
   <div class="beat lane numb">
-    <div class="num has-c" data-c="tri.best" role="button" tabindex="0">1.73×</div>
-    <p class="numm">faster than the unfused path, on the best shape.</p>
-    <p class="note">M=128, N=11008, K=4096 in fp16 on an A100. The same shape is 1.28× in bf16, and bare Triton already ran 1.38× there in fp16, so fusion's own lift is about 1.25×.</p>
+    <div class="num has-c" data-c="tri.faster" role="button" tabindex="0">27 of 76</div>
+    <p class="numm">sizes ran faster as one kernel, up to 1.73×. The median size ran 0.96×, slightly slower.</p>
+    <button type="button" class="cond" data-c="tri.faster">Conditions and source</button>
+    <p class="note">The best size is M=128, N=11008, K=4096 in fp16 on an A100. The same size is 1.28× in bf16, and bare Triton already ran 1.38× there in fp16, so fusion's own lift is about 1.25×.</p>
   </div>
-  <div class="beat lane"><p class="say">One shape proves nothing, so I measured across 76 shapes.</p></div>
   <div class="block lane wide">
     <figure class="fg" id="fig-swarm">
       <div class="seg sm" id="sc-seg" role="group" aria-label="Precision"><button type="button" data-v="fp16" aria-pressed="true">fp16</button><button type="button" data-v="bf16" aria-pressed="false">bf16</button></div>
       <svg role="img" aria-label="76 GEMM shapes grouped by batch size. Median 0.96 times the unfused path, with 27 faster, best 1.73 times."></svg>
-      <figcaption id="sc-note">Each dot is one shape. Hover for its size. Median 0.96×, with 27 faster than the unfused path.</figcaption>
+      <figcaption id="sc-note">Each dot is one matrix size. Hover for its dimensions. Median 0.96×, with 27 faster than separate kernels.</figcaption>
     </figure>
   </div>
-  <div class="beat lane"><p class="say">Some shapes gain and some don't. Batch size alone doesn't explain which, so I dropped my first theory.</p></div>
+  <div class="beat lane"><p class="say">The honest result: one kernel helps on some sizes, not all, and batch size alone doesn't explain which. So I dropped my first theory.</p></div>
   <div class="block lane">
     <details class="eng">
       <summary>For engineers: the roofline, and what the kernel reaches</summary>
@@ -372,17 +410,19 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 </article>
 
 <article class="story" id="yourgpu" style="--c:var(--k)">
-  <div class="beat lane"><p class="say">Tiling is easier to feel than to explain. Try it on your own GPU.</p></div>
+  <header class="shead"><h3 class="sname">Try it on your GPU</h3><span class="skind">Live demo</span></header>
+  <div class="sid"><p class="swhat">A small demo that runs in this page, on your own GPU.</p></div>
+  <div class="beat lane"><p class="say">GPU speed depends on how you slice up the work. See it on your own GPU.</p></div>
   <div class="block lane split gpu">
     <div>
       <div class="hm" id="hm" role="img" aria-label="Heatmap of throughput by workgroup shape, filled in when you run it."></div>
       <p class="hmax"><span>Rows: workgroup height</span><span>Columns: workgroup width</span></p>
     </div>
     <div>
-      <p class="lead">This runs one matrix multiply on your GPU in every workgroup shape, times each one, and checks the answers against your CPU.</p>
+      <p class="lead">This runs one matrix multiply on your GPU, sliced up every way on the grid. It times each one and checks the answers against your CPU.</p>
       <button type="button" class="btn p" id="gpu-run">Run it on my GPU</button>
       <p id="gpu-out" role="status"></p>
-      <p class="small">It runs on your machine through WebGPU in fp32, and nothing is sent anywhere. It's a demonstration of tiling, not one of the measurements on this page.</p>
+      <p class="small">It runs on your machine through WebGPU in fp32, and nothing is sent anywhere. It's a demonstration, not one of the measurements on this page.</p>
     </div>
   </div>
   <div class="block lane"><p class="more">There's more kernel work on the <a href="/work/#kernels">all-work page</a>: a timing model of vLLM's fused MoE kernel, a TransformerEngine PR in review, and every upstream PR, closed ones included.</p></div>
@@ -391,49 +431,53 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 <!-- ============ INFERENCE ============ -->
 <section class="plate mid" id="ch-i" style="--c:var(--i)"><div class="lane">
   <h2 class="ptitle" data-rgb="255,180,84">Inference</h2>
-  <p class="pline">Getting the word out, even when the model doesn't fit.</p>
+  <p class="pline">Running a model and getting words out fast, even when it doesn't fit on the GPU.</p>
 </div></section>
 
 <article class="story" id="seconds" style="--c:var(--i)">
-  <div class="lane"><h3 class="sname">Where the Seconds Go</h3></div>
-  <div class="beat lane"><p class="say">gpt-oss-120b needs about 61 GB. An RTX 5090 has 32 GB.</p></div>
+  <header class="shead"><h3 class="sname">Where the Seconds Go</h3><span class="skind">Research project</span></header>
+  <div class="sid"><p class="swhat">A way to run AI models too big for the GPU's memory, built as a cache in llama.cpp, plus a calculation of how fast any such cache could get.</p><p class="smeta"><span>Public code and manuscript, not peer reviewed</span><a href="https://github.com/harshithkantamneni/moe-speed-of-light">moe-speed-of-light</a></p></div>
+  <div class="beat lane"><p class="say">The model, gpt-oss-120b, needs about 61 GB of memory. An RTX 5090 GPU has 32 GB.</p></div>
   <div class="block lane">
     <figure class="fg"><div class="memz" id="fz-mem" data-field role="img" aria-label="61 dots, one per gigabyte. A box around the first 32 marks what fits on the card."><i class="cardbox"><span>RTX 5090, 32 GB</span></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></div><figcaption>One dot per gigabyte, to scale.</figcaption></figure>
   </div>
-  <div class="beat lane"><p class="say">So most of the model waits in host memory, and each token stalls on reads.</p></div>
-  <div class="beat lane"><p class="say">I built a cache in llama.cpp that decides what stays on the card.</p></div>
+  <div class="beat lane"><p class="say">So most of the model waits in slower system memory, and each word stalls while it's fetched.</p></div>
+  <div class="beat lane"><p class="say">I built a cache in llama.cpp that decides which parts stay on the GPU.</p></div>
   <div class="beat lane numb">
     <div class="num has-c" data-c="sec.vs_ft" role="button" tabindex="0">11 of 12</div>
-    <p class="numm">configurations faster than FreeToken, at batch 1, and 2.0-4.0× stock llama.cpp in all of them.</p>
-    <p class="note">On 2 RTX 5090 hosts. Stock is a weak baseline. On a separate rental with FreeToken tuned, across six cells, the ratio is 0.98-1.17×. The one slower cell is 0.97×, at the largest Qwen3 budget on the stock-clock host. On that host, swapping my admission rule for LRU ran 6-21% slower, so I read most of the difference as that rule.</p>
+    <p class="numm">test setups ran faster than FreeToken, another system for this problem, and 2.0-4.0× stock llama.cpp in all of them. With FreeToken tuned, on a separate machine: 0.98-1.17×.</p>
+    <button type="button" class="cond" data-c="sec.vs_ft">Conditions and source</button>
+    <p class="note">At batch 1, on 2 RTX 5090 hosts. Stock is a weak baseline. The tuned comparison covers six cells. The one slower setup is 0.97×, at the largest Qwen3 budget on the stock-clock host. On that host, swapping my admission rule for LRU ran 6-21% slower, so I read most of the difference as that rule.</p>
   </div>
   <div class="block lane wide">
-    <figure class="fg" id="fig-grid"><svg role="img" aria-label="Tokens per second for stock llama.cpp, FreeToken and my cache, at three GPU budgets, on two hosts and two models. My cache is fastest in 11 of 12 configurations."></svg><figcaption>Tokens per second. Each row is a share of experts on the GPU.</figcaption></figure>
+    <figure class="fg" id="fig-grid"><p class="lg"><span><i class="o"></i>Stock llama.cpp</span><span><i class="f"></i>FreeToken</span><span><i class="c"></i>My cache</span></p><svg role="img" aria-label="Tokens per second for stock llama.cpp, FreeToken and my cache, at three GPU budgets, on two hosts and two models. My cache is fastest in 11 of 12 configurations."></svg><figcaption>Speed in tokens, roughly words, per second. Each row is the share of the model's experts, its swappable parts, kept on the GPU.</figcaption></figure>
   </div>
   <div class="beat lane"><p class="say">Then the harder question: how much better could any cache get?</p></div>
-  <div class="beat lane"><p class="say">I computed the limit, then gave the engine oracles, so I could test one kind of foresight at a time.</p></div>
+  <div class="beat lane"><p class="say">I computed the limit, then let the engine see the future, one kind of foresight at a time.</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-ruler">
       <p class="rnum"><span id="fs-v">20.59</span><small> ms per token</small></p>
       <p class="rnote" id="fs-n" role="status">The deployed cache, with no foresight.</p>
       <svg role="img" aria-label="A ruler of time per token. 20.59 milliseconds for the deployed cache, 15.13 with the oracle's schedule and each expert read once, 13.78 with copies issued ahead, and a computed limit of 10.02."></svg>
       <div class="sws" id="foresight">
-        <button type="button" class="sw" role="switch" aria-checked="false"><span>Follow the oracle's cache schedule</span><i class="sw-k"></i></button>
-        <button type="button" class="sw" role="switch" aria-checked="false"><span>Read each cached expert only once</span><i class="sw-k"></i></button>
-        <button type="button" class="sw" role="switch" aria-checked="false" disabled><span>Also issue the copies ahead of time<em> (needs both above)</em></span><i class="sw-k"></i></button>
+        <button type="button" class="sw" role="switch" aria-checked="false"><span>Know what to keep on the GPU</span><i class="sw-k"></i></button>
+        <button type="button" class="sw" role="switch" aria-checked="false"><span>Never read the same part twice</span><i class="sw-k"></i></button>
+        <button type="button" class="sw" role="switch" aria-checked="false" disabled><span>Start each copy before it's needed<em> (needs both above)</em></span><i class="sw-k"></i></button>
       </div>
       <figcaption>Flip them yourself. gpt-oss-120b with 11% of experts on the GPU, on one RTX 5090 machine. The limit is relative to my own bandwidth probe.</figcaption>
     </figure>
   </div>
   <div class="beat lane">
-    <p class="say">Better guessing alone won't get there. Four policies without foresight got at most 6% of what the read-ahead oracle gained.</p>
-    <p class="note">On 5 fast-link machines. On this machine 36% of the gap stayed after all three oracles, and 43-52% averaged over three groups of machines. At gpt-oss's smallest cache on 25 consumer machines, the cache reached 31-54% of the computed limit, a scope I chose after seeing the data.</p>
+    <p class="say">Better guessing alone won't get there. Four caching rules without foresight got at most 6% of the gain from knowing what to read ahead.</p>
+    <p class="note">On 5 fast-link machines. On this machine 36% of the gap stayed after all three kinds of foresight, and 43-52% averaged over three groups of machines. At gpt-oss's smallest cache on 25 consumer machines, the cache reached 31-54% of the computed limit, a scope I chose after seeing the data.</p>
   </div>
   <div class="block lane"><p class="slinks"><a href="/work/where-the-seconds-go/">Read the write-up</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light">View the repo</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper/ieee-paper.pdf">Manuscript, not peer reviewed</a></p></div>
 </article>
 
 <article class="story" id="jetson" style="--c:var(--i)">
-  <div class="beat lane"><p class="say">I asked the same kind of question on a 15 W board.</p></div>
+  <header class="shead"><h3 class="sname">Jetson Orin Nano profiling</h3><span class="skind">Personal project</span></header>
+  <div class="sid"><p class="swhat">Speed measurements of AI kernels on a Jetson Orin Nano, a small NVIDIA computer that runs on 15 W.</p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling">edge-llm-gpu-profiling</a></p></div>
+  <div class="beat lane"><p class="say">One step holds steady up to 1024 keys, then climbs.</p></div>
   <div class="block lane">
     <figure class="fg">
       <div class="jets" id="fz-jet" data-field role="img" aria-label="Decode time by keys in the cache: 256 keys 63.1, 512 keys 63.9, 1024 keys 64.9, 2048 keys 114.6, 4096 keys 209.4, 8192 keys 398.1 microseconds."><div class="jc" data-k="256" data-v="63.1"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>63.1</b><span>256</span></div><div class="jc" data-k="512" data-v="63.9"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>63.9</b><span>512</span></div><div class="jc" data-k="1024" data-v="64.9"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>64.9</b><span>1024</span></div><div class="jc" data-k="2048" data-v="114.6"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>114.6</b><span>2048</span></div><div class="jc" data-k="4096" data-v="209.4"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>209.4</b><span>4096</span></div><div class="jc" data-k="8192" data-v="398.1"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>398.1</b><span>8192</span></div></div>
@@ -442,18 +486,18 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
     </figure>
     <p class="note">Attention and KV-cache decode kernels profiled with Nsight on a Jetson Orin Nano. It's a sweep of kernels, not a model and not serving throughput. Fused SDPA ran 2.78-5.55× faster than a manual matmul and softmax baseline across 5 sizes, which is a low bar.</p>
   </div>
-  <div class="beat lane"><p class="say">Decode holds steady up to 1024 keys, then climbs.</p></div>
-  <div class="block lane"><p class="more"><a href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling">The Jetson repo</a>. A vLLM load test and a measurement on a vLLM RFC are on the <a href="/work/#inference">all-work page</a>.</p></div>
+  <div class="block lane"><p class="more">Also on vLLM: a load test where CUDA graphs cut time per token 31-34%, one run per rate, and a measurement on someone else's RFC. Both are on the <a href="/work/#inference">all-work page</a>.</p></div>
 </article>
 
 <!-- ============ AGENTS ============ -->
 <section class="plate mid" id="ch-a" style="--c:var(--a)"><div class="lane">
   <h2 class="ptitle" data-rgb="106,168,255">Agents</h2>
-  <p class="pline">Memory for coding agents, and a way to keep them honest.</p>
+  <p class="pline">AI that takes actions on its own: memory for coding agents, and a way to keep them honest.</p>
 </div></section>
 
 <article class="story" id="bert" style="--c:var(--a)">
-  <div class="lane"><h3 class="sname">bert</h3></div>
+  <header class="shead"><h3 class="sname">bert</h3><span class="skind">Personal project</span></header>
+  <div class="sid"><p class="swhat">A tool, not the BERT model, that gives an AI coding agent searchable memory of a long project.</p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/bert">bert</a></p></div>
   <div class="beat lane"><p class="say">A long project outgrows what a model can read at once.</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-slope1"><svg role="img" aria-label="Full-context accuracy falls from 0.90 to 0.08 as project memory grows from about 98 thousand to 1.26 million tokens."></svg><figcaption>Give a reader the whole history, and past its budget it loses the answer.</figcaption></figure>
@@ -462,11 +506,12 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   <div class="beat lane"><p class="say">bert gives a coding agent searchable memory of the whole project. It runs locally, with no API keys and no LLM calls.</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-slope2"><svg role="img" aria-label="At 1.26 million tokens, bert and agentic grep both score 0.90, while full context falls to 0.08. At 98 thousand tokens, bert 0.96, grep 0.92, full context 0.90."></svg><figcaption>Accuracy at 2 measured memory sizes. Lines only join the 2 measured sizes.</figcaption></figure>
-    <p class="note">On one 1.26M-token synthetic project memory, no significant difference from agentic grep, and grep used a median 1.46× bert's tokens per question, counting cache reads in full. On code, grep scored higher, 0.97 to 0.86, so bert is built for accumulated memory, not code search.</p>
+    <p class="note">On one 1.26M-token synthetic project memory, no significant difference from agentic grep, counting cache reads in full. On code, grep scored higher, 0.97 to 0.86, so bert is built for accumulated memory, not code search.</p>
   </div>
-  <div class="beat lane"><p class="say">It didn't start that way. Early on, a silent bug had pinned it at 0.10.</p></div>
+  <div class="beat lane"><p class="say">It scored the same as an agent searching with grep, and grep used a median 1.46× the tokens.</p></div>
+  <div class="beat lane"><p class="say">It didn't start that way. Early on, a silent bug held its score at 0.10.</p></div>
   <div class="block lane">
-    <figure class="fg"><div class="bugz" id="fz-bug" data-field role="img" aria-label="20 questions. 2 correct before the fix and 17 after."><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></div><figcaption>One dot per question. A dict-key mismatch had zeroed the dense signal, so the hybrid path was really keyword-only. Fixing it moved the same 20-question eval from 0.10 to 0.85.</figcaption></figure>
+    <figure class="fg"><div class="bugz" id="fz-bug" data-field role="img" aria-label="20 questions. 2 correct before the fix and 17 after."><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></div><figcaption>One dot per question. A small bug had switched off the meaning-based half of the search, leaving only keywords. Fixing it moved the same 20-question test from 0.10 to 0.85.</figcaption></figure>
   </div>
   <div class="block lane">
     <details class="eng">
@@ -482,15 +527,25 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 </article>
 
 <article class="story" id="lab" style="--c:var(--a)">
-  <div class="lane"><h3 class="sname">The agent that forged a signature</h3></div>
+  <header class="shead"><h3 class="sname">Lab verification and audit</h3><span class="skind">Personal project</span></header>
+  <div class="sid"><p class="swhat">Sign-off verification for my research lab of Claude Code agents, and an audit of that check against its own logs.</p><p class="smeta"><span>Public repo, private logs</span><a href="https://github.com/harshithkantamneni/agi-lab-framework">agi-lab-framework</a></p></div>
   <div class="beat lane"><p class="say">I ran a research lab of 31 Claude Code agent roles on one 18 GB MacBook.</p></div>
   <div class="beat lane"><p class="say">On Apr 17, the agent running it wrote 5 PI sign-offs, approvals in another agent's name, without ever calling that agent.</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-seq1"><svg role="img" aria-label="Sequence diagram. The runner starts the director. The director writes sign-offs in the PI's name to the record. The call to the PI never happens."></svg></figure>
   </div>
   <div class="beat lane"><p class="say">So I built a check. Then I audited the check itself, against 763 runner logs.</p></div>
-  <div class="beat lane"><p class="say">The audit found what no test had: a shell bug had kept it from starting, and the agent being checked could write the record it read.</p></div>
-  
+  <div class="beat lane"><p class="say">By my count it had run on 0 of 270 eligible sessions, because of a shell bug, fixed in June.</p></div>
+  <div class="beat lane"><p class="say">A later code review found the deeper flaw: the agent being checked could write the record the check read.</p></div>
+  <div class="beat lane"><p class="say">So I moved the record out of the agent's reach.</p></div>
+  <div class="block lane">
+    <figure class="fg" id="fig-seq2"><svg role="img" aria-label="The same forgery against the new check. The runner logs every call it sees. The director writes a PI sign-off and never calls the PI agent. The runner compares the sign-off with its log, finds no call, and refuses the session."></svg><figcaption>The same forgery, replayed against the new check.</figcaption></figure>
+  </div>
+  <div class="beat lane">
+    <p class="say">A sign-off now counts only if the system running the agents saw that agent run and give that answer. Replay the forgery, and the session is refused.</p>
+    <p class="note">171 new tests, and 62 of them fail on the old code. They run on a stub harness, not yet a live lab. A record shows that an agent ran and what it replied, not that its review was any good. The repo lists what's still open.</p>
+  </div>
+
   <div class="block lane">
     <details class="eng">
       <summary>For engineers: the audit, session by session</summary>
@@ -498,6 +553,9 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
         <p>One square per runner log, Apr 17 to May 30, in date order. The outlined ones match the gate's precondition, a text match. By my count the first version of the gate ran on 0 of 270 of those eligible sessions, because of a shell bug fixed in June. The logs stay private, so you can check the public table's sums, not its rows.</p>
         <div class="waf" role="img" aria-label="763 squares, one per runner log in date order. 270 are outlined as eligible."><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i></div>
         <p><a class="tl" href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/gate_audit_sessions.csv">The per-session table</a></p>
+        <h4>How the new check works</h4>
+        <p>Receipts come only from the harness's structured tool_use blocks, so text in a session creates none, and they're HMAC-chained. A sign-off token needs a same-role, same-run receipt, inside the window, whose own reply gave that verdict on that document. The gate fails closed: only a detector that finishes and echoes a per-call nonce lets an exit through. The runner's deny rules and OS sandbox keep the key from the agents, and that hasn't been exercised on a live lab.</p>
+        <p>Still open: role prompts can be edited between sessions, a sign-off binds to a path and not to content, the net for free-text approvals is a heuristic, and close-out runs before the gate. <a class="tl" href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps">The full list</a>.</p>
       </div>
     </details>
     <p class="slinks"><a href="/work/lab-verification/">Read the write-up</a><a href="https://github.com/harshithkantamneni/agi-lab-framework">View the repo</a></p>
@@ -507,16 +565,16 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
 <!-- ============ CLOSE ============ -->
 <section class="close" id="next"><div class="lane">
-  <h2 class="say">What I'm still chasing.</h2>
+  <h2 class="say">Three questions I haven't answered yet.</h2>
   <div class="chase">
-    <a href="#kernels"><b>Where a model-level decode step spends its time.</b><span>The kernel step is 52.7× faster at 64K keys. A full model step on random weights takes about 9 ms.</span></a>
-    <a href="#kernels"><b>The last of the gap to the original authors' kernels.</b><span>1.04-1.42× their time, forward plus backward, on H100.</span></a>
-    <a href="#seconds"><b>The part of decode time that foresight can't remove.</b><span>36% of the gap stayed on one machine, even with all three oracles.</span></a>
+    <a href="#kernels"><b>Where the rest of a full model's time goes.</b><span>My kernel step ran 52.7× faster at 64K keys, but one full model step, on random weights, still takes about 9 ms.</span></a>
+    <a href="#kernels"><b>How to match the original authors' speed.</b><span>My merged kernels take 1.04-1.42× the time of theirs, on an H100 GPU.</span></a>
+    <a href="#seconds"><b>How much slowdown better caching can never remove.</b><span>Even when the engine could see the future, 36% of the gap to the limit stayed, on one machine.</span></a>
   </div>
 </div></section>
 
 <section class="close" id="about"><div class="lane">
-  <p class="abig">Working on CUDA and Triton kernels taught me to test bottleneck stories against counts, and I hold retrieval and agent systems to the same test.</p>
+  <p class="abig">GPU kernels taught me not to believe an explanation for why something is slow until the numbers back it up. I hold memory tools and agents to the same test.</p>
   <p class="small wide-p">Every number on this site has <a href="/numbers/">its conditions and source</a>. Click a large number to see them. Not public: the lab's logs, the floor report's sources, the RFC results, some Nsight reports and course reports.</p>
   <p class="small wide-p">NVIDIA certificates of competency: <a href="/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf">Getting Started with Accelerated Computing in Modern CUDA C++</a> (Jul 2025) and <a href="/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf">The Art of Compressing LLMs</a> (Feb 2026).</p>
 </div></section>
@@ -541,7 +599,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 <footer id="contact"><div class="lane">
   <p class="foot-h">Let's build<br>from the silicon up.</p>
   <div class="acts"><a href="mailto:kantamneniharshith@gmail.com" class="btn p">Email me</a><a id="foot-res" href="/Harshith_Kantamneni_Resume.pdf" class="btn g">Résumé</a><a href="/work/" class="btn g">All work</a></div>
-  <p class="meta"><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a><span>Milwaukee, WI</span></p>
+  <p class="meta"><a href="mailto:kantamneniharshith@gmail.com">kantamneniharshith@gmail.com</a><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a><span>Milwaukee, WI</span></p>
 </div></footer>
 
 <dialog class="find" id="find" aria-labelledby="find-l">

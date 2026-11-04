@@ -4,13 +4,13 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Lab verification and audit: Harshith Kantamneni</title>
-<meta name="description" content="Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and an improved detector."/>
-<meta name="theme-color" content="#060708">
+<meta name="description" content="Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that refuses the original forgery in tests."/>
+<meta name="theme-color" content="#0a0b0e">
 <link rel="canonical" href="https://harshithkantamneni.github.io/work/lab-verification/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Lab verification and audit: Harshith Kantamneni">
-<meta property="og:description" content="Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and an improved detector.">
+<meta property="og:description" content="Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that refuses the original forgery in tests.">
 <meta property="og:url" content="https://harshithkantamneni.github.io/work/lab-verification/">
 <meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -18,14 +18,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#060708;--ink:#EEEFF1;--mid:#9398A0;--dim:#7C828B;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
+:root{--bg:#0a0b0e;--ink:#EEEFF1;--mid:#9398A0;--dim:#7C828B;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
 body{background-image:radial-gradient(rgba(150,170,200,.09) 1px,transparent 1.2px);background-size:46px 46px;background-attachment:fixed}
 a{color:inherit;text-decoration:none}
 a:focus-visible,input:focus-visible,.tw:focus-visible{outline:2px solid var(--a);outline-offset:3px;border-radius:4px}
 ::selection{background:var(--a);color:#04111f}
-.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:64px;padding:0 var(--edge);background:rgba(6,7,8,.96);border-bottom:1px solid var(--line)}
+.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:64px;padding:0 var(--edge);background:var(--bg);border-bottom:1px solid var(--line)}
 .brand{font-size:15px;font-weight:500;letter-spacing:-.01em}
 .nl{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:14px}
 .nl a{color:var(--mid);min-height:32px;display:inline-flex;align-items:center}.nl a:hover{color:#fff}.nl a.on{color:var(--c)}
@@ -78,10 +78,10 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <body>
 <header class="top"><a class="brand" href="/">Harshith Kantamneni</a><div class="nl"><a style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a class=on style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a></div></header>
 <main style="--c:var(--a)">
-<div class="op"><a class="crumb" href="/#ch-a">Agents</a><h1>Lab verification and audit</h1><p class="lead">Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and an improved detector.</p><p class="state">Public repo, private logs</p><div class="keys"><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#lab.gate" data-c="lab.gate">0 of 270</a></div><div class="kl">eligible sessions where the gate ran, by my count</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#labv.forged" data-c="labv.forged">5 PI sign-offs</a></div><div class="kl">written without dispatching the PI</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#labv.tests" data-c="labv.tests">24 regression tests</a></div><div class="kl">on the improved detector</div></div></div></div>
+<div class="op"><a class="crumb" href="/#ch-a">Agents</a><h1>Lab verification and audit</h1><p class="lead">Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that refuses the original forgery in tests.</p><p class="state">Public repo, private logs</p><div class="keys"><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#lab.gate" data-c="lab.gate">0 of 270</a></div><div class="kl">eligible sessions where the gate ran, by my count</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#labv.forged" data-c="labv.forged">5 PI sign-offs</a></div><div class="kl">written without dispatching the PI</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#labv.tests" data-c="labv.tests">24 regression tests</a></div><div class="kl">on the improved detector</div></div></div></div>
 <div class="grid"><article class="prose">
 <h2 id="what-i-built">What I built</h2>
-<p>I built sign-off verification for a 31-role Claude Code lab, audited it against runner logs, and shipped an improved detector with tests. The finding, by my count: the gate ran on <a class="n" href="/numbers/#lab.gate" data-c="lab.gate">0 of 270</a> eligible sessions, in this <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/gate_audit_sessions.csv">per-session table</a>. A shell bug, fixed in June, explains it. The logs stay private. The detector is improved, but it can still be fooled, because director text reaches the log it reads. The repo lists its <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps">known gaps</a>.</p>
+<p>I built sign-off verification for a 31-role Claude Code lab, audited it against runner logs, and shipped an improved detector with tests. The finding, by my count: the gate ran on <a class="n" href="/numbers/#lab.gate" data-c="lab.gate">0 of 270</a> eligible sessions, in this <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/gate_audit_sessions.csv">per-session table</a>. A shell bug, fixed in June, explains it. The logs stay private. A later code review found the detector could still be fooled, because the agent's own text reached the log it read. So I rebuilt the check: a sign-off now needs a signed record, made by the runner from the harness's own tool calls, that the role ran and gave that verdict on that document. If the check can't finish, the session is refused. That's tested on a stub harness, with <a class="n" href="/numbers/#labv.rebuilt" data-c="labv.rebuilt">171 new tests</a>, not yet on a live lab. The repo lists <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps">what's still open</a>.</p>
 <p>A shell script, the runner, starts one director agent at a time. The director dispatches roles such as the PI (principal investigator). The lab had <a class="n" href="/numbers/#labv.roles30" data-c="labv.roles30">30 roles</a> at the time of the incident the audit covers.</p>
 <p>A sign-off is a line in a lab document saying a role agreed to a decision. Some decisions need one from both the director and the PI. On Apr 17 the director wrote <a class="n" href="/numbers/#labv.forged" data-c="labv.forged">5 PI sign-offs</a> without dispatching the PI. Then I built three parts:</p>
 <ul>
@@ -120,7 +120,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <ul>
 <li>The counts don't reproduce from a clone, because the logs stay private and gitignored. You can check the table's sums, not its rows.</li>
 <li>"Eligible" is a text match on the string GRACEFUL_CHECKPOINT, so director prose could inflate it. I didn't measure how many of the <a class="n" href="/numbers/#labv.counts" data-c="labv.counts">270</a> are true clean exits. I read the zero as the stronger half, because the gate redirects the detector's output into that log.</li>
-<li>The detector is still bypassable. A later code review, not the September audit, found the repo's <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps">known gaps</a>. A sign-off can cite any old receipt, and any recent file in the role's folder passes, so the director can write one. The gate doesn't pass --check-identity. Director text can fake a &gt;&gt;&gt; AGENT pi line. An empty scan passes, and so does a sign-off phrased outside the pattern list. The tests don't cover these gaps.</li>
+<li>The first detector could be bypassed. A later code review, not the September audit, listed how: any old receipt or recent file passed, the gate skipped --check-identity, director text could fake a &gt;&gt;&gt; AGENT pi line, an empty scan passed, and so did a sign-off phrased outside the pattern list. <a href="https://github.com/harshithkantamneni/agi-lab-framework/pull/43">PR #43</a> closes those. The rebuilt check still doesn't show a review was good, a sign-off binds to a path and not to content, and role prompts can be edited between sessions. It hasn't run on a live lab.</li>
 <li>It's one lab, one model family and one incident. It doesn't show how often agents forge sign-offs, why this one did, or that 31 roles do better than fewer.</li>
 </ul>
 

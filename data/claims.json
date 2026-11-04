@@ -353,7 +353,10 @@
    "id": "pr1287.bugs",
    "page": "home",
    "shows": [
-    "3 injected bugs"
+    "3 injected bugs",
+    "3 of 3",
+    "all 411",
+    "all 60"
    ],
    "means": "Planted bugs the new tests catch and the SM80 suite misses",
    "value": 3,
@@ -547,7 +550,8 @@
    "id": "pr1223.batched",
    "page": "home",
    "shows": [
-    "6 batched rows 2.6-3.3×"
+    "6 batched rows 2.6-3.3×",
+    "2.6-3.3×"
    ],
    "means": "Batched speedup from removing copies",
    "value": {
@@ -826,7 +830,8 @@
    "page": "home",
    "shows": [
     "0.10 → 0.85",
-    "same 20-question eval from 0.10 to 0.85"
+    "same 20-question eval from 0.10 to 0.85",
+    "same 20-question test from 0.10 to 0.85"
    ],
    "means": "Same 20-question eval before and after the retriever fix",
    "value": {
@@ -1083,7 +1088,9 @@
    "shows": [
     "27 faster",
     "14 of 45 at M≤512",
-    "13 of 31 at M≥1024"
+    "13 of 31 at M≥1024",
+    "27 of 76",
+    "76 of them"
    ],
    "means": "Shapes where fused is faster",
    "value": {
@@ -3056,7 +3063,9 @@
    "id": "labv.forged",
    "page": "work/lab-verification",
    "shows": [
-    "5 PI sign-offs"
+    "5 PI sign-offs",
+    "5 forged",
+    "5 approvals"
    ],
    "means": "PI sign-offs the director agent wrote without dispatching the PI agent",
    "value": 5,
@@ -4670,6 +4679,31 @@
     }
    ],
    "checked": "Recounted statuses in prereg/scorecard.json"
+  },
+  {
+   "id": "labv.rebuilt",
+   "page": "home",
+   "shows": [
+    "171 new tests",
+    "62 of them fail on the old code",
+    "171 tests",
+    "62 of them"
+   ],
+   "means": "Tests added with the rebuilt sign-off check, and how many fail on the code before it",
+   "value": {
+    "new": 171,
+    "fail_on_old": 62
+   },
+   "conditions": "tests/test_signoff_gaps.py (62) and tests/test_signoff_receipts.py, run on Nov 4, 2026 with a stub harness, not a live lab. All 62 gap tests failed against the previous commit and pass on the new code. The other 109 are not claimed to fail on the old code",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/agi-lab-framework/pull/43",
+     "commit": "f74636723fb5a9a4038d950724b104bdec3e22fc",
+     "path": "tests/test_signoff_gaps.py",
+     "line": 1
+    }
+   ]
   }
  ]
 }
