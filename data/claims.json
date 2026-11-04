@@ -1,0 +1,1818 @@
+{
+ "as_of": "2026-11-03",
+ "site_commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+ "claims": [
+  {
+   "id": "profile.degree",
+   "page": "home",
+   "shows": [
+    "Dec 2025"
+   ],
+   "means": "M.S. ECE finished December 2025",
+   "value": "2025-12",
+   "conditions": "UW-Madison, Professional option",
+   "source": [
+    {
+     "type": "not_public",
+     "note": "Degree record and resume"
+    }
+   ],
+   "checked": "Matched against resume source"
+  },
+  {
+   "id": "count.merged",
+   "page": "home",
+   "shows": [
+    "3 PRs merged",
+    "3 merged"
+   ],
+   "means": "Merged upstream PRs",
+   "value": 3,
+   "conditions": "flash-linear-attention #1319 and #1412, cuDNN frontend #1287, which is tests only",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/fla-org/flash-linear-attention/pull/1319",
+     "commit": "901933445c2bba32fbfde955cf22fa8105eca0fe",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    },
+    {
+     "type": "pr",
+     "url": "https://github.com/fla-org/flash-linear-attention/pull/1412",
+     "commit": "454faeb6219abdde99a9b42d9063e4ac5b0a22a0",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    },
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/1287",
+     "commit": "09304e19e1269115d44cea5c36208c25d5523577",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched merge state in the PR records"
+  },
+  {
+   "id": "count.gpus",
+   "page": "home",
+   "shows": [
+    "3 GPU models",
+    "3 GPUs"
+   ],
+   "means": "GPU models the expert cache was measured on",
+   "value": 3,
+   "conditions": "RTX 5090, RTX 4090, RTX 3090, rented hosts",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/README.md#L16",
+     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
+     "path": "README.md",
+     "line": 16
+    }
+   ],
+   "checked": "Matched in repo README and paper table"
+  },
+  {
+   "id": "count.roles",
+   "page": "home",
+   "shows": [
+    "31-role",
+    "31 roles",
+    "31 Claude Code"
+   ],
+   "means": "Agent roles in the lab",
+   "value": 31,
+   "conditions": "Keys in data/agents/agents.json. 30 roles at the time of the incident the audit covers",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/agi-lab-framework/blob/ea49da3ba113564c79d04cbb375a3464993b6ca1/data/agents/agents.json#L1",
+     "commit": "ea49da3ba113564c79d04cbb375a3464993b6ca1",
+     "path": "data/agents/agents.json",
+     "line": 1
+    }
+   ],
+   "checked": "Recomputed by counting keys"
+  },
+  {
+   "id": "oss.since",
+   "page": "home",
+   "shows": [
+    "since March 2026"
+   ],
+   "means": "First upstream kernel work",
+   "value": "2026-03",
+   "conditions": "First commit on vLLM #38338 is dated 2026-03-27",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/vllm-project/vllm/pull/38338",
+     "commit": "f0cee106a639f6b71194b98a5057a5a410973f01",
+     "locator": "Commit list",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched against the PR commit log"
+  },
+  {
+   "id": "oss.states_checked",
+   "page": "home",
+   "shows": [
+    "Nov 3, 2026"
+   ],
+   "means": "Date PR states were last read",
+   "value": "2026-11-03",
+   "conditions": "Hand-checked. Phase 3 replaces this with a deploy-time fetch",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/TransformerEngine/pull/3591",
+     "commit": "fb9b960baec7e99129bb7421f75e9532d0b44993",
+     "locator": "PR state",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched against PR records fetched that day"
+  },
+  {
+   "id": "pr1412.date",
+   "page": "home",
+   "shows": [
+    "Oct 27, 2026"
+   ],
+   "means": "Merge date",
+   "value": "2026-10-27",
+   "conditions": "UTC",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/fla-org/flash-linear-attention/pull/1412",
+     "commit": "454faeb6219abdde99a9b42d9063e4ac5b0a22a0",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR metadata"
+  },
+  {
+   "id": "pr1412.step",
+   "page": "home",
+   "shows": [
+    "4.3 ms",
+    "64K keys",
+    "At batch 1"
+   ],
+   "means": "One decode step over 64K cached keys",
+   "value": {
+    "value": 4.3018,
+    "unit": "ms"
+   },
+   "conditions": "H200, B=1, one query, HQ=32, H=8, D=128, median from do_bench. Op level, not a model-level latency",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/fla-org/flash-linear-attention/pull/1412",
+     "commit": "454faeb6219abdde99a9b42d9063e4ac5b0a22a0",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR benchmark table"
+  },
+  {
+   "id": "pr1412.grid",
+   "page": "home",
+   "shows": [
+    "32 programs on 132 SMs"
+   ],
+   "means": "Grid size against SM count",
+   "value": {
+    "programs": 32,
+    "sms": 132
+   },
+   "conditions": "B x Lq x HQ = 1 x 1 x 32 on H200. \"32 of 132 busy\" is derived, not counted",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/fla-org/flash-linear-attention/pull/1412",
+     "commit": "454faeb6219abdde99a9b42d9063e4ac5b0a22a0",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR text and derived from the grid formula"
+  },
+  {
+   "id": "pr1412.floor",
+   "page": "home",
+   "shows": [
+    "about 0.06 ms"
+   ],
+   "means": "Time to read K/V once at rated bandwidth",
+   "value": {
+    "value": 0.0559,
+    "unit": "ms"
+   },
+   "conditions": "Not measured. 2 x 8 x 65536 x 128 x 2 bytes = 268 MB at the H200 rated 4.8 TB/s. A floor, not a target",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/fla-org/flash-linear-attention/pull/1412",
+     "commit": "454faeb6219abdde99a9b42d9063e4ac5b0a22a0",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Recomputed: 268.4e6 / 4.8e12 = 55.9 us"
+  },
+  {
+   "id": "pr1319.date",
+   "page": "home",
+   "shows": [
+    "Oct 8, 2026"
+   ],
+   "means": "Merge date",
+   "value": "2026-10-08",
+   "conditions": "UTC",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/fla-org/flash-linear-attention/pull/1319",
+     "commit": "901933445c2bba32fbfde955cf22fa8105eca0fe",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR metadata"
+  },
+  {
+   "id": "pr1319.tiles",
+   "page": "home",
+   "shows": [
+    "64×32 tiles",
+    "57-89 KiB",
+    "64×64",
+    "129-193 KiB"
+   ],
+   "means": "Shared memory per tile config",
+   "value": {
+    "64x32_kib": [
+     57,
+     89
+    ],
+    "64x64_kib": [
+     129,
+     193
+    ]
+   },
+   "conditions": "D=128, 2 to 4 pipeline stages, per config",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/fla-org/flash-linear-attention/pull/1319",
+     "commit": "901933445c2bba32fbfde955cf22fa8105eca0fe",
+     "locator": "Commit 4c539a5 message",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched commit message"
+  },
+  {
+   "id": "pr1319.occupancy",
+   "page": "home",
+   "shows": [
+    "about 12% occupancy"
+   ],
+   "means": "Occupancy of the backward kernels",
+   "value": {
+    "value": 12,
+    "unit": "%"
+   },
+   "conditions": "Nsight Compute at B=2, T=4096, H=16, D=128, base clocks. 255 registers per thread, 12.5% theoretical",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/fla-org/flash-linear-attention/pull/1319",
+     "commit": "901933445c2bba32fbfde955cf22fa8105eca0fe",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR text and derived from register count"
+  },
+  {
+   "id": "pr1319.vs_authors",
+   "page": "home",
+   "shows": [
+    "1.04-1.42×"
+   ],
+   "means": "Time against the original authors",
+   "value": {
+    "range": [
+     1.04,
+     1.42
+    ],
+    "unit": "x"
+   },
+   "conditions": "H100 SXM, same session, 8 shapes, against the faster of dense and varlen at 7619a3c. Higher means slower",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/fla-org/flash-linear-attention/pull/1319",
+     "commit": "901933445c2bba32fbfde955cf22fa8105eca0fe",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR text"
+  },
+  {
+   "id": "pr1287.date",
+   "page": "home",
+   "shows": [
+    "Oct 6, 2026"
+   ],
+   "means": "Merge date",
+   "value": "2026-10-06",
+   "conditions": "UTC",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/1287",
+     "commit": "09304e19e1269115d44cea5c36208c25d5523577",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR metadata"
+  },
+  {
+   "id": "pr1287.bugs",
+   "page": "home",
+   "shows": [
+    "3 injected bugs"
+   ],
+   "means": "Planted bugs the new tests catch and the SM80 suite misses",
+   "value": 3,
+   "conditions": "A100, one edit at a time then restored. A 4th bug was a control the old suite caught",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/1287",
+     "commit": "09304e19e1269115d44cea5c36208c25d5523577",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR table and verdict file"
+  },
+  {
+   "id": "pr38338.date",
+   "page": "home",
+   "shows": [
+    "Oct 7, 2026"
+   ],
+   "means": "Close date",
+   "value": "2026-10-07",
+   "conditions": "UTC. Closed by the author, not merged",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/vllm-project/vllm/pull/38338",
+     "commit": "f0cee106a639f6b71194b98a5057a5a410973f01",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR metadata"
+  },
+  {
+   "id": "pr38338.tflops",
+   "page": "home",
+   "shows": [
+    "1,014-1,076 TFLOP/s"
+   ],
+   "means": "Throughput held on one shape",
+   "value": {
+    "range": [
+     1014.1,
+     1076.1
+    ],
+    "unit": "TFLOP/s"
+   },
+   "conditions": "RTX 5090, down shape 4096x14336, autotuned tiles, hot L2, about 2 hours apart with 0.988-1.046x drift",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/vllm-project/vllm/pull/38338",
+     "commit": "f0cee106a639f6b71194b98a5057a5a410973f01",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR table"
+  },
+  {
+   "id": "pr38338.first",
+   "page": "home",
+   "shows": [
+    "fell to 418"
+   ],
+   "means": "First revision at the largest batch",
+   "value": {
+    "value": 418.3,
+    "unit": "TFLOP/s"
+   },
+   "conditions": "Same shape, M=49152, hot L2, from 852.4 at M=8192",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/vllm-project/vllm/pull/38338",
+     "commit": "f0cee106a639f6b71194b98a5057a5a410973f01",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR table"
+  },
+  {
+   "id": "pr38338.hot",
+   "page": "home",
+   "shows": [
+    "1.38-3.04× CUTLASS up to batch 128",
+    "0.77-0.91× above"
+   ],
+   "means": "Ratio against CUTLASS, Llama QKV",
+   "value": {
+    "to_m128": [
+     1.38,
+     3.04
+    ],
+    "above": [
+     0.77,
+     0.91
+    ]
+   },
+   "conditions": "RTX 5090, N=6144, K=4096, GEMM only, hot L2. Cold L2 at M=1 to 128 is 1.33-1.79x",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/vllm-project/vllm/pull/38338",
+     "commit": "f0cee106a639f6b71194b98a5057a5a410973f01",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR text"
+  },
+  {
+   "id": "pr38338.b200",
+   "page": "home",
+   "shows": [
+    "about 0.27× across 4 Llama shapes on B200 from batch 1024"
+   ],
+   "means": "Ratio against CUTLASS on B200",
+   "value": {
+    "value": 0.27,
+    "unit": "x"
+   },
+   "conditions": "Geomean over four Llama-3.1-8B shapes, hot L2, from M=1024 up. Rows at lower M range 0.19-0.33. Not QKV alone, and no profile exists",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/vllm-project/vllm/pull/38338",
+     "commit": "f0cee106a639f6b71194b98a5057a5a410973f01",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR text and table"
+  },
+  {
+   "id": "pr1223.date",
+   "page": "home",
+   "shows": [
+    "Sep 27, 2026"
+   ],
+   "means": "Close date",
+   "value": "2026-09-27",
+   "conditions": "UTC. Closed by the author after #1239",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/1223",
+     "commit": "3de9ba6c625ec5a189a339ec1a5f4b3811ab7ffb",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR metadata"
+  },
+  {
+   "id": "pr1223.copy",
+   "page": "home",
+   "shows": [
+    "64/8 heads",
+    "128K KV cache",
+    "7.28 ms",
+    "6.0-6.7 ms"
+   ],
+   "means": "K/V copy time against the attention kernel",
+   "value": {
+    "copy_ms": 7.28,
+    "kernel_ms": [
+     6.01,
+     6.66
+    ]
+   },
+   "conditions": "A100, session B, d128, S_q=4, S_kv=131072, b=1. Develop kernel 6.01, PR kernel 6.66. Develop run was bimodal",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/1223",
+     "commit": "3de9ba6c625ec5a189a339ec1a5f4b3811ab7ffb",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR text"
+  },
+  {
+   "id": "pr1223.batched",
+   "page": "home",
+   "shows": [
+    "6 batched rows 2.6-3.3×"
+   ],
+   "means": "Batched speedup from removing copies",
+   "value": {
+    "range": [
+     2.6,
+     3.31
+    ],
+    "unit": "x",
+    "rows": 6
+   },
+   "conditions": "A100, S_q 2 and 8, S_kv=128K, b=32 and 128, one pass per side, 3 configs",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/1223",
+     "commit": "3de9ba6c625ec5a189a339ec1a5f4b3811ab7ffb",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR table"
+  },
+  {
+   "id": "pr1223.oom",
+   "page": "home",
+   "shows": [
+    "10 more"
+   ],
+   "means": "Rows that stopped running out of memory",
+   "value": 10,
+   "conditions": "Develop needs a 64 to 512 GiB expanded K/V workspace. 10 of 16 batched rows",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/1223",
+     "commit": "3de9ba6c625ec5a189a339ec1a5f4b3811ab7ffb",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched PR table"
+  },
+  {
+   "id": "pr1223.backend",
+   "page": "home",
+   "shows": [
+    "27 of 31"
+   ],
+   "means": "Multi-token rows where the cuDNN backend stayed faster",
+   "value": {
+    "n": 27,
+    "of": 31
+   },
+   "conditions": "Same table, PR ms against backend ms",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/1223",
+     "commit": "3de9ba6c625ec5a189a339ec1a5f4b3811ab7ffb",
+     "locator": "PR table",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Recounted from PR table"
+  },
+  {
+   "id": "rfc.date",
+   "page": "home",
+   "shows": [
+    "Sep 23, 2026"
+   ],
+   "means": "Comment date",
+   "value": "2026-09-23",
+   "conditions": "UTC. A comment on an RFC someone else wrote",
+   "source": [
+    {
+     "type": "comment",
+     "url": "https://github.com/vllm-project/vllm/issues/46295#issuecomment-5788867616",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched posted comment record"
+  },
+  {
+   "id": "rfc.oracle",
+   "page": "home",
+   "shows": [
+    "at most 1.8%",
+    "one H200"
+   ],
+   "means": "Per-workload oracle against the best static table",
+   "value": {
+    "value": 1.81,
+    "unit": "%"
+   },
+   "conditions": "Qwen3-30B-A3B, one H200, CPU ngram drafts, 2 synthetic workloads, offline batches, 3 repeats. 0.00 / 1.81 / 1.16 / 1.18% at B=1/4/16/64",
+   "source": [
+    {
+     "type": "comment",
+     "url": "https://github.com/vllm-project/vllm/issues/46295#issuecomment-5788867616",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched posted comment and report table"
+  },
+  {
+   "id": "rfc.mfu",
+   "page": "home",
+   "shows": [
+    "up to 3×"
+   ],
+   "means": "MFU byte model overcount of expert reads",
+   "value": {
+    "value": 3.05,
+    "unit": "x"
+   },
+   "conditions": "Worst cell: sonnet, K=0, B=16. About 2x pooled. 1.00, 1.45, 3.05, 2.10x across B=1/4/16/64",
+   "source": [
+    {
+     "type": "comment",
+     "url": "https://github.com/vllm-project/vllm/issues/46295#issuecomment-5788867616",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched report table"
+  },
+  {
+   "id": "bert.small",
+   "page": "home",
+   "shows": [
+    "bert .96",
+    "grep .92",
+    "full-context .90"
+   ],
+   "means": "Accuracy at the smaller memory",
+   "value": {
+    "bert": 0.96,
+    "grep": 0.92,
+    "full_context": 0.9
+   },
+   "conditions": "98,519-token corpus. Claude Sonnet reader via claude -p, 200K window, 1 run per question, 3-judge majority, synthetic corpus, 50 questions",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/benchmarks/M1_REPORT.md#L22",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "benchmarks/M1_REPORT.md",
+     "line": 22
+    }
+   ],
+   "checked": "Recomputed from rows_S.jsonl"
+  },
+  {
+   "id": "bert.large",
+   "page": "home",
+   "shows": [
+    "bert and grep .90",
+    "full-context .08",
+    "0.90bert",
+    "both scored 0.90",
+    "0.90"
+   ],
+   "means": "Accuracy at the larger memory",
+   "value": {
+    "bert": 0.9,
+    "grep": 0.9,
+    "full_context": 0.08
+   },
+   "conditions": "1,261,774-token corpus. bert 45/50, grep 44/49. Paired difference +0.020, CI [-0.08, +0.12], Holm p 1.0. Claude Sonnet reader via claude -p, 200K window, 1 run per question, 3-judge majority, synthetic corpus, 50 questions",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/benchmarks/M1_REPORT.md#L22",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "benchmarks/M1_REPORT.md",
+     "line": 22
+    }
+   ],
+   "checked": "Recomputed from rows_M.jsonl"
+  },
+  {
+   "id": "bert.fullctx",
+   "page": "home",
+   "shows": [
+    "fell to 0.08"
+   ],
+   "means": "Full context at the larger memory",
+   "value": 0.08,
+   "conditions": "Reader capped at a 120K budget, so it keeps only about the newest 10%",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/benchmarks/M1_REPORT.md#L60",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "benchmarks/M1_REPORT.md",
+     "line": 60
+    }
+   ],
+   "checked": "Recomputed from rows_M.jsonl"
+  },
+  {
+   "id": "bert.corpus",
+   "page": "home",
+   "shows": [
+    "1.26M-token",
+    "200K window",
+    "200K reader",
+    "about 6×"
+   ],
+   "means": "Memory size against reader window",
+   "value": {
+    "corpus_tokens": 1261774,
+    "window": 200000,
+    "ratio": 6.3
+   },
+   "conditions": "Synthetic project memory",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/benchmarks/M1_REPORT.md#L12",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "benchmarks/M1_REPORT.md",
+     "line": 12
+    }
+   ],
+   "checked": "Matched report and computed ratio"
+  },
+  {
+   "id": "bert.tokens",
+   "page": "home",
+   "shows": [
+    "median 1.46×"
+   ],
+   "means": "Grep tokens over bert tokens per question",
+   "value": {
+    "value": 1.46,
+    "unit": "x"
+   },
+   "conditions": "Paired per-question ratio, cache reads counted in full. Means 282K vs 149K, n=49. Grep higher on 86%",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/README.md#L49",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "README.md",
+     "line": 49
+    }
+   ],
+   "checked": "Matched README and derived output"
+  },
+  {
+   "id": "bert.code",
+   "page": "home",
+   "shows": [
+    "0.97 to 0.86"
+   ],
+   "means": "Code questions, grep against bert over MCP",
+   "value": {
+    "grep": 0.968,
+    "bert": 0.855
+   },
+   "conditions": "n=249, Claude reader, AST-derived gold, 21 judge-graded. Grep 70,537 tokens, bert 149,648",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/benchmarks/RETRIEVAL_BENCHMARK.md#L59",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "benchmarks/RETRIEVAL_BENCHMARK.md",
+     "line": 59
+    }
+   ],
+   "checked": "Matched report"
+  },
+  {
+   "id": "bert.bug",
+   "page": "home",
+   "shows": [
+    "0.10 → 0.85",
+    "from 0.10 to 0.85"
+   ],
+   "means": "Held-out eval before and after the retriever fix",
+   "value": {
+    "before": 0.1,
+    "after": 0.85
+   },
+   "conditions": "n=20, 131K-token httpx and starlette corpus, llama-3.3-70b reader, non-Claude grader. Directional, no significance test",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/benchmarks/results/B9_RAG_RESULT.md#L29",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "benchmarks/results/B9_RAG_RESULT.md",
+     "line": 29
+    }
+   ],
+   "checked": "Recomputed from pilot and final JSON"
+  },
+  {
+   "id": "bert.cap",
+   "page": "home",
+   "shows": [
+    "240-character"
+   ],
+   "means": "Snippet cap in the buggy path",
+   "value": {
+    "value": 240,
+    "unit": "chars"
+   },
+   "conditions": "core/retrieval.py before the fix",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/README.md#L53",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "README.md",
+     "line": 53
+    }
+   ],
+   "checked": "Matched README"
+  },
+  {
+   "id": "bert.beir",
+   "page": "home",
+   "shows": [
+    "0.745",
+    "0.740"
+   ],
+   "means": "nDCG@10 on BEIR scifact",
+   "value": {
+    "full_stack": 0.745,
+    "dense": 0.74
+   },
+   "conditions": "18 GB Mac, MPS. CIs overlap: 0.745 [0.707, 0.783], 0.740 [0.696, 0.779]",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/benchmarks/results/B2_BEIR_MULTI_RESULT.md#L14",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "benchmarks/results/B2_BEIR_MULTI_RESULT.md",
+     "line": 14
+    }
+   ],
+   "checked": "Matched result file"
+  },
+  {
+   "id": "bert.bm25",
+   "page": "home",
+   "shows": [
+    "0.658"
+   ],
+   "means": "BM25 alone on scifact",
+   "value": 0.658,
+   "conditions": "Own BM25 implementation. Published BM25 is 0.665",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/benchmarks/results/B2_BEIR_MULTI_RESULT.md#L12",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "benchmarks/results/B2_BEIR_MULTI_RESULT.md",
+     "line": 12
+    }
+   ],
+   "checked": "Matched result file"
+  },
+  {
+   "id": "bert.datasets",
+   "page": "home",
+   "shows": [
+    "Three public BEIR"
+   ],
+   "means": "BEIR datasets used",
+   "value": 3,
+   "conditions": "scifact, nfcorpus, fiqa",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/README.md#L58",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "README.md",
+     "line": 58
+    }
+   ],
+   "checked": "Matched README"
+  },
+  {
+   "id": "bert.multi",
+   "page": "home",
+   "shows": [
+    "0.86",
+    "against 0.66",
+    "0.97"
+   ],
+   "means": "Multi-turn MCP against one-shot, and grep",
+   "value": {
+    "multi_turn": 0.855,
+    "one_shot": 0.663,
+    "grep": 0.968
+   },
+   "conditions": "Same retriever, paired, p<0.001, n=249",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/bert/blob/4f276bea2166c5babdd408a1edb1d4b35fa6e25a/benchmarks/RETRIEVAL_BENCHMARK.md#L61",
+     "commit": "4f276bea2166c5babdd408a1edb1d4b35fa6e25a",
+     "path": "benchmarks/RETRIEVAL_BENCHMARK.md",
+     "line": 61
+    }
+   ],
+   "checked": "Matched report"
+  },
+  {
+   "id": "tri.shapes",
+   "page": "home",
+   "shows": [
+    "76 LLM-shaped",
+    "76 shapes",
+    "across 76"
+   ],
+   "means": "LLM-shaped GEMMs benchmarked",
+   "value": 76,
+   "conditions": "Per dtype, 152 cells in all",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/README.md#L5",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "README.md",
+     "line": 5
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "tri.best",
+   "page": "home",
+   "shows": [
+    "1.73×",
+    "M=128, N=11008, K=4096",
+    "1.00×"
+   ],
+   "means": "Fused against unfused on the best shape",
+   "value": {
+    "value": 1.731,
+    "unit": "x"
+   },
+   "conditions": "fp16, fused 76.9 us, baseline 133.2 us. Best of 152 cells. A100-SXM4-80GB. Baseline is cuBLAS GEMM plus separate bias and GeLU, PyTorch eager",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/README.md#L11",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "README.md",
+     "line": 11
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "tri.bf16",
+   "page": "home",
+   "shows": [
+    "1.28×"
+   ],
+   "means": "Same shape in bf16",
+   "value": {
+    "value": 1.282,
+    "unit": "x"
+   },
+   "conditions": "Fused 74.9 us, baseline 96.0 us. A100-SXM4-80GB. Baseline is cuBLAS GEMM plus separate bias and GeLU, PyTorch eager",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/README.md#L27",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "README.md",
+     "line": 27
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "tri.median",
+   "page": "home",
+   "shows": [
+    "Median 0.96×",
+    "Median across 76 shapes is 0.96×"
+   ],
+   "means": "Median fused against unfused",
+   "value": {
+    "value": 0.962,
+    "unit": "x"
+   },
+   "conditions": "fp16, 76 shapes. A100-SXM4-80GB. Baseline is cuBLAS GEMM plus separate bias and GeLU, PyTorch eager",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/README.md#L16",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "README.md",
+     "line": 16
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "tri.faster",
+   "page": "home",
+   "shows": [
+    "27 faster",
+    "14 of 45 at M≤512",
+    "13 of 31 at M≥1024"
+   ],
+   "means": "Shapes where fused is faster",
+   "value": {
+    "total": 27,
+    "small_m": [
+     14,
+     45
+    ],
+    "large_m": [
+     13,
+     31
+    ]
+   },
+   "conditions": "fp16. A100-SXM4-80GB. Baseline is cuBLAS GEMM plus separate bias and GeLU, PyTorch eager",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/data/llm_rect_linear_bias_bench_NVIDIA_A100-SXM4-80GB_2026-01-15_22-31-08.csv#L1",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "data/llm_rect_linear_bias_bench_NVIDIA_A100-SXM4-80GB_2026-01-15_22-31-08.csv",
+     "line": 1
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "tri.peak",
+   "page": "home",
+   "shows": [
+    "213 TFLOP/s",
+    "213",
+    "68%"
+   ],
+   "means": "Bare autotuned GEMM peak",
+   "value": {
+    "value": 213.4,
+    "unit": "TFLOP/s",
+    "share_of_peak": 0.68
+   },
+   "conditions": "fp16 at 1024x32768x8192. Peak is 312 TFLOP/s for A100 fp16 tensor cores",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/README.md#L12",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "README.md",
+     "line": 12
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "tri.cublas",
+   "page": "home",
+   "shows": [
+    "about 82%"
+   ],
+   "means": "cuBLAS best share of peak",
+   "value": {
+    "value": 82,
+    "unit": "%"
+   },
+   "conditions": "fp16, 256.0 TFLOP/s at 2048x5120x20480 over 312",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/data/gemm_llm_rect_bench_2026-01-13_01-01-18.csv#L270",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "data/gemm_llm_rect_bench_2026-01-13_01-01-18.csv",
+     "line": 270
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "tri.trials",
+   "page": "home",
+   "shows": [
+    "median of 10 trial means"
+   ],
+   "means": "Timing per point",
+   "value": 10,
+   "conditions": "Each trial is the mean of 120 to 2000 calls by size. p50 across 10 trials. p90 over p50 is spread across trials, not per-call tail latency",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/src/utils.py#L64",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "src/utils.py",
+     "line": 64
+    }
+   ],
+   "checked": "Read the timing code and the CSV trials column"
+  },
+  {
+   "id": "tri.bare",
+   "page": "home",
+   "shows": [
+    "1.38×"
+   ],
+   "means": "Bare Triton on the best shape",
+   "value": {
+    "value": 1.378,
+    "unit": "x"
+   },
+   "conditions": "fp16, cuBLAS 108.0 us, Triton 78.4 us",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/data/gemm_llm_rect_bench_2026-01-13_01-01-18.csv#L18",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "data/gemm_llm_rect_bench_2026-01-13_01-01-18.csv",
+     "line": 18
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "tri.lift",
+   "page": "home",
+   "shows": [
+    "about 1.25×"
+   ],
+   "means": "Fusion's own lift on that shape",
+   "value": {
+    "value": 1.256,
+    "unit": "x"
+   },
+   "conditions": "1.731 / 1.378",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/data/gemm_llm_rect_bench_2026-01-13_01-01-18.csv#L19",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "data/gemm_llm_rect_bench_2026-01-13_01-01-18.csv",
+     "line": 19
+    }
+   ],
+   "checked": "Recomputed"
+  },
+  {
+   "id": "tri.ridge",
+   "page": "home",
+   "shows": [
+    "10 of 30",
+    "42 of 122"
+   ],
+   "means": "Cells where fused is faster, either side of the roofline ridge",
+   "value": {
+    "left": [
+     10,
+     30
+    ],
+    "right": [
+     42,
+     122
+    ]
+   },
+   "conditions": "GELU, both dtypes, Fisher p=1.0. Ridge at 153 FLOP/byte",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/README.md#L27",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "README.md",
+     "line": 27
+    }
+   ],
+   "checked": "Matched README and recount output"
+  },
+  {
+   "id": "tri.bytes",
+   "page": "home",
+   "shows": [
+    "about 10%"
+   ],
+   "means": "Share of the time gap that saved bytes could explain",
+   "value": {
+    "value": 9.8,
+    "unit": "%"
+   },
+   "conditions": "11.27 MB at peak HBM is 5.5 us of a 56.3 us gap. From bytes_model.py, not counters",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/README.md#L27",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "README.md",
+     "line": 27
+    }
+   ],
+   "checked": "Recomputed: 5.5 / 56.3"
+  },
+  {
+   "id": "tri.launches",
+   "page": "home",
+   "shows": [
+    "At least 3 kernel"
+   ],
+   "means": "Launches in the unfused path",
+   "value": 3,
+   "conditions": "GEMM, bias, activation",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks/blob/c2bc3800c953450c2f6a080d89afe5f9aeee17e4/README.md#L5",
+     "commit": "c2bc3800c953450c2f6a080d89afe5f9aeee17e4",
+     "path": "README.md",
+     "line": 5
+    }
+   ],
+   "checked": "Read the bytes model"
+  },
+  {
+   "id": "sec.speed",
+   "page": "home",
+   "shows": [
+    "58-153 tokens/s",
+    "11-40%"
+   ],
+   "means": "gpt-oss-120b decode speed",
+   "value": {
+    "range": [
+     57.9,
+     152.5
+    ],
+    "unit": "tok/s",
+    "experts_on_gpu": [
+     0.11,
+     0.4
+    ]
+   },
+   "conditions": "RTX 5090, mean speed, 30 problems, 256 tokens, batch 1. 153 is the faster-memory host. Stock clock is 58-134",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/tab_grid.tex#L20",
+     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
+     "path": "paper/tab_grid.tex",
+     "line": 20
+    }
+   ],
+   "checked": "Recomputed from the paper table"
+  },
+  {
+   "id": "sec.limit",
+   "page": "home",
+   "shows": [
+    "25 consumer machines",
+    "31-54%"
+   ],
+   "means": "Cache speed as a share of the machine limit",
+   "value": {
+    "range": [
+     31,
+     54
+    ],
+    "median": 47,
+    "machines": 25
+   },
+   "conditions": "gpt-oss C=14. Limit from Belady's MIN and probed read rates. 5 unstable rentals excluded",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/wsg_decomp.tex#L46",
+     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
+     "path": "paper/wsg_decomp.tex",
+     "line": 46
+    }
+   ],
+   "checked": "Matched paper macro and recheck output"
+  },
+  {
+   "id": "sec.vs_ft",
+   "page": "home",
+   "shows": [
+    "11 of 12"
+   ],
+   "means": "Configurations faster than FreeToken",
+   "value": {
+    "n": 11,
+    "of": 12,
+    "range": [
+     0.97,
+     1.29
+    ]
+   },
+   "conditions": "2 RTX 5090 hosts, 6 cells each, 30 problems per cell. The one loss is Qwen3 43.75% on host S at 0.97x",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/tab_grid.tex#L31",
+     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
+     "path": "paper/tab_grid.tex",
+     "line": 31
+    }
+   ],
+   "checked": "Recomputed from the paper table"
+  },
+  {
+   "id": "lab.memory",
+   "page": "home",
+   "shows": [
+    "18 GB"
+   ],
+   "means": "Machine memory",
+   "value": {
+    "value": 18,
+    "unit": "GB"
+   },
+   "conditions": "MacBook Pro M3 Pro, unified memory",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/agi-lab-framework/blob/ea49da3ba113564c79d04cbb375a3464993b6ca1/README.md#L3",
+     "commit": "ea49da3ba113564c79d04cbb375a3464993b6ca1",
+     "path": "README.md",
+     "line": 3
+    }
+   ],
+   "checked": "Matched README"
+  },
+  {
+   "id": "lab.gate",
+   "page": "home",
+   "shows": [
+    "0 of 270"
+   ],
+   "means": "Sessions where the old gate ran, of those eligible",
+   "value": {
+    "ran": 0,
+    "eligible": 270,
+    "logs": 763
+   },
+   "conditions": "String counts over 763 runner logs. Per-session CSV is public, log text is not",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/agi-lab-framework/blob/ea49da3ba113564c79d04cbb375a3464993b6ca1/audits/gate_audit_sessions.csv#L1",
+     "commit": "ea49da3ba113564c79d04cbb375a3464993b6ca1",
+     "path": "audits/gate_audit_sessions.csv",
+     "line": 1
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "srv.graphs",
+   "page": "home",
+   "shows": [
+    "31-34%"
+   ],
+   "means": "TPOT reduction with CUDA graphs",
+   "value": {
+    "range": [
+     31.1,
+     33.8
+    ],
+    "unit": "%"
+   },
+   "conditions": "Qwen2.5-7B, H100 NVL, vLLM. 4, 8 and 32 req/s. Gap 2.88-3.64 ms, (eager - on) / eager",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/llm-inference-benchmarking/blob/60917eb857fe9a48ab596e657139eb63c20d772f/README.md#L26",
+     "commit": "60917eb857fe9a48ab596e657139eb63c20d772f",
+     "path": "README.md",
+     "line": 26
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "srv.fp8",
+   "page": "home",
+   "shows": [
+    "27-36%"
+   ],
+   "means": "TPOT reduction with FP8",
+   "value": {
+    "range": [
+     26.9,
+     36.1
+    ],
+    "unit": "%"
+   },
+   "conditions": "Same setup, 4, 16, 64 req/s and burst. (fp16 - fp8) / fp16",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/llm-inference-benchmarking/blob/60917eb857fe9a48ab596e657139eb63c20d772f/README.md#L40",
+     "commit": "60917eb857fe9a48ab596e657139eb63c20d772f",
+     "path": "README.md",
+     "line": 40
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "srv.runs",
+   "page": "home",
+   "shows": [
+    "One run per rate"
+   ],
+   "means": "Repeats",
+   "value": 1,
+   "conditions": "About 200-275 requests per run, inferred. So p99 is the 2nd or 3rd worst request",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/llm-inference-benchmarking/blob/60917eb857fe9a48ab596e657139eb63c20d772f/README.md#L22",
+     "commit": "60917eb857fe9a48ab596e657139eb63c20d772f",
+     "path": "README.md",
+     "line": 22
+    }
+   ],
+   "checked": "Matched README"
+  },
+  {
+   "id": "obs.stages",
+   "page": "home",
+   "shows": [
+    "13-stage",
+    "13 stages"
+   ],
+   "means": "Pipeline stages",
+   "value": 13,
+   "conditions": "Numbered 1 to 13, plus sub-stages 4b and 7b",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/obsidian-engine/blob/0c50d92a8830870b75302a1b41a230ad71d3a342/README.md#L251",
+     "commit": "0c50d92a8830870b75302a1b41a230ad71d3a342",
+     "path": "README.md",
+     "line": 251
+    }
+   ],
+   "checked": "Matched README and runner"
+  },
+  {
+   "id": "jet.power",
+   "page": "home",
+   "shows": [
+    "15 W"
+   ],
+   "means": "Power mode",
+   "value": {
+    "value": 15,
+    "unit": "W"
+   },
+   "conditions": "Jetson Orin Nano, stamped into every row of bench.csv",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/edge-llm-gpu-profiling/blob/b1b796490e7de80a2babfa9189b6fc06eeeb9362/README.md#L33",
+     "commit": "b1b796490e7de80a2babfa9189b6fc06eeeb9362",
+     "path": "README.md",
+     "line": 33
+    }
+   ],
+   "checked": "Matched README and CSV"
+  },
+  {
+   "id": "jet.fused",
+   "page": "home",
+   "shows": [
+    "5.55× at S=1024",
+    "5.55×"
+   ],
+   "means": "Fused SDPA against manual matmul and softmax",
+   "value": {
+    "value": 5.55,
+    "unit": "x"
+   },
+   "conditions": "B=1, H=8, S=1024, D=64, fp16, p50 latency. 2.61 ms against 0.47 ms",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/edge-llm-gpu-profiling/blob/b1b796490e7de80a2babfa9189b6fc06eeeb9362/results/raw_csv/attn_compare.csv#L10",
+     "commit": "b1b796490e7de80a2babfa9189b6fc06eeeb9362",
+     "path": "results/raw_csv/attn_compare.csv",
+     "line": 10
+    }
+   ],
+   "checked": "Recomputed from the CSV"
+  },
+  {
+   "id": "ml.gain",
+   "page": "home",
+   "shows": [
+    "3.2%"
+   ],
+   "means": "End-to-end training time improvement",
+   "value": {
+    "value": 3.2,
+    "unit": "%"
+   },
+   "conditions": "15.53 s to 15.04 s, a 0.49 s gain, from the report table",
+   "source": [
+    {
+     "type": "not_public",
+     "note": "ECE 759 course report. Not in the public repo"
+    }
+   ],
+   "checked": "Recomputed from the report table"
+  },
+  {
+   "id": "ml.team",
+   "page": "home",
+   "shows": [
+    "Team of 4"
+   ],
+   "means": "Authors",
+   "value": 4,
+   "conditions": "Ivaturi, Nagendra, Kantamneni, Avvaru",
+   "source": [
+    {
+     "type": "not_public",
+     "note": "ECE 759 course report byline"
+    }
+   ],
+   "checked": "Matched report byline"
+  },
+  {
+   "id": "gem5.team",
+   "page": "home",
+   "shows": [
+    "Team of 3"
+   ],
+   "means": "Authors",
+   "value": 3,
+   "conditions": "Lyu, Kantamneni, Ryu. Kantamneni built the gem5 GPUFS environment and HIP benchmark suite. Parameter tuning was a teammate's",
+   "source": [
+    {
+     "type": "not_public",
+     "note": "ECE 752 final report, contributions section. Not public"
+    }
+   ],
+   "checked": "Read the report byline and contributions section"
+  },
+  {
+   "id": "cert.cuda",
+   "page": "home",
+   "shows": [
+    "Jul 2025"
+   ],
+   "means": "NVIDIA certificate date",
+   "value": "2025-07-14",
+   "conditions": "Accelerated Computing in Modern CUDA C++",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "path": "site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
+     "note": "Issue date on the certificate"
+    }
+   ],
+   "checked": "Read the PDF"
+  },
+  {
+   "id": "cert.llm",
+   "page": "home",
+   "shows": [
+    "Feb 2026"
+   ],
+   "means": "NVIDIA certificate date",
+   "value": "2026-02-02",
+   "conditions": "The Art of Compressing LLMs",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "path": "site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
+     "note": "Issue date on the certificate"
+    }
+   ],
+   "checked": "Read the PDF"
+  },
+  {
+   "id": "writing.dates",
+   "page": "home",
+   "shows": [
+    "May 2026"
+   ],
+   "means": "Publication month of the 4 pieces",
+   "value": "2026-05",
+   "conditions": "Dates printed on each page",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/reports",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "path": "site/reports",
+     "note": "Dated on each page"
+    }
+   ],
+   "checked": "Read the pages"
+  },
+  {
+   "id": "writing.cycles",
+   "page": "home",
+   "shows": [
+    "100+ autonomous cycles",
+    "100+ cycles",
+    "100+ discrete cycles",
+    "in those 100 cycles",
+    "around 100 cycles"
+   ],
+   "means": "Cycles behind the verification report",
+   "value": {
+    "value": 100,
+    "qualifier": "over"
+   },
+   "conditions": "One operator, one MacBook, about 2 months",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "path": "site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "note": "Published paper"
+    }
+   ],
+   "checked": "Matched the paper only"
+  },
+  {
+   "id": "note.judges",
+   "page": "home",
+   "shows": [
+    "four Claude instances",
+    "four separate Claude Opus",
+    "4 of 4"
+   ],
+   "means": "Reviewers in the ratification gate",
+   "value": 4,
+   "conditions": "Chief architect, CPO, red team, applied researcher",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/notes/llm-judge-bias/index.html",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "path": "site/notes/llm-judge-bias/index.html",
+     "note": "Published note"
+    }
+   ],
+   "checked": "Matched the note only"
+  },
+  {
+   "id": "note.savings",
+   "page": "notes/tier-per-task",
+   "shows": [
+    "2-3x",
+    "6-9x"
+   ],
+   "means": "Estimated cost reduction from tiering",
+   "value": {
+    "estimate": [
+     2,
+     3
+    ],
+    "first_pass": [
+     6,
+     9
+    ]
+   },
+   "conditions": "An estimate. 70 sessions before, 2 after",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/notes/tier-per-task/index.html",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "path": "site/notes/tier-per-task/index.html",
+     "note": "Published note"
+    }
+   ],
+   "checked": "Matched the note and the cost analysis"
+  },
+  {
+   "id": "below.design",
+   "page": "reports/below-the-measurement-floor-a-pre-registered-dense-vs-moe-null-at-sub-100m-active-parameters",
+   "shows": [
+    "34.7M",
+    "62.99M",
+    "5000 steps",
+    "10.24M tokens",
+    "12 models"
+   ],
+   "means": "Dense-vs-MoE design",
+   "value": {
+    "dense_params": 34700000.0,
+    "moe_total": 62990000.0,
+    "moe_active": 34700000.0,
+    "steps": 5000,
+    "tokens_per_arm": 10240000.0,
+    "models": 12
+   },
+   "conditions": "One M3 Pro 18 GB laptop, 2.56M tokens per expert at k=2, K=8",
+   "source": [
+    {
+     "type": "not_public",
+     "note": "Lab program files, not public"
+    }
+   ],
+   "checked": "All 206 numbers on the page checked against the paper draft, closure memo and pre-registration"
+  },
+  {
+   "id": "below.verdict",
+   "page": "reports/below-the-measurement-floor-a-pre-registered-dense-vs-moe-null-at-sub-100m-active-parameters",
+   "shows": [
+    "0.6314pp",
+    "prior of 0.17"
+   ],
+   "means": "Largest per-pair difference, and the prior on the verdict",
+   "value": {
+    "max_delta_pp": 0.6314,
+    "prior_o4": 0.17
+   },
+   "conditions": "18-cell evaluable matrix, against a 4pp decision threshold. O4 pre-registered with prior 0.17",
+   "source": [
+    {
+     "type": "not_public",
+     "note": "Lab program files, not public"
+    }
+   ],
+   "checked": "Matched paper draft and closure memo"
+  },
+  {
+   "id": "rvsc.streaks",
+   "page": "reports/recursive-verification-surface-collapse",
+   "shows": [
+    "1,688 tests",
+    "32 consecutive",
+    "7 consecutive",
+    "9 consecutive",
+    "17 cycles"
+   ],
+   "means": "Streaks and counts in the case study",
+   "value": {
+    "tests": 1688,
+    "perfect_cycles": 32,
+    "source_discipline_cycles": 7,
+    "build_streak": 9,
+    "ratification_cycles": 17
+   },
+   "conditions": "N=1, one operator, one model class, one MacBook, no control group",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "path": "site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "note": "Published paper"
+    }
+   ],
+   "checked": "Matched the paper. \"Cycle 96\" and \"cycle 130\" are on the page only"
+  }
+ ]
+}
