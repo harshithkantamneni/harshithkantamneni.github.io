@@ -86,7 +86,7 @@ export const WORK = {
     },
     {
       title: 'moe-kernels: a timing model of vLLM\'s fused MoE kernel', href: GH + 'moe-kernels/tree/gh200-analysis-2026-09-27', state: 'Public repo. Decode blind test failed',
-      blurb: 'Built a model that predicts each call\'s DRAM bytes and time from the routing and the tile, and tested it by freezing predictions before each GH200 rental. Model v3's time predictions held on one [[mk.v3|32×64×64]] test tile, at [[mk.v3|0.51-0.69%]] rms on [[mk.v3|3 models]], while its byte predictions missed by [[mk.v3|11.76%]] rms on OLMoE's first wave. The decode blind test failed: [[mk.decode|11.4%]] rms pooled over [[mk.decode|5 models unseen in decode]], against a [[mk.decode|1.5%]] bar. No model is blind-certified on vLLM\'s own tiles yet.',
+      blurb: 'Built a model that predicts each call\'s DRAM bytes and time from the routing and the tile, and tested it by freezing predictions before each GH200 rental. Model v3\'s time predictions held on one [[mk.v3|32×64×64]] test tile, at [[mk.v3|0.51-0.69%]] rms on [[mk.v3|3 models]], while its byte predictions missed by [[mk.v3|11.76%]] rms on OLMoE\'s first wave. The decode blind test failed: [[mk.decode|11.4%]] rms pooled over [[mk.decode|5 models unseen in decode]], against a [[mk.decode|1.5%]] bar. No model is blind-certified on vLLM\'s own tiles yet.',
     },
     {
       title: 'TransformerEngine #3591: grouped NVFP4 dequantization', href: prUrl('te3591'), pr: 'te3591',
@@ -104,7 +104,7 @@ export const WORK = {
     },
     {
       title: 'vLLM RFC #46295: speculative decoding on MoE', href: 'https://github.com/vllm-project/vllm/issues/46295#issuecomment-5788867616', state: 'Comment on someone else\'s RFC',
-      blurb: 'On [[rfc.oracle|one H200]] with CPU ngram drafts, offline and synthetic, a per-workload oracle improved on the best static batch-size table by [[rfc.oracle|at most 1.8%]]. vLLM\'s MFU byte model overcounted expert reads, [[rfc.mfu|up to 3×]] in the worst cell. It's one model, and I built no controller.',
+      blurb: 'On [[rfc.oracle|one H200]] with CPU ngram drafts, offline and synthetic, a per-workload oracle improved on the best static batch-size table by [[rfc.oracle|at most 1.8%]]. vLLM\'s MFU byte model overcounted expert reads, [[rfc.mfu|up to 3×]] in the worst cell. It\'s one model, and I built no controller.',
     },
     {
       title: 'flash-linear-attention #1412: KV-cache decoding', href: '/work/stick-breaking-kernels/', state: 'Merged Oct 27, also in Kernels',
