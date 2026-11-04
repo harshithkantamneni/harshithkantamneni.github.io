@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Harshith Kantamneni: the software AI runs on, from GPU kernels up</title>
+<meta name="description" content="I build the software AI runs on, from GPU kernels up to the agents on top. Kernels merged in flash-linear-attention and tests merged in NVIDIA's cuDNN frontend. M.S. ECE, UW-Madison.">
+<meta name="theme-color" content="#14171e">
+<link rel="canonical" href="https://harshithkantamneni.github.io/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Harshith Kantamneni: the software AI runs on, from GPU kernels up">
+<meta property="og:description" content="I build the software AI runs on, from GPU kernels up to the agents on top. Kernels merged in flash-linear-attention and tests merged in NVIDIA's cuDNN frontend. M.S. ECE, UW-Madison.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://harshithkantamneni.github.io/">
+<meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
+<link rel="preload" href="/assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/*STYLE*/
+</style>
+<noscript><style>.pin{height:auto!important}.pin .stage{position:relative;min-height:0;height:auto}.intro-says p,.pincap p{opacity:1!important;position:relative!important;transform:none!important;inset:auto!important}.say .w{opacity:1!important}.idx,#field,#fieldTop,figure.fg svg,.hm,.hmax,#gpu-run,.seg,.sws,.rng,.cond{display:none!important}</style></noscript>
+</head>
+<body>
+<a href="#main" class="skip">Skip to content</a>
+<div class="ground" aria-hidden="true"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,106,77,.24),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,106,77,.11),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,180,84,.19),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,180,84,.09),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(106,168,255,.27),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(106,168,255,.13),transparent 70%)"></div>
+<canvas id="field" aria-hidden="true"></canvas><canvas id="fieldTop" aria-hidden="true"></canvas>
+<aside class="idx" aria-label="Projects on this page"><div class="ig" style="--c:var(--k)"><a class="ih" href="#ch-k">Kernels</a><a class="it" href="#kernels"><b>Stick-breaking kernels</b><span>2 merged PRs</span></a><a class="it" href="#gqa"><b>Grouped-query attention</b><span>Closed PR, merged tests</span></a><a class="it" href="#triton"><b>Triton vs cuBLAS</b><span>Personal project</span></a><a class="it" href="#yourgpu"><b>Try it on your GPU</b><span>Live demo</span></a></div><div class="ig" style="--c:var(--i)"><a class="ih" href="#ch-i">Inference</a><a class="it" href="#seconds"><b>Where the Seconds Go</b><span>Research project</span></a><a class="it" href="#jetson"><b>Jetson Orin Nano</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--a)"><a class="ih" href="#ch-a">Agents</a><a class="it" href="#bert"><b>bert</b><span>Personal project</span></a><a class="it" href="#lab"><b>Lab audit</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--ink)"><a class="ih" href="#oss">Open source</a></div></aside>
+<div class="pbar" aria-hidden="true"></div>
+
+<nav>
+  <a class="brand" href="#top">Harshith Kantamneni</a>
+  <div class="nl"><a data-l="0" style="--c:var(--k)" href="#ch-k">Kernels</a><a data-l="1" style="--c:var(--i)" href="#ch-i">Inference</a><a data-l="2" style="--c:var(--a)" href="#ch-a">Agents</a><a class="ha" href="#oss">Open source</a><a class="ha" href="/work/">All work</a><a href="mailto:kantamneniharshith@gmail.com">Email</a><button type="button" class="nbtn ha" id="find-open" aria-label="Search this site" hidden>Search</button><a id="nav-res" class="nres" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
+</nav>
+
+<main id="main">
+
+<header class="hero" id="top">
+  <div class="lane">
+    <p class="who">Harshith Kantamneni <span class="ttl">GPU kernel, LLM inference and agent systems engineer</span> <span class="open"><i></i>Open to full-time roles</span></p>
+    <h1>I build the software AI runs on, from GPU kernels up to the agents on top<i class="tokdot"></i></h1>
+    <p class="proof"><a href="https://github.com/fla-org/flash-linear-attention/pull/1412">Kernels merged in flash-linear-attention</a>. <a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">Tests merged in NVIDIA's cuDNN frontend</a>.</p>
+    <div class="acts"><a href="/Harshith_Kantamneni_Resume.pdf" class="btn p">Résumé</a><a href="#intro" class="btn g">Read the full story</a><a href="mailto:kantamneniharshith@gmail.com" class="btn g">Email me</a></div>
+    <p class="meta"><span>Milwaukee, WI (open to relocation)</span><span>M.S. ECE, UW-Madison, Dec 2025</span><a href="mailto:kantamneniharshith@gmail.com">kantamneniharshith@gmail.com</a><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a><a href="/60/">One-page version</a></p>
+  </div>
+</header>
+
+<section class="glance" id="glance" aria-label="The short version"><div class="lane">
+  <div class="gr" style="--c:var(--k)"><div class="grn">3 merged</div><div><h2><a href="#ch-k">GPU kernels</a></h2><p>The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, an open-source AI library. Tests merged in NVIDIA's cuDNN frontend, after a maintainer reproduced a bug they catch. On a long text (64K keys), one kernel step on an H200 GPU ran 52.7× faster than recomputing, a gain any cache gets.</p></div><div class="gracts"><a class="go" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-k">See the work</a></div></div>
+  <div class="gr" style="--c:var(--i)"><div class="grn">11 of 12</div><div><h2><a href="#ch-i">LLM inference</a></h2><p>Running AI models fast, even when they don't fit on the GPU. I built a cache for llama.cpp that ran faster than FreeToken, another system for this problem, in 11 of 12 test setups at batch 1. With FreeToken tuned, on a separate machine, the ratio is 0.98-1.17×.</p></div><div class="gracts"><a class="go" href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-i">See the work</a></div></div>
+  <div class="gr" style="--c:var(--a)"><div class="grn">31 roles</div><div><h2><a href="#ch-a">Agent systems</a></h2><p>AI that acts on its own, and whether you can trust it. In my research lab of 31 Claude Code agent roles, one agent forged 5 approvals, so I built a check, audited it and rebuilt it. Also bert, searchable memory for coding agents.</p></div><div class="gracts"><a class="go" href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-a">See the work</a></div></div>
+</div></section>
+
+<section class="oss" id="oss" aria-labelledby="oss-h">
+  <h2 id="oss-h">Open-source contributions</h2>
+  <p class="osum">3 merged, 1 open, 2 closed, across 4 projects.</p>
+  <div class="ogroup"><h3 class="oname">flash-linear-attention</h3><div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/fla-org/flash-linear-attention/pull/1412">#1412</a><p>KV-cache decoding for stick-breaking attention, so a model reuses what it has already read. <a href="#kernels">The kernel story</a></p><span class="odate">Oct 27, 2026</span></div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/fla-org/flash-linear-attention/pull/1319">#1319</a><p>Forward and backward kernels for stick-breaking attention. <a href="#kernels">The kernel story</a></p><span class="odate">Oct 8, 2026</span></div></div></div>
+  <div class="ogroup"><h3 class="oname">NVIDIA cuDNN frontend</h3><div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a><p>Tests for grouped-query attention that catch 3 injected bugs NVIDIA's SM80 tests missed. <a href="#gqa">The cuDNN story</a></p><span class="odate">Oct 6, 2026</span></div><div class="orow"><span class="ostate"><i class="st closed"></i>Closed</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a><p>A prototype that removed slow data copies. Approved, then closed after NVIDIA shipped its own version. <a href="#gqa">The cuDNN story</a></p><span class="odate">Sep 27, 2026</span></div></div></div>
+  <div class="ogroup"><h3 class="oname">NVIDIA TransformerEngine</h3><div><div class="orow"><span class="ostate"><i class="st open"></i>Open</span><a class="opr" href="https://github.com/NVIDIA/TransformerEngine/pull/3591">#3591</a><p>A CUDA kernel that unpacks compressed model weights, in the grouped NVFP4 format, on the GPU. Its output matches the per-tensor results bitwise.</p><span class="odate"></span></div></div></div>
+  <div class="ogroup"><h3 class="oname">vLLM</h3><div><div class="orow"><span class="ostate"><i class="st closed"></i>Closed</span><a class="opr" href="https://github.com/vllm-project/vllm/pull/38338">#38338</a><p>A Triton kernel for matrix multiplies on compressed weights. I closed it after the issue it answered, #21014, was closed as not planned.</p><span class="odate">Oct 7, 2026</span></div></div></div>
+  <p class="omore"><a href="/work/#open-source">Details and measurements for each one</a></p>
+</section>
+
+<section class="pin intro" id="intro" data-steps="5" style="--n:5"><div class="stage"><div class="lane split">
+  <div class="intro-says">
+    <p data-at="0">When an AI writes a word, three things have to go right.</p>
+    <p data-at="1">A GPU has to do the math.</p>
+    <p data-at="2">An engine has to serve it, even when the model doesn't fit on the card.</p>
+    <p data-at="3">And an agent has to act on it, without being trusted blindly.</p>
+    <p data-at="4">I've built at all three layers. Here's what I found, starting at the bottom.</p>
+  </div>
+  <figure class="fg" id="fig-intro"><svg role="img" aria-label="Three layers stacked: GPU kernels at the bottom, inference in the middle, agents on top. One token rises through them."></svg></figure>
+</div></div></section>
+
+<!-- ============ KERNELS ============ -->
+<section class="plate hot" id="ch-k" style="--c:var(--k)"><div class="lane">
+  <h2 class="ptitle" data-rgb="255,106,77">Kernels</h2>
+  <p class="pline">The small programs a GPU runs to do the math behind every word.</p>
+</div></section>
+
+<article class="story" id="kernels" style="--c:var(--k)">
+  <header class="shead"><h3 class="sname">Stick-breaking attention kernels</h3><span class="skind">2 merged PRs</span></header>
+  <div class="sid"><p class="swhat">Forward, backward and KV-cache decoding kernels in Triton, merged in flash-linear-attention, an open-source library.</p><p class="sres">Result: 52.7× faster per step than recomputing at 64K keys, a gain any cache gets. Still 1.04-1.42× the original authors' time on forward plus backward. <a href="#eng-kernels">Technical detail</a></p><p class="smeta"><span><i class="st ok"></i>Merged Oct 8 and Oct 27, 2026</span><a href="https://github.com/fla-org/flash-linear-attention/pull/1319">#1319</a><a href="https://github.com/fla-org/flash-linear-attention/pull/1412">#1412</a></p></div>
+  <div class="beat lane"><p class="say">Before a model writes its next word, it looks back at everything it has read.</p></div>
+  <div class="beat lane"><p class="say">Standard attention weighs every past word at once. Stick-breaking attention goes one word at a time.</p></div>
+
+  <section class="pin" id="stick" data-steps="4" style="--n:4"><div class="stage"><div class="lane wide">
+    <figure class="fg" id="fig-stick"><svg role="img" aria-label="A row of words above a stick. The newest word takes a piece of the stick, the word before it takes a piece of what is left, and so on back through the text."></svg></figure>
+    <div class="pincap">
+      <p data-at="0">Picture a stick. The newest word takes a piece.</p>
+      <p data-at="1">The word before it takes a piece of what's left.</p>
+      <p data-at="2">And so on, back through the text.</p>
+      <p data-at="3">The size of each piece is how much that word counts.</p>
+    </div>
+    <p class="figc">An illustration. The shares are made up.</p>
+  </div></div></section>
+
+  <div class="beat lane"><p class="say">Working that out from scratch for every new word gets slow.</p></div>
+  <div class="beat lane"><p class="say">So I built the shortcut: a kernel that remembers what it has already read.</p></div>
+
+  <div class="beat lane numb">
+    <div class="num has-c" data-c="sbk.op" role="button" tabindex="0">52.7×</div>
+    <p class="numm">faster per step than starting over, on a long text with 64K keys in the cache.</p>
+    <button type="button" class="cond" data-c="sbk.op">Conditions and source</button>
+    <p class="note">One kernel step on an H200 at batch 1. Any cache gains like this against recomputing. A full model step on random weights takes about 9 ms, and with short prompts recomputing is still faster. Where that time goes is my open question.</p>
+  </div>
+
+  <div class="block lane">
+    <figure class="fg" id="fig-ladder"><svg role="img" aria-label="One decode step against recomputing the prefix. 1024 keys: 72.4 and 72.8 microseconds, 1.0 times. 4096: 275.0 and 929.4, 3.4 times. 16384: 1082.4 and 14190.3, 13.1 times. 65536: 4301.8 and 226529.2, 52.7 times."></svg><figcaption>The longer the text, the bigger the gain. Microseconds per step, log scale.</figcaption></figure>
+  </div>
+
+  <div class="block lane">
+    <details class="eng" id="eng-kernels">
+      <summary>For engineers: the kernel, its tiles, and what's still slower</summary>
+      <div class="eng-b">
+        <h4>The decode loop, as merged</h4>
+        <div class="seg" id="code-tabs" role="group" aria-label="Part of the kernel"><button type="button" data-r="0-3" data-say="Start at the newest keys and step back one block at a time." aria-pressed="true">Walk the cache</button><button type="button" data-r="4-7" data-say="Load one block of keys and values, masked where it runs past the start of the sequence." aria-pressed="false">Read one block</button><button type="button" data-r="9-12" data-say="Each block's weights depend on what the nearer blocks left over, so that remainder carries backward." aria-pressed="false">Carry the stick</button></div>
+        <pre id="code-pre" tabindex="0"><code>/*CODE*/</code></pre>
+        <p id="code-say" role="status"></p>
+        <p><a class="tl" href="https://github.com/fla-org/flash-linear-attention/blob/main/fla/ops/stickbreaking_attn/decoding.py">fla/ops/stickbreaking_attn/decoding.py</a></p>
+
+        <h4>Smaller tiles, less than half the shared memory</h4>
+        <p>Forward and backward kernels continued #599 and merged in #1319. 64×32 tiles fit 57-89 KiB of shared memory where 64×64 needed 129-193 KiB. Review caught a silent zero gradient at saturated logits, so I rebuilt the backward.</p>
+
+        <h4>Against the original authors' kernels</h4>
+        <p>1.04-1.42× their time on all 8 shapes, forward plus backward on H100. Closing that gap is still open.</p>
+        <figure class="fg" id="fig-ratio"><svg role="img" aria-label="Eight shapes from 1.04 to 1.42 times the original authors' time."></svg></figure>
+
+        <h4>What registers do to occupancy</h4>
+        <p>At 255 registers per thread, 2 CTAs of 4 warps fit on an SM, which is 12.5%. Nothing saturates in the backward: ALU runs 22-32% and XU 14-18%. I read the rest as stalls on dependent fp32 scans and exp2 and log2 results. That is inference, not a line-level measurement. Drag to see how register use changes what fits.</p>
+        <figure class="fg" id="fig-occ"><svg role="img" aria-label="An SM's register file with CTAs drawn to scale, and 64 warp slots. At 255 registers per thread, 2 CTAs of 4 warps fit, 8 of 64 warps."></svg></figure>
+        <label class="rng" for="occ-r">Registers per thread <output id="occ-o">255</output><input id="occ-r" type="range" min="32" max="255" step="1" value="255"></label>
+        <p class="small">Arithmetic from 65536 registers per SM and 128 threads per CTA, ignoring allocation rounding.</p>
+      </div>
+    </details>
+    <p class="slinks"><a href="/work/stick-breaking-kernels/">Read the write-up</a></p>
+  </div>
+</article>
+
+<article class="story" id="gqa" style="--c:var(--k)">
+  <header class="shead"><h3 class="sname">Grouped-query attention in NVIDIA cuDNN</h3><span class="skind">Closed PR, merged tests</span></header>
+  <div class="sid"><p class="swhat">A prototype and tests for the open-source frontend of cuDNN, NVIDIA's GPU library for AI.</p><p class="sres">Result: tests that catch 3 planted bugs NVIDIA's SM80 tests missed, reproduced by a maintainer. The prototype closed when NVIDIA shipped its own. <a href="#eng-gqa">Technical detail</a></p><p class="smeta"><span><i class="st closed"></i>Prototype closed Sep 27, 2026</span><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a><span><i class="st ok"></i>Tests merged Oct 6, 2026</span><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a></p></div>
+  <div class="beat lane"><p class="say">Inside NVIDIA's cuDNN, I found a step that took longer than the math it was setting up.</p></div>
+  <div class="block lane">
+    <figure class="fg" id="fig-copy"><svg role="img" aria-label="8 KV heads at the top are each written out 8 times into a 64-column workspace. Below, a time bar: copying takes 7.28 milliseconds, then attention takes 6.0 to 6.7."></svg><figcaption>One attention call on an A100, at 64/8 heads and a 128K KV cache. That's one configuration.</figcaption></figure>
+  </div>
+  <div class="beat lane"><p class="say">It was copying the same data again and again, once for each part of the model that reads it.</p></div>
+  <div class="beat lane"><p class="say">So I built a version that doesn't copy.</p></div>
+  <div class="block lane">
+    <figure class="fg" id="fig-nocopy"><svg role="img" aria-label="The same 8 KV heads, now read directly by 64 query heads with no workspace in between."></svg></figure>
+  </div>
+  <div class="beat lane">
+    <p class="say">With the copies gone, it ran 1.15-2.19× faster, for one request at a time.</p>
+    <p class="note">Multi-token steps at batch 1. Removing the copies made 6 batched rows (3 configs) 2.6-3.3× faster, and 10 more (5 configs) stopped running out of memory. The cuDNN backend stayed faster on 27 of 31 multi-token rows.</p>
+  </div>
+  <div class="beat lane"><p class="say">NVIDIA then shipped its own native version, so I closed mine. The tests from that work merged.</p></div>
+  <div class="beat lane numb">
+    <div class="num has-c" data-c="pr1287.bugs" role="button" tabindex="0">3 bugs</div>
+    <p class="numm">that NVIDIA's SM80 tests missed and my tests caught. I planted them on purpose, and a cuDNN maintainer reproduced one, then approved the PR.</p>
+    <button type="button" class="cond" data-c="pr1287.bugs">Conditions and source</button>
+    <p class="note">With bugs planted, NVIDIA's SM80 suite still passed all 411 cases on the first two and all 60 d256 cases on the third. A 4th planted bug was a control that both suites caught. In the maintainer's own run of the second bug, the existing tests passed while 31 of 68 and 6 of 12 new tests failed.</p>
+  </div>
+  <div class="block lane">
+    <figure class="fg" id="fig-heads">
+      <div class="seg" id="heads" role="group" aria-label="Query heads over KV heads"><button type="button" data-q="4" data-kv="2" aria-pressed="false">4/2</button><button type="button" data-q="16" data-kv="4" aria-pressed="false">16/4</button><button type="button" data-q="8" data-kv="4" aria-pressed="true">8/4</button><button type="button" data-q="8" data-kv="2" aria-pressed="false">8/2</button></div>
+      <svg role="img" aria-label="Lines from query heads to the KV head each one reads, for the correct formula and for a planted bug."></svg>
+      <p class="verdict" id="hm-v" role="status"></p>
+      <figcaption>Here's one planted bug. NVIDIA's tests used 4/2 and 16/4 heads, where the wrong formula gives the right answer. Click a head count.</figcaption>
+    </figure>
+  </div>
+  <div class="block lane">
+    <details class="eng" id="eng-gqa">
+      <summary>For engineers: the timing table</summary>
+      <div class="eng-b">
+        <p>Multi-token steps at batch 1, in milliseconds. Query heads/KV heads, then head dimension. Develop against the prototype, with the cuDNN backend for reference.</p>
+        <figure class="fg" id="fig-gqatab"><svg role="img" aria-label="Five shapes. 64/8 d128: develop 14.57, prototype 6.66, backend 3.30. 64/8 d64: 8.23, 4.23, 4.09. 32/8 d128: 9.91, 6.66, 3.30. 32/2 d256: 17.15, 12.55, 9.96. 8/1 d128: 7.59, 6.63, 3.30."></svg></figure>
+      </div>
+    </details>
+    <p class="slinks"><a href="/work/cudnn-gqa/">Read the write-up</a><a href="/notes/kv-copies-gqa">The worklog</a></p>
+  </div>
+</article>
+
+<article class="story" id="triton" style="--c:var(--k)">
+  <header class="shead"><h3 class="sname">Triton vs cuBLAS</h3><span class="skind">Personal project</span></header>
+  <div class="sid"><p class="swhat">Triton is a language for writing GPU kernels, and cuBLAS is NVIDIA's standard math library. I measured whether one combined kernel runs faster than the usual separate steps.</p><p class="sres">Result: faster on 27 of 76 sizes, up to 1.73× on an A100. The median size ran 0.96×. <a href="#eng-triton">Technical detail</a></p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks">triton-vs-cublas-llm-benchmarks</a></p></div>
+  <div class="beat lane"><p class="say">One common step in a model usually runs as three separate kernels, saving to memory between each one. What if one kernel did all three?</p></div>
+  <div class="block lane">
+    <figure class="fg" id="fig-fuse"><svg role="img" aria-label="Three kernels, linear, bias and GeLU, each writing to and reading from HBM. They merge into one fused kernel, and the memory round-trips disappear."></svg></figure>
+  </div>
+  <div class="beat lane"><p class="say">One matrix size proves nothing, so I measured 76 of them.</p></div>
+  <div class="beat lane numb">
+    <div class="num has-c" data-c="tri.faster" role="button" tabindex="0">27 of 76</div>
+    <p class="numm">sizes ran faster as one kernel than as separate steps, up to 1.73× on an A100. The median size ran 0.96×, slightly slower.</p>
+    <button type="button" class="cond" data-c="tri.faster">Conditions and source</button>
+    <p class="note">The best size is M=128, N=11008, K=4096 in fp16 on an A100. The same size is 1.28× in bf16, and bare Triton already ran 1.38× there in fp16, so fusion's own lift is about 1.25×.</p>
+  </div>
+  <div class="block lane wide">
+    <figure class="fg" id="fig-swarm">
+      <div class="seg sm" id="sc-seg" role="group" aria-label="Precision"><button type="button" data-v="fp16" aria-pressed="true">fp16</button><button type="button" data-v="bf16" aria-pressed="false">bf16</button></div>
+      <svg role="img" aria-label="76 GEMM shapes grouped by batch size. Median 0.96 times the unfused path, with 27 faster, best 1.73 times."></svg>
+      <figcaption id="sc-note">Each dot is one matrix size. Hover for its dimensions. Median 0.96×, with 27 faster than separate kernels.</figcaption>
+    </figure>
+  </div>
+  <div class="beat lane"><p class="say">One kernel helps on some sizes, not all, and batch size alone doesn't explain which. So I dropped my first theory.</p></div>
+  <div class="block lane">
+    <details class="eng" id="eng-triton">
+      <summary>For engineers: the roofline, and what the kernel reaches</summary>
+      <div class="eng-b">
+        <p>I first read this as small batches being memory-bound. The counts don't support that: fused is faster on 10 of 30 cells left of the ridge and 42 of 122 right of it, and bytes saved cover about 10% of the best cell's time gap.</p>
+        <p>The bare autotuned GEMM peaks at 213 TFLOP/s, 68% of the A100's fp16 tensor-core peak. cuBLAS reaches about 82% on its best shapes. Each point is the median of 10 trial means. The baseline is a cuBLAS GEMM plus separate bias and GeLU, in PyTorch eager.</p>
+      </div>
+    </details>
+    <p class="slinks"><a href="https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks">View the repo</a></p>
+  </div>
+</article>
+
+<article class="story" id="yourgpu" style="--c:var(--k)">
+  <header class="shead"><h3 class="sname">Try it on your GPU</h3><span class="skind">Live demo</span></header>
+  <div class="sid"><p class="swhat">A small demo that runs in this page, on your own GPU.</p></div>
+  <div class="beat lane"><p class="say">GPU speed depends on how you slice up the work. See it on your own GPU.</p></div>
+  <div class="block lane split gpu">
+    <div>
+      <div class="hm" id="hm" role="img" aria-label="Heatmap of throughput by workgroup shape, filled in when you run it."></div>
+      <p class="hmax"><span>Rows: workgroup height</span><span>Columns: workgroup width</span></p>
+    </div>
+    <div>
+      <p class="lead">This runs one matrix multiply on your GPU, sliced up every way on the grid. It times each one and checks the answers against your CPU.</p>
+      <button type="button" class="btn p" id="gpu-run">Run it on my GPU</button>
+      <p id="gpu-out" role="status"></p>
+      <p class="small">It runs on your machine through WebGPU in fp32, and nothing is sent anywhere. It's a demonstration, not one of the measurements on this page.</p>
+    </div>
+  </div>
+  <div class="block lane"><p class="more">There's more kernel work on the <a href="/work/#kernels">all-work page</a>, including a timing model of vLLM's fused MoE kernel.</p></div>
+</article>
+
+<!-- ============ INFERENCE ============ -->
+<section class="plate mid" id="ch-i" style="--c:var(--i)"><div class="lane">
+  <h2 class="ptitle" data-rgb="255,180,84">Inference</h2>
+  <p class="pline">Running a model and getting words out fast, even when it doesn't fit on the GPU.</p>
+</div></section>
+
+<article class="story" id="seconds" style="--c:var(--i)">
+  <header class="shead"><h3 class="sname">Where the Seconds Go</h3><span class="skind">Research project</span></header>
+  <div class="sid"><p class="swhat">A way to run AI models too big for the GPU's memory, built as a cache in llama.cpp, plus a calculation of how fast any such cache could get.</p><p class="sres">Result: faster than FreeToken in 11 of 12 setups at batch 1, and 0.98-1.17× with it tuned, on a separate machine.</p><p class="smeta"><span>Public code and manuscript, not peer reviewed. The patch is not upstream.</span><a href="https://github.com/harshithkantamneni/moe-speed-of-light">moe-speed-of-light</a></p></div>
+  <div class="beat lane"><p class="say">The model, gpt-oss-120b, needs about 61 GB of memory. An RTX 5090 GPU has 32 GB.</p></div>
+  <div class="block lane">
+    <figure class="fg"><div class="memz" id="fz-mem" data-field role="img" aria-label="61 dots, one per gigabyte. A box around the first 32 marks what fits on the card."><i class="cardbox"><span>RTX 5090, 32 GB</span></i>/*MEM*/</div><figcaption>One dot per gigabyte, to scale.</figcaption></figure>
+  </div>
+  <div class="beat lane"><p class="say">So the rest of the model waits in slower system memory, and each word stalls while it's fetched.</p></div>
+  <div class="beat lane"><p class="say">I built a cache in llama.cpp that decides which parts stay on the GPU.</p></div>
+  <div class="beat lane numb">
+    <div class="num has-c" data-c="sec.vs_ft" role="button" tabindex="0">11 of 12</div>
+    <p class="numm">test setups ran faster than FreeToken, another system for this problem, and <span class="nb">2.0-4.0×</span> stock llama.cpp in all of them. With FreeToken tuned, on a separate machine: 0.98-1.17×.</p>
+    <button type="button" class="cond" data-c="sec.vs_ft">Conditions and source</button>
+    <p class="note">At batch 1, on 2 RTX 5090 hosts. Stock is a weak baseline. The tuned comparison covers six cells. The one slower setup is 0.97×, at the largest Qwen3 budget on the stock-clock host. On that host, swapping my admission rule for LRU ran 6-21% slower, so I read most of the difference as that rule.</p>
+  </div>
+  <div class="block lane wide">
+    <figure class="fg" id="fig-grid"><p class="lg"><span><i class="o"></i>Stock llama.cpp</span><span><i class="f"></i>FreeToken</span><span><i class="c"></i>My cache</span></p><svg role="img" aria-label="Tokens per second for stock llama.cpp, FreeToken and my cache, at three GPU budgets, on two hosts and two models. My cache is fastest in 11 of 12 configurations."></svg><figcaption>Speed in tokens, roughly words, per second. Each row is the share of the model's experts, its swappable parts, kept on the GPU.</figcaption></figure>
+  </div>
+  <div class="beat lane"><p class="say">Then the harder question: how much better could any cache get?</p></div>
+  <div class="beat lane"><p class="say">I computed the limit, then let the engine see the future, one kind of foresight at a time.</p></div>
+  <div class="block lane">
+    <figure class="fg" id="fig-ruler">
+      <p class="rnum"><span id="fs-v">20.59</span><small> ms per token</small></p>
+      <p class="rnote" id="fs-n" role="status">The deployed cache, with no foresight.</p>
+      <svg role="img" aria-label="A ruler of time per token. 20.59 milliseconds for the deployed cache, 15.13 with the oracle's schedule and each expert read once, 13.78 with copies issued ahead, and a computed limit of 10.02."></svg>
+      <div class="sws" id="foresight">
+        <button type="button" class="sw" role="switch" aria-checked="false"><span>Know what to keep on the GPU</span><i class="sw-k"></i></button>
+        <button type="button" class="sw" role="switch" aria-checked="false"><span>Never read the same part twice</span><i class="sw-k"></i></button>
+        <button type="button" class="sw" role="switch" aria-checked="false" disabled><span>Start each copy before it's needed<em> (needs both above)</em></span><i class="sw-k"></i></button>
+      </div>
+      <figcaption>Flip them yourself. gpt-oss-120b with 11% of experts on the GPU, on one RTX 5090 machine. The limit is relative to my own bandwidth probe.</figcaption>
+    </figure>
+  </div>
+  <div class="beat lane">
+    <p class="say">Better guessing alone didn't get there. Four caching rules without foresight got at most 6% of the gain from knowing what to read ahead.</p>
+    <p class="note">On 5 fast-link machines. On this machine 36% of the gap stayed after all three kinds of foresight, and 43-52% averaged over three groups of machines. At gpt-oss's smallest cache on 25 consumer machines, the cache reached 31-54% of the computed limit, a scope I chose after seeing the data.</p>
+  </div>
+  <div class="block lane"><p class="slinks"><a href="/work/where-the-seconds-go/">Read the write-up</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light">View the repo</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper/ieee-paper.pdf">Manuscript, not peer reviewed</a></p></div>
+</article>
+
+<article class="story" id="jetson" style="--c:var(--i)">
+  <header class="shead"><h3 class="sname">Jetson Orin Nano profiling</h3><span class="skind">Personal project</span></header>
+  <div class="sid"><p class="swhat">Speed measurements of AI kernels on a Jetson Orin Nano, a small NVIDIA computer that runs on <span class="nb">15 W</span>.</p><p class="sres">Result: time per step holds steady up to 1024 keys, then climbs.</p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling">edge-llm-gpu-profiling</a></p></div>
+  <div class="beat lane"><p class="say">One step holds steady up to 1024 keys, then climbs.</p></div>
+  <div class="block lane">
+    <p class="more">Microseconds per step: 63.1 at 256 keys, 64.9 at 1024, 114.6 at 2048, 209.4 at 4096 and 398.1 at 8192.</p>
+    <p class="note">Attention and KV-cache decode kernels profiled with Nsight on a Jetson Orin Nano. It's a sweep of kernels, not a model and not serving throughput. Fused SDPA ran 2.78-5.55× faster than a manual matmul and softmax baseline across 5 sizes, which is a low bar.</p>
+  </div>
+  <div class="block lane"><p class="more">Also on vLLM: a load test where CUDA graphs cut time per token 31-34%, one run per rate, and a measurement on someone else's RFC. Both are on the <a href="/work/#inference">all-work page</a>.</p></div>
+</article>
+
+<!-- ============ AGENTS ============ -->
+<section class="plate mid" id="ch-a" style="--c:var(--a)"><div class="lane">
+  <h2 class="ptitle" data-rgb="106,168,255">Agents</h2>
+  <p class="pline">AI that takes actions on its own: memory for coding agents, and a way to keep them honest.</p>
+</div></section>
+
+<article class="story" id="bert" style="--c:var(--a)">
+  <header class="shead"><h3 class="sname">bert</h3><span class="skind">Personal project</span></header>
+  <div class="sid"><p class="swhat">A tool, not the BERT model, that gives an AI coding agent searchable memory of a long project.</p><p class="sres">Result: no significant accuracy difference from grep at 1.26M tokens, and grep used a median 1.46× the tokens. On code, grep scored higher. <a href="#eng-bert">Technical detail</a></p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/bert">bert</a></p></div>
+  <div class="beat lane"><p class="say">A long project outgrows what a model can read at once.</p></div>
+  <div class="block lane">
+    <figure class="fg" id="fig-slope1"><svg role="img" aria-label="Full-context accuracy falls from 0.90 to 0.08 as project memory grows from about 98 thousand to 1.26 million tokens."></svg><figcaption>Give a reader the whole history, and past its budget it loses the answer.</figcaption></figure>
+    <p class="note">One Claude reader capped at a 120K budget, which keeps about the newest 10%. I read 0.08 as truncation losing history, not as evidence for bert.</p>
+  </div>
+  <div class="beat lane"><p class="say">bert gives a coding agent searchable memory of the whole project. It runs on your own machine, with no API keys and no calls to an AI model.</p></div>
+  <div class="block lane">
+    <figure class="fg" id="fig-slope2"><svg role="img" aria-label="At 1.26 million tokens, bert and agentic grep both score 0.90, while full context falls to 0.08. At 98 thousand tokens, bert 0.96, grep 0.92, full context 0.90."></svg><figcaption>Accuracy at 2 measured memory sizes. Lines only join the 2 measured sizes.</figcaption></figure>
+    <p class="note">On one 1.26M-token synthetic project memory, no significant difference from agentic grep, counting cache reads in full. On code, grep scored higher, 0.97 to 0.86, so bert is built for accumulated memory, not code search.</p>
+  </div>
+  <div class="beat lane"><p class="say">At 1.26M tokens, it scored 0.90, with no significant difference from an agent using plain text search (grep). And grep used a median 1.46× bert's tokens.</p></div>
+  <div class="beat lane"><p class="say">A smaller, earlier test had caught a silent bug that held its score at 0.10.</p></div>
+  <div class="block lane">
+    <figure class="fg"><div class="bugz" id="fz-bug" data-field role="img" aria-label="20 questions. 2 correct before the fix and 17 after.">/*BUG*/</div><figcaption>One dot per question. A small bug had switched off the meaning-based half of the search, leaving only keywords. Fixing it moved the same 20-question test from 0.10 to 0.85.</figcaption></figure>
+  </div>
+  <div class="block lane">
+    <details class="eng" id="eng-bert">
+      <summary>For engineers: how the retrieval works, and public benchmarks</summary>
+      <div class="eng-b">
+        <p>sqlite-vec stores bge-base-en-v1.5 dense vectors, BM25 covers exact keywords, reciprocal-rank fusion merges the two, and a cross-encoder reranks the top hits.</p>
+        <p>Three public BEIR datasets. On scifact the full stack scores 0.745 and dense alone 0.740, with overlapping intervals, so the embedding model earns most of it. BM25 scores 0.658. On fiqa, rerank moved hybrid 0.356 to 0.434. On nfcorpus it moved 0.355 to 0.354, and dense alone was best.</p>
+        <p>Multi-turn search through MCP scored 0.86 against 0.66 one-shot on code questions, and agentic grep scored 0.97 with fewer tokens.</p>
+      </div>
+    </details>
+    <p class="slinks"><a href="/work/bert/">Read the write-up</a><a href="https://github.com/harshithkantamneni/bert">View the repo</a></p>
+  </div>
+</article>
+
+<article class="story" id="lab" style="--c:var(--a)">
+  <header class="shead"><h3 class="sname">Lab verification and audit</h3><span class="skind">Personal project</span></header>
+  <div class="sid"><p class="swhat">Sign-off verification for my research lab of Claude Code agents, and an audit of that check against its own logs.</p><p class="sres">Result: the same forgery is now blocked in tests, not yet on a live lab. <a href="#eng-lab">Technical detail</a></p><p class="smeta"><span>Public repo, private logs</span><a href="https://github.com/harshithkantamneni/agi-lab-framework">agi-lab-framework</a></p></div>
+  <div class="beat lane"><p class="say">I ran a research lab of 31 Claude Code agent roles on one 18 GB MacBook.</p></div>
+  <div class="beat lane"><p class="say">On Apr 17, the agent running it wrote 5 PI sign-offs, approvals in another agent's name, without ever calling that agent.</p></div>
+  <div class="block lane">
+    <figure class="fg" id="fig-seq1"><svg role="img" aria-label="Sequence diagram. The runner starts the director. The director writes sign-offs in the PI's name to the record. The call to the PI never happens."></svg></figure>
+  </div>
+  <div class="beat lane"><p class="say">So I built a check. Then I audited the check itself, against 763 session logs.</p></div>
+  <div class="beat lane"><p class="say">By my count it had run on 0 of 270 eligible sessions, because of a shell bug, fixed in June.</p></div>
+  <div class="beat lane"><p class="say">The audit also found the deeper flaw: the record the check read sat where the agent being checked could write to it.</p></div>
+  <!--LABEND-->
+  <div class="block lane">
+    <details class="eng" id="eng-lab">
+      <summary>For engineers: the audit, session by session</summary>
+      <div class="eng-b">
+        <p>One square per runner log, Apr 17 to May 30, in date order. The outlined ones match the gate's precondition, a text match. By my count the first version of the gate ran on 0 of 270 of those eligible sessions, because of a shell bug fixed in June. The logs stay private, so you can check the public table's sums, not its rows.</p>
+        <div class="waf" role="img" aria-label="763 squares, one per runner log in date order. 270 are outlined as eligible.">/*WAF*/</div>
+        <p><a class="tl" href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/gate_audit_sessions.csv">The per-session table</a></p>
+        <h4>How the new check works</h4>
+        <p>Receipts come only from the harness's structured tool_use blocks, so text in a session creates none, and they're HMAC-chained. A sign-off token needs a same-role, same-run receipt, inside the window, whose own reply gave that verdict on that document. The gate fails closed: only a detector that finishes and echoes a per-call nonce lets an exit through. The runner's deny rules and OS sandbox keep the key from the agents, and that hasn't been exercised on a live lab.</p>
+        <p>Still open: role prompts can be edited between sessions, a sign-off binds to a path and not to content, the net for free-text approvals is a heuristic, and close-out runs before the gate. <a class="tl" href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps">The full list</a>.</p>
+      </div>
+    </details>
+    <p class="slinks"><a href="/work/lab-verification/">Read the write-up</a><a href="https://github.com/harshithkantamneni/agi-lab-framework">View the repo</a></p>
+  </div>
+  <div class="block lane"><p class="more">Also on the <a href="/work/#agents">all-work page</a>: The Obsidian Archive, a 13-stage autonomous pipeline that researches, writes, renders and uploads a documentary from one topic.</p></div>
+</article>
+
+<!-- ============ CLOSE ============ -->
+<section class="close" id="next"><div class="lane">
+  <h2 class="say">Three questions I haven't answered yet.</h2>
+  <div class="chase">
+    <a href="#kernels"><b>Where the rest of a full model's time goes.</b><span>My kernel step ran 52.7× faster than recomputing at 64K keys, but one full model step, on random weights, still takes about 9 ms.</span></a>
+    <a href="#kernels"><b>Whether my kernels' design choices are what cost them speed.</b><span>Forward and backward together take 1.04-1.42× the time of the original authors' kernels on an H100 GPU, and the backward gives identical results run to run, which theirs doesn't. I haven't isolated how much of the gap that explains.</span></a>
+    <a href="#seconds"><b>How much slowdown better caching can never remove.</b><span>Even when the engine could see the future, 36% of the gap to the limit stayed, on one machine.</span></a>
+  </div>
+</div></section>
+
+<section class="close" id="about"><div class="lane">
+  <p class="abig">GPU kernels taught me not to believe an explanation for why something is slow until the numbers back it up. I hold memory tools and agents to the same test.</p>
+  <p class="small wide-p">Every number on this site has <a href="/numbers/">its conditions and source</a>. Click a large number to see them. Not public: the lab's logs, the floor report's sources, the RFC results, some Nsight reports and course reports.</p>
+  <p class="small wide-p">NVIDIA certificates of competency: <a href="/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf">Getting Started with Accelerated Computing in Modern CUDA C++</a> (Jul 2025) and <a href="/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf">The Art of Compressing LLMs</a> (Feb 2026).</p>
+</div></section>
+
+<section class="close" id="writing"><div class="lane">
+  <h3 class="sname" style="--c:var(--mid)">Writing</h3>
+  <div class="wl">
+    <a href="/notes/kv-copies-gqa/">When the K/V copy costs more than the attention</a>
+    <a href="/reports/below-the-measurement-floor-a-pre-registered-dense-vs-moe-null-at-sub-100m-active-parameters/">Below the Measurement Floor: a pre-registered dense-vs-MoE null<small>Report, not peer reviewed</small></a>
+    <a href="/reports/recursive-verification-surface-collapse/">Recursive Verification-Surface Collapse<small>Report, not peer reviewed</small></a>
+    <a href="/notes/llm-judge-bias/">When the LLM judge is biased</a>
+    <a href="/notes/tier-per-task/">Tier-per-task: routing models by the job</a>
+  </div>
+</div></section>
+</main>
+
+<div class="marquee" aria-hidden="true"><div class="mtrack">
+  <b class="h">CUDA /</b><b>Triton /</b><b>FlashAttention /</b><b>KV-cache /</b><b class="h">MCP /</b><b>sqlite-vec /</b><b>BM25 /</b><b>reciprocal-rank fusion /</b><b>cross-encoder rerank /</b><b class="h">C17 /</b><b>Apple Metal /</b><b>4-bit QAT /</b><b>libp2p /</b><b>Rust /</b><b>gem5 /</b><b>Nsight /</b><b>roofline /</b>
+  <b class="h">CUDA /</b><b>Triton /</b><b>FlashAttention /</b><b>KV-cache /</b><b class="h">MCP /</b><b>sqlite-vec /</b><b>BM25 /</b><b>reciprocal-rank fusion /</b><b>cross-encoder rerank /</b><b class="h">C17 /</b><b>Apple Metal /</b><b>4-bit QAT /</b><b>libp2p /</b><b>Rust /</b><b>gem5 /</b><b>Nsight /</b><b>roofline /</b>
+</div></div>
+
+<footer id="contact"><div class="lane">
+  <p class="foot-h">Let's build<br>from the silicon up.</p>
+  <div class="acts"><a href="mailto:kantamneniharshith@gmail.com" class="btn p">Email me</a><a id="foot-res" href="/Harshith_Kantamneni_Resume.pdf" class="btn g">Résumé</a><a href="/work/" class="btn g">All work</a></div>
+  <p class="meta"><a href="mailto:kantamneniharshith@gmail.com">kantamneniharshith@gmail.com</a><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a><span>Milwaukee, WI</span></p>
+</div></footer>
+
+<dialog class="find" id="find" aria-labelledby="find-l">
+  <label id="find-l" for="find-q">Search or jump</label>
+  <input id="find-q" type="search" autocomplete="off" spellcheck="false">
+  <div class="find-r" id="find-r" role="listbox" aria-label="Results" data-lenis-prevent></div>
+  <div class="find-f">Type to search with BM25, in your browser. J and K step through the story.</div>
+</dialog>
+<div class="tip" id="tip" role="status"></div>
+<div id="step-hud" aria-hidden="true"></div>
+
+<script src="/assets/lenis.min.js" defer></script>
+<script src="/assets/field.js" defer></script>
+<script src="/assets/story.js" defer></script>
+<script src="/numbers/num.js" defer></script>
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2e4646d7e5e149c0a3c87132e9fa66f1"}'></script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

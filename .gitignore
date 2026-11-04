@@ -1,7 +1,3 @@
-# Astro build output
-dist/
-.astro/
-
 # Dependencies
 node_modules/
 
@@ -18,14 +14,5 @@ node_modules/
 .idea/
 *.swp
 
-# Vite (legacy, can remove after migration verified)
-
 __pycache__/
 *.pyc
-src/pages/preview/
-
-# Curator pending-drafts are ephemeral per-candidate working files —
-# .gitkeep stays tracked so the dir exists; everything else is transient
-# state cleaned up on approve / reject.
-tools/curator/pending_drafts/*
-!tools/curator/pending_drafts/.gitkeep

@@ -1,0 +1,1 @@
+fig('#fig-seq2',seq([{f:0,t:1,l:'starts the session, logs every call'},{f:1,t:3,l:'writes a PI sign-off',c:K},{f:1,t:2,l:'never called',c:DIM,dash:'5 5',broken:.8},{f:0,t:3,l:'compares the sign-off with its log',c:R},{f:0,t:0,l:'no call logged: blocked',c:R}],[['Runner',R,2],['Director',A,2],['PI agent','rgba(255,255,255,.1)',1.5,'3 5'],['Lab record']]));
