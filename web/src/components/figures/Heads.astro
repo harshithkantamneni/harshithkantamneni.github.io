@@ -9,7 +9,7 @@ const good = heads((h) => Math.floor(h / (q0 / kv0)));
 const bad = heads((h) => Math.floor(h / kv0) % kv0);
 const cell = (x) => `<i class="c${x % 4}" data-n="${x}"></i>`;
 ---
-<figure class="frame key k" data-f={f}>
+<figure class="frame key k" data-f={f} data-world>
   <figcaption>Which KV head does each query head read? Pick a shape.</figcaption>
   <div class="seg" id="heads" role="group" aria-label="Query heads over KV heads" style="margin-top:12px">
     <button type="button" data-q="4" data-kv="2" aria-pressed="false">4/2</button>
@@ -17,10 +17,10 @@ const cell = (x) => `<i class="c${x % 4}" data-n="${x}"></i>`;
     <button type="button" data-q="8" data-kv="4" aria-pressed="true">8/4</button>
     <button type="button" data-q="8" data-kv="2" aria-pressed="false">8/2</button>
   </div>
-  <p class="f-h">Correct formula</p>
-  <div class="cells" id="hm-a" style={`grid-template-columns:repeat(${q0},minmax(0,1fr))`} aria-label={`Correct mapping: ${good.join(' ')}`} role="img" set:html={good.map(cell).join('')} />
-  <p class="f-h">A planted bug NVIDIA's tests missed</p>
-  <div class="cells" id="hm-b" style={`grid-template-columns:repeat(${q0},minmax(0,1fr))`} aria-label={`Buggy mapping: ${bad.join(' ')}`} role="img" set:html={bad.map(cell).join('')} />
+  <p class="f-h nw">Correct formula</p>
+  <div class="cells nw" id="hm-a" style={`grid-template-columns:repeat(${q0},minmax(0,1fr))`} aria-label={`Correct mapping: ${good.join(' ')}`} role="img" set:html={good.map(cell).join('')} />
+  <p class="f-h nw">A planted bug NVIDIA's tests missed</p>
+  <div class="cells nw" id="hm-b" style={`grid-template-columns:repeat(${q0},minmax(0,1fr))`} aria-label={`Buggy mapping: ${bad.join(' ')}`} role="img" set:html={bad.map(cell).join('')} />
   <p class="verdict" id="hm-v" role="status">Different mapping. A test at this shape catches the bug.</p>
   <p class="f-note" set:html={r('With bugs planted, NVIDIA\'s SM80 suite still passed [[gqa.planted|all 411 cases]] on the first two and [[gqa.planted|all 60 d256 cases]] on the third. My tests caught all [[pr1287.bugs|3 injected bugs]].')} />
 </figure>

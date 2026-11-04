@@ -45,6 +45,45 @@ main, .foot { position: relative; z-index: 1; }
 .amb .aa { background: #0B111B; }
 body[data-layer='k'] .amb .ak, body[data-layer='i'] .amb .ai, body[data-layer='a'] .amb .aa { opacity: 1; }
 
+/* The 3D world, behind the page */
+#world { display: none; position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; opacity: 0; transition: opacity var(--m3) ease-out; }
+.world #world { display: block; }
+#world.on { opacity: 1; }
+.wscrim { position: fixed; top: 0; bottom: 0; width: 64%; z-index: 0; pointer-events: none; opacity: 0; display: none; }
+.world .wscrim { display: block; }
+#wscrim-l { left: 0; background: linear-gradient(to right, rgba(8, 9, 12, .94) 0%, rgba(8, 9, 12, .78) 52%, rgba(8, 9, 12, 0) 100%); }
+#wscrim-r { right: 0; background: linear-gradient(to left, rgba(8, 9, 12, .94) 0%, rgba(8, 9, 12, .78) 52%, rgba(8, 9, 12, 0) 100%); }
+#wlabels { display: none; position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.world #wlabels { display: block; }
+.wl { position: absolute; left: 0; top: 0; font-size: 14px; color: var(--quiet); white-space: nowrap; opacity: 0; will-change: transform; }
+.wl.k { color: var(--k); }
+.wl.a { color: var(--a); }
+html:not(.world) .wo, .lite .wo { display: none !important; }
+.world:not(.lite) .nw { display: none !important; }
+html:not(.story) .wscrim { display: none; }
+.world:not(.lite) .hero .trace { display: none; }
+.world:not(.lite) .hero { grid-template-columns: minmax(0, 46%); min-height: calc(100vh - 61px); }
+.lite .hero { position: relative; }
+.lite main > *:not(.hero) { position: relative; background: var(--g0); }
+.world:not(.lite) .opener { min-height: 100vh; display: flex; align-items: center; }
+.world:not(.lite) .opener > .wrap { width: 100%; }
+.world:not(.lite) .opener:not(.bright) { background: none; }
+.world:not(.lite) .opener.bright h2 { font-size: clamp(96px, 19vw, 320px); line-height: 1.1; }
+.world:not(.lite) .opener:not(.bright) h2 { font-size: clamp(72px, 11vw, 176px); }
+.world:not(.lite) .opener p { max-width: 30em; }
+.world [data-scene] .frame[data-world] { background: none; border: 0; box-shadow: none; padding: 16px 0 0; align-self: start; }
+.world [data-scene] .frame:not([data-world]) { box-shadow: 0 0 0 1px var(--line); }
+.gpurun { margin-top: 20px; }
+.gpurun .btn { min-height: 44px; }
+.gpurun .f-note { max-width: 44em; }
+.world .scene.also { background: var(--g0); padding-top: 24px; }
+.world main > section.section { position: relative; background: var(--g0); }
+.world .foot { background: var(--g0); margin-top: 0; }
+.world main > section#log { padding-top: 96px; }
+.world #trace { margin-bottom: 24px; }
+.world #triton .stage { cursor: grab; touch-action: pan-y; }
+.world #triton .stage.grab { cursor: grabbing; }
+
 /* Navigation */
 .navbar { position: sticky; top: 0; z-index: 40; background: var(--g0); border-bottom: 1px solid var(--line); }
 .nav { display: flex; justify-content: space-between; align-items: center; gap: 8px 32px; min-height: 60px; }

@@ -95,3 +95,26 @@ const merged = (r) => /merged/i.test(stateOf(r)) && !/not merged/i.test(stateOf(
     </div>
   </section>
 </Base>
+<script>
+  // The 3D world is an enhancement: the page is complete without it.
+  const gr = document.getElementById('gpurun');
+  if (gr && navigator.gpu) {
+    gr.hidden = false;
+    const btn = document.getElementById('gpurun-b'), out = document.getElementById('gpurun-o');
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      try {
+        const { run } = await import('../scripts/gpurun.js');
+        const r = await run((m) => { out.textContent = m; });
+        const x = r.withCopies / r.without;
+        out.textContent = `On ${r.name}: ${r.withCopies.toFixed(1)} ms with the copies, ${r.without.toFixed(1)} ms without, a ratio of ${x.toFixed(2)}. Median of 7 rounds, measured just now on your machine.`;
+      } catch (e) {
+        out.textContent = `It couldn't run here: ${e.message}`;
+      }
+      btn.disabled = false;
+    });
+  }
+  if (document.documentElement.classList.contains('world')) {
+    import('../scripts/world.js').catch(() => document.documentElement.classList.remove('world'));
+  }
+</script>

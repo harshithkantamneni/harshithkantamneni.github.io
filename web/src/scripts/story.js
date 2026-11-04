@@ -96,6 +96,7 @@
       out.textContent = v.toFixed(2);
       bar.style.transform = 'scaleX(' + (v / TOP).toFixed(4) + ')';
       note.textContent = NAME[read()];
+      window.dispatchEvent(new CustomEvent('world:fs', { detail: { key: read(), ms: v } }));
     };
     sw.forEach(function (b) { b.addEventListener('click', function () { fsTouched = true; b.setAttribute('aria-checked', isOn(b) ? 'false' : 'true'); paint(); }); });
     /* Scrolling walks the states until the reader takes over */
@@ -124,6 +125,7 @@
       b.addEventListener('click', function () {
         hm.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
         drawHeads(+b.dataset.q, +b.dataset.kv);
+        window.dispatchEvent(new CustomEvent('world:heads', { detail: { q: +b.dataset.q, kv: +b.dataset.kv } }));
       });
     });
   }
@@ -159,9 +161,16 @@
       b.addEventListener('click', function () {
         tog.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
         sc.querySelectorAll('[data-g]').forEach(function (g) { g.style.display = g.dataset.g === b.dataset.v ? '' : 'none'; });
+        window.dispatchEvent(new CustomEvent('world:prec', { detail: b.dataset.v }));
       });
     });
     sc.querySelectorAll('[data-g="bf16"]').forEach(function (g) { g.style.display = 'none'; });
+  }
+
+  /* With the 3D world on, the year chart moves down to the full list */
+  if (root.classList.contains('world')) {
+    var tMove = document.getElementById('trace'), lHead = document.querySelector('#log .sec-head');
+    if (tMove && lHead) lHead.parentNode.insertBefore(tMove, lHead.nextSibling);
   }
 
   /* The year as a trace: move across it to read what was happening */

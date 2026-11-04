@@ -12,7 +12,7 @@ const rects = flags.map((x, i) => {
   return `<rect x="${cx + 1}" y="${cy + 1}" width="${S - 2}" height="${S - 2}" rx="2"${x === '1' ? ' class="e"' : ''}></rect>`;
 }).join('');
 ---
-<figure class="frame key a" data-f={f}>
+<figure class="frame key a" data-f={f} data-world>
   <figcaption>One square per runner log, in date order. The logs stay private, so you can check the public table's sums, not its rows.</figcaption>
   {live ? (
     <>
@@ -33,7 +33,7 @@ const rects = flags.map((x, i) => {
       <p class="f-sub">eligible sessions where it ran, by my count</p>
     </>
   )}
-  <div class="plot waf">
+  <div class="plot waf nw">
     <svg viewBox={`0 0 ${COLS * (S + G)} ${ROWS * (S + G)}`} role="img" aria-label="763 squares, 270 of them outlined as eligible, none filled as run" set:html={rects}></svg>
   </div>
 </figure>

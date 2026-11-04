@@ -16,7 +16,7 @@ const imageUrl = new URL(image, Astro.site).href;
 const order = [...LANES].sort((a, b) => 'kia'.indexOf(a.cls) - 'kia'.indexOf(b.cls));
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-worldable={home ? "" : undefined}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +27,7 @@ const order = [...LANES].sort((a, b) => 'kia'.indexOf(a.cls) - 'kia'.indexOf(b.c
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/fonts/atkinson.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/iosevka-500.woff2" as="font" type="font/woff2" crossorigin>
-  <script is:inline>if (matchMedia('(min-width: 1024px)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) document.documentElement.classList.add('story');</script>
+  <script is:inline>{ var r = document.documentElement, calm = matchMedia('(prefers-reduced-motion: reduce)').matches, wide = matchMedia('(min-width: 1024px)').matches; if (wide && !calm && 'IntersectionObserver' in window) r.classList.add('story'); if (!calm && r.hasAttribute('data-worldable') && !(navigator.connection && navigator.connection.saveData)) { try { var c = document.createElement('canvas').getContext('webgl2'); if (c) { r.classList.add('world'); if (!wide) r.classList.add('lite'); var x = c.getExtension('WEBGL_lose_context'); if (x) x.loseContext(); } } catch (e) {} } }</script>
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
   <meta property="og:type" content="website">
@@ -38,6 +38,14 @@ const order = [...LANES].sort((a, b) => 'kia'.indexOf(a.cls) - 'kia'.indexOf(b.c
 </head>
 <body>
   <div class="amb" aria-hidden="true"><i class="ak"></i><i class="ai"></i><i class="aa"></i></div>
+  {home && (
+    <>
+      <canvas id="world" aria-hidden="true"></canvas>
+      <div class="wscrim" id="wscrim-l" aria-hidden="true"></div>
+      <div class="wscrim" id="wscrim-r" aria-hidden="true"></div>
+      <div id="wlabels" aria-hidden="true"></div>
+    </>
+  )}
   <a class="skip" href="#main">Skip to content</a>
   <header class="navbar">
     <nav class="nav wrap" aria-label="Main">

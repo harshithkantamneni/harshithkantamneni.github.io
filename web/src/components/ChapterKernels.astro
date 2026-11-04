@@ -107,7 +107,7 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
         </div>
         <div class="stage">
           <div class="frames">
-            <figure class="frame" data-f="0">
+            <figure class="frame" data-f="0" data-world>
               <figcaption>One attention call in NVIDIA cuDNN, A100, 64 query heads and 8 KV heads, 128K cache</figcaption>
               <p class="f-read" set:html={r('[[pr1223.copy|7.28 ms]]')} />
               <p class="f-sub">copying K and V, before attention began</p>
@@ -116,6 +116,10 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
                   { label: 'K/V copies', value: 7.28, text: '7.28 ms' },
                   { label: 'Attention', value: 6.7, text: '6.0-6.7 ms', tone: 'dim' },
                 ], { max: 8 })} />
+              </div>
+              <div class="gpurun" id="gpurun" hidden>
+                <button type="button" class="btn alt" id="gpurun-b">Run this on your GPU</button>
+                <p class="f-note" id="gpurun-o" role="status">A small attention kernel in WebGPU, with and without the copies. It runs on your machine, with this page's own code, not the PR's.</p>
               </div>
             </figure>
             <figure class="frame" data-f="1">
@@ -189,13 +193,13 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
         </div>
         <div class="stage">
           <div class="frames">
-            <figure class="frame key" data-f="0,1,2">
-              <figcaption>Fused Triton kernel against the unfused path, 76 shapes on an A100.<span class="hov"> Hover a dot for its shape.</span></figcaption>
+            <figure class="frame key" data-f="0,1,2" data-world>
+              <figcaption>Fused Triton kernel against the unfused path, 76 shapes on an A100.<span class="hov nw"> Hover a dot for its shape.</span></figcaption>
               <div class="seg" id="scatter-seg" role="group" aria-label="Precision" style="margin-top:12px">
                 <button type="button" data-v="fp16" aria-pressed="true">fp16</button>
                 <button type="button" data-v="bf16" aria-pressed="false">bf16</button>
               </div>
-              <div class="plot" id="scatter">
+              <div class="plot nw" id="scatter">
                 <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Speedup of each shape against the unfused path. In fp16 the median is 0.96 times, 27 of 76 shapes are faster and the best is 1.73 times.">
                   <line x1={L} x2={W - Rr} y1={y(1)} y2={y(1)} stroke="var(--quiet)" stroke-dasharray="4 4"></line>
                   {[1.6, 1.4, 1.2, 1, 0.8, 0.6].map((v) => <text x={L - 8} y={y(v) + 4} text-anchor="end">{v}×</text>)}
@@ -204,7 +208,8 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
                   <g data-g="bf16"><Fragment set:html={dots('bf16')} /><text class="from1 best" x={xOf(best('bf16')) + 10} y={y(best('bf16').bf16) + 5}>{best('bf16').bf16.toFixed(2)}×</text></g>
                 </svg>
               </div>
-              <p class="f-note">Grouped by rows in the GEMM (M). Dots above the dashed line are faster than the unfused path.</p>
+              <p class="f-note wo">Drag to turn it. Hover a dot for its shape. Height is the speedup against the unfused path, and the floor is the unfused path.</p>
+              <p class="f-note nw">Grouped by rows in the GEMM (M). Dots above the dashed line are faster than the unfused path.</p>
             </figure>
           </div>
         </div>
