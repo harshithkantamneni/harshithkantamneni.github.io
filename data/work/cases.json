@@ -65,7 +65,7 @@
  "lab-verification": {
   "lane": "a",
   "title": "Lab verification and audit",
-  "lead": "Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and an improved detector.",
+  "lead": "Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that refuses the original forgery in tests.",
   "keys": [
    {
     "v": "[[lab.gate|0 of 270]]",

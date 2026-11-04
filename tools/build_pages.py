@@ -22,14 +22,14 @@ SCENE = {'stick-breaking-kernels': '#kernels', 'cudnn-gqa': '#gqa', 'where-the-s
 DROP = [' I noticed an empty PI folder next to the approvals.']
 
 BASE = """
-:root{--bg:#060708;--ink:#EEEFF1;--mid:#9398A0;--dim:#7C828B;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
+:root{--bg:#0a0b0e;--ink:#EEEFF1;--mid:#9398A0;--dim:#7C828B;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
 body{background-image:radial-gradient(rgba(150,170,200,.09) 1px,transparent 1.2px);background-size:46px 46px;background-attachment:fixed}
 a{color:inherit;text-decoration:none}
 a:focus-visible,input:focus-visible,.tw:focus-visible{outline:2px solid var(--a);outline-offset:3px;border-radius:4px}
 ::selection{background:var(--a);color:#04111f}
-.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:64px;padding:0 var(--edge);background:rgba(6,7,8,.96);border-bottom:1px solid var(--line)}
+.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:64px;padding:0 var(--edge);background:var(--bg);border-bottom:1px solid var(--line)}
 .brand{font-size:15px;font-weight:500;letter-spacing:-.01em}
 .nl{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:14px}
 .nl a{color:var(--mid);min-height:32px;display:inline-flex;align-items:center}.nl a:hover{color:#fff}.nl a.on{color:var(--c)}
@@ -115,7 +115,7 @@ def page(title, desc, path, body, resume='/Harshith_Kantamneni_Resume.pdf', lane
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}"/>
-<meta name="theme-color" content="#060708">
+<meta name="theme-color" content="#0a0b0e">
 <link rel="canonical" href="https://harshithkantamneni.github.io{path}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="article">
@@ -213,9 +213,9 @@ body60 = f"""<main style="--c:var(--k)">
 <h1 style="font-size:clamp(30px,4.6vw,64px);line-height:1.08;font-weight:500">I build the software AI runs on, from GPU kernels up to the agents on top.</h1>
 <p class="state" style="font-size:13px">Open to full-time roles. Milwaukee, WI (open to relocation). M.S. ECE, UW-Madison, Dec 2025.</p></div>
 <div class="s60">
-{row('52.7×', 'GPU kernels', "Kernels merged in flash-linear-attention, where one decode step at 64K keys ran 52.7× faster than recomputing. Tests merged in NVIDIA's cuDNN frontend, which catch 3 injected bugs that NVIDIA's tests missed.", '/Harshith_Kantamneni_Resume.pdf', 'var(--k)', '/#ch-k')}
-{row('11 of 12', 'LLM inference', 'An expert cache for llama.cpp, for models too big for the GPU. Faster than FreeToken in 11 of 12 configurations at batch 1, on 2 RTX 5090 hosts.', '/resume/inference/Harshith_Kantamneni_Resume.pdf', 'var(--i)', '/#ch-i')}
-{row('31 roles', 'Agent systems', "A lab of 31 Claude Code agent roles, where I caught an agent forging another agent's sign-offs, audited my own check against the logs and closed the known ways to fool it. And bert, searchable memory for coding agents.", '/resume/agents/Harshith_Kantamneni_Resume.pdf', 'var(--a)', '/#ch-a')}
+{row('52.7×', 'GPU kernels', "The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, where one step ran 52.7× faster than recomputing at 64K keys. Tests merged in NVIDIA's cuDNN frontend, which catch 3 injected bugs that NVIDIA's tests missed.", '/Harshith_Kantamneni_Resume.pdf', 'var(--k)', '/#ch-k')}
+{row('11 of 12', 'LLM inference', 'A cache in llama.cpp for AI models too big for the GPU. Faster than FreeToken in 11 of 12 test setups at batch 1, on 2 RTX 5090 hosts.', '/resume/inference/Harshith_Kantamneni_Resume.pdf', 'var(--i)', '/#ch-i')}
+{row('5 forged', 'Agent systems', "A research lab of 31 Claude Code agent roles, where I caught an agent forging another agent's approvals, audited my own check against the logs, and rebuilt it so the same forgery is refused. And bert, searchable memory for coding agents.", '/resume/agents/Harshith_Kantamneni_Resume.pdf', 'var(--a)', '/#ch-a')}
 </div>
 <div class="a60"><a class="b60 p" href="mailto:kantamneniharshith@gmail.com">Email me</a><a class="b60" href="/#intro">Read the full story</a><a class="b60" href="/work/">See all work</a></div>
 </main>"""
