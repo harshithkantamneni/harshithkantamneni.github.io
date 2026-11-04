@@ -357,7 +357,9 @@
     "3 injected bugs",
     "3 of 3",
     "all 411",
-    "all 60"
+    "all 60",
+    "3 bugs",
+    "A 4th planted bug"
    ],
    "means": "Planted bugs the new tests catch and the SM80 suite misses",
    "value": 3,
@@ -1091,7 +1093,10 @@
     "14 of 45 at M≤512",
     "13 of 31 at M≥1024",
     "27 of 76",
-    "76 of them"
+    "76 of them",
+    "0.95×",
+    "25 faster",
+    "76 matrix sizes"
    ],
    "means": "Shapes where fused is faster",
    "value": {
@@ -1105,7 +1110,7 @@
      31
     ]
    },
-   "conditions": "fp16. A100-SXM4-80GB. Baseline is cuBLAS GEMM plus separate bias and GeLU, PyTorch eager",
+   "conditions": "fp16. A100-SXM4-80GB. Baseline is cuBLAS GEMM plus separate bias and GeLU, PyTorch eager. In bf16 the median is 0.95× with 25 faster",
    "source": [
     {
      "type": "repo",
@@ -3031,7 +3036,8 @@
    "shows": [
     "763",
     "270",
-    "6 sessions"
+    "6 sessions",
+    "763 session logs"
    ],
    "means": "Session logs in the audit, how many contain the gate's precondition, and how many show the detector run by the director instead of the gate",
    "value": {
@@ -4699,8 +4705,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/agi-lab-framework/pull/43",
-     "commit": "f74636723fb5a9a4038d950724b104bdec3e22fc",
+     "url": "https://github.com/harshithkantamneni/agi-lab-framework/blob/9ef4b1d13d8812eaf8a1932d148d26de4b4ab601/tests/test_signoff_gaps.py",
+     "commit": "9ef4b1d13d8812eaf8a1932d148d26de4b4ab601",
      "path": "tests/test_signoff_gaps.py",
      "line": 1
     }

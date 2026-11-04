@@ -65,7 +65,7 @@
  "lab-verification": {
   "lane": "a",
   "title": "Lab verification and audit",
-  "lead": "Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that refuses the original forgery in tests.",
+  "lead": "Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that blocks the original forgery in tests.",
   "keys": [
    {
     "v": "[[lab.gate|0 of 270]]",
@@ -76,8 +76,8 @@
     "l": "written without dispatching the PI"
    },
    {
-    "v": "[[labv.tests|24 regression tests]]",
-    "l": "on the improved detector"
+    "v": "[[labv.rebuilt|171 new tests]]",
+    "l": "on the rebuilt check, on a stub harness"
    }
   ],
   "state": "Public repo, private logs",
