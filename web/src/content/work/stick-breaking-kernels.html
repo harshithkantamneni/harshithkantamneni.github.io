@@ -19,8 +19,8 @@
 <tr><td>Packed 8×1024, H=32, D=64</td><td class="num">3.460</td><td class="num">2.651</td><td class="num">2.013</td><td class="num">{{bar:1.32/1.42}}</td></tr>
 <tr><td>Packed 8192, H=16, D=128</td><td class="num">18.827</td><td class="num">13.231</td><td class="num">11.146</td><td class="num">{{bar:1.19/1.42}}</td></tr>
 </tbody></table></div>
-<p>On H100, the backward rewrite alone gave [[sbk.split|1.27-1.34×]]. The retile and launch order add [[sbk.split|1.02-1.12×]] on forward plus backward, and give [[sbk.split|1.11-1.82×]] on the forward alone. Launch order cost L2 reuse: in Nsight Compute on H100, the forward's hit rate fell from [[sbk.l2|92%]] to [[sbk.l2|78%]].</p>
-<p>On H100, the tests pass [[sbk.tests|99/99]] in two runs, and [[sbk.tests|56 of the 99]] fail on the earlier head. The maintainer's GB200 run also passed. #1319 timing is H100 only. Saturated-logit coverage reaches [[sbk.tests|15 in fp16]] and [[sbk.tests|30 in bf16]].</p>
+<p>On H100, on forward plus backward, the backward rewrite alone gave [[sbk.split|1.27-1.34×]], and the retile and launch order add [[sbk.split|1.02-1.12×]]. On the forward alone, those two give [[sbk.split|1.11-1.82×]]. Launch order cost L2 reuse: in Nsight Compute on H100, the forward's hit rate fell from [[sbk.l2|92%]] to [[sbk.l2|78%]].</p>
+<p>On H100, the tests pass [[sbk.tests|99/99]] in two runs, and [[sbk.tests|56 of the 99]] fail on the earlier head. The maintainer's GB200 run also passed. My #1319 timing is H100 only. Saturated-logit coverage reaches [[sbk.tests|15 in fp16]] and [[sbk.tests|30 in bf16]].</p>
 <div class="tw" tabindex="0"><table class="t"><caption>On H200, a decode step grows about linearly with keys, and it gains nothing over recomputing at 1024 keys. [[sbk.op]]</caption>
 <thead><tr><th>Input</th><th class="num">Decode (us)</th><th class="num">Recompute prefix (us)</th><th class="num">Speedup</th></tr></thead>
 <tbody>
@@ -30,11 +30,11 @@
 <tr><td>B=1, T=65536</td><td class="num">4301.8</td><td class="num">226529.2</td><td class="num">52.7×</td></tr>
 <tr><td>B=8, T=16384</td><td class="num">1272.4</td><td class="num">114637.2</td><td class="num">90.1×</td></tr>
 </tbody></table></div>
-<p>On H200, [[sbk.op|90.1×]] is the best of [[sbk.op|18 op-level rows]], and any cache gets a gain like that against recomputing. Tests compare a [[sbk.tests12|67-token prompt]] and later steps against one uncached forward over [[sbk.tests12|74 tokens]]. They passed on H200.</p>
+<p>On H200, [[sbk.op|90.1×]] is the best of [[sbk.op|18 op-level rows]], and any cache gains like that against recomputing. Tests compare a [[sbk.tests12|67-token prompt]] and later steps against one uncached forward over [[sbk.tests12|74 tokens]]. They passed on H200.</p>
 <p>At model level on H200, a cached step stays at [[sbk.model|8.98-9.07 ms]] per token at every prompt and batch size I ran. Against recomputing, that ranges from [[sbk.model|0.9×]], at [[sbk.model|B=1 with 512- and 2048-token prompts]], to [[sbk.model|45.5×]]. The model has random weights, and each time is a median of [[sbk.model|3 calls]].</p>
 
 <h2>What limited it</h2>
-<div class="tw" tabindex="0"><table class="t"><caption>On H100, the two backward kernels take 85% of Nsight Compute time across the three kernels, at no more than 35% SM throughput. [[sbk.ncu]]</caption>
+<div class="tw" tabindex="0"><table class="t"><caption>On H100, the two backward kernels take 85% of Nsight Compute time across this PR's three kernels, at no more than 35% SM throughput. [[sbk.ncu]]</caption>
 <thead><tr><th>Kernel</th><th class="num">Time</th><th class="num">SM throughput</th></tr></thead>
 <tbody>
 <tr><td>Forward, before the retile</td><td class="num">2174 us</td><td class="num">31%</td></tr>
@@ -48,8 +48,8 @@
 <ul>
 <li>That these kernels are faster than the authors'. On H100, tensor-core scans made the forward [[sbk.scans|about 3×]] faster than the earlier head, but [[sbk.scans|20 of the 28]] bf16 saturated-logit tests failed, so the scans stay in fp32. The backward also leaves out the authors' spin locks. I did not isolate either cost.</li>
 <li>Hot-loop latency. do_bench clears L2 before each call, and clocks weren't locked.</li>
-<li>A measured decode limit. On H200, [[pr1412.grid|32 programs on 132 SMs]] is the grid size, not a counter reading. The [[pr1412.floor|about 0.06 ms]] is a floor no kernel reaches.</li>
-<li>A cause for the H200 step at [[sbk.model|about 9 ms]]. It stays flat, so attention doesn't limit it.</li>
+<li>A measured decode limit. On H200, [[pr1412.grid|32 programs on 132 SMs]] is grid arithmetic, not a counter reading. The read time of [[pr1412.floor|about 0.06 ms]] is a floor no kernel reaches.</li>
+<li>A cause for the H200 step at [[sbk.model|about 9 ms]]. It stays flat, which I read as attention not limiting it.</li>
 <li>Production decode. It is one H200, forward only, no split-KV. The H200 numbers predate the rebase, which left the kernels byte-identical but changed model code around them. The non-Hopper path ran only in the CPU interpreter.</li>
 </ul>
 
