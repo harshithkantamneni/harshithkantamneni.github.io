@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import { claims, asOf, fmtDate } from '../lib/rich.mjs';
+
+const label = (s) => {
+  const pr = s.url && s.url.match(/github\.com\/[^/]+\/([^/]+)\/(?:pull|issues)\/(\d+)/);
+  if (pr) return `${pr[1]} #${pr[2]}`;
+  const repo = s.url && s.url.match(/github\.com\/[^/]+\/([^/]+)\//);
+  if (repo && s.path) return `${repo[1]}: ${s.path}`;
+  return 'Source';
+};
+---
+<Base
+  title="Every number and its source: Harshith Kantamneni"
+  description="Each number on this site, with what it means, the conditions it was measured under and a commit-pinned source."
+>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>Every number and its source</h1>
+      <p class="lead">What each number on this site means, the conditions it holds under, and where to check it. Repo links are pinned to a commit. Sources checked {fmtDate(asOf)}.</p>
+    </div>
+    <label class="nfilter" hidden>Find a number
+      <input id="nfilter" type="search" autocomplete="off">
+    </label>
+    <p class="nzero" id="nzero" role="status" hidden>No number matches that. Try a GPU or model name, such as H200. <button type="button" id="nclear">Clear search</button></p>
+    <p class="state" id="ncount" role="status"></p>
+    <div class="claims lframe">
+      {claims.map((c) => (
+        <article class="claim" id={c.id}>
+          <h3>{c.means}</h3>
+          <p class="claim-v">{c.shows.join(', ')}</p>
+          <p class="quiet">{c.conditions}</p>
+          <p>
+            {c.source.map((s, i) => (
+              <>
+                {i > 0 && ', '}
+                {s.url ? <a href={s.url}>{label(s)}</a> : <span class="quiet">Not public: {s.note}</span>}
+              </>
+            ))}
+          </p>
+        </article>
+      ))}
+    </div>
+  </div>
+</Base>

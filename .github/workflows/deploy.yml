@@ -32,6 +32,41 @@ jobs:
         with:
           path: ./site
 
+  # Builds and checks the new site. It doesn't deploy until the cutover change points the build job at web/dist.
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Refresh PR states
+        working-directory: .
+        run: node tools/fetch_prs.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Build
+        run: npm run build
+
+      - name: Check numbers, wording, old URLs and links
+        working-directory: .
+        run: |
+          python3 tools/check_claims.py
+          python3 tools/check_site.py
+
   deploy:
     if: github.event_name != 'pull_request'
     needs: build

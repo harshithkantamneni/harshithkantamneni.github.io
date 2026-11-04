@@ -1,0 +1,11 @@
+{
+  "checked": "2026-11-03",
+  "prs": {
+    "fla1412": { "repo": "fla-org/flash-linear-attention", "number": 1412, "state": "closed", "merged_at": "2026-10-27" },
+    "fla1319": { "repo": "fla-org/flash-linear-attention", "number": 1319, "state": "closed", "merged_at": "2026-10-08" },
+    "cudnn1287": { "repo": "NVIDIA/cudnn-frontend", "number": 1287, "state": "closed", "merged_at": "2026-10-06" },
+    "cudnn1223": { "repo": "NVIDIA/cudnn-frontend", "number": 1223, "state": "closed", "merged_at": null },
+    "te3591": { "repo": "NVIDIA/TransformerEngine", "number": 3591, "state": "open", "merged_at": null },
+    "vllm38338": { "repo": "vllm-project/vllm", "number": 38338, "state": "closed", "merged_at": null }
+  }
+}

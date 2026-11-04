@@ -96,7 +96,7 @@
 <p>For correctness, 66 fp16 cases compared native GQA against the same inputs pre-expanded and run as multi-head attention, using <code>torch.equal</code> on O and LSE across all three schedulers.</p>
 <p>The tooling could lie too. Before the main run, a review of it found defects that were mostly false greens. The diff tool reported OK on empty, unhashed or crashed runs, one wrapper dropped pytest's return code, and the benchmark always exited 0. Any of these could have produced a clean comparison of nothing, so they were fixed first.</p>
 <h2>What it did, and what it didn't</h2>
-<p>The gain depends on how much the copy writes. At 64/8 it's large, and at 8/1 it's small, because the expansion is 8x smaller while the kernel takes about the same time.</p>
+<p>The time saved depends on how much the copy writes. At 64/8 it's large, and at 8/1 it's small, because the expansion is 8x smaller while the kernel takes about the same time.</p>
 <div class="tw" tabindex="0"><table><thead><tr><th>Heads (H_q/H_kv)</th><th>d</th><th>Develop (ms)</th><th>PR (ms)</th><th>Faster by</th><th>cuDNN backend (ms)</th></tr></thead><tbody><tr><td>64/8</td><td>128</td><td>14.57</td><td>6.66</td><td>2.19×</td><td>3.30</td></tr><tr><td>32/8</td><td>128</td><td>9.91</td><td>6.66</td><td>1.49×</td><td>3.30</td></tr><tr><td>8/1</td><td>128</td><td>7.59</td><td>6.63</td><td>1.15×</td><td>3.30</td></tr><tr><td>64/8</td><td>64</td><td>8.23</td><td>4.23</td><td>1.95×</td><td>4.09</td></tr><tr><td>32/2</td><td>256</td><td>17.15</td><td>12.55</td><td>1.37×</td><td>9.96</td></tr></tbody></table></div>
 <p>A100, bf16, batch 1, S_q=2, S_kv=128K.</p>
 <p>The other results:</p>

@@ -1,0 +1,70 @@
+---
+import { rich, pct, monthTicks, fmtDate } from '../lib/rich.mjs';
+import { LANES, CHECKED } from '../data/site.mjs';
+
+const end = CHECKED;
+const left = (iso) => pct(iso, end).toFixed(2) + '%';
+const width = (a, b) => (pct(b || end, end) - pct(a, end)).toFixed(2) + '%';
+const ticks = monthTicks(end);
+const day = (iso) => Date.parse(iso) / 864e5;
+const items = [];
+for (const l of LANES) {
+  for (const s of l.spans) items.push({ s: day(s.start), e: day(s.end || end), t: s.say || s.label });
+  for (const m of l.marks) items.push({ s: day(m.date), m: 1, t: m.say || m.label });
+}
+const data = { start: day('2026-01-01'), end: day(end), items };
+const latest = 'Latest: KV-cache decoding merged in flash-linear-attention, Oct 27. Move across the chart to read the year.';
+---
+<div class="hero wrap">
+  <div class="hero-t">
+    <p class="who">Harshith Kantamneni</p>
+    <h1>I build <span style="white-space:nowrap">AI-systems</span> infrastructure, from GPU kernels up.</h1>
+    <p class="sub">CUDA and Triton kernels and inference profiling at the bottom. Retrieval and multi-agent systems at the top. At every layer I measure it, and I keep the results that disagree with me.</p>
+    <p class="proof" set:html={rich('[[count.merged|3 PRs merged]] upstream, in NVIDIA cuDNN frontend and flash-linear-attention. Dotted numbers open their conditions and source.')} />
+    <div class="meta">
+      <span>Milwaukee, WI (open to relocation)</span>
+      <span>Open to full-time roles</span>
+      <span>M.S. ECE, UW-Madison</span>
+    </div>
+    <div class="cta">
+      <a class="btn" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a>
+      <a class="btn alt" href="#kernels">Start at the kernels</a>
+      <a class="tl" href="https://github.com/harshithkantamneni">GitHub</a>
+      <a class="tl" href="https://www.linkedin.com/in/hk4231">LinkedIn</a>
+      <a class="tl" href="mailto:kantamneniharshith@gmail.com">Email</a>
+    </div>
+    <div class="quicklanes">
+      {[...LANES].sort((a, b) => 'kia'.indexOf(a.cls) - 'kia'.indexOf(b.cls)).map((l) => (
+        <a class={l.cls} href={`#${l.id}`}><b>{l.name}</b><span set:html={l.short} /></a>
+      ))}
+    </div>
+  </div>
+  <section class="trace" id="trace" aria-label="My 2026 work, from kernels at the bottom to agents at the top">
+    <div class="trace-h"><span>This year, from the kernels up</span><span>Bars are projects. Diamonds are merged PRs and the lab audit.</span></div>
+    <div class="ticks" aria-hidden="true">
+      {ticks.map((t) => <span style={`left:${t.left}`}>{t.label}</span>)}
+    </div>
+    <div class="tracks">
+      <span class="play" aria-hidden="true"></span>
+      {LANES.map((l) => (
+        <div class={`lane ${l.cls}${l.cls === 'k' ? ' lit' : ''}`}>
+          <a class="lane-n" href={`#${l.id}`}>{l.name}</a>
+          <div class="lane-t" style={`height:${l.h}px`}>
+            {ticks.map((t) => <span class="gl" aria-hidden="true" style={`left:${t.left}`}></span>)}
+            {l.spans.map((s) => (
+              <>
+                <a class="sp" href={s.href} aria-label={s.say || s.label} style={`left:${left(s.start)};width:${width(s.start, s.end)};top:${s.top}px`}></a>
+                <a class={`sp-l${s.right ? ' r' : ''}`} tabindex="-1" aria-hidden="true" href={s.href} style={s.right ? `left:100%;top:${s.top - 18}px` : `left:${left(s.start)};top:${s.top - 18}px`}>{s.label}</a>
+              </>
+            ))}
+            {l.marks.map((m) => (
+              <a class="mk" href={m.href} aria-label={m.say || m.label} style={`left:${left(m.date)};top:${m.mtop}px`}></a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+    <p class="readout">{latest}</p>
+    <script type="application/json" id="trace-data" set:html={JSON.stringify(data)}></script>
+  </section>
+</div>

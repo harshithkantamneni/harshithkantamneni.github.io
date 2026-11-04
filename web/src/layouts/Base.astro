@@ -1,0 +1,88 @@
+---
+import '../styles/global.css';
+import { LANES } from '../data/site.mjs';
+import storyJs from '../scripts/story.js?raw';
+
+const {
+  title,
+  description,
+  image = '/og/home.png',
+  active = null,
+  resume = '/Harshith_Kantamneni_Resume.pdf',
+  home = false,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const imageUrl = new URL(image, Astro.site).href;
+const order = [...LANES].sort((a, b) => 'kia'.indexOf(a.cls) - 'kia'.indexOf(b.cls));
+---
+<!doctype html>
+<html lang="en" data-worldable={home ? "" : undefined}>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="theme-color" content="#0D1015">
+  <link rel="canonical" href={canonical}>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonts/atkinson.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/iosevka-500.woff2" as="font" type="font/woff2" crossorigin>
+  <script is:inline>{ var r = document.documentElement, calm = matchMedia('(prefers-reduced-motion: reduce)').matches, wide = matchMedia('(min-width: 1024px)').matches; if (wide && !calm && 'IntersectionObserver' in window) r.classList.add('story'); if (!calm && r.hasAttribute('data-worldable') && !(navigator.connection && navigator.connection.saveData)) { try { var c = document.createElement('canvas').getContext('webgl2'); if (c) { r.classList.add('world'); if (!wide) r.classList.add('lite'); var x = c.getExtension('WEBGL_lose_context'); if (x) x.loseContext(); } } catch (e) {} } }</script>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={imageUrl}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content={imageUrl}>
+</head>
+<body>
+  <div class="amb" aria-hidden="true"><i class="ak"></i><i class="ai"></i><i class="aa"></i></div>
+  {home && (
+    <>
+      <canvas id="world" aria-hidden="true"></canvas>
+      <div class="wscrim" id="wscrim-l" aria-hidden="true"></div>
+      <div class="wscrim" id="wscrim-r" aria-hidden="true"></div>
+      <div id="wlabels" aria-hidden="true"></div>
+    </>
+  )}
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="navbar">
+    <nav class="nav wrap" aria-label="Main">
+      <a class="brand" href="/">Harshith Kantamneni</a>
+      <div class="layers">
+        {order.map((l) => (
+          <a class={l.cls} data-l={l.cls} href={home ? `#${l.id}` : l.track} aria-current={active === l.cls ? 'page' : undefined}>{l.name}</a>
+        ))}
+        <a class="w" href="/#writing">Writing</a>
+        <a class="navres" id="navres" href={resume}>Résumé</a>
+      </div>
+    </nav>
+  </header>
+  <main id="main">
+    <slot />
+  </main>
+  <footer class="foot">
+    <div class="wrap">
+      <span>Harshith Kantamneni, Milwaukee, WI</span>
+      <span class="contact">
+        <a href="mailto:kantamneniharshith@gmail.com">Email</a>
+        <a href="https://github.com/harshithkantamneni">GitHub</a>
+        <a href="https://www.linkedin.com/in/hk4231">LinkedIn</a>
+        <a href="/#writing">Writing</a>
+        <a href="/numbers/">Every number and its source</a>
+      </span>
+    </div>
+  </footer>
+  <dialog class="pop" id="pop" aria-labelledby="pop-t">
+    <h2 id="pop-t"></h2>
+    <p id="pop-c"></p>
+    <div class="row">
+      <a id="pop-a" href="/numbers/">Source and full row</a>
+      <button type="button" id="pop-x">Close</button>
+    </div>
+  </dialog>
+  <script is:inline set:html={storyJs}></script>
+  <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "2e4646d7e5e149c0a3c87132e9fa66f1"}'></script>
+</body>
+</html>

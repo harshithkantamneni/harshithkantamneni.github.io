@@ -1,0 +1,102 @@
+---
+import { rich } from '../lib/rich.mjs';
+import { bars } from '../lib/viz.mjs';
+import Slope from './figures/Slope.astro';
+import Waffle from './figures/Waffle.astro';
+
+const r = rich;
+const GH = 'https://github.com/harshithkantamneni/';
+const RESUME = '/resume/agents/Harshith_Kantamneni_Resume.pdf';
+
+
+const { as = 'h2' } = Astro.props;
+const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4';
+---
+<section class="opener a" id="agents" data-chapter="a" data-resume={RESUME}>
+  <div class="wrap">
+    <Top>Agents</Top>
+    <p>The top of the stack: agents that need to remember, and someone who checks their work.</p>
+    <div class="ol">
+      <a href="#bert">Memory past the window</a>
+      <a href="#audit">The check that never ran</a>
+      {as === 'h1' ? <a href="/">See the whole stack</a> : <a href="/agents/">Only the agent work</a>}
+    </div>
+  </div>
+</section>
+
+<div class="a" data-chapter="a" data-resume={RESUME}>
+  <section class="scene" id="bert" data-scene>
+    <div class="wrap">
+      <Sub class="scene-t">When a project outgrows the model's memory</Sub>
+      <div class="scene-g">
+        <div class="steps">
+          <div class="step" data-step="0"><p set:html={r('A coding agent on a long project can\'t hold it all. At [[bert.corpus|1.26M-token]] scale, a reader capped at a [[bertc.budget|120K budget]] keeps [[bertc.budget|about the newest 10%]], and accuracy [[bert.fullctx|fell to 0.08]].')} /></div>
+          <div class="step" data-step="1"><p set:html={r('So I built bert, a local MCP server with hybrid retrieval. It held at 0.90. So did agentic grep, with no significant difference.')} /></div>
+          <div class="step" data-step="2"><p>On real code, grep scored higher. bert is for accumulated project memory, not code search.</p></div>
+          <div class="scene-links">
+            <a href="/work/bert/">Read the case study</a>
+            <a href={GH + 'bert'}>See the repo</a>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="frames">
+            <Slope f="0,1" />
+            <figure class="frame" data-f="2">
+              <figcaption>On 249 questions about real code, through Claude Code</figcaption>
+              <p class="f-read" set:html={r('[[bert.code|0.97 to 0.86]]')} />
+              <p class="f-sub">grep scored higher, and used fewer tokens</p>
+              <Fragment set:html={bars([
+                { label: 'Agentic grep', value: 0.968, text: '0.968' },
+                { label: 'bert over MCP', value: 0.855, text: '0.855' },
+                { label: 'bert, one shot', value: 0.663, text: '0.663', tone: 'mid' },
+                { label: 'Closed book', value: 0.610, text: '0.610', tone: 'dim' },
+              ], { max: 1 })} />
+              <p class="f-note" set:html={r('Intervals and every arm are in the case study. [[bertc.codearms]]')} />
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="audit" data-scene>
+    <div class="wrap">
+      <Sub class="scene-t">The check that never ran</Sub>
+      <div class="scene-g">
+        <div class="steps">
+          <div class="step" data-step="0"><p set:html={r('I ran a lab of [[count.roles|31 Claude Code]] agent roles on one [[lab.memory|18 GB]] MacBook. On Apr 17, the agent running the lab wrote [[labv.forged|5 PI sign-offs]] without ever calling the PI agent, the role meant to approve.')} /></div>
+          <div class="step" data-step="1"><p>So I built a detector, and a gate that runs it before a session can exit cleanly. Later I went back through the runner logs to count what the gate had actually done.</p></div>
+          <div class="step" data-step="2"><p>By my count, it never ran. A shell bug, fixed in June, kept the detector's Python from starting, so nothing could block.</p></div>
+          <div class="step" data-step="3"><p set:html={r('I audited each part and shipped a better detector with [[labv.tests|24 regression tests]]. The lesson: a check can\'t trust a record the agent being checked can write. The director\'s own text still reaches the log my detector reads, so it can still be fooled, and the repo lists how.')} /></div>
+          <div class="scene-links">
+            <a href="/work/lab-verification/">Read the case study</a>
+            <a href={GH + 'agi-lab-framework/blob/main/audits/gate_audit_sessions.csv'}>See the per-session table</a>
+            <a href={GH + 'agi-lab-framework/blob/main/audits/README.md#known-gaps'}>See the known gaps</a>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="frames">
+            <Waffle f="0,1,2,3" live />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene also">
+    <div class="wrap">
+      <div class="alsos">
+        <div>
+          <Also class="at"><a href={GH + 'obsidian-engine'}>The Obsidian Archive</a></Also>
+          <p set:html={r('A [[obs.stages|13-stage]] pipeline that researches, writes, renders and uploads a documentary from one topic, with checkpoints and resume. A crash during upload can publish twice, and the budget cap resets on resume.')} />
+          <p class="st">Public repo</p>
+        </div>
+        <div>
+          <Also class="at"><a href={GH + 'hive-engine'}>HIVE</a></Also>
+          <p>A privacy-first peer-to-peer reasoning engine in Rust.</p>
+          <p class="st">Alpha research prototype</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

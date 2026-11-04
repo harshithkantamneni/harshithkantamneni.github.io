@@ -1,0 +1,37 @@
+---
+import Base from './Base.astro';
+import ChapterKernels from '../components/ChapterKernels.astro';
+import ChapterInference from '../components/ChapterInference.astro';
+import ChapterAgents from '../components/ChapterAgents.astro';
+import WorkList from '../components/WorkList.astro';
+import { LANES, WORK } from '../data/site.mjs';
+
+const { cls, heading, lead } = Astro.props;
+const lane = LANES.find((l) => l.cls === cls);
+const others = LANES.filter((l) => l.cls !== cls).sort((a, b) => 'kia'.indexOf(a.cls) - 'kia'.indexOf(b.cls));
+const Chapter = { k: ChapterKernels, i: ChapterInference, a: ChapterAgents }[cls];
+---
+<Base
+  title={`${heading}: Harshith Kantamneni`}
+  description={lead}
+  image={`/og/${lane.id}.png`}
+  active={cls}
+  resume={lane.resume.href}
+>
+  <Chapter as="h1" />
+  <section class={`section wrap ${cls}`}>
+    <div class="sec-head"><h2>Everything, and where it stands</h2></div>
+    <div class="lframe"><WorkList items={WORK[cls]} compact /></div>
+  </section>
+  <section class="section wrap">
+    <div class="sec-head"><h2>The rest of the stack</h2><a href="/">See it all together</a></div>
+    <div class="alsos">
+      {others.map((l) => (
+        <div class={l.cls}>
+          <h3 class="at layer"><a href={l.track}>{l.name}</a></h3>
+          <p>{l.short}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>

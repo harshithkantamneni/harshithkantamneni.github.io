@@ -1,0 +1,21 @@
+---
+import { rich as r } from '../../lib/rich.mjs';
+
+const { f } = Astro.props;
+---
+<figure class="frame key i" data-f={f} id="foresight" data-world>
+  <figcaption>Decode time per token on one machine: gpt-oss-120b, RTX 5090, 11% of experts on the GPU</figcaption>
+  <p class="f-read"><span id="fs-v">20.59</span><small> ms</small></p>
+  <div class="bt" style="height:24px;margin-top:8px;overflow:visible">
+    <i id="fs-b" style="transform:scaleX(1)"></i>
+    <span class="limit" style={`left:${(10.02 / 20.59 * 100).toFixed(2)}%`}></span>
+  </div>
+  <p class="f-note" set:html={r('The white tick is the computed limit, [[wsg.breakdown|10.02]] ms, relative to my own bandwidth probe.')} />
+  <p class="f-sub" id="fs-n" role="status" style="margin:12px 0 0">The deployed cache, with no foresight.</p>
+  <div class="sws">
+    <button type="button" class="sw" role="switch" aria-checked="false"><span>Follow the oracle's cache schedule</span><span class="sw-k" aria-hidden="true"></span></button>
+    <button type="button" class="sw" role="switch" aria-checked="false"><span>Read each cached expert only once</span><span class="sw-k" aria-hidden="true"></span></button>
+    <button type="button" class="sw" role="switch" aria-checked="false" disabled><span>Also issue the copies ahead of time<span class="sw-h"> (needs both above)</span></span><span class="sw-k" aria-hidden="true"></span></button>
+  </div>
+  <p class="f-note wo">Schematic. The routing is a recorded gpt-oss-120b trace and the cache shown is a simple illustration. The times are measured.</p>
+</figure>

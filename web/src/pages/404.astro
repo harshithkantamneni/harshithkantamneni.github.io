@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import { LANES } from '../data/site.mjs';
+---
+<Base title="Page not found: Harshith Kantamneni" description="This page doesn't exist. Try one of the three areas of work.">
+  <div class="wrap">
+    <div class="page-head">
+      <h1>Page not found</h1>
+      <p class="lead">This page doesn't exist. These three do:</p>
+    </div>
+    <div class="contact" style="padding-top:12px">
+      {LANES.map((l) => <a class={l.cls} style="color:var(--c)" href={l.track}>{l.title}</a>)}
+      <a href="/">Home</a>
+    </div>
+  </div>
+</Base>

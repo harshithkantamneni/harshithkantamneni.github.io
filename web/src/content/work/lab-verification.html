@@ -1,0 +1,51 @@
+<h2>What I built</h2>
+<p>I built sign-off verification for a [[count.roles|31-role]] Claude Code lab, audited it against runner logs, and shipped an improved detector with tests. The finding, by my count: the gate ran on [[lab.gate|0 of 270]] eligible sessions, in this <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/gate_audit_sessions.csv">per-session table</a>. A shell bug, fixed in June, explains it. The logs stay private. The detector is improved, but it can still be fooled, because director text reaches the log it reads. The repo lists its <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps">known gaps</a>.</p>
+<p>A shell script, the runner, starts one director agent at a time. The director dispatches roles such as the PI (principal investigator). The lab had [[labv.roles30|30 roles]] at the time of the incident the audit covers.</p>
+<p>A sign-off is a line in a lab document saying a role agreed to a decision. Some decisions need one from both the director and the PI. On Apr 17 the director wrote [[labv.forged|5 PI sign-offs]] without dispatching the PI. I noticed an empty PI folder next to the approvals. Then I built three parts:</p>
+<ul>
+<li>Detector: a script that checks each sign-off for a receipt, a dated file in that role's folder saying the role ran. No receipt means a reported forgery.</li>
+<li>Gate: a runner step. When a director session exits cleanly, it runs the detector. On a forgery report, it blocks the clean exit and sends the director back.</li>
+<li>Evaluator check: a checklist item where the evaluator role records the detector's result.</li>
+</ul>
+<p>In September I audited those parts and shipped the improved detector, in <a href="https://github.com/harshithkantamneni/agi-lab-framework/pull/38">#38</a>, <a href="https://github.com/harshithkantamneni/agi-lab-framework/pull/39">#39</a> and <a href="https://github.com/harshithkantamneni/agi-lab-framework/pull/40">#40</a> on Sep 17 and Sep 18. It matches the sign-off format the incident used, drops three classes of false positive, and adds a mode for checking old records. A new identity check compares each receipt with the agent type the runner logged, because a generic agent can do a role's work. [[labv.tests|24 regression tests]] pin these changes, and they pass.</p>
+
+<h2>What I measured</h2>
+<p>The gate's line began: if ! source .venv/bin/activate &amp;&amp; python3 tools/verify_signatures.py. Shell parses that as (! source) &amp;&amp; python3. When the virtual environment activates, the left side is false, so Python never starts and nothing blocks. The --prove option of <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/gate_audit.py">gate_audit.py</a> reproduces this from a clone.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>By my count, in the <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/gate_audit_sessions.csv">per-session table</a>, 270 session logs contain the gate's precondition and none contain the detector's output. [[labv.counts]]</caption>
+<thead><tr><th>Session logs, named Apr 17 to May 30</th><th>Count</th></tr></thead>
+<tbody>
+<tr><td>All logs</td><td class="num">{{bar:763/763}}</td></tr>
+<tr><td>Eligible: the log contains the gate's precondition</td><td class="num">{{bar:270/763}}</td></tr>
+<tr><td>The log contains the detector's output</td><td class="num">{{bar:0/763}}</td></tr>
+<tr><td>The log shows the gate blocking</td><td class="num">{{bar:0/763}}</td></tr>
+<tr><td>The director ran the detector itself, which isn't the gate</td><td class="num">6 sessions</td></tr>
+</tbody></table></div>
+<p>The audit didn't find the shell bug. A fix, <a href="https://github.com/harshithkantamneni/agi-lab-framework/commit/d5af181">d5af181</a>, landed on Jun 6, after the last log counted.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>By my count, each part of the fix had a defect, and so did the remediation of the incident. [[labv.parts]]</caption>
+<thead><tr><th>Part</th><th>What I found</th><th>Count</th></tr></thead>
+<tbody>
+<tr><td>Detector</td><td>Its original patterns missed the incident's own sign-off format. Archive reports that were false positives:</td><td class="num">23 of 23</td></tr>
+<tr><td>Gate</td><td>Eligible sessions where it ran:</td><td class="num">0 of 270</td></tr>
+<tr><td>Evaluator check</td><td>Passes quoting the detector that were over an empty scan:</td><td class="num">6 of 10</td></tr>
+<tr><td>Remediation</td><td>The dispatch that closed the incident used a generic agent. Non-director receipts filed under a role not yet dispatched by its own type, by a date test:</td><td class="num">32 of 174</td></tr>
+</tbody></table></div>
+
+<h2>What limited it</h2>
+<p>I read the shared limit as the evidence, not the checker. Of the lab's receipts, [[labv.tracked|0 of 195]] were tracked in git, and the session logs are gitignored. These sat inside the director's own write scope. So the record a check reads has to sit outside the write scope of whoever is being checked. My current fix doesn't fully do that, because director text reaches the log the check reads. That's the next thing I'd fix.</p>
+<p>The old-records mode works by day, so it passes the incident itself: the forged sign-off and a later dispatch share a date.</p>
+
+<h2>What it doesn't show</h2>
+<ul>
+<li>The counts don't reproduce from a clone, because the logs stay private and gitignored. You can check the table's sums, not its rows.</li>
+<li>"Eligible" is a text match on the string GRACEFUL_CHECKPOINT, so director prose could inflate it. I didn't measure how many of the [[labv.counts|270]] are true clean exits. I read the zero as the stronger half, because the gate redirects the detector's output into that log.</li>
+<li>The detector is still bypassable. A later code review, not the September audit, found the repo's <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps">known gaps</a>. A sign-off can cite any old receipt, and any recent file in the role's folder passes, so the director can write one. The gate doesn't pass --check-identity. Director text can fake a &gt;&gt;&gt; AGENT pi line. An empty scan passes, and so does a sign-off phrased outside the pattern list. The tests don't cover these gaps.</li>
+<li>It's one lab, one model family and one incident. It doesn't show how often agents forge sign-offs, why this one did, or that [[count.roles|31 roles]] do better than fewer.</li>
+</ul>
+
+<h2>Links</h2>
+<ul>
+<li><a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/gate_audit_sessions.csv">Per-session gate table</a>: each log's counts, size and SHA-256, with no log text.</li>
+<li><a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md">Audit README</a> and its <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps">known gaps</a>.</li>
+<li><a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/tools/verify_signatures.py">Detector</a>, with tests for <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/tests/test_verify_signatures_patterns.py">sign-off patterns</a> and <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/tests/test_dispatch_identity.py">dispatch identity</a>.</li>
+<li><a href="https://github.com/harshithkantamneni/agi-lab-framework">The public repo</a>.</li>
+</ul>

@@ -1,0 +1,120 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import ChapterKernels from '../components/ChapterKernels.astro';
+import ChapterInference from '../components/ChapterInference.astro';
+import ChapterAgents from '../components/ChapterAgents.astro';
+import { LOG, WRITING, OLDER, CHECKED, prState } from '../data/site.mjs';
+import { rich, fmtDate } from '../lib/rich.mjs';
+
+const stateOf = (r) => r.state || prState(r.pr);
+const merged = (r) => /merged/i.test(stateOf(r)) && !/not merged/i.test(stateOf(r));
+---
+<Base
+  home
+  title="Harshith Kantamneni: AI-systems infrastructure, from GPU kernels up"
+  description="I build AI-systems infrastructure, from CUDA and Triton kernels and inference profiling up to retrieval and multi-agent systems. Every result names its hardware and its limits."
+>
+  <Hero />
+  <ChapterKernels />
+  <ChapterInference />
+  <ChapterAgents />
+
+  <section id="log" class="section wrap">
+    <div class="sec-head"><h2>Everything, and where it stands</h2><span class="ld">States checked {fmtDate(CHECKED)}</span></div>
+    <div class="filters" id="filters" role="group" aria-label="Filter the list">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="merged" aria-pressed="false">Merged</button>
+      <button type="button" data-f="k" aria-pressed="false">Kernels</button>
+      <button type="button" data-f="i" aria-pressed="false">Inference</button>
+      <button type="button" data-f="a" aria-pressed="false">Agents</button>
+    </div>
+    <div class="lframe">
+    {LOG.map((r) => (
+      <details class={`lrow ${r.lane}`} data-layers={r.layers || r.lane} data-merged={merged(r) ? '1' : '0'}>
+        <summary>
+          <span class="ld">{r.date}</span>
+          <span class="lw">{r.layer}</span>
+          <span class="lt">{r.title}</span>
+          <span class="ls">{stateOf(r)}</span>
+          <span class="chev" aria-hidden="true"></span>
+        </summary>
+        <div class="lbody">
+          <p set:html={rich(r.blurb)} />
+          <a class="go" href={r.href}>Open it</a>
+        </div>
+      </details>
+    ))}
+    </div>
+  </section>
+
+  <section id="writing" class="section wrap">
+    <div class="sec-head"><h2>Writing</h2></div>
+    <div class="lframe">
+    {WRITING.map((w) => (
+      <article class="work">
+        <div>
+          <h3><a href={w.href}>{w.title}</a></h3>
+          <p set:html={rich(w.blurb)} />
+        </div>
+        <div class="state">{w.date}<br>{w.kind}</div>
+      </article>
+    ))}
+    </div>
+  </section>
+
+  <section id="older" class="section wrap">
+    <div class="sec-head"><h2>Team projects</h2><a href="/archive/">See the archive</a></div>
+    <div class="alsos">
+      {OLDER.map((o) => (
+        <div id={o.id}>
+          <h3 class="at"><a href={o.href}>{o.title}</a></h3>
+          <p set:html={rich(o.blurb)} />
+          <p class="st">{o.tag}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="about" class="section wrap">
+    <div class="about">
+      <p class="lead-line">Each result here names its hardware and shape, and says what I didn't measure.</p>
+      <p style="margin-top:16px">Working on CUDA and Triton kernels taught me to test bottleneck stories against counts. Building the layers on top taught me which bottlenecks a real workload cares about. PRs and public repos are open to read. Not public: the lab's logs, the floor report's sources, the RFC results, some Nsight reports and course reports.</p>
+      <p>M.S. ECE, UW-Madison, <span set:html={rich('[[profile.degree|Dec 2025]]')} />. NVIDIA certificates of competency: <a href="/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf">Getting Started with Accelerated Computing in Modern CUDA C++</a> (<span set:html={rich('[[cert.cuda|Jul 2025]]')} />) and <a href="/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf">The Art of Compressing LLMs</a> (<span set:html={rich('[[cert.llm|Feb 2026]]')} />).</p>
+    </div>
+  </section>
+
+  <section id="contact" class="section wrap">
+    <div class="sec-head"><h2>Get in touch</h2></div>
+    <p class="sec-note">Open to AI-infrastructure, LLM-inference, GPU-performance and agentic-tooling roles. Milwaukee, WI (open to relocation).</p>
+    <div class="contact">
+      <a class="btn" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a>
+      <a href="mailto:kantamneniharshith@gmail.com">Email</a>
+      <a href="https://github.com/harshithkantamneni">GitHub</a>
+      <a href="https://www.linkedin.com/in/hk4231">LinkedIn</a>
+    </div>
+  </section>
+</Base>
+<script>
+  // The 3D world is an enhancement: the page is complete without it.
+  const gr = document.getElementById('gpurun');
+  if (gr && navigator.gpu) {
+    gr.hidden = false;
+    const btn = document.getElementById('gpurun-b'), out = document.getElementById('gpurun-o');
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      try {
+        const { run } = await import('../scripts/gpurun.js');
+        const r = await run((m) => { out.textContent = m; });
+        const x = r.withCopies / r.without;
+        out.textContent = `On ${r.name}: ${r.withCopies.toFixed(1)} ms with the copies, ${r.without.toFixed(1)} ms without, a ratio of ${x.toFixed(2)}. Median of 7 rounds, measured just now on your machine.`;
+      } catch (e) {
+        out.textContent = `It couldn't run here: ${e.message}`;
+      }
+      btn.disabled = false;
+    });
+  }
+  if (document.documentElement.classList.contains('world')) {
+    import('../scripts/world.js').catch(() => document.documentElement.classList.remove('world'));
+  }
+</script>
