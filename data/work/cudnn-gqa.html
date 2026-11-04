@@ -1,0 +1,68 @@
+<p>On an A100 at [[pr1223.copy|64/8 heads]] and a [[pr1223.copy|128K KV cache]], K/V head copies in NVIDIA's cuDNN frontend took [[pr1223.copy|7.28 ms]] per call against a [[pr1223.copy|6.0-6.7 ms]] attention kernel. That is one shape. Removing the copies made [[pr1223.batched|6 batched rows 2.6-3.3×]] faster, and [[pr1223.oom|10 more]] stopped running out of memory. Those rows are really [[gqa.configs|3 configs]] and [[gqa.configs|5 configs]]. Multi-token steps [[gqa.mtp|at batch 1]] ran [[pr1223.kv|1.15-2.19×]] faster at that cache size. Clocks weren't locked, and the cuDNN backend stayed faster on [[pr1223.backend|27 of 31]] multi-token rows.</p>
+<p>The merged code is tests, not a kernel. Those tests catch [[pr1287.bugs|3 injected bugs]] that NVIDIA's SM80 tests missed. I closed my prototype after NVIDIA shipped native GQA in #1239, and I didn't measure #1239.</p>
+
+<h2>What I built</h2>
+<p>In grouped-query attention (GQA), several query heads share one KV head. The SM80 adapter copied K and V up to the query head count on every call. The kernels already map each query head to its KV head, with h // (H_q // H_kv).</p>
+<p><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">The prototype</a> changed the adapter and no kernel file. That removed an expansion of [[gqa.expansion|4 GiB per call at 64/8 heads]]. After <a href="https://github.com/NVIDIA/cudnn-frontend/pull/1239">#1239</a>, I closed it. On <a href="https://github.com/NVIDIA/cudnn-frontend/issues/377">issue #377</a>, one option I offered was a tests-only PR, and that's what was suggested back.</p>
+<p><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">That PR</a> adds [[gqa.tests|80 tests]] and changes no library code. Of those, [[gqa.tests|66 cases]] check that native GQA gives bit-for-bit the same O and LSE as the same inputs with K/V copied up. NVIDIA's GQA tests used [[gqa.tests|4/2 and 16/4 heads]]. At those ratios, query heads per KV head equals KV heads, so a kernel that mixes up the two still passes. The new tests add [[gqa.tests|8/4 and 8/2]].</p>
+
+<h2>What I measured</h2>
+<h3>Timing</h3>
+<p>I used one rented A100-SXM4-80GB and bf16. Each timing is the [[gqa.method|median of 20 samples]] of kernel device time, which on the develop branch includes the copies. Develop and the prototype alternated in one pod. Rows with identical code on both sides had a [[gqa.method|median ratio of 1.000]], and I only claimed rows outside their control band.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>At batch 1 with a 2-token query (S_q=2), the gain ranges from 1.15× to 2.19×, and the backend stayed faster on all 5 shapes. [[gqa.mtp]]</caption>
+<thead><tr><th>Heads and d</th><th class="num">Develop (ms)</th><th class="num">Prototype (ms)</th><th class="num">Faster by (×)</th><th class="num">cuDNN backend (ms)</th></tr></thead>
+<tbody>
+<tr><td>64/8 d128</td><td class="num">14.57</td><td class="num">6.66</td><td class="num">{{bar:2.19/2.19}}</td><td class="num">3.30</td></tr>
+<tr><td>64/8 d64</td><td class="num">8.23</td><td class="num">4.23</td><td class="num">{{bar:1.95/2.19}}</td><td class="num">4.09</td></tr>
+<tr><td>32/8 d128</td><td class="num">9.91</td><td class="num">6.66</td><td class="num">{{bar:1.49/2.19}}</td><td class="num">3.30</td></tr>
+<tr><td>32/2 d256</td><td class="num">17.15</td><td class="num">12.55</td><td class="num">{{bar:1.37/2.19}}</td><td class="num">9.96</td></tr>
+<tr><td>8/1 d128</td><td class="num">7.59</td><td class="num">6.63</td><td class="num">{{bar:1.15/2.19}}</td><td class="num">3.30</td></tr>
+</tbody></table></div>
+<p>I read the time saved as following the copy's size. At d128, the expansion is [[gqa.expansion|8x smaller at 8/1 heads]] than at [[pr1223.copy|64/8 heads]], and the kernel takes about the same time.</p>
+<p>Develop ran out of memory on [[gqa.batch|10 of the 16 batched rows]], because it needed a [[gqa.batch|64-512 GiB]] expanded K/V workspace. The prototype ran [[gqa.batch|all 10]].</p>
+<div class="tw" tabindex="0"><table class="t"><caption>The 6 batched rows are 3 configs and the 10 out-of-memory rows are 5 configs, shown here at S_q=8. [[gqa.batch]]</caption>
+<thead><tr><th>Heads, d and batch</th><th class="num">Develop (ms)</th><th class="num">Prototype (ms)</th><th class="num">Faster by</th><th class="num">cuDNN backend (ms)</th></tr></thead>
+<tbody>
+<tr><td>64/8 d64, batch 32</td><td class="num">155.9</td><td class="num">47.1</td><td class="num">3.31×</td><td class="num">53.5</td></tr>
+<tr><td>8/1 d128, batch 128</td><td class="num">160.3</td><td class="num">54.3</td><td class="num">2.95×</td><td class="num">21.7</td></tr>
+<tr><td>8/1 d128, batch 32</td><td class="num">42.4</td><td class="num">16.3</td><td class="num">2.60×</td><td class="num">8.5</td></tr>
+<tr><td>64/8 d64, batch 128</td><td class="num">Out of memory</td><td class="num">179.0</td><td class="num">n/a</td><td class="num">212.7</td></tr>
+<tr><td>64/8 d128, batch 32</td><td class="num">Out of memory</td><td class="num">103.8</td><td class="num">n/a</td><td class="num">43.0</td></tr>
+<tr><td>32/8 d128, batch 32</td><td class="num">Out of memory</td><td class="num">54.5</td><td class="num">n/a</td><td class="num">22.1</td></tr>
+<tr><td>32/2 d256, batch 32</td><td class="num">Out of memory</td><td class="num">102.8</td><td class="num">n/a</td><td class="num">93.7</td></tr>
+<tr><td>32/2 d256, batch 128</td><td class="num">Out of memory</td><td class="num">391.2</td><td class="num">n/a</td><td class="num">367.8</td></tr>
+</tbody></table></div>
+<p>The backend stayed faster on [[pr1223.backend|27 of 31]] multi-token rows. [[gqa.batch|The other 4]] are [[gqa.batch|64/8 d64 at batch 32 and 128]].</p>
+
+<h3>Planted bugs</h3>
+<p>I planted bugs one at a time on an A100, restoring the kernel after each.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>The first 3 bugs pass NVIDIA's SM80 tests and fail the new ones, and the control fails both. [[gqa.planted]]</caption>
+<thead><tr><th>Planted bug</th><th class="num">New tests failing</th><th>NVIDIA's SM80 tests</th></tr></thead>
+<tbody>
+<tr><td>LPT_L2 short last block split by the full group count</td><td class="num">4 of 80</td><td>All 411 pass</td></tr>
+<tr><td>KV head (h // H_kv) % H_kv</td><td class="num">70 of 80</td><td>All 411 pass</td></tr>
+<tr><td>KV head h // H_kv, d256 kernel only</td><td class="num">37 of 80</td><td>All 60 d256 cases pass</td></tr>
+<tr><td>KV head h % H_kv (control)</td><td class="num">70 of 80</td><td>Caught, 30 fail</td></tr>
+</tbody></table></div>
+<p>I read the control as showing that NVIDIA's suite does test head mapping, just not at a ratio that separates the two.</p>
+
+<h2>What it doesn't show</h2>
+<ul>
+<li>Correct output at a [[pr1223.copy|128K KV cache]]. The timings don't check it.</li>
+<li>It doesn't show a fast kernel. At [[gqa.mtp|64/8 d128]] the prototype takes [[gqa.mtp|6.66 ms]] against the backend's [[gqa.mtp|3.30 ms]].</li>
+<li>It doesn't explain that gap. I named a non-split KV walk and a mostly empty Q tile as other causes, but never timed either alone.</li>
+<li>The [[pr1223.copy|7.28 ms]] is [[gqa.copyshape|64/8 d128 at S_q=4]], and develop's run there was bimodal. At [[gqa.mtp|8/1 d128]] the gain is only [[gqa.mtp|1.15×]].</li>
+<li>Pass-to-pass spread ran [[gqa.spread|up to 20%]] on some GQA rows, more than their control bands. The batched rows ran once per side.</li>
+<li>Bitwise equality is fp16 only. The timings are bf16, which went through tolerance checks and an order-blind checksum.</li>
+<li>Some shapes aren't servable. K and V take [[gqa.layer|0.5 GiB per layer]] at [[gqa.mtp|64/8 d128]], so [[gqa.layer|batch 32]] wouldn't fit an A100 across a whole model. The rows measure the kernel, not a deployment.</li>
+<li>I didn't measure #1239, so I can't compare it with my prototype.</li>
+</ul>
+
+<h2>Links</h2>
+<ul>
+<li><a href="/notes/kv-copies-gqa/">The longer worklog</a>: the decode background and next steps.</li>
+<li><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a>: the prototype, closed.</li>
+<li><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a>: the tests, merged.</li>
+<li><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1239">#1239</a>: NVIDIA's native GQA.</li>
+<li><a href="https://github.com/NVIDIA/cudnn-frontend/issues/377">Issue #377</a>: where the tests-only PR was suggested.</li>
+</ul>

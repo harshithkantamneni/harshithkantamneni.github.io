@@ -1,0 +1,107 @@
+{
+ "stick-breaking-kernels": {
+  "lane": "k",
+  "title": "Stick-breaking attention kernels",
+  "lead": "Forward, backward and KV-cache decoding kernels in Triton, merged in flash-linear-attention.",
+  "keys": [
+   {
+    "v": "[[sbk.op|52.7×]]",
+    "l": "faster than recomputing at 64K keys"
+   },
+   {
+    "v": "[[pr1319.vs_authors|1.04-1.42×]]",
+    "l": "the original authors' time, H100"
+   },
+   {
+    "v": "[[pr1319.tiles|57-89 KiB]]",
+    "l": "shared memory per kernel"
+   }
+  ],
+  "state": "Merged Oct 8 and Oct 27, 2026",
+  "next": "cudnn-gqa"
+ },
+ "cudnn-gqa": {
+  "lane": "k",
+  "title": "GQA in NVIDIA cuDNN",
+  "lead": "What removing K/V head copies did on an A100, why that code closed, and the tests that merged.",
+  "keys": [
+   {
+    "v": "[[pr1223.copy|7.28 ms]]",
+    "l": "K/V copies, at one shape on an A100"
+   },
+   {
+    "v": "[[pr1223.kv|1.15-2.19×]]",
+    "l": "faster with them gone, at batch 1"
+   },
+   {
+    "v": "[[pr1287.bugs|3 injected bugs]]",
+    "l": "NVIDIA's SM80 tests missed, mine caught"
+   }
+  ],
+  "state": "Tests merged Oct 6, 2026. Prototype closed Sep 27, 2026",
+  "next": "stick-breaking-kernels"
+ },
+ "where-the-seconds-go": {
+  "lane": "i",
+  "title": "Where the Seconds Go",
+  "lead": "A llama.cpp expert cache for batch-1 MoE decode when the model doesn't fit on the GPU, and a computed limit to read it against.",
+  "keys": [
+   {
+    "v": "[[wsg.grid|2.0-4.0×]]",
+    "l": "stock llama.cpp, a weak baseline"
+   },
+   {
+    "v": "[[sec.vs_ft|11 of 12]]",
+    "l": "configurations faster than FreeToken"
+   },
+   {
+    "v": "[[wsg.gap|43-52%]]",
+    "l": "of the gap stayed after all three oracles"
+   }
+  ],
+  "state": "Public manuscript and code, not peer reviewed",
+  "next": "stick-breaking-kernels"
+ },
+ "lab-verification": {
+  "lane": "a",
+  "title": "Lab verification and audit",
+  "lead": "Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and an improved detector.",
+  "keys": [
+   {
+    "v": "[[lab.gate|0 of 270]]",
+    "l": "eligible sessions where the gate ran, by my count"
+   },
+   {
+    "v": "[[labv.forged|5 PI sign-offs]]",
+    "l": "written without dispatching the PI"
+   },
+   {
+    "v": "[[labv.tests|24 regression tests]]",
+    "l": "on the improved detector"
+   }
+  ],
+  "state": "Public repo, private logs",
+  "next": "bert"
+ },
+ "bert": {
+  "lane": "a",
+  "title": "bert",
+  "lead": "A local MCP server that gives a coding agent searchable memory of a project, measured against agentic grep, including where grep scored higher.",
+  "keys": [
+   {
+    "v": "[[bert.large|0.90]]",
+    "l": "bert and grep at 1.26M tokens"
+   },
+   {
+    "v": "[[bert.fullctx|0.08]]",
+    "l": "full context at the same size"
+   },
+   {
+    "v": "[[bert.code|0.97 to 0.86]]",
+    "l": "grep against bert on real code"
+   }
+  ],
+  "state": "Public repo",
+  "next": "lab-verification"
+ }
+}
