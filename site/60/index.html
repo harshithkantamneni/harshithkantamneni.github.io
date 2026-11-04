@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Harshith Kantamneni in 60 seconds</title>
+<meta name="description" content="I build the software AI runs on, from GPU kernels up to the agents on top. The whole site, for someone with a minute."/>
+<meta name="theme-color" content="#060708">
+<link rel="canonical" href="https://harshithkantamneni.github.io/60/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Harshith Kantamneni in 60 seconds">
+<meta property="og:description" content="I build the software AI runs on, from GPU kernels up to the agents on top. The whole site, for someone with a minute.">
+<meta property="og:url" content="https://harshithkantamneni.github.io/60/">
+<meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060708;--ink:#EEEFF1;--mid:#9398A0;--dim:#7C828B;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
+body{background-image:radial-gradient(rgba(150,170,200,.09) 1px,transparent 1.2px);background-size:46px 46px;background-attachment:fixed}
+a{color:inherit;text-decoration:none}
+a:focus-visible,input:focus-visible,.tw:focus-visible{outline:2px solid var(--a);outline-offset:3px;border-radius:4px}
+::selection{background:var(--a);color:#04111f}
+.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:64px;padding:0 var(--edge);background:rgba(6,7,8,.96);border-bottom:1px solid var(--line)}
+.brand{font-size:15px;font-weight:500;letter-spacing:-.01em}
+.nl{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:14px}
+.nl a{color:var(--mid);min-height:32px;display:inline-flex;align-items:center}.nl a:hover{color:#fff}.nl a.on{color:var(--c)}
+.op{padding:clamp(56px,10vh,110px) var(--edge) clamp(28px,5vh,52px);background:radial-gradient(70vw 60vh at 86% 0,color-mix(in srgb,var(--c) 14%,transparent),transparent 72%)}
+.crumb{font-size:clamp(16px,1.4vw,19px);font-weight:500;color:var(--c)}
+.crumb:hover{text-decoration:underline;text-underline-offset:4px}
+h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacing:-.04em;margin-top:14px;max-width:1100px;text-wrap:balance}
+.lead{font-size:clamp(18px,2vw,24px);line-height:1.4;max-width:760px;margin-top:22px;letter-spacing:-.01em}
+.state{font-family:var(--mono);font-size:12px;color:var(--mid);margin-top:14px}
+.keys{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 28px;margin-top:40px;border-top:1px solid var(--line)}
+.kn{padding:18px 0;border-bottom:1px solid var(--line)}
+.kv{font-family:var(--mono);font-size:clamp(28px,3.4vw,44px);font-weight:700;letter-spacing:-.02em;color:var(--c);line-height:1.1}
+.kl{font-size:14px;line-height:1.45;color:var(--mid);margin-top:6px}
+.grid{display:grid;grid-template-columns:minmax(0,720px) minmax(0,270px);justify-content:space-between;gap:48px;padding:12px var(--edge) 40px}
+.toc{position:sticky;top:104px;align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px;padding-top:40px}
+.toc span{font-size:14px;color:var(--dim);margin-bottom:6px}
+.toc a{color:var(--mid);min-height:32px;display:flex;align-items:center}.toc a:hover,.toc a.on{color:#fff}
+.prose{font-size:17px;line-height:1.72;color:#cfd3d9;padding-top:18px;min-width:0}
+.prose>*+*{margin-top:20px}
+.prose h2{font-size:clamp(24px,3vw,34px);font-weight:600;letter-spacing:-.02em;color:var(--ink);margin-top:52px;line-height:1.15;scroll-margin-top:96px}
+.prose h3{font-size:20px;font-weight:600;color:var(--ink);margin-top:34px;line-height:1.25}
+.prose a{color:var(--ink);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent);text-underline-offset:3px}
+.prose a:hover{text-decoration-color:var(--c)}
+.prose a.n{font-family:var(--mono);font-size:.92em;color:var(--c);text-decoration:underline dotted;text-underline-offset:4px}
+.prose ul,.prose ol{padding-left:22px}.prose li{margin-top:8px}.prose li::marker{color:var(--dim)}
+.prose code{font-family:var(--mono);font-size:.86em;background:rgba(255,255,255,.06);border:1px solid var(--line);padding:1px 6px;border-radius:5px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+.prose table{width:100%;border-collapse:collapse;font-size:14px;font-family:var(--mono);min-width:520px;line-height:1.45}
+.prose th,.prose td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.prose tr:last-child td{border-bottom:0}.prose th{color:var(--mid);font-size:12px;font-weight:500}
+.prose td.num,.prose th.num{text-align:right;white-space:nowrap}
+.barv{display:inline-flex;align-items:center;gap:8px;min-width:120px}.barv .bt{flex:1;min-width:60px;height:7px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden;display:block}.barv i{display:block;height:100%;background:var(--c)}
+.next{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;padding:30px var(--edge);border-top:1px solid var(--line)}
+.next a{font-size:clamp(20px,2.4vw,30px);font-weight:600;letter-spacing:-.02em}.next a:hover{text-decoration:underline;text-underline-offset:5px}
+.next small{display:block;font-size:14px;font-weight:400;letter-spacing:0;color:var(--dim);margin-bottom:6px}
+.foot{display:flex;flex-wrap:wrap;gap:8px 22px;padding:28px var(--edge) 48px;border-top:1px solid var(--line);font-size:14px;color:var(--mid)}.foot a{min-height:28px;display:inline-flex;align-items:center}.foot a:hover{color:#fff}
+.nf{display:block;font-size:14px;color:var(--dim);margin-top:28px}
+.nf input{display:block;width:100%;max-width:560px;margin-top:8px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;min-height:48px;padding:0 14px;font:400 16px var(--sans);color:var(--ink);letter-spacing:0;text-transform:none}
+.claims{padding:10px var(--edge) 60px}.claim>*{max-width:76ch}
+.claim{padding:20px 0;border-bottom:1px solid var(--line);scroll-margin-top:90px}
+.claim:target{background:linear-gradient(90deg,rgba(255,180,84,.07),transparent);padding-left:12px}
+.claim h2{font-size:18px;font-weight:500;line-height:1.35}
+.claim .v{font-family:var(--mono);font-size:13px;color:var(--i);margin-top:6px;line-height:1.5}
+.claim p{font-size:15px;line-height:1.55;color:var(--mid);margin-top:6px}
+.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+@media(max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}.toc{display:none}.nl a.ha{display:none}}
+.brand{white-space:nowrap}@media(max-width:560px){.nl a:not(:last-child){display:none}}
+</style>
+<style>.s60{padding:14px var(--edge) 0}.r60{display:grid;grid-template-columns:minmax(150px,240px) minmax(0,1fr) auto;gap:clamp(16px,3vw,40px);align-items:center;padding:clamp(20px,3.4vh,34px) 0;border-top:1px solid var(--line)}.r60n{font-family:var(--mono);font-size:clamp(30px,4vw,54px);font-weight:700;letter-spacing:-.03em;color:var(--c);white-space:nowrap}.r60 h2{font-size:clamp(19px,1.7vw,24px);font-weight:500}.r60 h2 a:hover{text-decoration:underline;text-underline-offset:4px}.r60 p{font-size:16px;line-height:1.5;color:#c6cad1;margin-top:6px;max-width:44em}.r60r{font-size:14px;min-height:44px;display:inline-flex;align-items:center;padding:0 14px;border:1px solid var(--line);border-radius:9px}.r60r:hover{border-color:rgba(255,255,255,.34)}.a60{display:flex;flex-wrap:wrap;gap:10px;padding:24px var(--edge) 60px}.b60{font-size:15px;font-weight:500;min-height:48px;display:inline-flex;align-items:center;padding:0 20px;border:1px solid var(--line);border-radius:10px}.b60:hover{border-color:rgba(255,255,255,.34)}.b60.p{background:var(--ink);color:#08090a;border-color:var(--ink)}@media(max-width:760px){.r60{grid-template-columns:minmax(0,1fr)}.r60r{width:fit-content}}</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><div class="nl"><a style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div></header>
+<main style="--c:var(--k)">
+<div class="op" style="padding-bottom:10px"><span class="crumb">The 60-second version</span>
+<h1 style="font-size:clamp(30px,4.6vw,64px);line-height:1.08;font-weight:500">I build the software AI runs on, from GPU kernels up to the agents on top.</h1>
+<p class="state" style="font-size:13px">Open to full-time roles. Milwaukee, WI (open to relocation). M.S. ECE, UW-Madison, Dec 2025.</p></div>
+<div class="s60">
+<div class="r60" style="--c:var(--k)"><div class="r60n">52.7×</div><div><h2><a href="/#ch-k">GPU kernels</a></h2><p>Kernels merged in flash-linear-attention, where one decode step at 64K keys ran 52.7× faster than recomputing. Tests merged in NVIDIA's cuDNN frontend, which catch 3 injected bugs that NVIDIA's tests missed.</p></div><a class="r60r" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
+<div class="r60" style="--c:var(--i)"><div class="r60n">11 of 12</div><div><h2><a href="/#ch-i">LLM inference</a></h2><p>An expert cache for llama.cpp, for models too big for the GPU. Faster than FreeToken in 11 of 12 configurations at batch 1, on 2 RTX 5090 hosts.</p></div><a class="r60r" href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
+<div class="r60" style="--c:var(--a)"><div class="r60n">31 roles</div><div><h2><a href="/#ch-a">Agent systems</a></h2><p>A lab of 31 Claude Code agent roles, where I caught an agent forging another agent's sign-offs, audited my own check against the logs and closed the known ways to fool it. And bert, searchable memory for coding agents.</p></div><a class="r60r" href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
+</div>
+<div class="a60"><a class="b60 p" href="mailto:kantamneniharshith@gmail.com">Email me</a><a class="b60" href="/#intro">Read the full story</a><a class="b60" href="/work/">See all work</a></div>
+</main>
+<footer class="foot"><a href="/">Home</a><a href="/numbers/">Every number</a><a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a><a href="mailto:kantamneniharshith@gmail.com">Email</a><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a></footer>
+<script src="/numbers/num.js" defer></script>
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2e4646d7e5e149c0a3c87132e9fa66f1"}'></script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

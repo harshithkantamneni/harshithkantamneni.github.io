@@ -3516,7 +3516,9 @@
     "2 CTAs of 4 warps",
     "8 of 64 warps",
     "1 to 2",
-    "8 warps to 4"
+    "8 warps to 4",
+    "65536 registers",
+    "128 threads"
    ],
    "means": "Why occupancy sits at 12.5% and why the retile did not raise it",
    "value": {
