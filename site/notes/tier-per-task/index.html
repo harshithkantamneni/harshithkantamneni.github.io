@@ -87,16 +87,16 @@ Common pattern in multi-agent setups: assign each role a fixed model tier. The a
 The problem is that real roles don't do one tier of work. Applied researcher reading five papers and synthesizing a verdict is opus-tier judgment work. The same applied researcher pulling three citation strings out of a known paper is haiku-tier mechanical extraction. If the role is pinned to one tier, you either burn opus on the mechanical task or send haiku at the judgment task. Both are bad.
 </p>
 <p>
-The fix is to tier the dispatch, not the role. Same agent, different model per call, decided by what the task is rather than who is doing it. Anthropic's published orchestrator-worker pattern works exactly this way: opus orchestrator for decomposition and synthesis, sonnet workers for the bounded interior pieces, route per task.
+The fix is to tier the dispatch, not the role. Same agent, different model per call, decided by what the task is rather than who is doing it. Anthropic's published <a href="https://www.anthropic.com/engineering/multi-agent-research-system">multi-agent research system</a> is the nearest public example: an Opus lead with Sonnet subagents, as one fixed pairing rather than a choice per task.
 </p>
 <p>
 What it costs: a dispatcher has to make a real decision per call. Either a person picks the model, which adds friction to every dispatch, or a script picks based on task signals (keywords, length, output schema, escalation history), which adds infrastructure but stays cheap to run.
 </p>
 <p>
-What it buys: in my lab, an estimated 2-3x cost reduction, corrected down from a first pass of 6-9x, because most of what specialists do is bounded and doesn't need the top tier. The non-trivial cases pay opus, the trivial cases pay haiku, and the dispatcher routes between them.
+What it buys: in my lab, an estimated 2-3x daily cost reduction from the whole refresh this was part of, corrected down from a first pass of 6-9x. That estimate rests on 2 sessions after the change and was never re-measured, and the script behind it priced Opus about 3x above list. The non-trivial cases pay opus, the trivial cases pay haiku, and the dispatcher routes between them.
 </p>
 <p>
-The sister AGI lab landed this pattern recently. HIVE is porting it. The interesting non-obvious detail: the orchestrator becomes <em>more</em> load-bearing under task-tiering, not less. Bad decomposition silently corrupts everything downstream. Workers can't catch a wrongly-scoped task. So the dispatcher and the orchestrator both stay opus. The savings live in the bounded interior of the work, not at its edges.
+The sister AGI lab landed this pattern recently. The interesting non-obvious detail: the orchestrator becomes <em>more</em> load-bearing under task-tiering, not less. Bad decomposition silently corrupts everything downstream. Workers can't catch a wrongly-scoped task. So the orchestrator stays opus. The savings live in the bounded interior of the work, not at its edges.
 </p>
   </div>
 </article>

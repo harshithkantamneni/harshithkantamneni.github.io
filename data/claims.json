@@ -163,7 +163,7 @@
    "shows": [
     "4.3 ms",
     "64K keys",
-    "At batch 1"
+    "at batch 1"
    ],
    "means": "One decode step over 64K cached keys",
    "value": {
@@ -1306,7 +1306,8 @@
    "page": "home",
    "shows": [
     "25 consumer machines",
-    "31-54%"
+    "31-54%",
+    "5 unstable rentals"
    ],
    "means": "Cache speed as a share of the machine limit",
    "value": {
@@ -1705,7 +1706,7 @@
      9
     ]
    },
-   "conditions": "An estimate. 70 sessions before, 2 after",
+   "conditions": "An estimate for the whole refresh, not tiering alone. 70 sessions before, 2 after. Never re-measured. The script priced Opus about 3x above list",
    "source": [
     {
      "type": "repo",
