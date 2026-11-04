@@ -112,7 +112,7 @@ export const WORK = {
     },
     {
       title: 'GQA\'s KV-cache rows in cuDNN', href: '/work/cudnn-gqa/', state: 'Same page as the Kernels entry',
-      blurb: 'The same copy removal, seen from decode. Multi-token steps ran [[pr1223.kv|1.15-2.19×]] faster at a 128K KV cache, with the time saved following the copy's size, by my reading. The caveats are on the case study.',
+      blurb: 'The same copy removal, seen from decode. Multi-token steps ran [[pr1223.kv|1.15-2.19×]] faster at a 128K KV cache, with the time saved following the copy\'s size, by my reading. The caveats are on the case study.',
     },
     {
       title: 'vLLM serving benchmark, first pass', href: GH + 'llm-inference-benchmarking', state: 'Public repo',

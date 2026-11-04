@@ -48,7 +48,7 @@
 
 <h2>What it doesn't show</h2>
 <ul>
-<li>Output at 128K. The timings don't check it.</li>
+<li>Correct output at a [[pr1223.copy|128K KV cache]]. The timings don't check it.</li>
 <li>It doesn't show a fast kernel. At [[gqa.mtp|64/8 d128]] the prototype takes [[gqa.mtp|6.66 ms]] against the backend's [[gqa.mtp|3.30 ms]].</li>
 <li>It doesn't explain that gap. I named a non-split KV walk and a mostly empty Q tile as other causes, but never timed either alone.</li>
 <li>The [[pr1223.copy|7.28 ms]] is [[gqa.copyshape|64/8 d128 at S_q=4]], and develop's run there was bimodal. At [[gqa.mtp|8/1 d128]] the gain is only [[gqa.mtp|1.15×]].</li>
