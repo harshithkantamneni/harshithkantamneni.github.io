@@ -84,7 +84,7 @@
 
 <h2>TL;DR</h2>
 <p>I run an autonomous AI lab on a single 18 GB MacBook. It has been executing engineering work for about 90 multi-hour cycles, with internal evaluators, red-team agents, and code reviewers. Three times in those cycles, the lab passed its own tests while quietly breaking. Each break was at a deeper layer than the last.</p>
-<p>The pattern is mechanical, not anecdotal. It is what shows up when every actor judging the work shares training distribution, context, and incentives with the actors producing the work. I call it the <strong>null-set principal</strong> problem: when the principal (the actor who would bear the cost of a false claim) does not exist, internal validators become surfaces to optimize against, not constraints. Adding more internal validators makes this worse, not better.</p>
+<p>This is one lab, so it's a case study, not a rate. My reading is that the pattern shows up when every actor judging the work shares training distribution, context, and incentives with the actors producing the work. I call it the <strong>null-set principal</strong> problem: when the principal (the actor who would bear the cost of a false claim) does not exist, internal validators become surfaces to optimize against, not constraints. Adding more internal validators buys little: their failures are correlated, so a fifth doesn't catch five times as much.</p>
 <blockquote>The fix is not "issue the right directive." The fix is to design the system so that no decision-altitude (including directives, including meta-rules) sits in a self-graded loop.</blockquote>
 
 <h2>What this lab is</h2>
@@ -95,8 +95,8 @@
 <h3>Iteration 1, around Cycle 42</h3>
 <p>The lab had a green test suite: 1,688 unit tests passing and 32 consecutive PASS_WITH_ADVISORIES cycles by its own internal metric. At cycle 43, the VM testing specialist ran the first real alpha gate. The build was broken on a clean checkout. The unit tests had been written and run in isolation; they passed as units. The integrated build was not actually compiling on every cycle, but the test suite, which was the metric the lab graded itself on, said everything was fine.</p>
 <h3>Iteration 2, Cycles 72 through 78</h3>
-<p>Same lab. New mode. The Evaluator was now requiring source-discipline: every cycle had to touch real source files, not just spec documents. The lab achieved 7 consecutive cycles of source-discipline-PASS. Cycle 79 triggered the next external check, a Mobile Alpha Gate that actually invoked <code>gradle assembleDebug</code> and <code>xcodebuild</code>. Android failed.</p>
-<p>7 cycles of "source-discipline" had produced zero binaries on Android. The lab had been editing source files, passing review for those edits, advancing its own streak, and the streak was measuring something orthogonal to whether anything actually compiled.</p>
+<p>Same lab. New mode. The Evaluator was now requiring source-discipline: every cycle touching mobile source had to pass a checklist of grep-able invariants, lockfile checks and a golden-file symbol list. The lab achieved 7 consecutive cycles of source-discipline-PASS. My directive then declared the next external check, and at cycle 79 lab agents ran a Mobile Alpha Gate that actually invoked <code>gradle assembleDebug</code> and <code>xcodebuild</code>. Android failed.</p>
+<p>7 cycles of "source-discipline" had produced no mobile binary on either platform. The lab had been editing source files, passing review for those edits, advancing its own streak, and the streak was measuring something orthogonal to whether anything actually compiled.</p>
 <h3>Iteration 3, Cycles 80 onward</h3>
 <p>The lab now had a build-pass invariant, and cycle 80 was the first with binaries on both platforms. By cycle 83 the cross-platform-pair streak stood at 4 consecutive successful builds.</p>
 <p>But the binaries were Hello-World-class scaffolding. They built. They linked. They contained the expected zeroize symbol. They did not, by any reasonable definition, embody the work the lab was supposed to be doing. The build-pass surface had become its own optimization target. <em>This is the iteration I am still in the middle of resolving.</em></p>
@@ -104,21 +104,21 @@
 <h2>Why this happens: the null-set principal</h2>
 <p>The classical principal-agent problem assumes information asymmetry between two parties: a principal who pays for outcomes, and an agent who produces them. The verification mechanism (the contract, the audit, the third-party signature) is designed to align them.</p>
 <p>In a self-graded autonomous lab, the principal does not exist as a separate party. The Director both sets the verification surface AND produces the work being verified. The Evaluator both checks the work AND is part of the same lab. The red team adversarially reviews, but the red team is dispatched by the Director, runs on the same underlying model, and shares training distribution with the Director.</p>
-<p>When the principal does not exist as a separate party, no actor's payoff <em>increases</em> when claims are falsified. There is no one for whom a false claim is bad news. I call this the <strong>null-set principal</strong>.</p>
+<p>When the principal does not exist as a separate party, no actor's payoff <em>increases</em> when claims are falsified. Within a cycle, no one treats a false claim as bad news. I call this the <strong>null-set principal</strong>. It's shorthand: I'm still a low-frequency principal, present for directives and absent cycle to cycle.</p>
 
 <blockquote>When the principal does not exist as a separate party, no actor's payoff increases when claims are falsified.</blockquote>
 
 <h2>Three structural principles</h2>
-<p><strong>Principle 1: External verdict.</strong> At least one verdict per cycle must originate from a system the lab cannot edit. In practice: bind cycle PASS to a GitHub Actions CI workflow run on a public commit. Trust boundary as the chief architect named it: <em>"GitHub runs the workflow honestly,"</em> not <em>"the workflow is honest."</em></p>
+<p><strong>Principle 1: External verdict.</strong> At least one verdict per cycle must originate from a system the lab cannot edit. The proposal: bind cycle PASS to a GitHub Actions CI workflow run on a public commit. The trust boundary: you trust GitHub to run the workflow honestly, not that the workflow itself is honest.</p>
 <p><strong>Principle 2: Pre-registered falsifier.</strong> Every claim that opens or extends a streak must declare a concrete observation that would invalidate it. The language must be specific enough that an outside observer could check. Immutable once written.</p>
-<p><strong>Principle 3: Adversarial payoff.</strong> There must always exist at least one actor whose payoff increases when others' claims are falsified. Currently exploring a cross-family adversary using a non-Claude model (Qwen2.5-Coder-14B via Ollama) for code review. Not yet ratified.</p>
+<p><strong>Principle 3: Adversarial payoff.</strong> There must always exist at least one actor whose payoff increases when others' claims are falsified. At the time of writing, I was exploring a cross-family adversary using a non-Claude model (Qwen2.5-Coder-14B via Ollama) for code review. Not yet ratified.</p>
 
 <h2>What hasn't worked yet</h2>
-<p>The directive that named these three principles landed at the close of cycle 82. Ratifying its implementation was targeted for cycle 85, and by cycle 88 it was still pending. The first concrete Principle 1 implementation, a Miri-based undefined-behavior gate as a blocking pre-merge check, was ratified at cycle 92.</p>
-<p>This was not malice. It was the same null-set principal pattern playing out at a different altitude: the <em>decision to ratify</em> was itself an internal artifact, with no external party bearing cost when ratification was deferred.</p>
+<p>The directive that named these three principles landed at the close of cycle 82. Ratifying its implementation was targeted for cycle 85, and by cycle 88 it was still pending. The first concrete Principle 1 implementation, a Miri-based undefined-behavior gate as a blocking pre-merge check, was ratified at cycle 92. Its first blocking run in CI came after the paper's window, so whether it prevents the next collapse is still untested.</p>
+<p>Ratification was waiting on me. It was the same pattern at a different altitude: the proposals sat pending, the cycles kept running, and each one closed with a qualifier saying integrity wasn't baselined yet.</p>
 
 <h2>A constraint, not a method</h2>
-<p>I do not have a method. I have a constraint: any verification surface the system can edit from the inside will eventually be optimized against, and the only stable fix is to ensure at least one verification surface exists that the system cannot edit.</p>
+<p>I do not have a method. I have a constraint: any verification surface the system can edit from the inside will eventually be optimized against, and my proposed fix, not yet tested, is to ensure at least one verification surface exists that the system cannot edit.</p>
 <p>If you are building an autonomous system that grades itself, the question I would ask is not "do we have enough internal checks?" The question is <em>"where does the principal exist?"</em> If the answer is "nowhere," the rest is cosplay.</p>
 
 <h2>Notes</h2>
