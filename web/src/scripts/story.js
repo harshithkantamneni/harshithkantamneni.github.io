@@ -1,5 +1,10 @@
 (function () {
   var root = document.documentElement;
+  /* root: document keeps rootMargin working when the page sits inside a frame */
+  function watch(cb, margin) {
+    try { return new IntersectionObserver(cb, { root: document, rootMargin: margin }); }
+    catch (e) { return new IntersectionObserver(cb, { rootMargin: margin }); }
+  }
 
   /* A number opens its conditions. Esc closes and focus returns to the number. */
   var d = document.getElementById('pop');
@@ -41,7 +46,7 @@
   var hooks = {};
   function runHook(name) { var p = name.split(':'); if (hooks[p[0]]) hooks[p[0]](p[1]); }
   if (root.classList.contains('story')) {
-    var io = new IntersectionObserver(function (es) {
+    var io = watch(function (es) {
       es.forEach(function (e) {
         if (!e.isIntersecting) return;
         var s = e.target.closest('[data-scene]');
@@ -49,10 +54,10 @@
         s.querySelectorAll('.step').forEach(function (x) { x.classList.toggle('on', x === e.target); });
         if (e.target.dataset.run) runHook(e.target.dataset.run);
       });
-    }, { rootMargin: '-46% 0px -46% 0px' });
-    var seen = new IntersectionObserver(function (es) {
+    }, '-46% 0px -46% 0px');
+    var seen = watch(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('seen'); seen.unobserve(e.target); } });
-    }, { rootMargin: '-25% 0px -25% 0px' });
+    }, '-25% 0px -25% 0px');
     scenes.forEach(function (s) {
       setState(s, '0');
       var steps = s.querySelectorAll('.step');
@@ -167,7 +172,7 @@
   var gauge = document.querySelector('.gauge');
   if (chapters.length) {
     var dflt2 = navres ? navres.getAttribute('href') : '';
-    var layerIO = new IntersectionObserver(function (es) {
+    var layerIO = watch(function (es) {
       es.forEach(function (e) {
         var c = e.target.dataset.chapter;
         if (e.isIntersecting) {
@@ -182,7 +187,7 @@
           if (navres) navres.href = dflt2;
         }
       });
-    }, { rootMargin: '-50% 0px -50% 0px' });
+    }, '-50% 0px -50% 0px');
     chapters.forEach(function (c) { layerIO.observe(c); });
     var tok = gauge && gauge.querySelector('.tok');
     if (tok) {
