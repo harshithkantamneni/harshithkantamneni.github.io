@@ -8,7 +8,7 @@ const {
   description,
   image = '/og/home.png',
   active = null,
-  resume = '/Harshith_Kantamneni_GPU_Kernel_Resume.pdf',
+  resume = '/Harshith_Kantamneni_Resume.pdf',
   home = false,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -27,7 +27,7 @@ const order = [...LANES].sort((a, b) => 'kia'.indexOf(a.cls) - 'kia'.indexOf(b.c
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/fonts/atkinson.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/iosevka-500.woff2" as="font" type="font/woff2" crossorigin>
-  <script is:inline>if (matchMedia('(min-width: 981px)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) document.documentElement.classList.add('story');</script>
+  <script is:inline>if (matchMedia('(min-width: 1024px)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) document.documentElement.classList.add('story');</script>
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
   <meta property="og:type" content="website">
@@ -61,6 +61,7 @@ const order = [...LANES].sort((a, b) => 'kia'.indexOf(a.cls) - 'kia'.indexOf(b.c
         <a href="mailto:kantamneniharshith@gmail.com">Email</a>
         <a href="https://github.com/harshithkantamneni">GitHub</a>
         <a href="https://www.linkedin.com/in/hk4231">LinkedIn</a>
+        <a href="/#writing">Writing</a>
         <a href="/numbers/">Every number and its source</a>
       </span>
     </div>

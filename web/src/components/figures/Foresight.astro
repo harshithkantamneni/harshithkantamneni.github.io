@@ -7,12 +7,12 @@ const { f } = Astro.props;
 <figure class="frame key i" data-f={f} id="foresight">
   <figcaption>Decode time per token on one machine: gpt-oss-120b, RTX 5090, 11% of experts on the GPU</figcaption>
   <p class="f-read"><span id="fs-v">20.59</span><small> ms</small></p>
-  <div class="bt" style="height:22px;margin-top:6px;overflow:visible">
+  <div class="bt" style="height:24px;margin-top:8px;overflow:visible">
     <i id="fs-b" style="transform:scaleX(1)"></i>
     <span class="limit" style={`left:${(10.02 / 20.59 * 100).toFixed(2)}%`}></span>
   </div>
   <p class="f-note" set:html={r('The white tick is the computed limit, [[wsg.breakdown|10.02]] ms, relative to my own bandwidth probe.')} />
-  <p class="f-sub" id="fs-n" role="status" style="margin:10px 0 0">The deployed cache, with no foresight.</p>
+  <p class="f-sub" id="fs-n" role="status" style="margin:12px 0 0">The deployed cache, with no foresight.</p>
   <div class="sws">
     <button type="button" class="sw" aria-pressed="false">Cache exactly what a perfect oracle would</button>
     <button type="button" class="sw" aria-pressed="false">Read each cached expert only once</button>

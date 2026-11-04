@@ -21,7 +21,7 @@ const Chapter = { k: ChapterKernels, i: ChapterInference, a: ChapterAgents }[cls
   <Chapter as="h1" />
   <section class={`section wrap ${cls}`}>
     <div class="sec-head"><h2>All of it, with its state</h2></div>
-    <WorkList items={WORK[cls]} compact />
+    <div class="lframe"><WorkList items={WORK[cls]} compact /></div>
   </section>
   <section class="section wrap">
     <div class="sec-head"><h2>The rest of the stack</h2><a href="/">See it all together</a></div>

@@ -7,7 +7,7 @@ import triton from '../data/triton.json';
 
 const r = rich;
 const GH = 'https://github.com/';
-const RESUME = '/Harshith_Kantamneni_GPU_Kernel_Resume.pdf';
+const RESUME = '/Harshith_Kantamneni_Resume.pdf';
 
 // #1319: this PR over the authors' kernels, 8 shapes on H100
 const ratio = [
@@ -42,7 +42,7 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
       <a href="#gqa">The copy and the tests</a>
       <a href="#blind">The timing model</a>
       <a href="#triton">Fusing kernels</a>
-      {as === 'h1' ? <a href="/">The whole stack</a> : <a href="/kernels/">Only the kernel work</a>}
+      {as === 'h1' ? <a href="/">See the whole stack</a> : <a href="/kernels/">Only the kernel work</a>}
     </div>
   </div>
 </section>
@@ -52,6 +52,16 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
     <div class="wrap">
       <Sub class="scene-t">Kernels that merged, and where they still lag</Sub>
       <div class="scene-g">
+        <div class="steps">
+          <div class="step" data-step="0"><p>Forward and backward Triton kernels for stick-breaking attention, merged into flash-linear-attention after review caught a silent zero gradient. Smaller tiles cut shared memory by about half.</p></div>
+          <div class="step" data-step="1"><p set:html={r('They\'re still slower than the original authors\' kernels. Nsight Compute shows no saturated pipe at [[pr1319.occupancy|about 12% occupancy]], so I read the gap as stalls on fp32 scans.')} /></div>
+          <div class="step" data-step="2"><p set:html={r('#1412 added KV-cache decoding. The speedup grows with keys, but at model level a token still takes [[sbk.model|about 9 ms]], and I haven\'t profiled why.')} /></div>
+          <div class="scene-links">
+            <a href="/work/stick-breaking-kernels/">Read the case study</a>
+            <a href={GH + 'fla-org/flash-linear-attention/pull/1319'}>#1319</a>
+            <a href={GH + 'fla-org/flash-linear-attention/pull/1412'}>#1412</a>
+          </div>
+        </div>
         <div class="stage">
           <div class="frames">
             <figure class="frame" data-f="0">
@@ -76,16 +86,6 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
             <Decode f="2" />
           </div>
         </div>
-        <div class="steps">
-          <div class="step" data-step="0"><p>Forward and backward Triton kernels for stick-breaking attention, merged into flash-linear-attention after review caught a silent zero gradient. Smaller tiles cut shared memory by about half.</p></div>
-          <div class="step" data-step="1"><p set:html={r('They\'re still slower than the original authors\' kernels. Nsight Compute shows no saturated pipe at [[pr1319.occupancy|about 12% occupancy]], so I read the gap as stalls on fp32 scans.')} /></div>
-          <div class="step" data-step="2"><p set:html={r('#1412 added KV-cache decoding. The speedup grows with keys, but at model level a token still takes [[sbk.model|about 9 ms]], and I haven\'t profiled why.')} /></div>
-          <div class="scene-links">
-            <a href="/work/stick-breaking-kernels/">Read the case study</a>
-            <a href={GH + 'fla-org/flash-linear-attention/pull/1319'}>#1319</a>
-            <a href={GH + 'fla-org/flash-linear-attention/pull/1412'}>#1412</a>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -94,6 +94,17 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
     <div class="wrap">
       <Sub class="scene-t">The copy took longer than the math</Sub>
       <div class="scene-g">
+        <div class="steps">
+          <div class="step" data-step="0"><p>At one shape on an A100, NVIDIA's cuDNN path spent longer copying K and V than running attention. It writes the same data out once per query head.</p></div>
+          <div class="step" data-step="1"><p set:html={r('I removed the copies in a prototype. [[pr1223.batched|6 batched rows 2.6-3.3×]] faster, and [[pr1223.oom|10 more]] stopped running out of memory. The backend stayed faster on [[pr1223.backend|27 of 31]] multi-token rows.')} /></div>
+          <div class="step" data-step="2"><p>NVIDIA then shipped native GQA in #1239, so I closed mine and merged tests instead. Their tests used 4/2 and 16/4 heads, where the wrong formula gives the right answer. Try it.</p></div>
+          <div class="scene-links">
+            <a href="/work/cudnn-gqa/">Read the case study</a>
+            <a href="/notes/kv-copies-gqa/">Read the worklog</a>
+            <a href={GH + 'NVIDIA/cudnn-frontend/pull/1287'}>#1287</a>
+            <a href={GH + 'NVIDIA/cudnn-frontend/pull/1223'}>#1223</a>
+          </div>
+        </div>
         <div class="stage">
           <div class="frames">
             <figure class="frame" data-f="0">
@@ -124,17 +135,6 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
             <Heads f="2" />
           </div>
         </div>
-        <div class="steps">
-          <div class="step" data-step="0"><p>At one shape on an A100, NVIDIA's cuDNN path spent longer copying K and V than running attention. It writes the same data out once per query head.</p></div>
-          <div class="step" data-step="1"><p set:html={r('I removed the copies in a prototype. [[pr1223.batched|6 batched rows 2.6-3.3×]] faster, and [[pr1223.oom|10 more]] stopped running out of memory. The backend stayed faster on [[pr1223.backend|27 of 31]] multi-token rows.')} /></div>
-          <div class="step" data-step="2"><p>NVIDIA then shipped native GQA in #1239, so I closed mine and merged tests instead. Their tests used 4/2 and 16/4 heads, where the wrong formula gives the right answer. Try it.</p></div>
-          <div class="scene-links">
-            <a href="/work/cudnn-gqa/">Read the case study</a>
-            <a href="/notes/kv-copies-gqa/">The worklog</a>
-            <a href={GH + 'NVIDIA/cudnn-frontend/pull/1287'}>#1287</a>
-            <a href={GH + 'NVIDIA/cudnn-frontend/pull/1223'}>#1223</a>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -143,6 +143,14 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
     <div class="wrap">
       <Sub class="scene-t">Predict the kernel before running it</Sub>
       <div class="scene-g">
+        <div class="steps">
+          <div class="step" data-step="0"><p>I built a timing model of vLLM's fused MoE kernel: give it the routing and the tile, and it predicts each call's time. I froze its predictions before renting the GPU, so results couldn't tune them.</p></div>
+          <div class="step" data-step="1"><p set:html={r('On one [[mk.v3|32×64×64]] test tile, model v3\'s time predictions held at [[mk.v3|0.51-0.69%]] rms. Its byte predictions missed by [[mk.v3|11.76%]] on OLMoE\'s first wave.')} /></div>
+          <div class="step" data-step="2"><p set:html={r('The decode blind test failed: [[mk.decode|11.4%]] rms pooled, against a [[mk.decode|1.5%]] bar. No model is blind-certified on vLLM\'s own tiles yet.')} /></div>
+          <div class="scene-links">
+            <a href={GH + 'harshithkantamneni/moe-kernels/tree/gh200-analysis-2026-09-27'}>See the public repo</a>
+          </div>
+        </div>
         <div class="stage">
           <div class="frames">
             <figure class="frame key" data-f="0,1,2">
@@ -163,14 +171,6 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
             </figure>
           </div>
         </div>
-        <div class="steps">
-          <div class="step" data-step="0"><p>I built a timing model of vLLM's fused MoE kernel: give it the routing and the tile, and it predicts each call's time. I froze its predictions before renting the GPU, so results couldn't tune them.</p></div>
-          <div class="step" data-step="1"><p set:html={r('On one [[mk.v3|32×64×64]] test tile, model v3\'s time predictions held at [[mk.v3|0.51-0.69%]] rms. Its byte predictions missed by [[mk.v3|11.76%]] on OLMoE\'s first wave.')} /></div>
-          <div class="step" data-step="2"><p set:html={r('The decode blind test failed: [[mk.decode|11.4%]] rms pooled, against a [[mk.decode|1.5%]] bar. No model is blind-certified on vLLM\'s own tiles yet.')} /></div>
-          <div class="scene-links">
-            <a href={GH + 'harshithkantamneni/moe-kernels/tree/gh200-analysis-2026-09-27'}>The public repo</a>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -179,11 +179,19 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
     <div class="wrap">
       <Sub class="scene-t">Fusing kernels wasn't automatically faster</Sub>
       <div class="scene-g">
+        <div class="steps">
+          <div class="step" data-step="0"><p set:html={r('Eager PyTorch runs a projection as separate kernels: a GEMM, then bias, then GeLU. I built one Triton kernel that does all three and benchmarked [[tri.shapes|76 LLM-shaped GEMMs]].')} /></div>
+          <div class="step" data-step="1"><p set:html={r('One shape ran [[tri.best|1.73×]] faster than the unfused path. Across all of them: [[tri.median|Median 0.96×]], and only [[tri.faster|27 faster]].')} /></div>
+          <div class="step" data-step="2"><p set:html={r('I first read this as small batches being memory-bound. The counts don\'t support that: fused is faster on [[tri.ridge|10 of 30]] cells left of the ridge and [[tri.ridge|42 of 122]] right of it. So I corrected it.')} /></div>
+          <div class="scene-links">
+            <a href={GH + 'harshithkantamneni/triton-vs-cublas-llm-benchmarks'}>See the code and raw data</a>
+          </div>
+        </div>
         <div class="stage">
           <div class="frames">
             <figure class="frame key" data-f="0,1,2">
               <figcaption>Fused Triton kernel against the unfused path, 76 shapes on an A100. Hover a dot for its shape.</figcaption>
-              <div class="seg" id="scatter-seg" role="group" aria-label="Precision" style="margin-top:10px">
+              <div class="seg" id="scatter-seg" role="group" aria-label="Precision" style="margin-top:12px">
                 <button type="button" data-v="fp16" aria-pressed="true">fp16</button>
                 <button type="button" data-v="bf16" aria-pressed="false">bf16</button>
               </div>
@@ -199,14 +207,6 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
               </div>
               <p class="f-note">Dots above the dashed line are faster than the unfused path.</p>
             </figure>
-          </div>
-        </div>
-        <div class="steps">
-          <div class="step" data-step="0"><p set:html={r('Eager PyTorch runs a projection as separate kernels: a GEMM, then bias, then GeLU. I built one Triton kernel that does all three and benchmarked [[tri.shapes|76 LLM-shaped GEMMs]].')} /></div>
-          <div class="step" data-step="1"><p set:html={r('One shape ran [[tri.best|1.73×]] faster than the unfused path. Across all of them: [[tri.median|Median 0.96×]], and only [[tri.faster|27 faster]].')} /></div>
-          <div class="step" data-step="2"><p set:html={r('I first read this as small batches being memory-bound. The counts don\'t support that: fused is faster on [[tri.ridge|10 of 30]] cells left of the ridge and [[tri.ridge|42 of 122]] right of it. So I corrected it.')} /></div>
-          <div class="scene-links">
-            <a href={GH + 'harshithkantamneni/triton-vs-cublas-llm-benchmarks'}>Code and raw data</a>
           </div>
         </div>
       </div>

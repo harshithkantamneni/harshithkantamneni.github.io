@@ -6,7 +6,7 @@ import Foresight from './figures/Foresight.astro';
 
 const r = rich;
 const GH = 'https://github.com/harshithkantamneni/';
-const RESUME = '/Harshith_Kantamneni_LLM_Inference_Resume.pdf';
+const RESUME = '/resume/inference/Harshith_Kantamneni_Resume.pdf';
 
 // Cells from the manuscript's grid table: [experts on GPU, stock, FreeToken, cache]
 const GRID = {
@@ -27,7 +27,7 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
       <a href="#seconds">Where the seconds go</a>
       <a href="#cache">What the cache bought</a>
       <a href="#edge">The same question at 15 W</a>
-      {as === 'h1' ? <a href="/">The whole stack</a> : <a href="/inference/">Only the inference work</a>}
+      {as === 'h1' ? <a href="/">See the whole stack</a> : <a href="/inference/">Only the inference work</a>}
     </div>
   </div>
 </section>
@@ -37,11 +37,6 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
     <div class="wrap">
       <Sub class="scene-t">Where the seconds go when the model doesn't fit</Sub>
       <div class="scene-g">
-        <div class="stage">
-          <div class="frames">
-            <Foresight f="0,1,2,3" />
-          </div>
-        </div>
         <div class="steps">
           <div class="step" data-step="0" data-run="fs:000"><p set:html={r('gpt-oss-120b needs [[wsg.size|about 61 GB]] and the card has [[wsg.size|32 GB]], so most experts wait in host memory and each token stalls on reads. I built an expert cache in llama.cpp for this, for batch-1 decode.')} /></div>
           <div class="step" data-step="1" data-run="fs:100"><p>How close is it to the best possible? I computed a limit and added oracles to the engine. Knowing what to cache barely moves it alone. Flip the switches yourself.</p></div>
@@ -49,8 +44,13 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
           <div class="step" data-step="3" data-run="fs:111"><p set:html={r('Across the test machines, [[wsg.gap|43-52%]] of the gap stayed even after all three. Policies without foresight recovered [[wsg.online|at most 6%]] of the read-ahead oracle\'s gain.')} /></div>
           <div class="scene-links">
             <a href="/work/where-the-seconds-go/">Read the case study</a>
-            <a href={GH + 'moe-speed-of-light'}>Code and data</a>
-            <a href={GH + 'moe-speed-of-light/blob/main/paper/ieee-paper.pdf'}>Manuscript, not peer reviewed</a>
+            <a href={GH + 'moe-speed-of-light'}>See the code and data</a>
+            <a href={GH + 'moe-speed-of-light/blob/main/paper/ieee-paper.pdf'}>Read the manuscript, not peer reviewed</a>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="frames">
+            <Foresight f="0,1,2,3" />
           </div>
         </div>
       </div>
@@ -61,11 +61,15 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
     <div class="wrap">
       <Sub class="scene-t">What the cache bought</Sub>
       <div class="scene-g">
+        <div class="steps">
+          <div class="step" data-step="0"><p set:html={r('Faster than FreeToken in [[sec.vs_ft|11 of 12]] configurations, and [[wsg.grid|2.0-4.0×]] stock llama.cpp in all of them. With FreeToken tuned, the ratio is [[wsg.ft_tuned|0.98-1.17×]].')} /></div>
+          <div class="step" data-step="1"><p set:html={r('The one slower cell is [[wsg.slower|0.97×]], at the largest Qwen3 budget on the stock-clock host. Most of the lead is the admission policy, stock is a weak baseline, and this is batch 1 only.')} /></div>
+        </div>
         <div class="stage">
           <div class="frames">
             <figure class="frame key" data-f="0,1" id="gridx">
               <figcaption>Tokens per second at batch 1, on 2 RTX 5090 hosts. Pick a host and a model.</figcaption>
-              <div class="seg" data-k="host" role="group" aria-label="Host" style="margin-top:10px">
+              <div class="seg" data-k="host" role="group" aria-label="Host" style="margin-top:12px">
                 <button type="button" data-v="B" aria-pressed="true">Faster-memory host</button>
                 <button type="button" data-v="S" aria-pressed="false">Stock-clock host</button>
               </div>
@@ -87,10 +91,6 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
             </figure>
           </div>
         </div>
-        <div class="steps">
-          <div class="step" data-step="0"><p set:html={r('Faster than FreeToken in [[sec.vs_ft|11 of 12]] configurations, and [[wsg.grid|2.0-4.0×]] stock llama.cpp in all of them. With FreeToken tuned, the ratio is [[wsg.ft_tuned|0.98-1.17×]].')} /></div>
-          <div class="step" data-step="1"><p set:html={r('The one slower cell is [[wsg.slower|0.97×]], at the largest Qwen3 budget on the stock-clock host. Most of the lead is the admission policy, stock is a weak baseline, and this is batch 1 only.')} /></div>
-        </div>
       </div>
     </div>
   </section>
@@ -99,6 +99,13 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
     <div class="wrap">
       <Sub class="scene-t">The same question at 15 watts</Sub>
       <div class="scene-g">
+        <div class="steps">
+          <div class="step" data-step="0"><p set:html={r('I profiled attention and KV-cache decode with Nsight on a [[jet.power|15 W]] edge board. Decode holds steady up to [[jet.decode|1024]], then climbs.')} /></div>
+          <div class="step" data-step="1"><p set:html={r('Fused attention ran [[jet.fused|2.78-5.55×]] faster than a manual matmul and softmax baseline, which is a low bar. It\'s one sweep of kernels, not a model.')} /></div>
+          <div class="scene-links">
+            <a href={GH + 'edge-llm-gpu-profiling'}>See the code and raw data</a>
+          </div>
+        </div>
         <div class="stage">
           <div class="frames">
             <figure class="frame key" data-f="0,1">
@@ -107,13 +114,6 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
               <p class="f-sub" set:html={r('at [[jet.decode|8192]], from [[jet.decode|63.1]] at [[jet.decode|256]]')} />
               <Fragment set:html={bars(jet.decode.map((d) => ({ label: String(d.S), value: d.us, text: d.us.toFixed(1) })), { max: decMax })} />
             </figure>
-          </div>
-        </div>
-        <div class="steps">
-          <div class="step" data-step="0"><p set:html={r('I profiled attention and KV-cache decode with Nsight on a [[jet.power|15 W]] edge board. Decode holds steady up to [[jet.decode|1024]], then climbs.')} /></div>
-          <div class="step" data-step="1"><p set:html={r('Fused attention ran [[jet.fused|2.78-5.55×]] faster than a manual matmul and softmax baseline, which is a low bar. It\'s one sweep of kernels, not a model.')} /></div>
-          <div class="scene-links">
-            <a href={GH + 'edge-llm-gpu-profiling'}>Code and raw data</a>
           </div>
         </div>
       </div>

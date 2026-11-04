@@ -20,9 +20,10 @@ const label = (s) => {
     </div>
     <label class="nfilter" hidden>Find a number
       <input id="nfilter" type="search" autocomplete="off">
-      <span id="ncount" role="status"></span>
     </label>
-    <div class="claims">
+    <p class="nzero" id="nzero" role="status" hidden>No number matches that. Try a GPU or model name, such as H200. <button type="button" id="nclear">Clear search</button></p>
+    <p class="state" id="ncount" role="status"></p>
+    <div class="claims lframe">
       {claims.map((c) => (
         <article class="claim" id={c.id}>
           <h3>{c.shows.join(', ')}</h3>

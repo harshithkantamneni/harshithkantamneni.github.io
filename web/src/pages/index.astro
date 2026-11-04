@@ -16,12 +16,6 @@ const merged = (r) => /merged/i.test(stateOf(r)) && !/not merged/i.test(stateOf(
   description="I build AI-systems infrastructure, from CUDA and Triton kernels and inference profiling up to retrieval and multi-agent systems. Every result names its hardware and its limits."
 >
   <Hero />
-  <nav class="gauge" aria-label="Layers">
-    <a class="a" data-l="a" href="#agents" aria-label="Agents"></a>
-    <a class="i" data-l="i" href="#inference" aria-label="Inference"></a>
-    <a class="k" data-l="k" href="#kernels" aria-label="Kernels"></a>
-    <span class="tok" aria-hidden="true"></span>
-  </nav>
   <ChapterKernels />
   <ChapterInference />
   <ChapterAgents />
@@ -35,6 +29,7 @@ const merged = (r) => /merged/i.test(stateOf(r)) && !/not merged/i.test(stateOf(
       <button type="button" data-f="i" aria-pressed="false">Inference</button>
       <button type="button" data-f="a" aria-pressed="false">Agents</button>
     </div>
+    <div class="lframe">
     {LOG.map((r) => (
       <details class={`lrow ${r.lane}`} data-layers={r.layers || r.lane} data-merged={merged(r) ? '1' : '0'}>
         <summary>
@@ -50,10 +45,12 @@ const merged = (r) => /merged/i.test(stateOf(r)) && !/not merged/i.test(stateOf(
         </div>
       </details>
     ))}
+    </div>
   </section>
 
   <section id="writing" class="section wrap">
     <div class="sec-head"><h2>Writing</h2></div>
+    <div class="lframe">
     {WRITING.map((w) => (
       <article class="work">
         <div>
@@ -63,10 +60,11 @@ const merged = (r) => /merged/i.test(stateOf(r)) && !/not merged/i.test(stateOf(
         <div class="state">{w.date}<br>{w.kind}</div>
       </article>
     ))}
+    </div>
   </section>
 
   <section id="older" class="section wrap">
-    <div class="sec-head"><h2>Team projects</h2><a href="/archive/">Archive</a></div>
+    <div class="sec-head"><h2>Team projects</h2><a href="/archive/">See the archive</a></div>
     <div class="alsos">
       {OLDER.map((o) => (
         <div id={o.id}>
@@ -90,7 +88,7 @@ const merged = (r) => /merged/i.test(stateOf(r)) && !/not merged/i.test(stateOf(
     <div class="sec-head"><h2>Get in touch</h2></div>
     <p class="sec-note">Open to AI-infrastructure, LLM-inference, GPU-performance and agentic-tooling roles. Milwaukee, WI (open to relocation).</p>
     <div class="contact">
-      <a class="btn" href="/Harshith_Kantamneni_GPU_Kernel_Resume.pdf">Résumé</a>
+      <a class="btn" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a>
       <a href="mailto:kantamneniharshith@gmail.com">Email</a>
       <a href="https://github.com/harshithkantamneni">GitHub</a>
       <a href="https://www.linkedin.com/in/hk4231">LinkedIn</a>

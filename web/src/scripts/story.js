@@ -50,6 +50,7 @@
       es.forEach(function (e) {
         if (!e.isIntersecting) return;
         var s = e.target.closest('[data-scene]');
+        if (s.dataset.hold) return;
         setState(s, e.target.dataset.step);
         s.querySelectorAll('.step').forEach(function (x) { x.classList.toggle('on', x === e.target); });
         if (e.target.dataset.run) runHook(e.target.dataset.run);
@@ -64,6 +65,16 @@
       if (steps[0]) steps[0].classList.add('on');
       steps.forEach(function (st) { io.observe(st); });
       seen.observe(s);
+      /* Tabbing past the links reveals the last figure and holds it, so its controls can be reached */
+      if (steps.length) {
+        var zone = function (el) { return el && el.closest && (el.closest('.scene-links') || el.closest('.stage')) && s.contains(el); };
+        s.addEventListener('focusin', function (e) {
+          if (!zone(e.target) || !e.target.matches(':focus-visible')) return;
+          s.dataset.hold = '1';
+          if (e.target.closest('.scene-links')) setState(s, steps[steps.length - 1].dataset.step);
+        });
+        s.addEventListener('focusout', function (e) { if (!zone(e.relatedTarget)) delete s.dataset.hold; });
+      }
     });
   }
 
@@ -164,12 +175,13 @@
       ro.innerHTML = '<b>' + mon[dt.getUTCMonth()] + ' 2026:</b> ' + (hits.length ? hits.map(function (h) { return h.t; }).join('. ') + '.' : 'Nothing logged here.');
     });
     box.addEventListener('pointerleave', function () { tr.classList.remove('scrub'); ro.innerHTML = dflt; });
+    box.addEventListener('focusin', function (e) { var l = e.target.getAttribute && e.target.getAttribute('aria-label'); if (l) ro.textContent = l + '.'; });
+    box.addEventListener('focusout', function () { ro.innerHTML = dflt; });
   }
 
-  /* Which layer am I in? Ground colour, nav, gauge and the résumé link all follow it. */
+  /* Which layer am I in? Ground colour, nav and the résumé link all follow it. */
   var navres = document.getElementById('navres');
   var chapters = [].slice.call(document.querySelectorAll('[data-chapter]'));
-  var gauge = document.querySelector('.gauge');
   if (chapters.length) {
     var dflt2 = navres ? navres.getAttribute('href') : '';
     var layerIO = watch(function (es) {
@@ -178,30 +190,15 @@
         if (e.isIntersecting) {
           document.body.dataset.layer = c;
           document.querySelectorAll('.layers a[data-l]').forEach(function (a) { a.classList.toggle('on', a.dataset.l === c); });
-          if (gauge) { gauge.classList.add('show'); gauge.querySelectorAll('a').forEach(function (a) { a.classList.toggle('on', a.dataset.l === c); }); }
           if (navres) navres.href = e.target.dataset.resume || dflt2;
         } else if ((e.target === chapters[0] && e.boundingClientRect.top > 0) || (e.target === chapters[chapters.length - 1] && e.boundingClientRect.top < 0)) {
           delete document.body.dataset.layer;
           document.querySelectorAll('.layers a[data-l]').forEach(function (a) { a.classList.remove('on'); });
-          if (gauge) gauge.classList.remove('show');
           if (navres) navres.href = dflt2;
         }
       });
     }, '-50% 0px -50% 0px');
     chapters.forEach(function (c) { layerIO.observe(c); });
-    var tok = gauge && gauge.querySelector('.tok');
-    if (tok) {
-      var first = chapters[0], last = chapters[chapters.length - 1], tick = false;
-      window.addEventListener('scroll', function () {
-        if (tick) return;
-        tick = true;
-        requestAnimationFrame(function () {
-          tick = false;
-          var a = first.offsetTop, b = last.offsetTop + last.offsetHeight - window.innerHeight, p = Math.max(0, Math.min(1, (window.scrollY - a) / (b - a)));
-          tok.style.top = ((1 - p) * gauge.offsetHeight) + 'px';
-        });
-      }, { passive: true });
-    }
   }
 
   /* Case pages: the side list follows the section you're reading */
@@ -220,15 +217,18 @@
   }
 
   /* Numbers page: find a number */
-  var nf = document.getElementById('nfilter'), nc = document.getElementById('ncount');
+  var nf = document.getElementById('nfilter');
   if (nf) {
-    var claims = [].slice.call(document.querySelectorAll('.claim'));
+    var claims = [].slice.call(document.querySelectorAll('.claim')), nc = document.getElementById('ncount'), nz = document.getElementById('nzero');
     nf.parentNode.hidden = false;
-    nf.addEventListener('input', function () {
+    var nrun = function () {
       var q = nf.value.trim().toLowerCase(), n = 0;
       claims.forEach(function (c) { var hit = !q || c.textContent.toLowerCase().indexOf(q) > -1; c.hidden = !hit; if (hit) n++; });
-      nc.textContent = q ? n + ' of ' + claims.length + ' shown' : '';
-    });
+      nc.textContent = q && n ? n + ' of ' + claims.length + ' shown' : '';
+      nz.hidden = n > 0;
+    };
+    nf.addEventListener('input', nrun);
+    document.getElementById('nclear').addEventListener('click', function () { nf.value = ''; nrun(); nf.focus(); });
   }
 
   /* Filter the full list */

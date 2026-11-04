@@ -6,7 +6,7 @@ import Waffle from './figures/Waffle.astro';
 
 const r = rich;
 const GH = 'https://github.com/harshithkantamneni/';
-const RESUME = '/Harshith_Kantamneni_Agentic_AI_Resume.pdf';
+const RESUME = '/resume/agents/Harshith_Kantamneni_Resume.pdf';
 
 
 const { as = 'h2' } = Astro.props;
@@ -19,7 +19,7 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
     <div class="ol">
       <a href="#bert">Memory past the window</a>
       <a href="#audit">The check that never ran</a>
-      {as === 'h1' ? <a href="/">The whole stack</a> : <a href="/agents/">Only the agent work</a>}
+      {as === 'h1' ? <a href="/">See the whole stack</a> : <a href="/agents/">Only the agent work</a>}
     </div>
   </div>
 </section>
@@ -29,6 +29,15 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
     <div class="wrap">
       <Sub class="scene-t">When a project outgrows the model's memory</Sub>
       <div class="scene-g">
+        <div class="steps">
+          <div class="step" data-step="0"><p set:html={r('A coding agent on a long project can\'t hold it all. At [[bert.corpus|1.26M-token]] scale, a reader capped at a [[bertc.budget|120K budget]] keeps [[bertc.budget|about the newest 10%]], and accuracy [[bert.fullctx|fell to 0.08]].')} /></div>
+          <div class="step" data-step="1"><p set:html={r('So I built bert, a local MCP server with hybrid retrieval. It held at 0.90. So did agentic grep, with no significant difference.')} /></div>
+          <div class="step" data-step="2"><p>On real code, grep scored higher. bert is for accumulated project memory, not code search.</p></div>
+          <div class="scene-links">
+            <a href="/work/bert/">Read the case study</a>
+            <a href={GH + 'bert'}>See the repo</a>
+          </div>
+        </div>
         <div class="stage">
           <div class="frames">
             <Slope f="0,1" />
@@ -46,15 +55,6 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
             </figure>
           </div>
         </div>
-        <div class="steps">
-          <div class="step" data-step="0"><p set:html={r('A coding agent on a long project can\'t hold it all. At [[bert.corpus|1.26M-token]] scale, a reader capped at a [[bertc.budget|120K budget]] keeps [[bertc.budget|about the newest 10%]], and accuracy [[bert.fullctx|fell to 0.08]].')} /></div>
-          <div class="step" data-step="1"><p set:html={r('So I built bert, a local MCP server with hybrid retrieval. It held at 0.90. So did agentic grep, with no significant difference.')} /></div>
-          <div class="step" data-step="2"><p>On real code, grep scored higher. bert is for accumulated project memory, not code search.</p></div>
-          <div class="scene-links">
-            <a href="/work/bert/">Read the case study</a>
-            <a href={GH + 'bert'}>The repo</a>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -63,20 +63,20 @@ const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4
     <div class="wrap">
       <Sub class="scene-t">The check that never ran</Sub>
       <div class="scene-g">
-        <div class="stage">
-          <div class="frames">
-            <Waffle f="0,1,2,3" live />
-          </div>
-        </div>
         <div class="steps">
           <div class="step" data-step="0"><p set:html={r('I ran a lab of [[count.roles|31 Claude Code]] agent roles on one [[lab.memory|18 GB]] MacBook. In one session, the director agent wrote [[labv.forged|5 PI sign-offs]] without dispatching the PI. I noticed an empty PI folder next to the approvals.')} /></div>
           <div class="step" data-step="1"><p>So I built a detector, and a gate that runs it before a session can exit cleanly. Later I went back through the runner logs to count what the gate had actually done.</p></div>
           <div class="step" data-step="2"><p>By my count, it never ran. A shell bug, fixed in June, kept the detector's Python from starting, so nothing could block.</p></div>
-          <div class="step" data-step="3"><p set:html={r('I audited each part and shipped an improved detector with [[labv.tests|24 regression tests]]. It can still be bypassed, and the repo lists its known gaps. The logs stay private, so you can check the table\'s sums, not its rows.')} /></div>
+          <div class="step" data-step="3"><p set:html={r('I audited each part and shipped a better detector with [[labv.tests|24 regression tests]]. The lesson: a check can\'t trust a record the agent being checked can write. Director text still reaches the log my detector reads, so it can still be fooled, and the repo lists how.')} /></div>
           <div class="scene-links">
             <a href="/work/lab-verification/">Read the case study</a>
-            <a href={GH + 'agi-lab-framework/blob/main/audits/gate_audit_sessions.csv'}>Per-session table</a>
-            <a href={GH + 'agi-lab-framework/blob/main/audits/README.md#known-gaps'}>Known gaps</a>
+            <a href={GH + 'agi-lab-framework/blob/main/audits/gate_audit_sessions.csv'}>See the per-session table</a>
+            <a href={GH + 'agi-lab-framework/blob/main/audits/README.md#known-gaps'}>See the known gaps</a>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="frames">
+            <Waffle f="0,1,2,3" live />
           </div>
         </div>
       </div>

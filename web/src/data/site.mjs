@@ -20,7 +20,7 @@ export const LANES = [
   {
     id: 'agents', cls: 'a', name: 'Agents', track: '/agents/', h: 68,
     title: 'Agent systems', role: 'Agent systems',
-    resume: { label: 'Résumé', href: '/Harshith_Kantamneni_Agentic_AI_Resume.pdf' },
+    resume: { label: 'Résumé', href: '/resume/agents/Harshith_Kantamneni_Resume.pdf' },
     proof: 'Built sign-off verification for a [[count.roles|31-role]] agent lab and audited it against runner logs. The old gate ran on [[lab.gate|0 of 270]] eligible sessions, by my count. Shipped an improved detector.',
     short: 'Agent memory, and an audit of my own sign-off gate.',
     spans: [
@@ -32,7 +32,7 @@ export const LANES = [
   {
     id: 'inference', cls: 'i', name: 'Inference', track: '/inference/', h: 34,
     title: 'LLM inference', role: 'LLM inference',
-    resume: { label: 'Résumé', href: '/Harshith_Kantamneni_LLM_Inference_Resume.pdf' },
+    resume: { label: 'Résumé', href: '/resume/inference/Harshith_Kantamneni_Resume.pdf' },
     proof: 'Built a llama.cpp expert cache for batch-1 MoE decode, measured on [[count.gpus|3 GPU models]]. vLLM RFC measurement and load tests.',
     short: 'An expert cache for MoE decode, measured on 3 GPU models.',
     spans: [
@@ -45,7 +45,7 @@ export const LANES = [
   {
     id: 'kernels', cls: 'k', name: 'Kernels', track: '/kernels/', h: 50,
     title: 'GPU kernels', role: 'GPU kernels',
-    resume: { label: 'Résumé', href: '/Harshith_Kantamneni_GPU_Kernel_Resume.pdf' },
+    resume: { label: 'Résumé', href: '/Harshith_Kantamneni_Resume.pdf' },
     proof: '[[count.merged|3 PRs merged]]: Triton attention kernels and KV-cache decoding in flash-linear-attention, tests in NVIDIA cuDNN frontend.',
     short: '3 PRs merged: Triton kernels, KV-cache decoding and tests in NVIDIA cuDNN.',
     spans: [
