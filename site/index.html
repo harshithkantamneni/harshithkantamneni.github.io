@@ -57,6 +57,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:
 /* hero: one sentence */
 .hero{min-height:86vh;display:flex;align-items:center;padding:96px 0 28px}
 .proof a{text-decoration:underline;text-decoration-color:rgba(255,255,255,.28);text-underline-offset:4px}.proof a:hover{color:#fff;text-decoration-color:#fff}
+.oss{position:relative;margin:clamp(12px,3vh,28px) calc(var(--edge) - var(--sheet)) 0;padding:clamp(22px,4vh,36px) var(--sheet) clamp(16px,2.6vh,24px);border:1px solid rgba(255,255,255,.13);border-radius:22px;background:rgba(255,255,255,.04);scroll-margin-top:84px}
+.oss h2{font-size:clamp(26px,3vw,44px);line-height:1.1;font-weight:500;letter-spacing:-.026em}
+.osum{font-size:clamp(16px,1.4vw,19px);color:var(--mid);margin:8px 0 clamp(14px,2.6vh,24px)}
+.ogroup{display:grid;grid-template-columns:minmax(170px,240px) minmax(0,1fr);gap:6px clamp(14px,3vw,40px);padding:clamp(12px,2.2vh,18px) 0;border-top:1px solid var(--line)}
+.oname{font-size:16px;line-height:1.4;font-weight:500;padding-top:4px}
+.orow{display:grid;grid-template-columns:92px 62px minmax(0,1fr) 92px;gap:2px 14px;align-items:baseline;padding:4px 0}
+.ostate{display:inline-flex;align-items:center;font-size:14px;color:var(--mid);white-space:nowrap}
+.opr{font-size:14px;color:var(--ink);min-height:28px;display:inline-flex;align-items:center;text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:4px}.opr:hover{text-decoration-color:#fff}
+.orow p{font-size:15px;line-height:1.45;color:#d4d7dc}.orow p a{color:var(--mid);white-space:nowrap;text-decoration:underline;text-decoration-color:rgba(255,255,255,.25);text-underline-offset:3px}.orow p a:hover{color:#fff}
+.odate{font-size:13px;color:var(--dim);text-align:right;white-space:nowrap}
+.omore{padding-top:12px;border-top:1px solid var(--line);font-size:15px}.omore a{color:var(--ink);text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:4px}.omore a:hover{text-decoration-color:#fff}
+@media(max-width:820px){.ogroup{grid-template-columns:minmax(0,1fr)}.orow{grid-template-columns:auto auto minmax(0,1fr);padding:8px 0}.orow p{grid-column:1/-1;grid-row:2}.odate{text-align:right}}
 .glance{position:relative;padding-bottom:clamp(30px,6vh,60px)}.glance .lane{grid-template-columns:minmax(0,1fr)}
 .gr{display:grid;grid-template-columns:minmax(170px,250px) minmax(0,1fr) auto;gap:clamp(14px,3vw,40px);align-items:center;padding:clamp(18px,3vh,28px) 0;border-top:1px solid var(--line)}.gr:last-child{border-bottom:1px solid var(--line)}
 .grn{font-family:var(--mono);font-size:clamp(30px,3.6vw,52px);font-weight:700;letter-spacing:-.03em;color:var(--c);white-space:nowrap}
@@ -104,7 +116,7 @@ h1{font-size:clamp(38px,6.6vw,104px);line-height:1.02;font-weight:500;letter-spa
 .sid{padding:16px var(--sheet) clamp(20px,3.4vh,30px);border-bottom:1px solid color-mix(in srgb,var(--c) 18%,rgba(255,255,255,.06))}
 .swhat{font-size:clamp(17px,1.45vw,20px);line-height:1.4;color:#d4d7dc;max-width:48em}
 .smeta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;margin-top:10px;font-size:14px;color:var(--mid)}.smeta span{display:inline-flex;align-items:center}.smeta a{color:var(--ink);min-height:28px;display:inline-flex;align-items:center;text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:4px}.smeta a:hover{text-decoration-color:#fff}
-.st{flex:none;width:9px;height:9px;border-radius:50%;margin-right:8px}.st.ok{background:#39d98a}.st.closed{border:2px solid var(--dim)}
+.st{flex:none;width:9px;height:9px;border-radius:50%;margin-right:8px}.st.ok{background:#39d98a}.st.open{background:var(--i)}.st.closed{border:2px solid var(--dim)}
 .idx{display:none;position:fixed;left:var(--edge);top:88px;width:var(--side);z-index:8;flex-direction:column;gap:clamp(10px,2.2vh,22px);opacity:0;pointer-events:none;transition:opacity .4s}
 .idx.live{opacity:1;pointer-events:auto}
 .ih{display:block;font-size:15px;font-weight:600;color:var(--c);margin-bottom:4px;min-height:24px}.ig:first-child .ih{font-size:18px}
@@ -230,12 +242,12 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 <a href="#main" class="skip">Skip to content</a>
 <div class="ground"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,106,77,.24),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,106,77,.11),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,180,84,.19),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,180,84,.09),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(106,168,255,.27),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(106,168,255,.13),transparent 70%)"></div>
 <canvas id="field" aria-hidden="true"></canvas><canvas id="fieldTop" aria-hidden="true"></canvas>
-<aside class="idx" aria-label="Projects on this page"><div class="ig" style="--c:var(--k)"><a class="ih" href="#ch-k">Kernels</a><a class="it" href="#kernels"><b>Stick-breaking kernels</b><span>2 merged PRs</span></a><a class="it" href="#gqa"><b>Grouped-query attention</b><span>Closed PR, merged tests</span></a><a class="it" href="#triton"><b>Triton vs cuBLAS</b><span>Personal project</span></a><a class="it" href="#yourgpu"><b>Try it on your GPU</b><span>Live demo</span></a></div><div class="ig" style="--c:var(--i)"><a class="ih" href="#ch-i">Inference</a><a class="it" href="#seconds"><b>Where the Seconds Go</b><span>Research project</span></a><a class="it" href="#jetson"><b>Jetson Orin Nano</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--a)"><a class="ih" href="#ch-a">Agents</a><a class="it" href="#bert"><b>bert</b><span>Personal project</span></a><a class="it" href="#lab"><b>Lab audit</b><span>Personal project</span></a></div></aside>
+<aside class="idx" aria-label="Projects on this page"><div class="ig" style="--c:var(--k)"><a class="ih" href="#ch-k">Kernels</a><a class="it" href="#kernels"><b>Stick-breaking kernels</b><span>2 merged PRs</span></a><a class="it" href="#gqa"><b>Grouped-query attention</b><span>Closed PR, merged tests</span></a><a class="it" href="#triton"><b>Triton vs cuBLAS</b><span>Personal project</span></a><a class="it" href="#yourgpu"><b>Try it on your GPU</b><span>Live demo</span></a></div><div class="ig" style="--c:var(--i)"><a class="ih" href="#ch-i">Inference</a><a class="it" href="#seconds"><b>Where the Seconds Go</b><span>Research project</span></a><a class="it" href="#jetson"><b>Jetson Orin Nano</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--a)"><a class="ih" href="#ch-a">Agents</a><a class="it" href="#bert"><b>bert</b><span>Personal project</span></a><a class="it" href="#lab"><b>Lab audit</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--ink)"><a class="ih" href="#oss">Open source</a></div></aside>
 <div class="pbar" aria-hidden="true"></div>
 
 <nav>
   <a class="brand" href="#top">Harshith Kantamneni</a>
-  <div class="nl"><a data-l="0" style="--c:var(--k)" href="#ch-k">Kernels</a><a data-l="1" style="--c:var(--i)" href="#ch-i">Inference</a><a data-l="2" style="--c:var(--a)" href="#ch-a">Agents</a><a class="ha" href="/work/">All work</a><a href="mailto:kantamneniharshith@gmail.com">Email</a><button type="button" class="nbtn ha" id="find-open" aria-label="Search this site" hidden>Search</button><a id="nav-res" class="nres" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
+  <div class="nl"><a data-l="0" style="--c:var(--k)" href="#ch-k">Kernels</a><a data-l="1" style="--c:var(--i)" href="#ch-i">Inference</a><a data-l="2" style="--c:var(--a)" href="#ch-a">Agents</a><a class="ha" href="#oss">Open source</a><a class="ha" href="/work/">All work</a><a href="mailto:kantamneniharshith@gmail.com">Email</a><button type="button" class="nbtn ha" id="find-open" aria-label="Search this site" hidden>Search</button><a id="nav-res" class="nres" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
 </nav>
 
 <main id="main">
@@ -255,6 +267,16 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   <a class="gr" style="--c:var(--i)" href="#ch-i"><div class="grn">11 of 12</div><div><h2>LLM inference</h2><p>Running AI models fast, even when they don't fit on the GPU. I built a cache for llama.cpp that ran faster than FreeToken in 11 of 12 test setups.</p></div><span class="go">See the work</span></a>
   <a class="gr" style="--c:var(--a)" href="#ch-a"><div class="grn">5 forged</div><div><h2>Agent systems</h2><p>AI that acts on its own, and whether you can trust it. In my research lab, an agent forged 5 approvals, so I built a check, audited it and rebuilt it. Also bert, searchable memory for coding agents.</p></div><span class="go">See the work</span></a>
 </div></section>
+
+<section class="oss" id="oss" aria-labelledby="oss-h">
+  <h2 id="oss-h">Open-source contributions</h2>
+  <p class="osum">3 merged, 1 in review, 2 closed, across 4 projects.</p>
+  <div class="ogroup"><h3 class="oname">flash-linear-attention</h3><div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/fla-org/flash-linear-attention/pull/1412">#1412</a><p>KV-cache decoding for stick-breaking attention, so a model reuses what it has already read. <a href="#kernels">The story</a></p><span class="odate">Oct 27, 2026</span></div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/fla-org/flash-linear-attention/pull/1319">#1319</a><p>Forward and backward kernels for stick-breaking attention. <a href="#kernels">The story</a></p><span class="odate">Oct 8, 2026</span></div></div></div>
+  <div class="ogroup"><h3 class="oname">NVIDIA cuDNN frontend</h3><div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a><p>Tests for grouped-query attention that catch 3 injected bugs NVIDIA's tests missed. <a href="#gqa">The story</a></p><span class="odate">Oct 6, 2026</span></div><div class="orow"><span class="ostate"><i class="st closed"></i>Closed</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a><p>A prototype that removed slow data copies. Closed after NVIDIA shipped its own version. <a href="#gqa">The story</a></p><span class="odate">Sep 27, 2026</span></div></div></div>
+  <div class="ogroup"><h3 class="oname">NVIDIA TransformerEngine</h3><div><div class="orow"><span class="ostate"><i class="st open"></i>In review</span><a class="opr" href="https://github.com/NVIDIA/TransformerEngine/pull/3591">#3591</a><p>A CUDA kernel that unpacks compressed model weights, in the grouped NVFP4 format, on the GPU.</p><span class="odate">Open</span></div></div></div>
+  <div class="ogroup"><h3 class="oname">vLLM</h3><div><div class="orow"><span class="ostate"><i class="st closed"></i>Closed</span><a class="opr" href="https://github.com/vllm-project/vllm/pull/38338">#38338</a><p>A Triton kernel for matrix multiplies on compressed weights. I closed it after #21014 was closed as not planned.</p><span class="odate">Oct 7, 2026</span></div></div></div>
+  <p class="omore"><a href="/work/#open-source">Details and measurements for each one</a></p>
+</section>
 
 <section class="pin intro" id="intro" data-steps="5" style="--n:5"><div class="stage"><div class="lane split">
   <div class="intro-says">
@@ -425,7 +447,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
       <p class="small">It runs on your machine through WebGPU in fp32, and nothing is sent anywhere. It's a demonstration, not one of the measurements on this page.</p>
     </div>
   </div>
-  <div class="block lane"><p class="more">There's more kernel work on the <a href="/work/#kernels">all-work page</a>: a timing model of vLLM's fused MoE kernel, a TransformerEngine PR in review, and every upstream PR, closed ones included.</p></div>
+  <div class="block lane"><p class="more">There's more kernel work on the <a href="/work/#kernels">all-work page</a>, including a timing model of vLLM's fused MoE kernel.</p></div>
 </article>
 
 <!-- ============ INFERENCE ============ -->
@@ -568,7 +590,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   <h2 class="say">Three questions I haven't answered yet.</h2>
   <div class="chase">
     <a href="#kernels"><b>Where the rest of a full model's time goes.</b><span>My kernel step ran 52.7× faster than recomputing at 64K keys, but one full model step, on random weights, still takes about 9 ms.</span></a>
-    <a href="#kernels"><b>How to match the original authors' speed.</b><span>The merged forward and backward kernels take 1.04-1.42× the time of the original authors', for both passes together on an H100 GPU.</span></a>
+    <a href="#kernels"><b>Whether my kernels' design choices are what cost them speed.</b><span>Forward and backward together take 1.04-1.42× the time of the original authors' kernels on an H100 GPU, and give identical results on every run, which theirs don't. I haven't isolated how much of the gap that explains.</span></a>
     <a href="#seconds"><b>How much slowdown better caching can never remove.</b><span>Even when the engine could see the future, 36% of the gap to the limit stayed, on one machine.</span></a>
   </div>
 </div></section>
