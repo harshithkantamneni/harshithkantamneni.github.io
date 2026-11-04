@@ -18,6 +18,10 @@ const label = (s) => {
       <h1>Every number and its source</h1>
       <p class="lead">What each number on this site means, the conditions it holds under, and where to check it. Repo links are pinned to a commit. Sources checked {fmtDate(asOf)}.</p>
     </div>
+    <label class="nfilter" hidden>Find a number
+      <input id="nfilter" type="search" autocomplete="off">
+      <span id="ncount" role="status"></span>
+    </label>
     <div class="claims">
       {claims.map((c) => (
         <article class="claim" id={c.id}>

@@ -1,5 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Decode from '../../components/figures/Decode.astro';
+import Heads from '../../components/figures/Heads.astro';
+import Foresight from '../../components/figures/Foresight.astro';
+import Slope from '../../components/figures/Slope.astro';
+import Waffle from '../../components/figures/Waffle.astro';
 import { CASES, LANES } from '../../data/site.mjs';
 import { rich } from '../../lib/rich.mjs';
 
@@ -10,10 +15,16 @@ const { slug } = Astro.params;
 const c = CASES[slug];
 const lane = LANES.find((l) => l.cls === c.lane);
 const files = import.meta.glob('../../content/work/*.html', { query: '?raw', import: 'default', eager: true });
-const body = files[`../../content/work/${slug}.html`];
-if (!body) throw new Error(`No content for ${slug}`);
+const raw = files[`../../content/work/${slug}.html`];
+if (!raw) throw new Error(`No content for ${slug}`);
 const next = CASES[c.next];
 const nextLane = LANES.find((l) => l.cls === next.lane);
+
+// Headings become anchors, and the side list follows them
+const idOf = (t) => t.toLowerCase().replace(/&#?\w+;|'/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const toc = [...raw.matchAll(/<h2>(.*?)<\/h2>/g)].map((m) => ({ t: m[1], id: idOf(m[1]) }));
+const body = raw.replace(/<h2>(.*?)<\/h2>/g, (_, t) => `<h2 id="${idOf(t)}">${t}</h2>`);
+const Figure = { 'stick-breaking-kernels': Decode, 'cudnn-gqa': Heads, 'where-the-seconds-go': Foresight, bert: Slope, 'lab-verification': Waffle }[slug];
 ---
 <Base
   title={`${c.title}: Harshith Kantamneni`}
@@ -22,21 +33,39 @@ const nextLane = LANES.find((l) => l.cls === next.lane);
   active={c.lane}
   resume={lane.resume.href}
 >
-  <div class={`wrap ${c.lane}`}>
-    <nav class="crumb" aria-label="Breadcrumb">
-      <a href="/">Home</a>
-      <span aria-hidden="true">/</span>
-      <a class="here" href={lane.track}>{lane.name}</a>
-    </nav>
-    <div class="page-head">
+  <header class={`opener case ${c.lane}${c.lane === 'k' ? ' bright' : ''}`}>
+    <div class="wrap">
+      <nav class="crumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href={lane.track}>{lane.name}</a>
+      </nav>
       <h1>{c.title}</h1>
-      <p class="lead">{c.lead}</p>
+      <p>{c.lead}</p>
       <p class="state">{c.state}</p>
     </div>
-    <div class="prose" set:html={rich(body)} />
-    <div class="next">
-      <span class="quiet">Next in {nextLane.name}:</span>
-      <a href={`/work/${c.next}/`}>{next.title}</a>
+  </header>
+  <div class={`wrap case-g ${c.lane}`}>
+    <div class="case-m">
+      <Figure />
+      <div class="prose" set:html={rich(body)} />
+      <div class="next">
+        <span class="quiet">Next in {nextLane.name}:</span>
+        <a href={`/work/${c.next}/`}>{next.title}</a>
+      </div>
     </div>
+    <aside class="rail" aria-label="Key numbers and contents">
+      <div class="kns">
+        {c.keys.map((k) => (
+          <div class="kn">
+            <p class="kn-v" set:html={rich(k.v)} />
+            <p class="kn-l">{k.l}</p>
+          </div>
+        ))}
+      </div>
+      <nav class="toc" aria-label="On this page">
+        {toc.map((h) => <a href={`#${h.id}`} set:html={h.t} />)}
+      </nav>
+    </aside>
   </div>
 </Base>

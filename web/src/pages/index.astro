@@ -70,7 +70,7 @@ const merged = (r) => /merged/i.test(stateOf(r)) && !/not merged/i.test(stateOf(
     <div class="alsos">
       {OLDER.map((o) => (
         <div id={o.id}>
-          <h4><a href={o.href}>{o.title}</a></h4>
+          <h3 class="at"><a href={o.href}>{o.title}</a></h3>
           <p set:html={rich(o.blurb)} />
           <p class="st">{o.tag}</p>
         </div>

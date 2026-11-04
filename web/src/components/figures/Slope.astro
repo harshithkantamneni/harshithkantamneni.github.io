@@ -1,0 +1,23 @@
+---
+const { f } = Astro.props;
+// bert: accuracy at the 2 measured memory sizes
+const SL = [
+  { n: 'Full context', a: 0.90, b: 0.08, c: 'var(--mid)', cls: '' },
+  { n: 'Agentic grep', a: 0.92, b: 0.90, c: 'var(--a)', cls: 'from1', dash: '6 5' },
+  { n: 'bert', a: 0.96, b: 0.90, c: 'var(--a)', cls: 'from1' },
+];
+const yy = (v) => (1 - v) * 92 + 4;
+---
+<figure class="frame key a" data-f={f}>
+  <figcaption>Answer accuracy at 2 measured memory sizes. Synthetic project, one Claude reader, only the method varies.</figcaption>
+  <div class="slope">
+     <svg viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="At 98,519 tokens all three methods score above 0.9. At 1.26M tokens bert and grep hold at 0.90 and full context falls to 0.08.">
+      {[0, 0.25, 0.5, 0.75, 1].map((v) => <line x1="0" x2="100" y1={yy(v)} y2={yy(v)} stroke="var(--grid)" vector-effect="non-scaling-stroke"></line>)}
+      {SL.map((s) => <line class={s.cls} x1="0" x2="100" y1={yy(s.a)} y2={yy(s.b)} stroke={s.c} stroke-width="2.5" stroke-dasharray={s.dash} vector-effect="non-scaling-stroke"></line>)}
+    </svg>
+    <span class="slope-s" style={`top:${yy(0.93)}%`}><span class="from1">bert 0.96<br>grep 0.92<br></span>full 0.90</span>
+    <span class="slope-l" style={`top:${yy(0.08)}%`}><b>0.08</b>Full context</span>
+    <span class="slope-l from1" style={`top:${yy(0.90)}%`}><b>0.90</b>bert, grep</span>
+  </div>
+  <div class="slope-a"><span>98,519 tokens</span><span>1.26M tokens</span></div>
+</figure>

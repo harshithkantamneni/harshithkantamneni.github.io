@@ -1,0 +1,26 @@
+---
+import { rich as r } from '../../lib/rich.mjs';
+
+const { f } = Astro.props;
+// Default head mapping shown without scripts
+const q0 = 8, kv0 = 4;
+const heads = (fn) => Array.from({ length: q0 }, (_, h) => fn(h));
+const good = heads((h) => Math.floor(h / (q0 / kv0)));
+const bad = heads((h) => Math.floor(h / kv0) % kv0);
+const cell = (x) => `<i class="c${x % 4}" data-n="${x}"></i>`;
+---
+<figure class="frame key k" data-f={f}>
+  <figcaption>Which KV head does each query head read? Pick a shape.</figcaption>
+  <div class="seg" id="heads" role="group" aria-label="Query heads over KV heads" style="margin-top:10px">
+    <button type="button" data-q="4" data-kv="2" aria-pressed="false">4/2</button>
+    <button type="button" data-q="16" data-kv="4" aria-pressed="false">16/4</button>
+    <button type="button" data-q="8" data-kv="4" aria-pressed="true">8/4</button>
+    <button type="button" data-q="8" data-kv="2" aria-pressed="false">8/2</button>
+  </div>
+  <p class="f-h">Correct formula</p>
+  <div class="cells" id="hm-a" style={`grid-template-columns:repeat(${q0},minmax(0,1fr))`} aria-label={`Correct mapping: ${good.join(' ')}`} role="img" set:html={good.map(cell).join('')} />
+  <p class="f-h">The bug NVIDIA's tests missed</p>
+  <div class="cells" id="hm-b" style={`grid-template-columns:repeat(${q0},minmax(0,1fr))`} aria-label={`Buggy mapping: ${bad.join(' ')}`} role="img" set:html={bad.map(cell).join('')} />
+  <p class="verdict" id="hm-v" role="status">Different mapping. A test at this shape catches the bug.</p>
+  <p class="f-note" set:html={r('With bugs planted, NVIDIA\'s SM80 suite still reported [[gqa.planted|All 411 pass]]. My tests caught all [[pr1287.bugs|3 injected bugs]].')} />
+</figure>

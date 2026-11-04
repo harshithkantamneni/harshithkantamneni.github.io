@@ -1,0 +1,29 @@
+---
+import { rich as r } from '../../lib/rich.mjs';
+import { lines } from '../../lib/viz.mjs';
+
+const { f } = Astro.props;
+// #1412: one decode step against recomputing the prefix, H200, microseconds, both axes log
+const keys = ['T=1024', 'T=4096', 'T=16384', 'T=65536'];
+const speedup = ['1.0×', '3.4×', '13.1×', '52.7×'];
+const decode = [72.4, 275.0, 1082.4, 4301.8];
+const recompute = [72.8, 929.4, 14190.3, 226529.2];
+const xs = [7, 35.67, 64.33, 93];
+const logY = (v) => (1 - (Math.log10(v) - 1.3) / (5.7 - 1.3)) * 100;
+---
+<figure class="frame key k" data-f={f}>
+  <figcaption>One decode step against recomputing the prefix, H200, batch 1, microseconds, log scale</figcaption>
+  <p class="f-read" set:html={r('[[sbk.op|52.7×]]')} />
+  <p class="f-sub">faster than recomputing at 64K keys, with no gain at 1024</p>
+  <div class="legend"><span><i></i>Decode with the cache</span><span><i class="mid"></i>Recompute the prefix</span></div>
+  <Fragment set:html={lines({
+    xs, y: logY, height: 230,
+    series: [
+      { values: recompute, color: 'var(--mid)', side: 'above', labels: recompute.map((v) => v.toFixed(1)) },
+      { values: decode, color: 'var(--k)', side: 'below', labels: decode.map((v) => v.toFixed(1)) },
+    ],
+  })} />
+  <div class="lc-x">
+    {keys.map((k, i) => <span style={`left:${xs[i]}%`} class={i === 0 ? 'start' : i === keys.length - 1 ? 'end' : ''}>{k}<b>{speedup[i]}</b></span>)}
+  </div>
+</figure>

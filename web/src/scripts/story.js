@@ -204,6 +204,33 @@
     }
   }
 
+  /* Case pages: the side list follows the section you're reading */
+  var toc = [].slice.call(document.querySelectorAll('.toc a'));
+  if (toc.length) {
+    var spy = watch(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        toc.forEach(function (x) {
+          if (x.getAttribute('href') === '#' + e.target.id) x.setAttribute('aria-current', 'true');
+          else x.removeAttribute('aria-current');
+        });
+      });
+    }, '-8% 0px -65% 0px');
+    toc.forEach(function (x) { var t = document.getElementById(x.getAttribute('href').slice(1)); if (t) spy.observe(t); });
+  }
+
+  /* Numbers page: find a number */
+  var nf = document.getElementById('nfilter'), nc = document.getElementById('ncount');
+  if (nf) {
+    var claims = [].slice.call(document.querySelectorAll('.claim'));
+    nf.parentNode.hidden = false;
+    nf.addEventListener('input', function () {
+      var q = nf.value.trim().toLowerCase(), n = 0;
+      claims.forEach(function (c) { var hit = !q || c.textContent.toLowerCase().indexOf(q) > -1; c.hidden = !hit; if (hit) n++; });
+      nc.textContent = q ? n + ' of ' + claims.length + ' shown' : '';
+    });
+  }
+
   /* Filter the full list */
   var fl = document.getElementById('filters');
   if (fl) {

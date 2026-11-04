@@ -2,6 +2,7 @@
 import { rich } from '../lib/rich.mjs';
 import { bars, clusters } from '../lib/viz.mjs';
 import jet from '../data/jetson.json';
+import Foresight from './figures/Foresight.astro';
 
 const r = rich;
 const GH = 'https://github.com/harshithkantamneni/';
@@ -15,16 +16,18 @@ const GRID = {
   Sqwen: [['12.5%', 16.1, 32.7, 33.5], ['25%', 18.5, 51.4, 53.9], ['43.75%', 23.8, 98.3, 95.8]],
 };
 const decMax = Math.max(...jet.decode.map((d) => d.us));
+const { as = 'h2' } = Astro.props;
+const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4';
 ---
 <section class="opener i" id="inference" data-chapter="i" data-resume={RESUME}>
   <div class="wrap">
-    <h2>Inference</h2>
+    <Top>Inference</Top>
     <p>One layer up: a real model, and how long the next token takes.</p>
     <div class="ol">
       <a href="#seconds">Where the seconds go</a>
       <a href="#cache">What the cache bought</a>
       <a href="#edge">The same question at 15 W</a>
-      <a href="/inference/">Only the inference work</a>
+      {as === 'h1' ? <a href="/">The whole stack</a> : <a href="/inference/">Only the inference work</a>}
     </div>
   </div>
 </section>
@@ -32,37 +35,11 @@ const decMax = Math.max(...jet.decode.map((d) => d.us));
 <div class="i" data-chapter="i" data-resume={RESUME}>
   <section class="scene" id="seconds" data-scene>
     <div class="wrap">
-      <h3 class="scene-t">Where the seconds go when the model doesn't fit</h3>
+      <Sub class="scene-t">Where the seconds go when the model doesn't fit</Sub>
       <div class="scene-g">
         <div class="stage">
           <div class="frames">
-            <figure class="frame key" data-f="0,1,2,3" id="foresight">
-              <figcaption>Decode time per token on one machine: gpt-oss-120b, RTX 5090, 11% of experts on the GPU</figcaption>
-              <p class="f-read"><span id="fs-v">20.59</span><small> ms</small></p>
-              <div class="bt" style="height:22px;margin-top:6px;overflow:visible">
-                <i id="fs-b" style="transform:scaleX(1)"></i>
-                <span class="limit" style={`left:${(10.02 / 20.59 * 100).toFixed(2)}%`}></span>
-              </div>
-              <p class="f-note" set:html={r('The white tick is the computed limit, [[wsg.breakdown|10.02]] ms, relative to my own bandwidth probe.')} />
-              <p class="f-sub" id="fs-n" role="status" style="margin:10px 0 0">The deployed cache, with no foresight.</p>
-              <div class="sws">
-                <button type="button" class="sw" aria-pressed="false">Cache exactly what a perfect oracle would</button>
-                <button type="button" class="sw" aria-pressed="false">Read each cached expert only once</button>
-                <button type="button" class="sw" aria-pressed="false" disabled>Also issue the copies ahead of time</button>
-              </div>
-              <details class="more">
-                <summary>All measured states</summary>
-                <Fragment set:html={bars([
-                  { label: 'Deployed cache', value: 20.59, text: '20.59', tone: 'dim' },
-                  { label: 'Read once', value: 20.18, text: '20.18', tone: 'dim' },
-                  { label: 'Oracle set', value: 20.11, text: '20.11', tone: 'dim' },
-                  { label: 'Both', value: 15.13, text: '15.13' },
-                  { label: 'Both, copies ahead', value: 13.78, text: '13.78' },
-                  { label: 'Computed limit', value: 10.02, text: '10.02', tone: 'mid' },
-                ], { max: 21 })} />
-                <p class="f-note" set:html={r('Teacher-forced, one machine. [[wsg.breakdown]]')} />
-              </details>
-            </figure>
+            <Foresight f="0,1,2,3" />
           </div>
         </div>
         <div class="steps">
@@ -82,7 +59,7 @@ const decMax = Math.max(...jet.decode.map((d) => d.us));
 
   <section class="scene" id="cache" data-scene>
     <div class="wrap">
-      <h3 class="scene-t">What the cache bought</h3>
+      <Sub class="scene-t">What the cache bought</Sub>
       <div class="scene-g">
         <div class="stage">
           <div class="frames">
@@ -120,7 +97,7 @@ const decMax = Math.max(...jet.decode.map((d) => d.us));
 
   <section class="scene" id="edge" data-scene>
     <div class="wrap">
-      <h3 class="scene-t">The same question at 15 watts</h3>
+      <Sub class="scene-t">The same question at 15 watts</Sub>
       <div class="scene-g">
         <div class="stage">
           <div class="frames">
@@ -147,12 +124,12 @@ const decMax = Math.max(...jet.decode.map((d) => d.us));
     <div class="wrap">
       <div class="alsos">
         <div>
-          <h4><a href="https://github.com/vllm-project/vllm/issues/46295#issuecomment-5788867616">vLLM RFC #46295</a></h4>
+          <Also class="at"><a href="https://github.com/vllm-project/vllm/issues/46295#issuecomment-5788867616">vLLM RFC #46295</a></Also>
           <p set:html={r('A measurement comment on someone else\'s RFC. On [[rfc.oracle|one H200]], a per-workload oracle improved on the best static table by [[rfc.oracle|at most 1.8%]], and vLLM\'s MFU byte model overcounted reads [[rfc.mfu|up to 3×]] in the worst cell.')} />
           <p class="st">Comment, offline and synthetic</p>
         </div>
         <div>
-          <h4><a href={GH + 'llm-inference-benchmarking'}>vLLM serving benchmark</a></h4>
+          <Also class="at"><a href={GH + 'llm-inference-benchmarking'}>vLLM serving benchmark</a></Also>
           <p set:html={r('Load-tested vLLM on H100 NVL. TPOT ran [[srv.graphs|31-34%]] lower with CUDA graphs, and FP8 cut it [[srv.fp8|27-36%]]. [[srv.runs|One run per rate]], so it\'s a first pass.')} />
           <p class="st">Public repo</p>
         </div>

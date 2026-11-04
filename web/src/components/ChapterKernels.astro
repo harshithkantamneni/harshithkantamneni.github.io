@@ -1,6 +1,8 @@
 ---
 import { rich } from '../lib/rich.mjs';
-import { bars, clusters, lines } from '../lib/viz.mjs';
+import { bars, clusters } from '../lib/viz.mjs';
+import Decode from './figures/Decode.astro';
+import Heads from './figures/Heads.astro';
 import triton from '../data/triton.json';
 
 const r = rich;
@@ -12,21 +14,8 @@ const ratio = [
   ['B=8, T=1024, H=16, D=128', 1.04], ['B=4, T=2048, H=16, D=128', 1.07], ['B=2, T=4096, H=16, D=128', 1.16], ['B=1, T=8192, H=16, D=128', 1.20],
   ['B=4, T=2048, H=32, D=64', 1.42], ['Packed 512+2048+512+5120, H=16, D=128', 1.07], ['Packed 8×1024, H=32, D=64', 1.32], ['Packed 8192, H=16, D=128', 1.19],
 ];
-// #1412: one decode step against recomputing the prefix, H200, microseconds, both axes log
-const keys = ['T=1024', 'T=4096', 'T=16384', 'T=65536'];
-const speedup = ['1.0×', '3.4×', '13.1×', '52.7×'];
-const decode = [72.4, 275.0, 1082.4, 4301.8];
-const recompute = [72.8, 929.4, 14190.3, 226529.2];
-const xs = [7, 35.67, 64.33, 93];
-const logY = (v) => (1 - (Math.log10(v) - 1.3) / (5.7 - 1.3)) * 100;
 // #1223: at batch 1
 const gqa = [['64/8 d128', 14.57, 6.66, 3.30, '2.19×'], ['64/8 d64', 8.23, 4.23, 4.09, '1.95×'], ['32/8 d128', 9.91, 6.66, 3.30, '1.49×'], ['32/2 d256', 17.15, 12.55, 9.96, '1.37×'], ['8/1 d128', 7.59, 6.63, 3.30, '1.15×']];
-// Default head mapping shown without scripts
-const q0 = 8, kv0 = 4;
-const heads = (fn) => Array.from({ length: q0 }, (_, h) => fn(h));
-const good = heads((h) => Math.floor(h / (q0 / kv0)));
-const bad = heads((h) => Math.floor(h / kv0) % kv0);
-const cell = (x) => `<i class="c${x % 4}" data-n="${x}"></i>`;
 
 // Triton scatter from the raw benchmark file
 const W = 640, H = 380, L = 44, T = 14, Rr = 12, B = 44;
@@ -41,17 +30,19 @@ const dots = (key) => triton.map((p) => {
   const v = p[key];
   return `<circle class="${v > 1 ? 'up' : ''}" cx="${xOf(p).toFixed(1)}" cy="${y(v).toFixed(1)}" r="${v > 1 ? 5 : 4}" data-s="M=${p.M}, N=${p.N}, K=${p.K}" data-v="${v.toFixed(2)}"></circle>`;
 }).join('');
+const { as = 'h2' } = Astro.props;
+const Top = as, Sub = as === 'h1' ? 'h2' : 'h3', Also = as === 'h1' ? 'h3' : 'h4';
 ---
 <section class="opener bright" id="kernels" data-chapter="k" data-resume={RESUME}>
   <div class="wrap">
-    <h2>Kernels</h2>
+    <Top>Kernels</Top>
     <p set:html={r('Where the time actually goes. [[count.merged|3 PRs merged]]: Triton attention kernels and KV-cache decoding in flash-linear-attention, and tests in NVIDIA cuDNN frontend.')} />
     <div class="ol">
       <a href="#merged">The merged kernels</a>
       <a href="#gqa">The copy and the tests</a>
       <a href="#blind">The timing model</a>
       <a href="#triton">Fusing kernels</a>
-      <a href="/kernels/">Only the kernel work</a>
+      {as === 'h1' ? <a href="/">The whole stack</a> : <a href="/kernels/">Only the kernel work</a>}
     </div>
   </div>
 </section>
@@ -59,7 +50,7 @@ const dots = (key) => triton.map((p) => {
 <div class="k" data-chapter="k" data-resume={RESUME}>
   <section class="scene" id="merged" data-scene>
     <div class="wrap">
-      <h3 class="scene-t">Kernels that merged, and where they still lag</h3>
+      <Sub class="scene-t">Kernels that merged, and where they still lag</Sub>
       <div class="scene-g">
         <div class="stage">
           <div class="frames">
@@ -82,22 +73,7 @@ const dots = (key) => triton.map((p) => {
                 <Fragment set:html={bars(ratio.map(([label, v]) => ({ label, value: v, text: v.toFixed(2) + '×' })), { min: 1, max: 1.5 })} />
               </div>
             </figure>
-            <figure class="frame key" data-f="2">
-              <figcaption>One decode step against recomputing the prefix, H200, batch 1, microseconds, log scale</figcaption>
-              <p class="f-read" set:html={r('[[sbk.op|52.7×]]')} />
-              <p class="f-sub">faster than recomputing at 64K keys, with no gain at 1024</p>
-              <div class="legend"><span><i></i>Decode with the cache</span><span><i class="mid"></i>Recompute the prefix</span></div>
-              <Fragment set:html={lines({
-                xs, y: logY, height: 230,
-                series: [
-                  { values: recompute, color: 'var(--mid)', side: 'above', labels: recompute.map((v) => v.toFixed(1)) },
-                  { values: decode, color: 'var(--k)', side: 'below', labels: decode.map((v) => v.toFixed(1)) },
-                ],
-              })} />
-              <div class="lc-x">
-                {keys.map((k, i) => <span style={`left:${xs[i]}%`} class={i === 0 ? 'start' : i === keys.length - 1 ? 'end' : ''}>{k}<b>{speedup[i]}</b></span>)}
-              </div>
-            </figure>
+            <Decode f="2" />
           </div>
         </div>
         <div class="steps">
@@ -116,7 +92,7 @@ const dots = (key) => triton.map((p) => {
 
   <section class="scene" id="gqa" data-scene>
     <div class="wrap">
-      <h3 class="scene-t">The copy took longer than the math</h3>
+      <Sub class="scene-t">The copy took longer than the math</Sub>
       <div class="scene-g">
         <div class="stage">
           <div class="frames">
@@ -145,21 +121,7 @@ const dots = (key) => triton.map((p) => {
                 ],
               })), { max: 18 })} />
             </figure>
-            <figure class="frame key" data-f="2">
-              <figcaption>Which KV head does each query head read? Pick a shape.</figcaption>
-              <div class="seg" id="heads" role="group" aria-label="Query heads over KV heads" style="margin-top:10px">
-                <button type="button" data-q="4" data-kv="2" aria-pressed="false">4/2</button>
-                <button type="button" data-q="16" data-kv="4" aria-pressed="false">16/4</button>
-                <button type="button" data-q="8" data-kv="4" aria-pressed="true">8/4</button>
-                <button type="button" data-q="8" data-kv="2" aria-pressed="false">8/2</button>
-              </div>
-              <p class="f-h">Correct formula</p>
-              <div class="cells" id="hm-a" style={`grid-template-columns:repeat(${q0},minmax(0,1fr))`} aria-label={`Correct mapping: ${good.join(' ')}`} role="img" set:html={good.map(cell).join('')} />
-              <p class="f-h">The bug NVIDIA's tests missed</p>
-              <div class="cells" id="hm-b" style={`grid-template-columns:repeat(${q0},minmax(0,1fr))`} aria-label={`Buggy mapping: ${bad.join(' ')}`} role="img" set:html={bad.map(cell).join('')} />
-              <p class="verdict" id="hm-v" role="status">Different mapping. A test at this shape catches the bug.</p>
-              <p class="f-note" set:html={r('With bugs planted, NVIDIA\'s SM80 suite still reported [[gqa.planted|All 411 pass]]. My tests caught all [[pr1287.bugs|3 injected bugs]].')} />
-            </figure>
+            <Heads f="2" />
           </div>
         </div>
         <div class="steps">
@@ -179,7 +141,7 @@ const dots = (key) => triton.map((p) => {
 
   <section class="scene" id="blind" data-scene>
     <div class="wrap">
-      <h3 class="scene-t">Predict the kernel before running it</h3>
+      <Sub class="scene-t">Predict the kernel before running it</Sub>
       <div class="scene-g">
         <div class="stage">
           <div class="frames">
@@ -215,7 +177,7 @@ const dots = (key) => triton.map((p) => {
 
   <section class="scene" id="triton" data-scene>
     <div class="wrap">
-      <h3 class="scene-t">Fusing kernels wasn't automatically faster</h3>
+      <Sub class="scene-t">Fusing kernels wasn't automatically faster</Sub>
       <div class="scene-g">
         <div class="stage">
           <div class="frames">
@@ -255,12 +217,12 @@ const dots = (key) => triton.map((p) => {
     <div class="wrap">
       <div class="alsos">
         <div>
-          <h4><a href={GH + 'NVIDIA/TransformerEngine/pull/3591'}>TransformerEngine #3591</a></h4>
+          <Also class="at"><a href={GH + 'NVIDIA/TransformerEngine/pull/3591'}>TransformerEngine #3591</a></Also>
           <p>CUDA kernel for grouped NVFP4 dequantization, reading offsets on device. Output matches per-tensor results bitwise. I haven't timed it.</p>
           <p class="st">Open, in review</p>
         </div>
         <div>
-          <h4><a href={GH + 'vllm-project/vllm/pull/38338'}>vLLM #38338</a></h4>
+          <Also class="at"><a href={GH + 'vllm-project/vllm/pull/38338'}>vLLM #38338</a></Also>
           <p set:html={r('Triton NVFP4 GEMM reference holding [[pr38338.tflops|1,014-1,076 TFLOP/s]] on RTX 5090 for one shape. Weakest shape: [[pr38338.weak|0.53-0.57×]] CUTLASS.')} />
           <p class="st">Closed, not merged</p>
         </div>

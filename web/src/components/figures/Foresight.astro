@@ -1,0 +1,33 @@
+---
+import { rich as r } from '../../lib/rich.mjs';
+import { bars } from '../../lib/viz.mjs';
+
+const { f } = Astro.props;
+---
+<figure class="frame key i" data-f={f} id="foresight">
+  <figcaption>Decode time per token on one machine: gpt-oss-120b, RTX 5090, 11% of experts on the GPU</figcaption>
+  <p class="f-read"><span id="fs-v">20.59</span><small> ms</small></p>
+  <div class="bt" style="height:22px;margin-top:6px;overflow:visible">
+    <i id="fs-b" style="transform:scaleX(1)"></i>
+    <span class="limit" style={`left:${(10.02 / 20.59 * 100).toFixed(2)}%`}></span>
+  </div>
+  <p class="f-note" set:html={r('The white tick is the computed limit, [[wsg.breakdown|10.02]] ms, relative to my own bandwidth probe.')} />
+  <p class="f-sub" id="fs-n" role="status" style="margin:10px 0 0">The deployed cache, with no foresight.</p>
+  <div class="sws">
+    <button type="button" class="sw" aria-pressed="false">Cache exactly what a perfect oracle would</button>
+    <button type="button" class="sw" aria-pressed="false">Read each cached expert only once</button>
+    <button type="button" class="sw" aria-pressed="false" disabled>Also issue the copies ahead of time</button>
+  </div>
+  <details class="more">
+    <summary>All measured states</summary>
+    <Fragment set:html={bars([
+      { label: 'Deployed cache', value: 20.59, text: '20.59', tone: 'dim' },
+      { label: 'Read once', value: 20.18, text: '20.18', tone: 'dim' },
+      { label: 'Oracle set', value: 20.11, text: '20.11', tone: 'dim' },
+      { label: 'Both', value: 15.13, text: '15.13' },
+      { label: 'Both, copies ahead', value: 13.78, text: '13.78' },
+      { label: 'Computed limit', value: 10.02, text: '10.02', tone: 'mid' },
+    ], { max: 21 })} />
+    <p class="f-note" set:html={r('Teacher-forced, one machine. [[wsg.breakdown]]')} />
+  </details>
+</figure>

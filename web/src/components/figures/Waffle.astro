@@ -1,0 +1,39 @@
+---
+import { rich as r } from '../../lib/rich.mjs';
+import gate from '../../data/gate.json';
+
+const { f, live = false } = Astro.props;
+// One square per runner log, in date order, from the public per-session table
+const COLS = 39, S = 16, G = 3;
+const flags = gate.flags.split('');
+const ROWS = Math.ceil(flags.length / COLS);
+const rects = flags.map((x, i) => {
+  const cx = (i % COLS) * (S + G), cy = Math.floor(i / COLS) * (S + G);
+  return `<rect x="${cx + 1}" y="${cy + 1}" width="${S - 2}" height="${S - 2}" rx="2"${x === '1' ? ' class="e"' : ''}></rect>`;
+}).join('');
+---
+<figure class="frame key a" data-f={f}>
+  <figcaption>One square per runner log, in date order. From the public per-session table.</figcaption>
+  {live ? (
+    <>
+      <p class="f-read">
+        <span class="only s0" set:html={r('[[labv.counts|763]]')} />
+        <span class="only s1" set:html={r('[[labv.counts|270]]')} />
+        <span class="only s2 s3 final" set:html={r('[[lab.gate|0 of 270]]')} />
+      </p>
+      <p class="f-sub">
+        <span class="only s0">runner logs</span>
+        <span class="only s1">sessions where the gate should have run</span>
+        <span class="only s2 s3 final">eligible sessions where it ran, by my count</span>
+      </p>
+    </>
+  ) : (
+    <>
+      <p class="f-read" set:html={r('[[lab.gate|0 of 270]]')} />
+      <p class="f-sub">eligible sessions where it ran, by my count</p>
+    </>
+  )}
+  <div class="plot waf">
+    <svg viewBox={`0 0 ${COLS * (S + G)} ${ROWS * (S + G)}`} role="img" aria-label="763 squares, 270 of them outlined as eligible, none filled as run" set:html={rects}></svg>
+  </div>
+</figure>
