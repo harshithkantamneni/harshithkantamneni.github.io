@@ -1,6 +1,6 @@
 {
  "as_of": "2026-11-03",
- "site_commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+ "site_commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
  "claims": [
   {
    "id": "profile.degree",
@@ -1593,8 +1593,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
+     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
      "path": "site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
      "note": "Issue date on the certificate"
     }
@@ -1613,8 +1613,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
+     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
      "path": "site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
      "note": "Issue date on the certificate"
     }
@@ -1625,7 +1625,8 @@
    "id": "writing.dates",
    "page": "home",
    "shows": [
-    "May 2026"
+    "May 2026",
+    "Nov 2026"
    ],
    "means": "Publication month of the 4 pieces",
    "value": "2026-05",
@@ -1633,8 +1634,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/reports",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/reports",
+     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
      "path": "site/reports",
      "note": "Dated on each page"
     }
@@ -1656,8 +1657,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/Recursive_Verification_Surface_Collapse_paper.pdf",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
      "path": "site/Recursive_Verification_Surface_Collapse_paper.pdf",
      "note": "Published paper"
     }
@@ -1678,8 +1679,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/notes/llm-judge-bias/index.html",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/notes/llm-judge-bias/index.html",
+     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
      "path": "site/notes/llm-judge-bias/index.html",
      "note": "Published note"
     }
@@ -1708,8 +1709,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/notes/tier-per-task/index.html",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/notes/tier-per-task/index.html",
+     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
      "path": "site/notes/tier-per-task/index.html",
      "note": "Published note"
     }
@@ -1785,8 +1786,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/Recursive_Verification_Surface_Collapse_paper.pdf",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
      "path": "site/Recursive_Verification_Surface_Collapse_paper.pdf",
      "note": "Published paper"
     }
