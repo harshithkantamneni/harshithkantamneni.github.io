@@ -1,2 +1,66 @@
-<!-- content pending -->
-<p>Pending.</p>
+<h2>What I built</h2>
+<h3>Kernels</h3>
+<p>I built merged <a href="https://github.com/fla-org/flash-linear-attention/blob/main/fla/ops/stickbreaking_attn/parallel.py">Triton forward and backward kernels</a> for stick-breaking attention (#1319). On H100, Nsight Compute points backward cost to fp32 scans at [[pr1319.occupancy|about 12% occupancy]]. That attribution is my reading, because the tool reports stall classes, not scans. On H100, [[pr1319.tiles|64×32 tiles]] fit [[pr1319.tiles|57-89 KiB]] of shared memory where [[pr1319.tiles|64×64]] needed [[pr1319.tiles|129-193 KiB]]. The kernels still take [[pr1319.vs_authors|1.04-1.42×]] the original authors' time on H100. The [[sbk.vs_prev|1.29-1.48×]] gain on H100 is against the PR's own earlier head, mostly from the backward rewrite.</p>
+<p>In this attention, the nearest key takes a share beta of a stick, the next takes beta of what is left, and so on. #1319 continues the unmerged #599. The backward is two kernels, dq and dkv, with no atomics. In review, the maintainer found the gradient going to zero at saturated logits, in bf16 as well as fp16. The fix rewrites it so nothing cancels when beta rounds to one.</p>
+<h3>Inference</h3>
+<p>I added KV-cache decoding (#1412), tested against the uncached forward. On H200, [[pr1412.step|at batch 1]] and [[pr1412.step|64K keys]], [[pr1412.grid|32 programs on 132 SMs]] take [[pr1412.step|4.3 ms]]. Reading that K/V once would take [[pr1412.floor|about 0.06 ms]], computed from the H200's rated bandwidth, not measured. The H200 model-level step sits at [[sbk.model|about 9 ms]], which I did not profile.</p>
+<p><a href="https://github.com/fla-org/flash-linear-attention/blob/main/fla/ops/stickbreaking_attn/decoding.py">The decoding kernel</a> is forward-only. One program per query and head walks that query's keys, nearest first. Backprop through a cached step raises instead of silently dropping gradients.</p>
+
+<h2>What I measured</h2>
+<div class="tw" tabindex="0"><table class="t"><caption>On H100, forward plus backward is faster than the PR's earlier head and slower than the original authors' kernel on all 8 shapes. [[sbk.fb]]</caption>
+<thead><tr><th>Input</th><th class="num">Earlier head (ms)</th><th class="num">This PR (ms)</th><th class="num">Authors (ms)</th><th>This PR over authors</th></tr></thead>
+<tbody>
+<tr><td>B=8, T=1024, H=16, D=128</td><td class="num">2.795</td><td class="num">1.942</td><td class="num">1.870</td><td class="num">{{bar:1.04/1.42}}</td></tr>
+<tr><td>B=4, T=2048, H=16, D=128</td><td class="num">5.157</td><td class="num">3.497</td><td class="num">3.267</td><td class="num">{{bar:1.07/1.42}}</td></tr>
+<tr><td>B=2, T=4096, H=16, D=128</td><td class="num">9.986</td><td class="num">6.752</td><td class="num">5.841</td><td class="num">{{bar:1.16/1.42}}</td></tr>
+<tr><td>B=1, T=8192, H=16, D=128</td><td class="num">19.582</td><td class="num">13.194</td><td class="num">10.975</td><td class="num">{{bar:1.20/1.42}}</td></tr>
+<tr><td>B=4, T=2048, H=32, D=64</td><td class="num">6.283</td><td class="num">4.859</td><td class="num">3.421</td><td class="num">{{bar:1.42/1.42}}</td></tr>
+<tr><td>Packed 512+2048+512+5120, H=16, D=128</td><td class="num">9.363</td><td class="num">6.532</td><td class="num">6.083</td><td class="num">{{bar:1.07/1.42}}</td></tr>
+<tr><td>Packed 8×1024, H=32, D=64</td><td class="num">3.460</td><td class="num">2.651</td><td class="num">2.013</td><td class="num">{{bar:1.32/1.42}}</td></tr>
+<tr><td>Packed 8192, H=16, D=128</td><td class="num">18.827</td><td class="num">13.231</td><td class="num">11.146</td><td class="num">{{bar:1.19/1.42}}</td></tr>
+</tbody></table></div>
+<p>On H100, the backward rewrite alone gave [[sbk.split|1.27-1.34×]]. The retile and launch order add [[sbk.split|1.02-1.12×]] on forward plus backward, and give [[sbk.split|1.11-1.82×]] on the forward alone. Launch order cost L2 reuse. In Nsight Compute on H100, the forward's hit rate fell from [[sbk.l2|92%]] to [[sbk.l2|78%]], and DRAM reads rose from [[sbk.l2|101 MB]] to [[sbk.l2|295 MB]].</p>
+<p>On H100, the tests pass [[sbk.tests|99/99]] in two runs, and [[sbk.tests|56 of the 99]] fail on the earlier head. The maintainer's GB200 run also passed [[sbk.tests|99/99]]. Saturated-logit coverage reaches [[sbk.tests|15 in fp16]] and [[sbk.tests|30 in bf16]].</p>
+<div class="tw" tabindex="0"><table class="t"><caption>On H200, a decode step grows about linearly with keys, and it gains nothing over recomputing at 1024 keys. [[sbk.op]]</caption>
+<thead><tr><th>Input</th><th class="num">Decode (us)</th><th class="num">Recompute prefix (us)</th><th class="num">Speedup</th></tr></thead>
+<tbody>
+<tr><td>B=1, T=1024</td><td class="num">72.4</td><td class="num">72.8</td><td class="num">1.0×</td></tr>
+<tr><td>B=1, T=4096</td><td class="num">275.0</td><td class="num">929.4</td><td class="num">3.4×</td></tr>
+<tr><td>B=1, T=16384</td><td class="num">1082.4</td><td class="num">14190.3</td><td class="num">13.1×</td></tr>
+<tr><td>B=1, T=65536</td><td class="num">4301.8</td><td class="num">226529.2</td><td class="num">52.7×</td></tr>
+<tr><td>B=8, T=16384</td><td class="num">1272.4</td><td class="num">114637.2</td><td class="num">90.1×</td></tr>
+</tbody></table></div>
+<p>On H200, [[sbk.op|90.1×]] is the best of [[sbk.op|18 op-level rows]], and any cache gets a gain like that against recomputing. Across those rows, decoded output stays within [[sbk.err|3.91e-03]] of the full forward, with no tolerance asserted. The tests assert one: a [[sbk.tests12|67-token prompt]] and later steps must match one uncached forward over [[sbk.tests12|74 tokens]]. They passed on H200.</p>
+<p>At model level on H200, a cached step stays at [[sbk.model|8.98-9.07 ms]] per token at every prompt and batch size I ran. Against recomputing, that ranges from [[sbk.model|0.9×]] to [[sbk.model|45.5×]]. At [[sbk.model|B=1 with 512- and 2048-token prompts]], the cached path is [[sbk.model|9% and 6%]] slower. The model has random weights, and each time is a median of [[sbk.model|3 calls]].</p>
+
+<h2>What limited it</h2>
+<p>I have counters only for the #1319 kernels on H100.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>On H100, the two backward kernels take 85% of Nsight Compute time across the three kernels, at no more than 35% SM throughput. [[sbk.ncu]]</caption>
+<thead><tr><th>Kernel</th><th class="num">Time</th><th class="num">SM throughput</th></tr></thead>
+<tbody>
+<tr><td>Forward, before the retile</td><td class="num">2174 us</td><td class="num">31%</td></tr>
+<tr><td>Forward, this PR</td><td class="num">1262 us</td><td class="num">49%</td></tr>
+<tr><td>dq, this PR</td><td class="num">3808 us</td><td class="num">32%</td></tr>
+<tr><td>dkv, this PR</td><td class="num">3580 us</td><td class="num">35%</td></tr>
+</tbody></table></div>
+<p>No pipe saturates in the backward: ALU runs [[sbk.pipes|22-32%]] and XU [[sbk.pipes|14-18%]]. Snapshot traffic isn't the limit: dq's DRAM writes are [[sbk.pipes|about 3%]] of HBM bandwidth, and dkv reads at a [[sbk.pipes|96%]] L2 hit rate. Registers cap occupancy: at [[sbk.occ|255 registers]] per thread, [[sbk.occ|2 CTAs of 4 warps]] fit on an SM, which is [[sbk.occ|8 of 64 warps]], or [[sbk.occ|12.5%]]. I read the remaining cost as stalls on dependent fp32 scan and exp2/log2 results. That is inference, not a line-level measurement.</p>
+
+<h2>What it doesn't show</h2>
+<ul>
+<li>That these kernels are faster than the authors'. On H100, tensor-core scans made the forward [[sbk.scans|about 3×]] faster than the earlier head, but [[sbk.scans|20 of the 28]] bf16 saturated-logit tests failed, so the scans stay in fp32. The backward also leaves out the authors' spin locks. I did not isolate what each choice costs.</li>
+<li>Higher occupancy. On H100, the retile took CTAs per SM from [[sbk.occ|1 to 2]] and each CTA from [[sbk.occ|8 warps to 4]], so it stayed at [[sbk.occ|12.5%]].</li>
+<li>GB200 speed or hot-loop latency. #1319 timing is H100 only. do_bench clears L2 before each call, and clocks weren't locked on H100 or H200.</li>
+<li>A measured decode limit. On H200, [[pr1412.grid|32 programs on 132 SMs]] is the grid size, not a counter reading. The [[pr1412.floor|about 0.06 ms]] is [[sbk.floor_bytes|268 MB]] at a rated [[sbk.floor_bytes|4.8 TB/s]], a floor no kernel reaches.</li>
+<li>Why the H200 step sits at [[sbk.model|about 9 ms]]. It stays flat, so attention doesn't limit those steps. I give no cause.</li>
+<li>Production decode. It is one H200, random weights, forward only, no split-KV. The config default stays use_cache=False. The H200 numbers predate the rebase, which left the kernels byte-identical but changed model code around them.</li>
+<li>Non-Hopper GPUs. That decoding path ran only in the CPU interpreter.</li>
+</ul>
+
+<h2>Links</h2>
+<ul>
+<li><a href="https://github.com/fla-org/flash-linear-attention/pull/1319">flash-linear-attention #1319</a> and <a href="https://github.com/fla-org/flash-linear-attention/pull/1412">#1412</a></li>
+<li>Upstream kernels: <a href="https://github.com/fla-org/flash-linear-attention/blob/main/fla/ops/stickbreaking_attn/parallel.py">parallel.py</a> and <a href="https://github.com/fla-org/flash-linear-attention/blob/main/fla/ops/stickbreaking_attn/decoding.py">decoding.py</a></li>
+<li><a href="https://github.com/fla-org/flash-linear-attention/blob/main/fla/ops/stickbreaking_attn/README.md">Operator note</a> with the formulation</li>
+<li><a href="https://github.com/fla-org/flash-linear-attention/pull/1319#issuecomment-6027700037">Full H100 results and Nsight Compute analysis</a> on #1319</li>
+<li><a href="https://github.com/shawntan/stickbreaking-attention/tree/7619a3ced95d3ae5cacbc2b388844536649c633e">Original authors' kernel</a>, compared at [[sbk.fb|7619a3c]]</li>
+</ul>
