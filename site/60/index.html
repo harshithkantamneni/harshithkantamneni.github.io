@@ -15,9 +15,11 @@
 <meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(/assets/fonts/space-grotesk-latin-wght-normal.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(/assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format('woff2')}
+.skip{position:fixed;left:8px;top:-60px;z-index:200;background:#EEEFF1;color:#060708;padding:10px 16px;border-radius:8px;font-size:14px}.skip:focus{top:8px}
 :root{--bg:#14171e;--ink:#EEEFF1;--mid:#A2A7AF;--dim:#8D939C;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
@@ -70,22 +72,23 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 .claim h2{font-size:18px;font-weight:500;line-height:1.35}
 .claim .v{font-family:var(--mono);font-size:13px;color:var(--i);margin-top:6px;line-height:1.5}
 .claim p{font-size:15px;line-height:1.55;color:var(--mid);margin-top:6px}
-.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 @media(max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}.toc{display:none}.nl a.ha{display:none}}
 .brand{white-space:nowrap}@media(max-width:560px){.nl a:not(:last-child){display:none}}
 </style>
 <style>.s60{padding:14px var(--edge) 0}.r60{display:grid;grid-template-columns:minmax(150px,240px) minmax(0,1fr) auto;gap:clamp(16px,3vw,40px);align-items:center;padding:clamp(20px,3.4vh,34px) 0;border-top:1px solid var(--line)}.r60n{font-family:var(--mono);font-size:clamp(30px,4vw,54px);font-weight:700;letter-spacing:-.03em;color:var(--c);white-space:nowrap}.r60 h2{font-size:clamp(19px,1.7vw,24px);font-weight:500}.r60 h2 a:hover{text-decoration:underline;text-underline-offset:4px}.r60 p{font-size:16px;line-height:1.5;color:#c6cad1;margin-top:6px;max-width:44em}.r60r{font-size:14px;min-height:44px;display:inline-flex;align-items:center;padding:0 14px;border:1px solid var(--line);border-radius:9px}.r60r:hover{border-color:rgba(255,255,255,.34)}.a60{display:flex;flex-wrap:wrap;gap:10px;padding:24px var(--edge) 60px}.b60{font-size:15px;font-weight:500;min-height:48px;display:inline-flex;align-items:center;padding:0 20px;border:1px solid var(--line);border-radius:10px}.b60:hover{border-color:rgba(255,255,255,.34)}.b60.p{background:var(--ink);color:#08090a;border-color:var(--ink)}@media(max-width:760px){.r60{grid-template-columns:minmax(0,1fr)}.r60r{width:fit-content}}</style>
 </head>
 <body>
-<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><div class="nl"><a style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div></header>
-<main style="--c:var(--k)">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><nav class="nl" aria-label="Main"><a style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></nav></header>
+<main id="main" style="--c:var(--k)">
 <div class="op" style="padding-bottom:10px"><span class="crumb">The 60-second version</span>
 <h1 style="font-size:clamp(30px,4.6vw,64px);line-height:1.08;font-weight:500">I build the software AI runs on, from GPU kernels up to the agents on top.</h1>
 <p class="state" style="font-size:13px">Open to full-time roles. Milwaukee, WI (open to relocation). M.S. ECE, UW-Madison, Dec 2025.</p></div>
 <div class="s60">
-<div class="r60" style="--c:var(--k)"><div class="r60n">52.7×</div><div><h2><a href="/#ch-k">GPU kernels</a></h2><p>The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, where one step ran 52.7× faster than recomputing at 64K keys. Tests merged in NVIDIA's cuDNN frontend, which catch 3 injected bugs that NVIDIA's tests missed.</p></div><a class="r60r" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
-<div class="r60" style="--c:var(--i)"><div class="r60n">11 of 12</div><div><h2><a href="/#ch-i">LLM inference</a></h2><p>A cache in llama.cpp for AI models too big for the GPU. Faster than FreeToken in 11 of 12 test setups at batch 1, on 2 RTX 5090 hosts.</p></div><a class="r60r" href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
-<div class="r60" style="--c:var(--a)"><div class="r60n">5 forged</div><div><h2><a href="/#ch-a">Agent systems</a></h2><p>A research lab of 31 Claude Code agent roles, where I caught an agent forging another agent's approvals, audited my own check against the logs, and rebuilt it so the same forgery is refused. And bert, searchable memory for coding agents.</p></div><a class="r60r" href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
+<div class="r60" style="--c:var(--k)"><div class="r60n">3 merged</div><div><h2><a href="/#ch-k">GPU kernels</a></h2><p>The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, where one step on an H200 ran 52.7× faster than recomputing at 64K keys, a gain any cache gets. Tests merged in NVIDIA's cuDNN frontend, which catch 3 injected bugs that NVIDIA's SM80 tests missed, reproduced by a maintainer.</p></div><a class="r60r" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
+<div class="r60" style="--c:var(--i)"><div class="r60n">11 of 12</div><div><h2><a href="/#ch-i">LLM inference</a></h2><p>A cache in llama.cpp for AI models too big for the GPU. Faster than FreeToken in 11 of 12 test setups at batch 1, on 2 RTX 5090 hosts. With FreeToken tuned, on a separate machine: 0.98-1.17×.</p></div><a class="r60r" href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
+<div class="r60" style="--c:var(--a)"><div class="r60n">31 roles</div><div><h2><a href="/#ch-a">Agent systems</a></h2><p>A research lab of 31 Claude Code agent roles, where I caught an agent forging another agent's approvals, audited my own check against the logs, and rebuilt it so the same forgery is blocked in tests, not yet live. And bert, searchable memory for coding agents.</p></div><a class="r60r" href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
 </div>
 <div class="a60"><a class="b60 p" href="mailto:kantamneniharshith@gmail.com">Email me</a><a class="b60" href="/#intro">Read the full story</a><a class="b60" href="/work/">See all work</a></div>
 </main>

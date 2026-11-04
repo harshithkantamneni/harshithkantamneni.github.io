@@ -15,9 +15,10 @@
 <meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(/assets/fonts/space-grotesk-latin-wght-normal.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(/assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format('woff2')}
 :root{--bg:#14171e;--ink:#EEEFF1;--mid:#A2A7AF;--dim:#8D939C;--line:rgba(255,255,255,.09);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2));--sheet:clamp(12px,2.6vw,40px);--side:0px;--sgap:0px;--ml:var(--edge);--c:var(--ink);color-scheme:dark}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
@@ -25,8 +26,10 @@ html.dlg{overflow:hidden}
 a{color:inherit;text-decoration:none}
 a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visible,input:focus-visible{outline:2px solid var(--a);outline-offset:3px;border-radius:6px}
 ::selection{background:var(--a);color:#04111f}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+[tabindex="-1"]:focus,[tabindex="-1"]:focus-visible{outline:0}
+.nbtn[hidden]{display:none}
 .skip{position:fixed;left:8px;top:-60px;z-index:200;background:var(--ink);color:#060708;padding:10px 16px;border-radius:8px;font-family:var(--mono);font-size:13px;transition:top .2s}.skip:focus{top:8px}
-.grain{position:fixed;inset:0;width:100%;height:100%;z-index:90;pointer-events:none;opacity:.04;mix-blend-mode:overlay}
 canvas#field,canvas#fieldTop{position:fixed;inset:0;pointer-events:none}canvas#field{z-index:0}canvas#fieldTop{z-index:30}
 .ground{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(100vw 85vh at 82% -8%,rgba(122,146,190,.22),transparent 72%),radial-gradient(70vw 60vh at -6% 104%,rgba(122,146,190,.12),transparent 70%)}
 .glow{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s}
@@ -73,8 +76,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:
 .gr{display:grid;grid-template-columns:minmax(170px,250px) minmax(0,1fr) auto;gap:clamp(14px,3vw,40px);align-items:center;padding:clamp(18px,3vh,28px) 0;border-top:1px solid var(--line)}.gr:last-child{border-bottom:1px solid var(--line)}
 .grn{font-family:var(--mono);font-size:clamp(30px,3.6vw,52px);font-weight:700;letter-spacing:-.03em;color:var(--c);white-space:nowrap}
 .gr h2{font-size:clamp(19px,1.7vw,24px);font-weight:500}.gr p{font-size:16px;line-height:1.5;color:#c6cad1;margin-top:4px;max-width:56em}
-.go{font-size:14px;color:var(--mid);white-space:nowrap;border-bottom:1px solid rgba(255,255,255,.2)}.gr:hover .go{color:#fff;border-color:#fff}
-@media(max-width:760px){.gr{grid-template-columns:minmax(0,1fr)}.go{justify-self:start}}
+.gr h2 a:hover{text-decoration:underline;text-underline-offset:4px}
+.gracts{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.go{font-size:14px;color:var(--ink);white-space:nowrap;min-height:30px;display:inline-flex;align-items:center;text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:4px}.go:hover{color:#fff;text-decoration-color:#fff}
+@media(max-width:760px){.gr{grid-template-columns:minmax(0,1fr)}.gracts{flex-direction:row;gap:18px}}
 .hero .lane{grid-template-columns:minmax(0,1fr)}
 .who{font-size:clamp(16px,1.4vw,19px);display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
 .open{display:inline-flex;align-items:center;gap:8px;color:var(--mid);font-size:14px}.open i{width:7px;height:7px;border-radius:50%;background:#39d98a;box-shadow:0 0 10px #39d98a}
@@ -85,7 +90,7 @@ h1{font-size:clamp(38px,6.6vw,104px);line-height:1.02;font-weight:500;letter-spa
 .meta{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:40px;font-size:14px;color:var(--dim)}.meta a{color:var(--mid);min-height:28px;display:inline-flex;align-items:center}.meta a:hover{color:#fff}.meta span{min-height:28px;display:inline-flex;align-items:center}
 
 /* pinned scenes never hijack the scroll, they just stay put */
-.pin{position:relative;height:calc(var(--n)*48vh + 100vh)}
+.pin{position:relative;height:calc(var(--n)*34vh + 100vh)}
 .story .pin .stage{padding-top:112px}
 .pin .stage{position:sticky;top:0;min-height:100vh;height:100vh;display:flex;align-items:center}
 .intro-says{position:relative;min-height:46vh}
@@ -106,7 +111,7 @@ h1{font-size:clamp(38px,6.6vw,104px);line-height:1.02;font-weight:500;letter-spa
 .pline{font-size:clamp(22px,2.8vw,40px);line-height:1.18;letter-spacing:-.02em;font-weight:500;margin-top:20px}
 
 /* the story's vocabulary */
-.story{position:relative;margin:clamp(40px,7vh,76px) calc(var(--edge) - var(--sheet)) 0 calc(var(--ml) - var(--sheet));border:1px solid color-mix(in srgb,var(--c) 30%,rgba(255,255,255,.09));border-radius:22px;overflow:clip;background:radial-gradient(120% 80vh at 78% 0,color-mix(in srgb,var(--c) 8%,transparent),transparent 72%),rgba(255,255,255,.04)}
+.story{scroll-margin-top:84px;position:relative;margin:clamp(40px,7vh,76px) calc(var(--edge) - var(--sheet)) 0 calc(var(--ml) - var(--sheet));border:1px solid color-mix(in srgb,var(--c) 30%,rgba(255,255,255,.09));border-radius:22px;overflow:clip;background:radial-gradient(120% 80vh at 78% 0,color-mix(in srgb,var(--c) 8%,transparent),transparent 72%),rgba(255,255,255,.04)}
 .story .lane{padding-inline:var(--sheet)}
 .story+.plate{margin-top:clamp(60px,10vh,110px)}
 .shead{position:sticky;top:64px;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;padding:0 var(--sheet);background:color-mix(in srgb,var(--c) 8%,#1a1d24);border-bottom:1px solid color-mix(in srgb,var(--c) 24%,rgba(255,255,255,.06))}
@@ -115,10 +120,14 @@ h1{font-size:clamp(38px,6.6vw,104px);line-height:1.02;font-weight:500;letter-spa
 .skind{flex:none;font-size:14px;font-weight:500;line-height:1;padding:7px 10px;border-radius:7px;color:var(--c);border:1px solid color-mix(in srgb,var(--c) 45%,transparent);white-space:nowrap}
 .sid{padding:16px var(--sheet) clamp(20px,3.4vh,30px);border-bottom:1px solid color-mix(in srgb,var(--c) 18%,rgba(255,255,255,.06))}
 .swhat{font-size:clamp(17px,1.45vw,20px);line-height:1.4;color:#d4d7dc;max-width:48em}
+.sres{font-size:15px;line-height:1.5;color:var(--ink);max-width:62em;margin-top:8px}.sres a{color:var(--mid);white-space:nowrap;text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:3px}.sres a:hover{color:#fff}
+.nb{white-space:nowrap}.say .w{white-space:nowrap}
+.ttl{font-size:clamp(15px,1.25vw,17px);color:var(--mid)}
+.wl small{margin-left:auto;padding-left:16px;font-size:13px;color:var(--dim);white-space:nowrap}
 .smeta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;margin-top:10px;font-size:14px;color:var(--mid)}.smeta span{display:inline-flex;align-items:center}.smeta a{color:var(--ink);min-height:28px;display:inline-flex;align-items:center;text-decoration:underline;text-decoration-color:rgba(255,255,255,.3);text-underline-offset:4px}.smeta a:hover{text-decoration-color:#fff}
 .st{flex:none;width:9px;height:9px;border-radius:50%;margin-right:8px}.st.ok{background:#39d98a}.st.open{background:var(--i)}.st.closed{border:2px solid var(--dim)}
-.idx{display:none;position:fixed;left:var(--edge);top:88px;width:var(--side);z-index:8;flex-direction:column;gap:clamp(10px,2.2vh,22px);opacity:0;pointer-events:none;transition:opacity .4s}
-.idx.live{opacity:1;pointer-events:auto}
+.idx{visibility:hidden;display:none;position:fixed;left:var(--edge);top:88px;width:var(--side);z-index:8;flex-direction:column;gap:clamp(10px,2.2vh,22px);opacity:0;pointer-events:none;transition:opacity .4s,visibility .4s}
+.idx.live{visibility:visible;opacity:1;pointer-events:auto}
 .ih{display:block;font-size:15px;font-weight:600;color:var(--c);margin-bottom:4px;min-height:24px}.ig:first-child .ih{font-size:18px}
 .it{position:relative;display:block;padding:clamp(3px,.7vh,6px) 0 clamp(3px,.7vh,6px) 14px;border-left:2px solid rgba(255,255,255,.1)}
 .it::before{content:"";position:absolute;left:-2px;top:0;bottom:0;width:2px;background:var(--c);transform:scaleY(var(--sp,0));transform-origin:top}
@@ -142,7 +151,7 @@ h1{font-size:clamp(38px,6.6vw,104px);line-height:1.02;font-weight:500;letter-spa
 .numb .note{grid-row:1/span 3}
 .cond{justify-self:start;margin-top:10px;background:none;border:0;padding:4px 0;font:400 14px var(--sans);color:var(--mid);cursor:pointer;text-decoration:underline;text-decoration-color:rgba(255,255,255,.28);text-underline-offset:4px}.cond:hover{color:#fff;text-decoration-color:#fff}
 .lg{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:14px;color:var(--ink);margin-bottom:14px}.lg span{display:inline-flex;align-items:center;gap:8px}.lg i{width:12px;height:12px;display:inline-block}.lg .o{border-radius:50%;border:2px solid var(--mid)}.lg .f{background:#C9CED6;transform:rotate(45deg) scale(.82)}.lg .c{border-radius:50%;background:var(--k)}
-.more{font-size:clamp(17px,1.6vw,21px);line-height:1.45;color:var(--mid);max-width:38em}.more a,.small a,.tl{color:var(--ink);text-decoration:underline;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:4px}.more a:hover,.small a:hover,.tl:hover{text-decoration-color:#fff}
+.more{font-size:clamp(17px,1.6vw,21px);line-height:1.45;color:var(--mid);max-width:38em}.tl{overflow-wrap:anywhere}.more a,.small a,.tl{color:var(--ink);text-decoration:underline;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:4px}.more a:hover,.small a:hover,.tl:hover{text-decoration-color:#fff}
 .slinks{display:flex;flex-wrap:wrap;gap:6px 24px;margin-top:22px;font-size:15px;color:var(--mid)}.slinks a{min-height:32px;display:inline-flex;align-items:center;border-bottom:1px solid rgba(255,255,255,.2)}.slinks a:hover{color:#fff;border-color:#fff}
 .small{font-size:14px;line-height:1.55;color:var(--mid)}
 
@@ -189,9 +198,9 @@ figcaption{font-size:15px;line-height:1.45;color:var(--mid);margin-top:14px;max-
 
 .eng{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .eng summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:56px;font-size:16px;color:var(--ink)}.eng summary::-webkit-details-marker{display:none}.eng summary::after{content:"+";font:400 22px var(--mono);color:var(--c);transition:transform .25s}.eng[open] summary::after{transform:rotate(45deg)}.eng summary:hover{color:#fff}
-.eng-b{padding:8px 0 30px;display:grid;gap:14px;font-size:16px;line-height:1.6;color:#c6cad1}.eng-b h4{font-size:18px;font-weight:500;color:var(--ink);margin-top:16px}
+.eng-b{padding:8px 0 30px;display:grid;grid-template-columns:minmax(0,1fr);gap:14px;font-size:16px;line-height:1.6;color:#c6cad1}.eng-b h4{font-size:18px;font-weight:500;color:var(--ink);margin-top:16px}
 #code-pre{font-family:var(--mono);font-size:clamp(11px,.9vw,13px);line-height:1.62;overflow:auto;border-left:1px solid var(--line);padding:4px 0}
-#code-pre .ln{display:block;padding:0 14px;color:#6f757e;white-space:pre;transition:color .2s,background .2s}#code-pre .ln.hl{color:#EEEFF1;background:rgba(255,106,77,.09)}
+#code-pre .ln{display:block;padding:0 14px;color:#8D939C;white-space:pre;transition:color .2s,background .2s}#code-pre .ln.hl{color:#EEEFF1;background:rgba(255,106,77,.09)}
 #code-say{color:var(--ink);min-height:1.6em}
 .waf{display:grid;grid-template-columns:repeat(39,minmax(0,1fr));gap:2px;max-width:760px}.waf .d{aspect-ratio:1;border-radius:2px;background:#232830}.waf .w1{background:transparent;border:1.5px solid var(--a)}
 
@@ -231,16 +240,19 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   .sws{grid-template-columns:minmax(0,1fr)}.sw{min-height:48px}
   .memz{gap:1px}.plate{min-height:62vh}
 }
+@media(max-width:880px),(prefers-reduced-motion:reduce){.ground::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(150,170,200,.2) 1px,transparent 1.2px);background-size:46px 46px}#field,#fieldTop{display:none}}
+@media(max-height:500px){.pin{height:auto!important}.pin .stage,.story .pin .stage{position:relative;height:auto;min-height:0;padding-top:16px}.intro-says,.pincap{min-height:0}.intro-says p,.pincap p{position:relative!important;inset:auto!important;transform:none!important;opacity:1!important;margin-bottom:10px}}
+@media print{canvas,.idx,nav,.ground,.glow,.pbar,.marquee,.skip{display:none!important}html,body{background:#fff!important;color:#000}.pin{height:auto!important}.pin .stage,.story .pin .stage{position:static!important;height:auto;min-height:0;padding:0}.intro-says,.pincap{min-height:0}.intro-says p,.pincap p{position:static!important;transform:none!important;opacity:1!important}.say .w{opacity:1!important}.story,.oss{background:none;border-color:#999;break-inside:auto}.shead{background:none;position:static!important}.note,.swhat,.sres,.more,figcaption,.gr p,.orow p{color:#222}.plate{min-height:0;padding:20px 0}.ptitle{-webkit-text-stroke:0;color:#000!important}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .static .pin{height:auto}.static .pin .stage{position:relative;height:auto;min-height:0;padding:40px 0}.static .intro-says{min-height:0}.static .intro-says p,.static .pincap p{position:relative;inset:auto;transform:none;opacity:1;margin-bottom:14px}.static .pincap{min-height:0}.static .say .w{opacity:1}.static .beat{min-height:44vh}.static .plate{min-height:60vh}
 
 
 </style>
-<noscript><style>.pin{height:auto!important}.pin .stage{position:relative;min-height:0;height:auto}.intro-says p,.pincap p{opacity:1!important;position:relative!important;transform:none!important;inset:auto!important}.say .w{opacity:1!important}.rail,#field,#fieldTop{display:none}</style></noscript>
+<noscript><style>.pin{height:auto!important}.pin .stage{position:relative;min-height:0;height:auto}.intro-says p,.pincap p{opacity:1!important;position:relative!important;transform:none!important;inset:auto!important}.say .w{opacity:1!important}.idx,#field,#fieldTop,figure.fg svg,.hm,.hmax,#gpu-run,.seg,.sws,.rng,.cond{display:none!important}</style></noscript>
 </head>
 <body>
 <a href="#main" class="skip">Skip to content</a>
-<div class="ground"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,106,77,.24),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,106,77,.11),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,180,84,.19),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,180,84,.09),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(106,168,255,.27),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(106,168,255,.13),transparent 70%)"></div>
+<div class="ground" aria-hidden="true"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,106,77,.24),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,106,77,.11),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,180,84,.19),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,180,84,.09),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(106,168,255,.27),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(106,168,255,.13),transparent 70%)"></div>
 <canvas id="field" aria-hidden="true"></canvas><canvas id="fieldTop" aria-hidden="true"></canvas>
 <aside class="idx" aria-label="Projects on this page"><div class="ig" style="--c:var(--k)"><a class="ih" href="#ch-k">Kernels</a><a class="it" href="#kernels"><b>Stick-breaking kernels</b><span>2 merged PRs</span></a><a class="it" href="#gqa"><b>Grouped-query attention</b><span>Closed PR, merged tests</span></a><a class="it" href="#triton"><b>Triton vs cuBLAS</b><span>Personal project</span></a><a class="it" href="#yourgpu"><b>Try it on your GPU</b><span>Live demo</span></a></div><div class="ig" style="--c:var(--i)"><a class="ih" href="#ch-i">Inference</a><a class="it" href="#seconds"><b>Where the Seconds Go</b><span>Research project</span></a><a class="it" href="#jetson"><b>Jetson Orin Nano</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--a)"><a class="ih" href="#ch-a">Agents</a><a class="it" href="#bert"><b>bert</b><span>Personal project</span></a><a class="it" href="#lab"><b>Lab audit</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--ink)"><a class="ih" href="#oss">Open source</a></div></aside>
 <div class="pbar" aria-hidden="true"></div>
@@ -254,27 +266,27 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
 <header class="hero" id="top">
   <div class="lane">
-    <p class="who">Harshith Kantamneni <span class="open"><i></i>Open to full-time roles</span></p>
+    <p class="who">Harshith Kantamneni <span class="ttl">GPU kernel, LLM inference and agent systems engineer</span> <span class="open"><i></i>Open to full-time roles</span></p>
     <h1>I build the software AI runs on, from GPU kernels up to the agents on top<i class="tokdot"></i></h1>
     <p class="proof"><a href="https://github.com/fla-org/flash-linear-attention/pull/1412">Kernels merged in flash-linear-attention</a>. <a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">Tests merged in NVIDIA's cuDNN frontend</a>.</p>
     <div class="acts"><a href="/Harshith_Kantamneni_Resume.pdf" class="btn p">Résumé</a><a href="#intro" class="btn g">Read the full story</a><a href="mailto:kantamneniharshith@gmail.com" class="btn g">Email me</a></div>
-    <p class="meta"><span>Milwaukee, WI (open to relocation)</span><span>M.S. ECE, UW-Madison, Dec 2025</span><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a></p>
+    <p class="meta"><span>Milwaukee, WI (open to relocation)</span><span>M.S. ECE, UW-Madison, Dec 2025</span><a href="mailto:kantamneniharshith@gmail.com">kantamneniharshith@gmail.com</a><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a><a href="/60/">One-page version</a></p>
   </div>
 </header>
 
 <section class="glance" id="glance" aria-label="The short version"><div class="lane">
-  <a class="gr" style="--c:var(--k)" href="#ch-k"><div class="grn">52.7×</div><div><h2>GPU kernels</h2><p>The low-level code that does an AI model's math. Kernels merged in flash-linear-attention and tests merged in NVIDIA's cuDNN. At 64K keys, one kernel step ran 52.7× faster than recomputing.</p></div><span class="go">See the work</span></a>
-  <a class="gr" style="--c:var(--i)" href="#ch-i"><div class="grn">11 of 12</div><div><h2>LLM inference</h2><p>Running AI models fast, even when they don't fit on the GPU. I built a cache for llama.cpp that ran faster than FreeToken in 11 of 12 test setups.</p></div><span class="go">See the work</span></a>
-  <a class="gr" style="--c:var(--a)" href="#ch-a"><div class="grn">5 forged</div><div><h2>Agent systems</h2><p>AI that acts on its own, and whether you can trust it. In my research lab, an agent forged 5 approvals, so I built a check, audited it and rebuilt it. Also bert, searchable memory for coding agents.</p></div><span class="go">See the work</span></a>
+  <div class="gr" style="--c:var(--k)"><div class="grn">3 merged</div><div><h2><a href="#ch-k">GPU kernels</a></h2><p>The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, an open-source AI library. Tests merged in NVIDIA's cuDNN frontend, after a maintainer reproduced a bug they catch. On a long text (64K keys), one kernel step on an H200 GPU ran 52.7× faster than recomputing, a gain any cache gets.</p></div><div class="gracts"><a class="go" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-k">See the work</a></div></div>
+  <div class="gr" style="--c:var(--i)"><div class="grn">11 of 12</div><div><h2><a href="#ch-i">LLM inference</a></h2><p>Running AI models fast, even when they don't fit on the GPU. I built a cache for llama.cpp that ran faster than FreeToken, another system for this problem, in 11 of 12 test setups at batch 1. With FreeToken tuned, on a separate machine, the ratio is 0.98-1.17×.</p></div><div class="gracts"><a class="go" href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-i">See the work</a></div></div>
+  <div class="gr" style="--c:var(--a)"><div class="grn">31 roles</div><div><h2><a href="#ch-a">Agent systems</a></h2><p>AI that acts on its own, and whether you can trust it. In my research lab of 31 Claude Code agent roles, one agent forged 5 approvals, so I built a check, audited it and rebuilt it. Also bert, searchable memory for coding agents.</p></div><div class="gracts"><a class="go" href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-a">See the work</a></div></div>
 </div></section>
 
 <section class="oss" id="oss" aria-labelledby="oss-h">
   <h2 id="oss-h">Open-source contributions</h2>
-  <p class="osum">3 merged, 1 in review, 2 closed, across 4 projects.</p>
-  <div class="ogroup"><h3 class="oname">flash-linear-attention</h3><div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/fla-org/flash-linear-attention/pull/1412">#1412</a><p>KV-cache decoding for stick-breaking attention, so a model reuses what it has already read. <a href="#kernels">The story</a></p><span class="odate">Oct 27, 2026</span></div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/fla-org/flash-linear-attention/pull/1319">#1319</a><p>Forward and backward kernels for stick-breaking attention. <a href="#kernels">The story</a></p><span class="odate">Oct 8, 2026</span></div></div></div>
-  <div class="ogroup"><h3 class="oname">NVIDIA cuDNN frontend</h3><div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a><p>Tests for grouped-query attention that catch 3 injected bugs NVIDIA's tests missed. <a href="#gqa">The story</a></p><span class="odate">Oct 6, 2026</span></div><div class="orow"><span class="ostate"><i class="st closed"></i>Closed</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a><p>A prototype that removed slow data copies. Closed after NVIDIA shipped its own version. <a href="#gqa">The story</a></p><span class="odate">Sep 27, 2026</span></div></div></div>
-  <div class="ogroup"><h3 class="oname">NVIDIA TransformerEngine</h3><div><div class="orow"><span class="ostate"><i class="st open"></i>In review</span><a class="opr" href="https://github.com/NVIDIA/TransformerEngine/pull/3591">#3591</a><p>A CUDA kernel that unpacks compressed model weights, in the grouped NVFP4 format, on the GPU.</p><span class="odate">Open</span></div></div></div>
-  <div class="ogroup"><h3 class="oname">vLLM</h3><div><div class="orow"><span class="ostate"><i class="st closed"></i>Closed</span><a class="opr" href="https://github.com/vllm-project/vllm/pull/38338">#38338</a><p>A Triton kernel for matrix multiplies on compressed weights. I closed it after #21014 was closed as not planned.</p><span class="odate">Oct 7, 2026</span></div></div></div>
+  <p class="osum">3 merged, 1 open, 2 closed, across 4 projects.</p>
+  <div class="ogroup"><h3 class="oname">flash-linear-attention</h3><div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/fla-org/flash-linear-attention/pull/1412">#1412</a><p>KV-cache decoding for stick-breaking attention, so a model reuses what it has already read. <a href="#kernels">The kernel story</a></p><span class="odate">Oct 27, 2026</span></div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/fla-org/flash-linear-attention/pull/1319">#1319</a><p>Forward and backward kernels for stick-breaking attention. <a href="#kernels">The kernel story</a></p><span class="odate">Oct 8, 2026</span></div></div></div>
+  <div class="ogroup"><h3 class="oname">NVIDIA cuDNN frontend</h3><div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a><p>Tests for grouped-query attention that catch 3 injected bugs NVIDIA's SM80 tests missed. <a href="#gqa">The cuDNN story</a></p><span class="odate">Oct 6, 2026</span></div><div class="orow"><span class="ostate"><i class="st closed"></i>Closed</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a><p>A prototype that removed slow data copies. Approved, then closed after NVIDIA shipped its own version. <a href="#gqa">The cuDNN story</a></p><span class="odate">Sep 27, 2026</span></div></div></div>
+  <div class="ogroup"><h3 class="oname">NVIDIA TransformerEngine</h3><div><div class="orow"><span class="ostate"><i class="st open"></i>Open</span><a class="opr" href="https://github.com/NVIDIA/TransformerEngine/pull/3591">#3591</a><p>A CUDA kernel that unpacks compressed model weights, in the grouped NVFP4 format, on the GPU. Its output matches the per-tensor results bitwise.</p><span class="odate"></span></div></div></div>
+  <div class="ogroup"><h3 class="oname">vLLM</h3><div><div class="orow"><span class="ostate"><i class="st closed"></i>Closed</span><a class="opr" href="https://github.com/vllm-project/vllm/pull/38338">#38338</a><p>A Triton kernel for matrix multiplies on compressed weights. I closed it after the issue it answered, #21014, was closed as not planned.</p><span class="odate">Oct 7, 2026</span></div></div></div>
   <p class="omore"><a href="/work/#open-source">Details and measurements for each one</a></p>
 </section>
 
@@ -297,7 +309,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
 <article class="story" id="kernels" style="--c:var(--k)">
   <header class="shead"><h3 class="sname">Stick-breaking attention kernels</h3><span class="skind">2 merged PRs</span></header>
-  <div class="sid"><p class="swhat">Forward, backward and KV-cache decoding kernels in Triton, merged in flash-linear-attention, an open-source library.</p><p class="smeta"><span><i class="st ok"></i>Merged Oct 8 and Oct 27, 2026</span><a href="https://github.com/fla-org/flash-linear-attention/pull/1319">#1319</a><a href="https://github.com/fla-org/flash-linear-attention/pull/1412">#1412</a></p></div>
+  <div class="sid"><p class="swhat">Forward, backward and KV-cache decoding kernels in Triton, merged in flash-linear-attention, an open-source library.</p><p class="sres">Result: 52.7× faster per step than recomputing at 64K keys, a gain any cache gets. Still 1.04-1.42× the original authors' time on forward plus backward. <a href="#eng-kernels">Technical detail</a></p><p class="smeta"><span><i class="st ok"></i>Merged Oct 8 and Oct 27, 2026</span><a href="https://github.com/fla-org/flash-linear-attention/pull/1319">#1319</a><a href="https://github.com/fla-org/flash-linear-attention/pull/1412">#1412</a></p></div>
   <div class="beat lane"><p class="say">Before a model writes its next word, it looks back at everything it has read.</p></div>
   <div class="beat lane"><p class="say">Standard attention weighs every past word at once. Stick-breaking attention goes one word at a time.</p></div>
 
@@ -327,7 +339,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   </div>
 
   <div class="block lane">
-    <details class="eng">
+    <details class="eng" id="eng-kernels">
       <summary>For engineers: the kernel, its tiles, and what's still slower</summary>
       <div class="eng-b">
         <h4>The decode loop, as merged</h4>
@@ -337,7 +349,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
         <p><a class="tl" href="https://github.com/fla-org/flash-linear-attention/blob/main/fla/ops/stickbreaking_attn/decoding.py">fla/ops/stickbreaking_attn/decoding.py</a></p>
 
         <h4>Smaller tiles, less than half the shared memory</h4>
-        <p>Forward and backward kernels continued #599 and merged in #1319. 64×32 tiles fit 57-89 KiB of shared memory where 64×64 needed 129-193 KiB. Review caught a silent zero gradient at saturated logits, so I rewrote the backward.</p>
+        <p>Forward and backward kernels continued #599 and merged in #1319. 64×32 tiles fit 57-89 KiB of shared memory where 64×64 needed 129-193 KiB. Review caught a silent zero gradient at saturated logits, so I rebuilt the backward.</p>
 
         <h4>Against the original authors' kernels</h4>
         <p>1.04-1.42× their time on all 8 shapes, forward plus backward on H100. Closing that gap is still open.</p>
@@ -346,7 +358,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
         <h4>What registers do to occupancy</h4>
         <p>At 255 registers per thread, 2 CTAs of 4 warps fit on an SM, which is 12.5%. Nothing saturates in the backward: ALU runs 22-32% and XU 14-18%. I read the rest as stalls on dependent fp32 scans and exp2 and log2 results. That is inference, not a line-level measurement. Drag to see how register use changes what fits.</p>
         <figure class="fg" id="fig-occ"><svg role="img" aria-label="An SM's register file with CTAs drawn to scale, and 64 warp slots. At 255 registers per thread, 2 CTAs of 4 warps fit, 8 of 64 warps."></svg></figure>
-        <label class="rng">Registers per thread <output id="occ-o">255</output><input id="occ-r" type="range" min="32" max="255" step="1" value="255"></label>
+        <label class="rng" for="occ-r">Registers per thread <output id="occ-o">255</output><input id="occ-r" type="range" min="32" max="255" step="1" value="255"></label>
         <p class="small">Arithmetic from 65536 registers per SM and 128 threads per CTA, ignoring allocation rounding.</p>
       </div>
     </details>
@@ -356,10 +368,10 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
 <article class="story" id="gqa" style="--c:var(--k)">
   <header class="shead"><h3 class="sname">Grouped-query attention in NVIDIA cuDNN</h3><span class="skind">Closed PR, merged tests</span></header>
-  <div class="sid"><p class="swhat">A prototype and tests for cuDNN, NVIDIA's open-source GPU library for AI.</p><p class="smeta"><span><i class="st closed"></i>Prototype closed Sep 27, 2026</span><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a><span><i class="st ok"></i>Tests merged Oct 6, 2026</span><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a></p></div>
+  <div class="sid"><p class="swhat">A prototype and tests for the open-source frontend of cuDNN, NVIDIA's GPU library for AI.</p><p class="sres">Result: tests that catch 3 planted bugs NVIDIA's SM80 tests missed, reproduced by a maintainer. The prototype closed when NVIDIA shipped its own. <a href="#eng-gqa">Technical detail</a></p><p class="smeta"><span><i class="st closed"></i>Prototype closed Sep 27, 2026</span><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a><span><i class="st ok"></i>Tests merged Oct 6, 2026</span><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a></p></div>
   <div class="beat lane"><p class="say">Inside NVIDIA's cuDNN, I found a step that took longer than the math it was setting up.</p></div>
   <div class="block lane">
-    <figure class="fg" id="fig-copy"><svg role="img" aria-label="8 KV heads at the top are each written out 8 times into a 64-column workspace. Below, a time bar: copying takes 7.28 milliseconds, then attention takes 6.0 to 6.7."></svg><figcaption>One attention call on an A100, at 64/8 heads and a 128K KV cache. That's one shape.</figcaption></figure>
+    <figure class="fg" id="fig-copy"><svg role="img" aria-label="8 KV heads at the top are each written out 8 times into a 64-column workspace. Below, a time bar: copying takes 7.28 milliseconds, then attention takes 6.0 to 6.7."></svg><figcaption>One attention call on an A100, at 64/8 heads and a 128K KV cache. That's one configuration.</figcaption></figure>
   </div>
   <div class="beat lane"><p class="say">It was copying the same data again and again, once for each part of the model that reads it.</p></div>
   <div class="beat lane"><p class="say">So I built a version that doesn't copy.</p></div>
@@ -372,10 +384,10 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   </div>
   <div class="beat lane"><p class="say">NVIDIA then shipped its own native version, so I closed mine. The tests from that work merged.</p></div>
   <div class="beat lane numb">
-    <div class="num has-c" data-c="pr1287.bugs" role="button" tabindex="0">3 of 3</div>
-    <p class="numm">injected bugs caught by my tests. NVIDIA's own tests missed them.</p>
+    <div class="num has-c" data-c="pr1287.bugs" role="button" tabindex="0">3 bugs</div>
+    <p class="numm">that NVIDIA's SM80 tests missed and my tests caught. I planted them on purpose, and a cuDNN maintainer reproduced one, then approved the PR.</p>
     <button type="button" class="cond" data-c="pr1287.bugs">Conditions and source</button>
-    <p class="note">With bugs planted, NVIDIA's SM80 suite still passed all 411 cases on the first two and all 60 d256 cases on the third.</p>
+    <p class="note">With bugs planted, NVIDIA's SM80 suite still passed all 411 cases on the first two and all 60 d256 cases on the third. A 4th planted bug was a control that both suites caught. In the maintainer's own run of the second bug, the existing tests passed while 31 of 68 and 6 of 12 new tests failed.</p>
   </div>
   <div class="block lane">
     <figure class="fg" id="fig-heads">
@@ -386,7 +398,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
     </figure>
   </div>
   <div class="block lane">
-    <details class="eng">
+    <details class="eng" id="eng-gqa">
       <summary>For engineers: the timing table</summary>
       <div class="eng-b">
         <p>Multi-token steps at batch 1, in milliseconds. Query heads/KV heads, then head dimension. Develop against the prototype, with the cuDNN backend for reference.</p>
@@ -399,7 +411,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
 <article class="story" id="triton" style="--c:var(--k)">
   <header class="shead"><h3 class="sname">Triton vs cuBLAS</h3><span class="skind">Personal project</span></header>
-  <div class="sid"><p class="swhat">Triton is a language for writing GPU kernels, and cuBLAS is NVIDIA's standard math library. I measured whether one combined kernel runs faster than the usual separate steps.</p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/triton-vs-cublas-llm">triton-vs-cublas-llm</a></p></div>
+  <div class="sid"><p class="swhat">Triton is a language for writing GPU kernels, and cuBLAS is NVIDIA's standard math library. I measured whether one combined kernel runs faster than the usual separate steps.</p><p class="sres">Result: faster on 27 of 76 sizes, up to 1.73× on an A100. The median size ran 0.96×. <a href="#eng-triton">Technical detail</a></p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks">triton-vs-cublas-llm-benchmarks</a></p></div>
   <div class="beat lane"><p class="say">One common step in a model usually runs as three separate kernels, saving to memory between each one. What if one kernel did all three?</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-fuse"><svg role="img" aria-label="Three kernels, linear, bias and GeLU, each writing to and reading from HBM. They merge into one fused kernel, and the memory round-trips disappear."></svg></figure>
@@ -407,7 +419,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   <div class="beat lane"><p class="say">One matrix size proves nothing, so I measured 76 of them.</p></div>
   <div class="beat lane numb">
     <div class="num has-c" data-c="tri.faster" role="button" tabindex="0">27 of 76</div>
-    <p class="numm">sizes ran faster as one kernel, up to 1.73×. The median size ran 0.96×, slightly slower.</p>
+    <p class="numm">sizes ran faster as one kernel than as separate steps, up to 1.73× on an A100. The median size ran 0.96×, slightly slower.</p>
     <button type="button" class="cond" data-c="tri.faster">Conditions and source</button>
     <p class="note">The best size is M=128, N=11008, K=4096 in fp16 on an A100. The same size is 1.28× in bf16, and bare Triton already ran 1.38× there in fp16, so fusion's own lift is about 1.25×.</p>
   </div>
@@ -418,16 +430,16 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
       <figcaption id="sc-note">Each dot is one matrix size. Hover for its dimensions. Median 0.96×, with 27 faster than separate kernels.</figcaption>
     </figure>
   </div>
-  <div class="beat lane"><p class="say">The honest result: one kernel helps on some sizes, not all, and batch size alone doesn't explain which. So I dropped my first theory.</p></div>
+  <div class="beat lane"><p class="say">One kernel helps on some sizes, not all, and batch size alone doesn't explain which. So I dropped my first theory.</p></div>
   <div class="block lane">
-    <details class="eng">
+    <details class="eng" id="eng-triton">
       <summary>For engineers: the roofline, and what the kernel reaches</summary>
       <div class="eng-b">
         <p>I first read this as small batches being memory-bound. The counts don't support that: fused is faster on 10 of 30 cells left of the ridge and 42 of 122 right of it, and bytes saved cover about 10% of the best cell's time gap.</p>
         <p>The bare autotuned GEMM peaks at 213 TFLOP/s, 68% of the A100's fp16 tensor-core peak. cuBLAS reaches about 82% on its best shapes. Each point is the median of 10 trial means. The baseline is a cuBLAS GEMM plus separate bias and GeLU, in PyTorch eager.</p>
       </div>
     </details>
-    <p class="slinks"><a href="https://github.com/harshithkantamneni/triton-vs-cublas-llm">View the repo</a></p>
+    <p class="slinks"><a href="https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks">View the repo</a></p>
   </div>
 </article>
 
@@ -458,7 +470,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
 <article class="story" id="seconds" style="--c:var(--i)">
   <header class="shead"><h3 class="sname">Where the Seconds Go</h3><span class="skind">Research project</span></header>
-  <div class="sid"><p class="swhat">A way to run AI models too big for the GPU's memory, built as a cache in llama.cpp, plus a calculation of how fast any such cache could get.</p><p class="smeta"><span>Public code and manuscript, not peer reviewed</span><a href="https://github.com/harshithkantamneni/moe-speed-of-light">moe-speed-of-light</a></p></div>
+  <div class="sid"><p class="swhat">A way to run AI models too big for the GPU's memory, built as a cache in llama.cpp, plus a calculation of how fast any such cache could get.</p><p class="sres">Result: faster than FreeToken in 11 of 12 setups at batch 1, and 0.98-1.17× with it tuned, on a separate machine.</p><p class="smeta"><span>Public code and manuscript, not peer reviewed. The patch is not upstream.</span><a href="https://github.com/harshithkantamneni/moe-speed-of-light">moe-speed-of-light</a></p></div>
   <div class="beat lane"><p class="say">The model, gpt-oss-120b, needs about 61 GB of memory. An RTX 5090 GPU has 32 GB.</p></div>
   <div class="block lane">
     <figure class="fg"><div class="memz" id="fz-mem" data-field role="img" aria-label="61 dots, one per gigabyte. A box around the first 32 marks what fits on the card."><i class="cardbox"><span>RTX 5090, 32 GB</span></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d on"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></div><figcaption>One dot per gigabyte, to scale.</figcaption></figure>
@@ -467,7 +479,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   <div class="beat lane"><p class="say">I built a cache in llama.cpp that decides which parts stay on the GPU.</p></div>
   <div class="beat lane numb">
     <div class="num has-c" data-c="sec.vs_ft" role="button" tabindex="0">11 of 12</div>
-    <p class="numm">test setups ran faster than FreeToken, another system for this problem, and 2.0-4.0× stock llama.cpp in all of them. With FreeToken tuned, on a separate machine: 0.98-1.17×.</p>
+    <p class="numm">test setups ran faster than FreeToken, another system for this problem, and <span class="nb">2.0-4.0×</span> stock llama.cpp in all of them. With FreeToken tuned, on a separate machine: 0.98-1.17×.</p>
     <button type="button" class="cond" data-c="sec.vs_ft">Conditions and source</button>
     <p class="note">At batch 1, on 2 RTX 5090 hosts. Stock is a weak baseline. The tuned comparison covers six cells. The one slower setup is 0.97×, at the largest Qwen3 budget on the stock-clock host. On that host, swapping my admission rule for LRU ran 6-21% slower, so I read most of the difference as that rule.</p>
   </div>
@@ -490,7 +502,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
     </figure>
   </div>
   <div class="beat lane">
-    <p class="say">Better guessing alone won't get there. Four caching rules without foresight got at most 6% of the gain from knowing what to read ahead.</p>
+    <p class="say">Better guessing alone didn't get there. Four caching rules without foresight got at most 6% of the gain from knowing what to read ahead.</p>
     <p class="note">On 5 fast-link machines. On this machine 36% of the gap stayed after all three kinds of foresight, and 43-52% averaged over three groups of machines. At gpt-oss's smallest cache on 25 consumer machines, the cache reached 31-54% of the computed limit, a scope I chose after seeing the data.</p>
   </div>
   <div class="block lane"><p class="slinks"><a href="/work/where-the-seconds-go/">Read the write-up</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light">View the repo</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper/ieee-paper.pdf">Manuscript, not peer reviewed</a></p></div>
@@ -498,14 +510,10 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
 <article class="story" id="jetson" style="--c:var(--i)">
   <header class="shead"><h3 class="sname">Jetson Orin Nano profiling</h3><span class="skind">Personal project</span></header>
-  <div class="sid"><p class="swhat">Speed measurements of AI kernels on a Jetson Orin Nano, a small NVIDIA computer that runs on 15 W.</p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling">edge-llm-gpu-profiling</a></p></div>
+  <div class="sid"><p class="swhat">Speed measurements of AI kernels on a Jetson Orin Nano, a small NVIDIA computer that runs on <span class="nb">15 W</span>.</p><p class="sres">Result: time per step holds steady up to 1024 keys, then climbs.</p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling">edge-llm-gpu-profiling</a></p></div>
   <div class="beat lane"><p class="say">One step holds steady up to 1024 keys, then climbs.</p></div>
   <div class="block lane">
-    <figure class="fg">
-      <div class="jets" id="fz-jet" data-field role="img" aria-label="Decode time by keys in the cache: 256 keys 63.1, 512 keys 63.9, 1024 keys 64.9, 2048 keys 114.6, 4096 keys 209.4, 8192 keys 398.1 microseconds."><div class="jc" data-k="256" data-v="63.1"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>63.1</b><span>256</span></div><div class="jc" data-k="512" data-v="63.9"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>63.9</b><span>512</span></div><div class="jc" data-k="1024" data-v="64.9"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>64.9</b><span>1024</span></div><div class="jc" data-k="2048" data-v="114.6"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>114.6</b><span>2048</span></div><div class="jc" data-k="4096" data-v="209.4"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>209.4</b><span>4096</span></div><div class="jc" data-k="8192" data-v="398.1"><div class="jd"><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i><i class=d></i></div><b>398.1</b><span>8192</span></div></div>
-      <label class="rng">Keys in the cache<input id="jet-r" type="range" min="0" max="5" step="1" value="2"></label>
-      <figcaption id="jet-o">Each dot is ten microseconds.</figcaption>
-    </figure>
+    <p class="more">Microseconds per step: 63.1 at 256 keys, 64.9 at 1024, 114.6 at 2048, 209.4 at 4096 and 398.1 at 8192.</p>
     <p class="note">Attention and KV-cache decode kernels profiled with Nsight on a Jetson Orin Nano. It's a sweep of kernels, not a model and not serving throughput. Fused SDPA ran 2.78-5.55× faster than a manual matmul and softmax baseline across 5 sizes, which is a low bar.</p>
   </div>
   <div class="block lane"><p class="more">Also on vLLM: a load test where CUDA graphs cut time per token 31-34%, one run per rate, and a measurement on someone else's RFC. Both are on the <a href="/work/#inference">all-work page</a>.</p></div>
@@ -519,24 +527,24 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
 <article class="story" id="bert" style="--c:var(--a)">
   <header class="shead"><h3 class="sname">bert</h3><span class="skind">Personal project</span></header>
-  <div class="sid"><p class="swhat">A tool, not the BERT model, that gives an AI coding agent searchable memory of a long project.</p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/bert">bert</a></p></div>
+  <div class="sid"><p class="swhat">A tool, not the BERT model, that gives an AI coding agent searchable memory of a long project.</p><p class="sres">Result: no significant accuracy difference from grep at 1.26M tokens, and grep used a median 1.46× the tokens. On code, grep scored higher. <a href="#eng-bert">Technical detail</a></p><p class="smeta"><span>Public repo</span><a href="https://github.com/harshithkantamneni/bert">bert</a></p></div>
   <div class="beat lane"><p class="say">A long project outgrows what a model can read at once.</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-slope1"><svg role="img" aria-label="Full-context accuracy falls from 0.90 to 0.08 as project memory grows from about 98 thousand to 1.26 million tokens."></svg><figcaption>Give a reader the whole history, and past its budget it loses the answer.</figcaption></figure>
     <p class="note">One Claude reader capped at a 120K budget, which keeps about the newest 10%. I read 0.08 as truncation losing history, not as evidence for bert.</p>
   </div>
-  <div class="beat lane"><p class="say">bert gives a coding agent searchable memory of the whole project. It runs locally, with no API keys and no LLM calls.</p></div>
+  <div class="beat lane"><p class="say">bert gives a coding agent searchable memory of the whole project. It runs on your own machine, with no API keys and no calls to an AI model.</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-slope2"><svg role="img" aria-label="At 1.26 million tokens, bert and agentic grep both score 0.90, while full context falls to 0.08. At 98 thousand tokens, bert 0.96, grep 0.92, full context 0.90."></svg><figcaption>Accuracy at 2 measured memory sizes. Lines only join the 2 measured sizes.</figcaption></figure>
     <p class="note">On one 1.26M-token synthetic project memory, no significant difference from agentic grep, counting cache reads in full. On code, grep scored higher, 0.97 to 0.86, so bert is built for accumulated memory, not code search.</p>
   </div>
-  <div class="beat lane"><p class="say">At 1.26M tokens, it scored the same as an agent searching with grep, and grep used a median 1.46× bert's tokens.</p></div>
-  <div class="beat lane"><p class="say">It didn't start that way. Early on, a silent bug held its score at 0.10.</p></div>
+  <div class="beat lane"><p class="say">At 1.26M tokens, it scored 0.90, with no significant difference from an agent using plain text search (grep). And grep used a median 1.46× bert's tokens.</p></div>
+  <div class="beat lane"><p class="say">A smaller, earlier test had caught a silent bug that held its score at 0.10.</p></div>
   <div class="block lane">
     <figure class="fg"><div class="bugz" id="fz-bug" data-field role="img" aria-label="20 questions. 2 correct before the fix and 17 after."><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></div><figcaption>One dot per question. A small bug had switched off the meaning-based half of the search, leaving only keywords. Fixing it moved the same 20-question test from 0.10 to 0.85.</figcaption></figure>
   </div>
   <div class="block lane">
-    <details class="eng">
+    <details class="eng" id="eng-bert">
       <summary>For engineers: how the retrieval works, and public benchmarks</summary>
       <div class="eng-b">
         <p>sqlite-vec stores bge-base-en-v1.5 dense vectors, BM25 covers exact keywords, reciprocal-rank fusion merges the two, and a cross-encoder reranks the top hits.</p>
@@ -550,26 +558,26 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
 <article class="story" id="lab" style="--c:var(--a)">
   <header class="shead"><h3 class="sname">Lab verification and audit</h3><span class="skind">Personal project</span></header>
-  <div class="sid"><p class="swhat">Sign-off verification for my research lab of Claude Code agents, and an audit of that check against its own logs.</p><p class="smeta"><span>Public repo, private logs</span><a href="https://github.com/harshithkantamneni/agi-lab-framework">agi-lab-framework</a></p></div>
+  <div class="sid"><p class="swhat">Sign-off verification for my research lab of Claude Code agents, and an audit of that check against its own logs.</p><p class="sres">Result: the same forgery is now blocked in tests, not yet on a live lab. <a href="#eng-lab">Technical detail</a></p><p class="smeta"><span>Public repo, private logs</span><a href="https://github.com/harshithkantamneni/agi-lab-framework">agi-lab-framework</a></p></div>
   <div class="beat lane"><p class="say">I ran a research lab of 31 Claude Code agent roles on one 18 GB MacBook.</p></div>
   <div class="beat lane"><p class="say">On Apr 17, the agent running it wrote 5 PI sign-offs, approvals in another agent's name, without ever calling that agent.</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-seq1"><svg role="img" aria-label="Sequence diagram. The runner starts the director. The director writes sign-offs in the PI's name to the record. The call to the PI never happens."></svg></figure>
   </div>
-  <div class="beat lane"><p class="say">So I built a check. Then I audited the check itself, against 763 runner logs.</p></div>
+  <div class="beat lane"><p class="say">So I built a check. Then I audited the check itself, against 763 session logs.</p></div>
   <div class="beat lane"><p class="say">By my count it had run on 0 of 270 eligible sessions, because of a shell bug, fixed in June.</p></div>
-  <div class="beat lane"><p class="say">A later code review found the deeper flaw: the agent being checked could write the record the check read.</p></div>
-  <div class="beat lane"><p class="say">So I moved the record out of the agent's reach.</p></div>
+  <div class="beat lane"><p class="say">The audit also found the deeper flaw: the record the check read sat where the agent being checked could write to it.</p></div>
+  <div class="beat lane"><p class="say">So I moved the record out of the agent's reach.</p><p class="note">It relies on the runner's sandbox settings, which I've only tested on a stub harness, not yet on a live lab.</p></div>
   <div class="block lane">
-    <figure class="fg" id="fig-seq2"><svg role="img" aria-label="The same forgery against the new check. The runner logs every call it sees. The director writes a PI sign-off and never calls the PI agent. The runner compares the sign-off with its log, finds no call, and refuses the session."></svg><figcaption>The same forgery, replayed against the new check.</figcaption></figure>
+    <figure class="fg" id="fig-seq2"><svg role="img" aria-label="The same forgery against the new check. The runner logs every call it sees. The director writes a PI sign-off and never calls the PI agent. The runner compares the sign-off with its log, finds no call, and blocks the session."></svg><figcaption>The same forgery, replayed against the new check.</figcaption></figure>
   </div>
   <div class="beat lane">
-    <p class="say">A sign-off now counts only if the system running the agents saw that agent run and give that answer. Replay the forgery, and the session is refused.</p>
-    <p class="note">171 new tests, and 62 of them fail on the old code. They run on a stub harness, not yet a live lab. A record shows that an agent ran and what it replied, not that its review was any good. The repo lists what's still open.</p>
+    <p class="say">A required sign-off now counts only if the system running the agents saw that agent run and give that answer. Replay the forgery, and the session is blocked.</p>
+    <p class="note">171 new tests, and 62 of them fail on the old code. A record shows that an agent ran and what it replied, not that its review was any good. The repo lists what's still open.</p>
   </div>
 
   <div class="block lane">
-    <details class="eng">
+    <details class="eng" id="eng-lab">
       <summary>For engineers: the audit, session by session</summary>
       <div class="eng-b">
         <p>One square per runner log, Apr 17 to May 30, in date order. The outlined ones match the gate's precondition, a text match. By my count the first version of the gate ran on 0 of 270 of those eligible sessions, because of a shell bug fixed in June. The logs stay private, so you can check the public table's sums, not its rows.</p>
@@ -590,7 +598,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   <h2 class="say">Three questions I haven't answered yet.</h2>
   <div class="chase">
     <a href="#kernels"><b>Where the rest of a full model's time goes.</b><span>My kernel step ran 52.7× faster than recomputing at 64K keys, but one full model step, on random weights, still takes about 9 ms.</span></a>
-    <a href="#kernels"><b>Whether my kernels' design choices are what cost them speed.</b><span>Forward and backward together take 1.04-1.42× the time of the original authors' kernels on an H100 GPU, and give identical results on every run, which theirs don't. I haven't isolated how much of the gap that explains.</span></a>
+    <a href="#kernels"><b>Whether my kernels' design choices are what cost them speed.</b><span>Forward and backward together take 1.04-1.42× the time of the original authors' kernels on an H100 GPU, and the backward gives identical results run to run, which theirs doesn't. I haven't isolated how much of the gap that explains.</span></a>
     <a href="#seconds"><b>How much slowdown better caching can never remove.</b><span>Even when the engine could see the future, 36% of the gap to the limit stayed, on one machine.</span></a>
   </div>
 </div></section>
@@ -605,8 +613,8 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   <h3 class="sname" style="--c:var(--mid)">Writing</h3>
   <div class="wl">
     <a href="/notes/kv-copies-gqa/">When the K/V copy costs more than the attention</a>
-    <a href="/reports/below-the-measurement-floor-a-pre-registered-dense-vs-moe-null-at-sub-100m-active-parameters/">Below the Measurement Floor: a pre-registered dense-vs-MoE null</a>
-    <a href="/reports/recursive-verification-surface-collapse/">Recursive Verification-Surface Collapse</a>
+    <a href="/reports/below-the-measurement-floor-a-pre-registered-dense-vs-moe-null-at-sub-100m-active-parameters/">Below the Measurement Floor: a pre-registered dense-vs-MoE null<small>Report, not peer reviewed</small></a>
+    <a href="/reports/recursive-verification-surface-collapse/">Recursive Verification-Surface Collapse<small>Report, not peer reviewed</small></a>
     <a href="/notes/llm-judge-bias/">When the LLM judge is biased</a>
     <a href="/notes/tier-per-task/">Tier-per-task: routing models by the job</a>
   </div>
@@ -632,11 +640,10 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 </dialog>
 <div class="tip" id="tip" role="status"></div>
 <div id="step-hud" aria-hidden="true"></div>
-<svg class="grain"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
 
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-<script src="/assets/field.js"></script>
-<script src="/assets/story.js"></script>
+<script src="/assets/lenis.min.js" defer></script>
+<script src="/assets/field.js" defer></script>
+<script src="/assets/story.js" defer></script>
 <script src="/numbers/num.js" defer></script>
 <!-- Cloudflare Web Analytics -->
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2e4646d7e5e149c0a3c87132e9fa66f1"}'></script>

@@ -15,9 +15,11 @@
 <meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(/assets/fonts/space-grotesk-latin-wght-normal.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(/assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format('woff2')}
+.skip{position:fixed;left:8px;top:-60px;z-index:200;background:#EEEFF1;color:#060708;padding:10px 16px;border-radius:8px;font-size:14px}.skip:focus{top:8px}
 :root{--bg:#14171e;--ink:#EEEFF1;--mid:#A2A7AF;--dim:#8D939C;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
@@ -70,14 +72,15 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 .claim h2{font-size:18px;font-weight:500;line-height:1.35}
 .claim .v{font-family:var(--mono);font-size:13px;color:var(--i);margin-top:6px;line-height:1.5}
 .claim p{font-size:15px;line-height:1.55;color:var(--mid);margin-top:6px}
-.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 @media(max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}.toc{display:none}.nl a.ha{display:none}}
 .brand{white-space:nowrap}@media(max-width:560px){.nl a:not(:last-child){display:none}}
 </style>
 </head>
 <body>
-<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><div class="nl"><a class=on style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div></header>
-<main style="--c:var(--k)">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><nav class="nl" aria-label="Main"><a class=on style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></nav></header>
+<main id="main" style="--c:var(--k)">
 <div class="op"><a class="crumb" href="/#ch-k">Kernels</a><h1>GQA in NVIDIA cuDNN</h1><p class="lead">What removing K/V head copies did on an A100, why that code closed, and the tests that merged.</p><p class="state">Tests merged Oct 6, 2026. Prototype closed Sep 27, 2026</p><div class="keys"><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#pr1223.copy" data-c="pr1223.copy">7.28 ms</a></div><div class="kl">K/V copies, at one shape on an A100</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#pr1223.kv" data-c="pr1223.kv">1.15-2.19×</a></div><div class="kl">faster with them gone, at batch 1</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#pr1287.bugs" data-c="pr1287.bugs">3 injected bugs</a></div><div class="kl">NVIDIA&#x27;s SM80 tests missed, mine caught</div></div></div></div>
 <div class="grid"><article class="prose">
 <p>On an A100 at <a class="n" href="/numbers/#pr1223.copy" data-c="pr1223.copy">64/8 heads</a> and a <a class="n" href="/numbers/#pr1223.copy" data-c="pr1223.copy">128K KV cache</a>, K/V head copies in NVIDIA's cuDNN frontend took <a class="n" href="/numbers/#pr1223.copy" data-c="pr1223.copy">7.28 ms</a> per call against a <a class="n" href="/numbers/#pr1223.copy" data-c="pr1223.copy">6.0-6.7 ms</a> attention kernel. That is one shape. Removing the copies made <a class="n" href="/numbers/#pr1223.batched" data-c="pr1223.batched">6 batched rows 2.6-3.3×</a> faster, and <a class="n" href="/numbers/#pr1223.oom" data-c="pr1223.oom">10 more</a> stopped running out of memory. Those rows are really <a class="n" href="/numbers/#gqa.configs" data-c="gqa.configs">3 configs</a> and <a class="n" href="/numbers/#gqa.configs" data-c="gqa.configs">5 configs</a>. Multi-token steps <a class="n" href="/numbers/#gqa.mtp" data-c="gqa.mtp">at batch 1</a> ran <a class="n" href="/numbers/#pr1223.kv" data-c="pr1223.kv">1.15-2.19×</a> faster at that cache size. Clocks weren't locked, and the cuDNN backend stayed faster on <a class="n" href="/numbers/#pr1223.backend" data-c="pr1223.backend">27 of 31</a> multi-token rows.</p>
@@ -99,7 +102,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><td>32/8 d128</td><td class="num">9.91</td><td class="num">6.66</td><td class="num"><span class="barv"><span class="bt"><i style="width:68.0%"></i></span><span>1.49</span></span></td><td class="num">3.30</td></tr>
 <tr><td>32/2 d256</td><td class="num">17.15</td><td class="num">12.55</td><td class="num"><span class="barv"><span class="bt"><i style="width:62.6%"></i></span><span>1.37</span></span></td><td class="num">9.96</td></tr>
 <tr><td>8/1 d128</td><td class="num">7.59</td><td class="num">6.63</td><td class="num"><span class="barv"><span class="bt"><i style="width:52.5%"></i></span><span>1.15</span></span></td><td class="num">3.30</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>I read the time saved as following the copy's size. At d128, the expansion is <a class="n" href="/numbers/#gqa.expansion" data-c="gqa.expansion">8x smaller at 8/1 heads</a> than at <a class="n" href="/numbers/#pr1223.copy" data-c="pr1223.copy">64/8 heads</a>, and the kernel takes about the same time.</p>
 <p>Develop ran out of memory on <a class="n" href="/numbers/#gqa.batch" data-c="gqa.batch">10 of the 16 batched rows</a>, because it needed a <a class="n" href="/numbers/#gqa.batch" data-c="gqa.batch">64-512 GiB</a> expanded K/V workspace. The prototype ran <a class="n" href="/numbers/#gqa.batch" data-c="gqa.batch">all 10</a>.</p>
 <div class="tw" tabindex="0"><table class="t"><caption>The 6 batched rows are 3 configs and the 10 out-of-memory rows are 5 configs, shown here at S_q=8. <a class="n" href="/numbers/#gqa.batch" data-c="gqa.batch">conditions</a></caption>
@@ -113,7 +116,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><td>32/8 d128, batch 32</td><td class="num">Out of memory</td><td class="num">54.5</td><td class="num">n/a</td><td class="num">22.1</td></tr>
 <tr><td>32/2 d256, batch 32</td><td class="num">Out of memory</td><td class="num">102.8</td><td class="num">n/a</td><td class="num">93.7</td></tr>
 <tr><td>32/2 d256, batch 128</td><td class="num">Out of memory</td><td class="num">391.2</td><td class="num">n/a</td><td class="num">367.8</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>The backend stayed faster on <a class="n" href="/numbers/#pr1223.backend" data-c="pr1223.backend">27 of 31</a> multi-token rows. <a class="n" href="/numbers/#gqa.batch" data-c="gqa.batch">The other 4</a> are <a class="n" href="/numbers/#gqa.batch" data-c="gqa.batch">64/8 d64 at batch 32 and 128</a>.</p>
 
 <h3>Planted bugs</h3>
@@ -125,7 +128,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><td>KV head (h // H_kv) % H_kv</td><td class="num">70 of 80</td><td>All 411 pass</td></tr>
 <tr><td>KV head h // H_kv, d256 kernel only</td><td class="num">37 of 80</td><td>All 60 d256 cases pass</td></tr>
 <tr><td>KV head h % H_kv (control)</td><td class="num">70 of 80</td><td>Caught, 30 fail</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>I read the control as showing that NVIDIA's suite does test head mapping, just not at a ratio that separates the two.</p>
 
 <h2 id="what-it-doesnt-show">What it doesn't show</h2>

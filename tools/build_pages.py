@@ -22,6 +22,9 @@ SCENE = {'stick-breaking-kernels': '#kernels', 'cudnn-gqa': '#gqa', 'where-the-s
 DROP = [' I noticed an empty PI folder next to the approvals.']
 
 BASE = """
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(/assets/fonts/space-grotesk-latin-wght-normal.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(/assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format('woff2')}
+.skip{position:fixed;left:8px;top:-60px;z-index:200;background:#EEEFF1;color:#060708;padding:10px 16px;border-radius:8px;font-size:14px}.skip:focus{top:8px}
 :root{--bg:#14171e;--ink:#EEEFF1;--mid:#A2A7AF;--dim:#8D939C;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
@@ -74,7 +77,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 .claim h2{font-size:18px;font-weight:500;line-height:1.35}
 .claim .v{font-family:var(--mono);font-size:13px;color:var(--i);margin-top:6px;line-height:1.5}
 .claim p{font-size:15px;line-height:1.55;color:var(--mid);margin-top:6px}
-.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 @media(max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}.toc{display:none}.nl a.ha{display:none}}
 .brand{white-space:nowrap}@media(max-width:560px){.nl a:not(:last-child){display:none}}
 """
@@ -125,13 +128,13 @@ def page(title, desc, path, body, resume='/Harshith_Kantamneni_Resume.pdf', lane
 <meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>{BASE}</style>
 </head>
 <body>
-<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><div class="nl">{links}<a class="ha" href="/numbers/">Numbers</a><a href="{resume}">Résumé</a></div></header>
-{body}
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><nav class="nl" aria-label="Main">{links}<a class="ha" href="/numbers/">Numbers</a><a href="{resume}">Résumé</a></nav></header>
+{body.replace("<main ", "<main id=\"main\" ", 1)}
 <footer class="foot"><a href="/">Home</a><a href="/numbers/">Every number</a><a href="{resume}">Résumé</a><a href="mailto:kantamneniharshith@gmail.com">Email</a><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a></footer>
 <script src="/numbers/num.js" defer></script>
 <!-- Cloudflare Web Analytics -->
@@ -150,8 +153,6 @@ for i, name in enumerate(ORDER):
         raw = raw.replace(d, '')
     toc = [(t, slug(t)) for t in re.findall(r'<h2>(.*?)</h2>', raw)]
     raw = re.sub(r'<h2>(.*?)</h2>', lambda m: f'<h2 id="{slug(m.group(1))}">{m.group(1)}</h2>', raw)
-    raw = re.sub(r'<table>', '<div class="tw" tabindex="0"><table>', raw)
-    raw = raw.replace('</table>', '</table></div>')
     keys = ''.join(f'<div class="kn"><div class="kv">{rich(k["v"])}</div><div class="kl">{esc(k["l"])}</div></div>' for k in c['keys'])
     keys = keys.replace('class="n"', 'class="n" style="color:inherit"')
     nav = ''.join(f'<a href="#{a}">{t}</a>' for t, a in toc)

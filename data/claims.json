@@ -359,7 +359,8 @@
     "all 411",
     "all 60",
     "3 bugs",
-    "A 4th planted bug"
+    "A 4th planted bug",
+    "3 planted bugs"
    ],
    "means": "Planted bugs the new tests catch and the SM80 suite misses",
    "value": 3,

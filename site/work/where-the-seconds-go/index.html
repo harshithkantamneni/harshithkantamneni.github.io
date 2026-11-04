@@ -15,9 +15,11 @@
 <meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(/assets/fonts/space-grotesk-latin-wght-normal.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(/assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format('woff2')}
+.skip{position:fixed;left:8px;top:-60px;z-index:200;background:#EEEFF1;color:#060708;padding:10px 16px;border-radius:8px;font-size:14px}.skip:focus{top:8px}
 :root{--bg:#14171e;--ink:#EEEFF1;--mid:#A2A7AF;--dim:#8D939C;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
@@ -70,14 +72,15 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 .claim h2{font-size:18px;font-weight:500;line-height:1.35}
 .claim .v{font-family:var(--mono);font-size:13px;color:var(--i);margin-top:6px;line-height:1.5}
 .claim p{font-size:15px;line-height:1.55;color:var(--mid);margin-top:6px}
-.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 @media(max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}.toc{display:none}.nl a.ha{display:none}}
 .brand{white-space:nowrap}@media(max-width:560px){.nl a:not(:last-child){display:none}}
 </style>
 </head>
 <body>
-<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><div class="nl"><a style="--c:var(--k)" href="/#ch-k">Kernels</a><a class=on style="--c:var(--i)" href="/#ch-i">Inference</a><a style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a></div></header>
-<main style="--c:var(--i)">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><nav class="nl" aria-label="Main"><a style="--c:var(--k)" href="/#ch-k">Kernels</a><a class=on style="--c:var(--i)" href="/#ch-i">Inference</a><a style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a></nav></header>
+<main id="main" style="--c:var(--i)">
 <div class="op"><a class="crumb" href="/#ch-i">Inference</a><h1>Where the Seconds Go</h1><p class="lead">A llama.cpp expert cache for batch-1 MoE decode when the model doesn&#x27;t fit on the GPU, and a computed limit to read it against.</p><p class="state">Public manuscript and code, not peer reviewed</p><div class="keys"><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#wsg.grid" data-c="wsg.grid">2.0-4.0×</a></div><div class="kl">stock llama.cpp, a weak baseline</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#sec.vs_ft" data-c="sec.vs_ft">11 of 12</a></div><div class="kl">configurations faster than FreeToken</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#wsg.gap" data-c="wsg.gap">43-52%</a></div><div class="kl">of the gap stayed after all three oracles</div></div></div></div>
 <div class="grid"><article class="prose">
 <h2 id="what-i-built">What I built</h2>
@@ -95,7 +98,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><td>MIN's set, read once (oracle)</td><td class="num"><span class="barv"><span class="bt"><i style="width:73.5%"></i></span><span>15.13</span></span></td></tr>
 <tr><td>MIN's set, read once, copies issued ahead (oracle)</td><td class="num"><span class="barv"><span class="bt"><i style="width:66.9%"></i></span><span>13.78</span></span></td></tr>
 <tr><td>Computed limit</td><td class="num"><span class="barv"><span class="bt"><i style="width:48.7%"></i></span><span>10.02</span></span></td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>Then the <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">12 cells</a>: <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">2 RTX 5090 hosts</a>, <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">30 AIME-25 problems</a>, first <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">256 greedy tokens</a>, equal GPU expert memory.</p>
 <div class="tw" tabindex="0"><table class="t"><caption>The cache was faster than FreeToken in 11 of 12 cells and ran 2.0-4.0× stock llama.cpp in all 12. <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">conditions</a></caption>
 <thead><tr><th>Model</th><th>Experts on GPU</th><th>Stock (tok/s)</th><th>FreeToken (tok/s)</th><th>Cache (tok/s)</th><th>Cache ÷ FreeToken (95% CI)</th><th>Cache ÷ stock</th></tr></thead>
@@ -114,7 +117,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><td>Qwen3-30B-A3B</td><td class="num">12.5%</td><td class="num">16.1</td><td class="num">32.7</td><td class="num"><span class="barv"><span class="bt"><i style="width:22.0%"></i></span><span>33.5</span></span></td><td class="num">1.03 [1.02, 1.04]</td><td class="num">2.08</td></tr>
 <tr><td>Qwen3-30B-A3B</td><td class="num">25%</td><td class="num">18.5</td><td class="num">51.4</td><td class="num"><span class="barv"><span class="bt"><i style="width:35.3%"></i></span><span>53.9</span></span></td><td class="num">1.05 [1.04, 1.06]</td><td class="num">2.91</td></tr>
 <tr><td>Qwen3-30B-A3B</td><td class="num">43.75%</td><td class="num">23.8</td><td class="num">98.3</td><td class="num"><span class="barv"><span class="bt"><i style="width:62.8%"></i></span><span>95.8</span></span></td><td class="num">0.97 [0.96, 0.99]</td><td class="num">4.02</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>Beside those ratios:</p>
 <ul>
 <li>The <a class="n" href="/numbers/#wsg.headline" data-c="wsg.headline">1.29×</a> is host B, the faster-memory host. The same cell at stock clock is <a class="n" href="/numbers/#wsg.headline" data-c="wsg.headline">1.21×</a>.</li>
@@ -140,7 +143,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><td>The GPU's non-expert time</td><td class="num">25 [18, 31]</td><td class="num">27 [25, 30]</td><td class="num">28 [20, 36]</td></tr>
 <tr><td>The oracle's reads beyond MIN's</td><td class="num">18 [14, 23]</td><td class="num">21 [20, 23]</td><td class="num">18 [15, 20]</td></tr>
 <tr><td>Residual</td><td class="num">0 [-11, 12]</td><td class="num">4 [-6, 13]</td><td class="num">1 [-3, 4]</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>At 11%, with the table on, it puts misses the cache didn't choose into its slots, so MIN's set read twice closes about none of the gap. With it off, that set closes <a class="n" href="/numbers/#wsg.gap" data-c="wsg.gap">19%</a>. Either way, <a class="n" href="/numbers/#wsg.gap" data-c="wsg.gap">43-52%</a> stays, and <a class="n" href="/numbers/#wsg.gap" data-c="wsg.gap">42-48%</a> at <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">25%</a>.</p>
 <p>Policies without foresight recovered <a class="n" href="/numbers/#wsg.online" data-c="wsg.online">at most 6%</a> of an oracle's gain on <a class="n" href="/numbers/#wsg.online" data-c="wsg.online">5 fast-link machines</a>, against a loose registered bound.</p>
 <p>I read this as: closing the rest would take reads issued before routing, at MIN's count.</p>

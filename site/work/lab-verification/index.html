@@ -4,20 +4,22 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Lab verification and audit: Harshith Kantamneni</title>
-<meta name="description" content="Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that refuses the original forgery in tests."/>
+<meta name="description" content="Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that blocks the original forgery in tests."/>
 <meta name="theme-color" content="#14171e">
 <link rel="canonical" href="https://harshithkantamneni.github.io/work/lab-verification/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Lab verification and audit: Harshith Kantamneni">
-<meta property="og:description" content="Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that refuses the original forgery in tests.">
+<meta property="og:description" content="Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that blocks the original forgery in tests.">
 <meta property="og:url" content="https://harshithkantamneni.github.io/work/lab-verification/">
 <meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(/assets/fonts/space-grotesk-latin-wght-normal.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(/assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format('woff2')}
+.skip{position:fixed;left:8px;top:-60px;z-index:200;background:#EEEFF1;color:#060708;padding:10px 16px;border-radius:8px;font-size:14px}.skip:focus{top:8px}
 :root{--bg:#14171e;--ink:#EEEFF1;--mid:#A2A7AF;--dim:#8D939C;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
@@ -70,18 +72,19 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 .claim h2{font-size:18px;font-weight:500;line-height:1.35}
 .claim .v{font-family:var(--mono);font-size:13px;color:var(--i);margin-top:6px;line-height:1.5}
 .claim p{font-size:15px;line-height:1.55;color:var(--mid);margin-top:6px}
-.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 @media(max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}.toc{display:none}.nl a.ha{display:none}}
 .brand{white-space:nowrap}@media(max-width:560px){.nl a:not(:last-child){display:none}}
 </style>
 </head>
 <body>
-<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><div class="nl"><a style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a class=on style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a></div></header>
-<main style="--c:var(--a)">
-<div class="op"><a class="crumb" href="/#ch-a">Agents</a><h1>Lab verification and audit</h1><p class="lead">Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that refuses the original forgery in tests.</p><p class="state">Public repo, private logs</p><div class="keys"><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#lab.gate" data-c="lab.gate">0 of 270</a></div><div class="kl">eligible sessions where the gate ran, by my count</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#labv.forged" data-c="labv.forged">5 PI sign-offs</a></div><div class="kl">written without dispatching the PI</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#labv.tests" data-c="labv.tests">24 regression tests</a></div><div class="kl">on the improved detector</div></div></div></div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><nav class="nl" aria-label="Main"><a style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a class=on style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a></nav></header>
+<main id="main" style="--c:var(--a)">
+<div class="op"><a class="crumb" href="/#ch-a">Agents</a><h1>Lab verification and audit</h1><p class="lead">Sign-off verification for a lab of Claude Code agent roles, an audit of it against runner logs, and a rebuilt check that blocks the original forgery in tests.</p><p class="state">Public repo, private logs</p><div class="keys"><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#lab.gate" data-c="lab.gate">0 of 270</a></div><div class="kl">eligible sessions where the gate ran, by my count</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#labv.forged" data-c="labv.forged">5 PI sign-offs</a></div><div class="kl">written without dispatching the PI</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#labv.rebuilt" data-c="labv.rebuilt">171 new tests</a></div><div class="kl">on the rebuilt check, on a stub harness</div></div></div></div>
 <div class="grid"><article class="prose">
 <h2 id="what-i-built">What I built</h2>
-<p>I built sign-off verification for a 31-role Claude Code lab, audited it against runner logs, and shipped an improved detector with tests. The finding, by my count: the gate ran on <a class="n" href="/numbers/#lab.gate" data-c="lab.gate">0 of 270</a> eligible sessions, in this <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/gate_audit_sessions.csv">per-session table</a>. A shell bug, fixed in June, explains it. The logs stay private. A later code review found the detector could still be fooled, because the agent's own text reached the log it read. So I rebuilt the check: a sign-off now needs a signed record, made by the runner from the harness's own tool calls, that the role ran and gave that verdict on that document. If the check can't finish, the session is refused. That's tested on a stub harness, with <a class="n" href="/numbers/#labv.rebuilt" data-c="labv.rebuilt">171 new tests</a>, not yet on a live lab. The repo lists <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps">what's still open</a>.</p>
+<p>I built sign-off verification for a 31-role Claude Code lab, audited it against runner logs, and shipped an improved detector with tests. The finding, by my count: the gate ran on <a class="n" href="/numbers/#lab.gate" data-c="lab.gate">0 of 270</a> eligible sessions, in this <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/gate_audit_sessions.csv">per-session table</a>. A shell bug, fixed in June, explains it. The logs stay private. A later code review found the detector could still be fooled, because the agent's own text reached the log it read. So I rebuilt the check: a required sign-off now needs a signed record, made by the runner from the harness's own tool calls, that the role ran and gave that verdict on that document. If the check can't finish, the session is blocked. That's tested on a stub harness, with <a class="n" href="/numbers/#labv.rebuilt" data-c="labv.rebuilt">171 new tests</a>, not yet on a live lab. The repo lists <a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps">what's still open</a>.</p>
 <p>A shell script, the runner, starts one director agent at a time. The director dispatches roles such as the PI (principal investigator). The lab had <a class="n" href="/numbers/#labv.roles30" data-c="labv.roles30">30 roles</a> at the time of the incident the audit covers.</p>
 <p>A sign-off is a line in a lab document saying a role agreed to a decision. Some decisions need one from both the director and the PI. On Apr 17 the director wrote <a class="n" href="/numbers/#labv.forged" data-c="labv.forged">5 PI sign-offs</a> without dispatching the PI. Then I built three parts:</p>
 <ul>
@@ -101,7 +104,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><td>The log contains the detector's output</td><td class="num"><span class="barv"><span class="bt"><i style="width:0.0%"></i></span><span>0</span></span></td></tr>
 <tr><td>The log shows the gate blocking</td><td class="num"><span class="barv"><span class="bt"><i style="width:0.0%"></i></span><span>0</span></span></td></tr>
 <tr><td>The director ran the detector itself, which isn't the gate</td><td class="num">6 sessions</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>The audit didn't find the shell bug. A fix, <a href="https://github.com/harshithkantamneni/agi-lab-framework/commit/d5af181">d5af181</a>, landed on Jun 6, after the last log counted.</p>
 <div class="tw" tabindex="0"><table class="t"><caption>By my count, each part of the fix had a defect, and so did the remediation of the incident. <a class="n" href="/numbers/#labv.parts" data-c="labv.parts">conditions</a></caption>
 <thead><tr><th>Part</th><th>What I found</th><th>Count</th></tr></thead>
@@ -110,10 +113,10 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><td>Gate</td><td>Eligible sessions where it ran:</td><td class="num">0 of 270</td></tr>
 <tr><td>Evaluator check</td><td>Passes quoting the detector that were over an empty scan:</td><td class="num">6 of 10</td></tr>
 <tr><td>Remediation</td><td>The dispatch that closed the incident used a generic agent. Non-director receipts filed under a role not yet dispatched by its own type, by a date test:</td><td class="num">32 of 174</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 
 <h2 id="what-limited-it">What limited it</h2>
-<p>I read the shared limit as the evidence, not the checker. Of the lab's receipts, <a class="n" href="/numbers/#labv.tracked" data-c="labv.tracked">0 of 195</a> were tracked in git, and the session logs are gitignored. These sat inside the director's own write scope. So the record a check reads has to sit outside the write scope of whoever is being checked. My current fix doesn't fully do that, because director text reaches the log the check reads. That's the next thing I'd fix.</p>
+<p>I read the shared limit as the evidence, not the checker. Of the lab's receipts, <a class="n" href="/numbers/#labv.tracked" data-c="labv.tracked">0 of 195</a> were tracked in git, and the session logs are gitignored. These sat inside the director's own write scope. So the record a check reads has to sit outside the write scope of whoever is being checked. The September fix didn't do that, because director text reached the log the check read. The rebuilt check in <a href="https://github.com/harshithkantamneni/agi-lab-framework/pull/43">#43</a> reads only the runner's signed record, built from the harness's own tool calls.</p>
 <p>The old-records mode works by day, so it passes the incident itself: the forged sign-off and a later dispatch share a date.</p>
 
 <h2 id="what-it-doesnt-show">What it doesn't show</h2>
