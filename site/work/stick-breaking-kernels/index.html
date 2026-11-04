@@ -15,9 +15,11 @@
 <meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(/assets/fonts/space-grotesk-latin-wght-normal.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(/assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format('woff2')}
+.skip{position:fixed;left:8px;top:-60px;z-index:200;background:#EEEFF1;color:#060708;padding:10px 16px;border-radius:8px;font-size:14px}.skip:focus{top:8px}
 :root{--bg:#14171e;--ink:#EEEFF1;--mid:#A2A7AF;--dim:#8D939C;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
@@ -70,14 +72,15 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 .claim h2{font-size:18px;font-weight:500;line-height:1.35}
 .claim .v{font-family:var(--mono);font-size:13px;color:var(--i);margin-top:6px;line-height:1.5}
 .claim p{font-size:15px;line-height:1.55;color:var(--mid);margin-top:6px}
-.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 @media(max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}.toc{display:none}.nl a.ha{display:none}}
 .brand{white-space:nowrap}@media(max-width:560px){.nl a:not(:last-child){display:none}}
 </style>
 </head>
 <body>
-<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><div class="nl"><a class=on style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div></header>
-<main style="--c:var(--k)">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><nav class="nl" aria-label="Main"><a class=on style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></nav></header>
+<main id="main" style="--c:var(--k)">
 <div class="op"><a class="crumb" href="/#ch-k">Kernels</a><h1>Stick-breaking attention kernels</h1><p class="lead">Forward, backward and KV-cache decoding kernels in Triton, merged in flash-linear-attention.</p><p class="state">Merged Oct 8 and Oct 27, 2026</p><div class="keys"><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#sbk.op" data-c="sbk.op">52.7×</a></div><div class="kl">faster than recomputing at 64K keys</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#pr1319.vs_authors" data-c="pr1319.vs_authors">1.04-1.42×</a></div><div class="kl">the original authors&#x27; time, H100</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#pr1319.tiles" data-c="pr1319.tiles">57-89 KiB</a></div><div class="kl">shared memory per kernel</div></div></div></div>
 <div class="grid"><article class="prose">
 <h2 id="what-i-built">What I built</h2>
@@ -100,7 +103,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><td>Packed 512+2048+512+5120, H=16, D=128</td><td class="num">9.363</td><td class="num">6.532</td><td class="num">6.083</td><td class="num"><span class="barv"><span class="bt"><i style="width:75.4%"></i></span><span>1.07</span></span></td></tr>
 <tr><td>Packed 8×1024, H=32, D=64</td><td class="num">3.460</td><td class="num">2.651</td><td class="num">2.013</td><td class="num"><span class="barv"><span class="bt"><i style="width:93.0%"></i></span><span>1.32</span></span></td></tr>
 <tr><td>Packed 8192, H=16, D=128</td><td class="num">18.827</td><td class="num">13.231</td><td class="num">11.146</td><td class="num"><span class="barv"><span class="bt"><i style="width:83.8%"></i></span><span>1.19</span></span></td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>On H100, on forward plus backward, the backward rewrite alone gave <a class="n" href="/numbers/#sbk.split" data-c="sbk.split">1.27-1.34×</a>, and the retile and launch order add <a class="n" href="/numbers/#sbk.split" data-c="sbk.split">1.02-1.12×</a>. On the forward alone, those two give <a class="n" href="/numbers/#sbk.split" data-c="sbk.split">1.11-1.82×</a>. The retile and launch order cost L2 reuse: in Nsight Compute on H100, the forward's hit rate fell from <a class="n" href="/numbers/#sbk.l2" data-c="sbk.l2">92%</a> to <a class="n" href="/numbers/#sbk.l2" data-c="sbk.l2">78%</a>.</p>
 <p>On H100, the tests pass <a class="n" href="/numbers/#sbk.tests" data-c="sbk.tests">99/99</a> in two runs, and <a class="n" href="/numbers/#sbk.tests" data-c="sbk.tests">56 of the 99</a> fail on the earlier head. The maintainer's GB200 run also passed. My #1319 timing is H100 only. Saturated-logit coverage reaches <a class="n" href="/numbers/#sbk.tests" data-c="sbk.tests">15 in fp16</a> and <a class="n" href="/numbers/#sbk.tests" data-c="sbk.tests">30 in bf16</a>.</p>
 <div class="tw" tabindex="0"><table class="t"><caption>On H200, a decode step grows about linearly with keys, and at batch 1 and 1024 keys it gains nothing over recomputing. <a class="n" href="/numbers/#sbk.op" data-c="sbk.op">conditions</a></caption>
@@ -111,7 +114,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><td>B=1, T=16384</td><td class="num">1082.4</td><td class="num">14190.3</td><td class="num">13.1×</td></tr>
 <tr><td>B=1, T=65536</td><td class="num">4301.8</td><td class="num">226529.2</td><td class="num">52.7×</td></tr>
 <tr><td>B=8, T=16384</td><td class="num">1272.4</td><td class="num">114637.2</td><td class="num">90.1×</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>On H200, <a class="n" href="/numbers/#sbk.op" data-c="sbk.op">90.1×</a> is the best of <a class="n" href="/numbers/#sbk.op" data-c="sbk.op">18 op-level rows</a>, and any cache gains like that against recomputing. Tests compare a <a class="n" href="/numbers/#sbk.tests12" data-c="sbk.tests12">67-token prompt</a> and later steps against one uncached forward over <a class="n" href="/numbers/#sbk.tests12" data-c="sbk.tests12">74 tokens</a>. They passed on H200.</p>
 <p>At model level on H200, a cached step stays at <a class="n" href="/numbers/#sbk.model" data-c="sbk.model">8.98-9.07 ms</a> per token at every prompt and batch size I ran. Against recomputing, that ranges from <a class="n" href="/numbers/#sbk.model" data-c="sbk.model">0.9×</a>, at <a class="n" href="/numbers/#sbk.model" data-c="sbk.model">B=1 with 512- and 2048-token prompts</a>, to <a class="n" href="/numbers/#sbk.model" data-c="sbk.model">45.5×</a>. The model has random weights, and each time is a median of <a class="n" href="/numbers/#sbk.model" data-c="sbk.model">3 calls</a>.</p>
 
@@ -123,7 +126,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><td>Forward, this PR</td><td class="num">1262 us</td><td class="num">49%</td></tr>
 <tr><td>Backward dq, this PR</td><td class="num">3808 us</td><td class="num">32%</td></tr>
 <tr><td>Backward dkv, this PR</td><td class="num">3580 us</td><td class="num">35%</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>On H100, no pipe saturates in the backward: ALU runs <a class="n" href="/numbers/#sbk.pipes" data-c="sbk.pipes">22-32%</a> and XU <a class="n" href="/numbers/#sbk.pipes" data-c="sbk.pipes">14-18%</a>. Snapshot traffic isn't the limit: dq's DRAM writes are <a class="n" href="/numbers/#sbk.pipes" data-c="sbk.pipes">about 3%</a> of HBM bandwidth, and dkv reads at a <a class="n" href="/numbers/#sbk.pipes" data-c="sbk.pipes">96%</a> L2 hit rate. Registers cap occupancy: at <a class="n" href="/numbers/#sbk.occ" data-c="sbk.occ">255 registers</a> per thread, <a class="n" href="/numbers/#sbk.occ" data-c="sbk.occ">2 CTAs of 4 warps</a> fit on an SM, which is <a class="n" href="/numbers/#sbk.occ" data-c="sbk.occ">8 of 64 warps</a>, or <a class="n" href="/numbers/#sbk.occ" data-c="sbk.occ">12.5%</a>. The retile did not raise it: CTAs per SM went from <a class="n" href="/numbers/#sbk.occ" data-c="sbk.occ">1 to 2</a>, and each CTA from <a class="n" href="/numbers/#sbk.occ" data-c="sbk.occ">8 warps to 4</a>. I read the remaining cost as stalls on dependent fp32 scan and exp2/log2 results. That is inference, not a line-level measurement.</p>
 
 <h2 id="what-it-doesnt-show">What it doesn't show</h2>

@@ -9,7 +9,7 @@ if(reduce||qs.has('static')||!back||!over)return;
 const bx=back.getContext('2d'),ox=over.getContext('2d');
 const N=(navigator.hardwareConcurrency||8)<4?800:1000;
 const AMB=[150,170,200];
-let W=0,H=0,dpr=1,mx=-999,my=-999,tt=0,running=false,cur=null,tint=AMB.slice(),tintT=AMB.slice(),last=0;
+let lastWake=0,W=0,H=0,dpr=1,mx=-999,my=-999,tt=0,running=false,cur=null,tint=AMB.slice(),tintT=AMB.slice(),last=0;
 const P=[],idx=[];
 for(let i=0;i<N;i++){idx.push(i);P.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,hx:0,hy:0,vis:-1,r:.7,a:0,c:AMB.slice(),tr:.7,ta:0,tc:AMB,sq:0,tsq:0,h:0,b:0,ox:0,oy:0,e:.055+Math.random()*.07,fly:0,pu:0});}
 const shuffle=()=>{for(let i=N-1;i>0;i--){const j=Math.random()*(i+1)|0,t=idx[i];idx[i]=idx[j];idx[j]=t;}};
@@ -69,14 +69,15 @@ function text(h,opts){
     const col=(h.dataset.rgb||'255,255,255').split(',').map(Number);
     pts.forEach((q,i)=>{const p=P[idx[i]];p.b=1;p.fly=0;p.ox=q[0];p.oy=q[1];p.tr=s*.36;p.ta=.95;p.tc=col;p.h=0;p.tsq=0;p.pu=0;});
     if(opts&&opts.ttl)h.classList.add('dotting');
-    cur={zone:h,ttl:opts&&opts.ttl?performance.now()+opts.ttl:0,again:()=>{cur=null;text(h,opts);}};
+    cur={zone:h,ttl:opts&&opts.ttl?performance.now()+opts.ttl:0,again:()=>{cur=null;text(h,opts);}};wake();
   };
   (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(go);
 }
 
+const wake=()=>{lastWake=performance.now();if(!running&&!document.hidden&&W>880){running=true;last=0;requestAnimationFrame(draw);}};
 function draw(now){
-  if(document.hidden){running=false;return;}
-  running=true;tt+=.006;
+  if(document.hidden||W<=880){running=false;if(W<=880){bx.setTransform(1,0,0,1,0,0);bx.clearRect(0,0,back.width,back.height);ox.setTransform(1,0,0,1,0,0);ox.clearRect(0,0,over.width,over.height);}return;}
+  running=true;tt+=.006;let active=false;
   const dt=Math.min(100,last?now-last:16.67)/16.67;last=now;const ease=e=>1-Math.pow(1-e,dt);const k14=ease(.14),k10=ease(.1),k20=ease(.2);
   bx.setTransform(dpr,0,0,dpr,0,0);bx.clearRect(0,0,W,H);ox.setTransform(dpr,0,0,dpr,0,0);ox.clearRect(0,0,W,H);
   let zr=null;
@@ -94,8 +95,9 @@ function draw(now){
     }else{
       tx=p.hx;ty=p.hy;tc=tint;
       if(p.vis<0){ta=0;tr=.7;}
-      else{tr=1.05+infl*2.4+Math.sin(tt*2+p.hx*.01+p.hy*.01)*.25;ta=(p.vis?.3:.16)+infl*.5;}
+      else{tr=1.05+infl*1.5+Math.sin(tt*2+p.hx*.01+p.hy*.01)*.25;ta=(p.vis?.3:.16)+infl*.34;}
     }
+    if(!active&&(Math.abs(tx-p.x)+Math.abs(ty-p.y)>.3||Math.abs(ta-p.a)>.006||Math.abs(tr-p.r)>.03))active=true;
     const ke=1-Math.pow(1-p.e,dt);p.x+=(tx-p.x)*ke;p.y+=(ty-p.y)*ke;p.r+=(tr-p.r)*k14;p.a+=(ta-p.a)*k10;p.sq+=(p.tsq-p.sq)*k20;
     p.c[0]+=(tc[0]-p.c[0])*k10;p.c[1]+=(tc[1]-p.c[1])*k10;p.c[2]+=(tc[2]-p.c[2])*k10;
     if(p.fly&&Math.abs(p.x-p.hx)+Math.abs(p.y-p.hy)<4)p.fly=0;
@@ -108,19 +110,19 @@ function draw(now){
     if(p.sq>.5)g.fillRect(p.x-r,p.y-r,2*r,2*r);
     else{g.beginPath();g.arc(p.x,p.y,r,0,6.2832);g.fill();}
   }
-  requestAnimationFrame(draw);
+  if(active||(cur&&cur.pulse)||now-lastWake<700||Math.abs(tint[0]-tintT[0])+Math.abs(tint[1]-tintT[1])+Math.abs(tint[2]-tintT[2])>2)requestAnimationFrame(draw);else running=false;
 }
 
 api.on=true;
 const mark=()=>root.classList.toggle('field-on',api.on&&innerWidth>880&&!root.classList.contains('short'));
 mark();
-api.bind=bind;api.text=text;api.release=release;
+api.bind=(z,o)=>{wake();bind(z,o);};api.text=(h,o)=>{wake();text(h,o);};api.release=()=>{wake();release();};
 api.releaseIf=z=>{if(typeof z==='string')z=document.querySelector(z);if(cur&&cur.zone===z)release();};
-api.tint=c=>{tintT=c||AMB;};
+api.tint=c=>{tintT=c||AMB;wake();};
 api.sync=()=>{mark();if(root.classList.contains('short'))release();};
 layout();
-addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;},{passive:true});
-addEventListener('resize',()=>{layout();mark();if(innerWidth<=880)release();else if(cur&&cur.again)cur.again();});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!running)requestAnimationFrame(draw);});
-requestAnimationFrame(draw);
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;wake();},{passive:true});addEventListener('scroll',wake,{passive:true});
+addEventListener('resize',()=>{layout();mark();if(innerWidth<=880)release();else if(cur&&cur.again)cur.again();wake();});
+document.addEventListener('visibilitychange',wake);
+wake();
 })();

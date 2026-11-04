@@ -15,9 +15,11 @@
 <meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(/assets/fonts/space-grotesk-latin-wght-normal.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(/assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format('woff2')}
+.skip{position:fixed;left:8px;top:-60px;z-index:200;background:#EEEFF1;color:#060708;padding:10px 16px;border-radius:8px;font-size:14px}.skip:focus{top:8px}
 :root{--bg:#14171e;--ink:#EEEFF1;--mid:#A2A7AF;--dim:#8D939C;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
@@ -70,14 +72,15 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 .claim h2{font-size:18px;font-weight:500;line-height:1.35}
 .claim .v{font-family:var(--mono);font-size:13px;color:var(--i);margin-top:6px;line-height:1.5}
 .claim p{font-size:15px;line-height:1.55;color:var(--mid);margin-top:6px}
-.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
 @media(max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}.toc{display:none}.nl a.ha{display:none}}
 .brand{white-space:nowrap}@media(max-width:560px){.nl a:not(:last-child){display:none}}
 </style>
 </head>
 <body>
-<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><div class="nl"><a style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a class=on style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a></div></header>
-<main style="--c:var(--a)">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><nav class="nl" aria-label="Main"><a style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a class=on style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a></nav></header>
+<main id="main" style="--c:var(--a)">
 <div class="op"><a class="crumb" href="/#ch-a">Agents</a><h1>bert</h1><p class="lead">A local MCP server that gives a coding agent searchable memory of a project, measured against agentic grep, including where grep scored higher.</p><p class="state">Public repo</p><div class="keys"><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#bert.large" data-c="bert.large">0.90</a></div><div class="kl">bert and grep at 1.26M tokens</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#bert.fullctx" data-c="bert.fullctx">0.08</a></div><div class="kl">full context at the same size</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#bert.code" data-c="bert.code">0.97 to 0.86</a></div><div class="kl">grep against bert on real code</div></div></div></div>
 <div class="grid"><article class="prose">
 <h2 id="what-i-built">What I built</h2>
@@ -94,7 +97,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><th scope="row">Full context</th><td class="num"><span class="barv"><span class="bt"><i style="width:90.0%"></i></span><span>0.90</span></span></td><td class="num">[0.80, 0.98]</td><td class="num"><span class="barv"><span class="bt"><i style="width:8.0%"></i></span><span>0.08</span></span></td><td class="num">[0.02, 0.16]</td></tr>
 <tr><th scope="row">Naive vector</th><td class="num"><span class="barv"><span class="bt"><i style="width:50.0%"></i></span><span>0.50</span></span></td><td class="num">[0.36, 0.64]</td><td class="num"><span class="barv"><span class="bt"><i style="width:40.0%"></i></span><span>0.40</span></span></td><td class="num">[0.26, 0.54]</td></tr>
 <tr><th scope="row">No memory</th><td class="num"><span class="barv"><span class="bt"><i style="width:10.0%"></i></span><span>0.10</span></span></td><td class="num">[0.02, 0.20]</td><td class="num"><span class="barv"><span class="bt"><i style="width:4.0%"></i></span><span>0.04</span></span></td><td class="num">[0.00, 0.10]</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>At the <a class="n" href="/numbers/#bert.corpus" data-c="bert.corpus">1.26M-token</a> size, <a class="n" href="/numbers/#bert.corpus" data-c="bert.corpus">about 6×</a> the window, bert and grep <a class="n" href="/numbers/#bert.large" data-c="bert.large">both scored 0.90</a> (<a class="n" href="/numbers/#bertc.pair" data-c="bertc.pair">45/50</a> and <a class="n" href="/numbers/#bertc.pair" data-c="bertc.pair">44/49</a>), with no significant difference. The paired difference is <a class="n" href="/numbers/#bertc.pair" data-c="bertc.pair">+0.020</a>, interval <a class="n" href="/numbers/#bertc.pair" data-c="bertc.pair">-0.08 to +0.12</a>, on <a class="n" href="/numbers/#bertc.pair" data-c="bertc.pair">7 discordant questions</a>. Grep used a <a class="n" href="/numbers/#bert.tokens" data-c="bert.tokens">median 1.46×</a> bert's tokens per question, counting cache reads in full.</p>
 <p>Full context <a class="n" href="/numbers/#bert.fullctx" data-c="bert.fullctx">fell to 0.08</a>. That reader was capped at a <a class="n" href="/numbers/#bertc.budget" data-c="bertc.budget">120K budget</a>, which keeps only <a class="n" href="/numbers/#bertc.budget" data-c="bertc.budget">about the newest 10%</a>. I read this as truncation losing history, not as evidence for bert. A <a class="n" href="/numbers/#bertc.budget" data-c="bertc.budget">1M-context reader</a> would hold <a class="n" href="/numbers/#bertc.budget" data-c="bertc.budget">about 80%</a> of this corpus and would not collapse the same way. I did not run one.</p>
 
@@ -112,7 +115,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><th scope="row">Smart truncation</th><td>One-shot</td><td class="num"><span class="barv"><span class="bt"><i style="width:17.7%"></i></span><span>0.177</span></span></td><td class="num">[0.133, 0.225]</td></tr>
 <tr><th scope="row">Aider RepoMap</th><td>One-shot</td><td class="num"><span class="barv"><span class="bt"><i style="width:17.7%"></i></span><span>0.177</span></span></td><td class="num">[0.129, 0.225]</td></tr>
 <tr><th scope="row">Naive truncation</th><td>One-shot</td><td class="num"><span class="barv"><span class="bt"><i style="width:12.0%"></i></span><span>0.120</span></span></td><td class="num">[0.080, 0.161]</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>On <a class="n" href="/numbers/#bertc.semantic" data-c="bertc.semantic">30 conceptual questions</a>, grep also scored higher, <a class="n" href="/numbers/#bertc.semantic" data-c="bertc.semantic">0.967 to 0.900</a>, on <a class="n" href="/numbers/#bertc.semantic" data-c="bertc.semantic">4 discordant questions</a>, too few to separate them. There, grep used more tokens.</p>
 
 <h3>Orchestration</h3>
@@ -129,7 +132,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <tr><th scope="row">Dense only</th><td class="num"><span class="barv"><span class="bt"><i style="width:74.0%"></i></span><span>0.740</span></span></td><td class="num">[0.696, 0.779]</td><td class="num">17 ms</td></tr>
 <tr><th scope="row">Hybrid, no rerank</th><td class="num"><span class="barv"><span class="bt"><i style="width:71.9%"></i></span><span>0.719</span></span></td><td class="num">[0.676, 0.759]</td><td class="num">23 ms</td></tr>
 <tr><th scope="row">BM25 only</th><td class="num"><span class="barv"><span class="bt"><i style="width:65.8%"></i></span><span>0.658</span></span></td><td class="num">[0.614, 0.703]</td><td class="num">8 ms</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 <p>I read <a class="n" href="/numbers/#bert.beir" data-c="bert.beir">0.745</a> against <a class="n" href="/numbers/#bert.beir" data-c="bert.beir">0.740</a> as the embedding model earning most of it. Rerank moved hybrid <a class="n" href="/numbers/#bertc.beir3" data-c="bertc.beir3">0.356 to 0.434</a> on fiqa and <a class="n" href="/numbers/#bertc.beir3" data-c="bertc.beir3">0.355 to 0.354</a> on nfcorpus, so its effect depends on the dataset.</p>
 
 <h2 id="what-limited-it">What limited it</h2>
