@@ -1,6 +1,6 @@
 {
  "as_of": "2026-11-03",
- "site_commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+ "site_commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
  "claims": [
   {
    "id": "profile.degree",
@@ -317,7 +317,7 @@
     ],
     "unit": "x"
    },
-   "conditions": "H100 SXM, same session, 8 shapes, against the faster of dense and varlen at 7619a3c. Higher means slower",
+   "conditions": "Forward plus backward. H100 SXM, same session, 8 shapes, against the faster of dense and varlen at 7619a3c. Higher means slower. Forward alone is 1.07-1.54x",
    "source": [
     {
      "type": "pr",
@@ -393,7 +393,8 @@
    "id": "pr38338.tflops",
    "page": "home",
    "shows": [
-    "1,014-1,076 TFLOP/s"
+    "1,014-1,076 TFLOP/s",
+    "batch 8192 up"
    ],
    "means": "Throughput held on one shape",
    "value": {
@@ -403,7 +404,7 @@
     ],
     "unit": "TFLOP/s"
    },
-   "conditions": "RTX 5090, down shape 4096x14336, autotuned tiles, hot L2, about 2 hours apart with 0.988-1.046x drift",
+   "conditions": "RTX 5090, down shape 4096x14336, M=8192 to 49152, autotuned tiles, hot L2, about 2 hours apart with 0.988-1.046x drift. M=1024 and 2048 run 946 and 889",
    "source": [
     {
      "type": "pr",
@@ -640,7 +641,7 @@
     "value": 1.81,
     "unit": "%"
    },
-   "conditions": "Qwen3-30B-A3B, one H200, CPU ngram drafts, 2 synthetic workloads, offline batches, 3 repeats. 0.00 / 1.81 / 1.16 / 1.18% at B=1/4/16/64",
+   "conditions": "Qwen3-30B-A3B, one H200, CPU ngram drafts, 2 synthetic workloads, offline batches, 3 repeats. 0.00 / 1.81 / 1.16 / 1.18% at B=1/4/16/64. Prices identifying the workload only. No controller was built, so per-step control is unmeasured",
    "source": [
     {
      "type": "comment",
@@ -733,7 +734,7 @@
    ],
    "means": "Full context at the larger memory",
    "value": 0.08,
-   "conditions": "Reader capped at a 120K budget, so it keeps only about the newest 10%",
+   "conditions": "Reader capped at a 120K budget, so it keeps only about the newest 10%. A 1M-context reader would hold about 80% and would not collapse",
    "source": [
     {
      "type": "repo",
@@ -783,7 +784,7 @@
     "value": 1.46,
     "unit": "x"
    },
-   "conditions": "Paired per-question ratio, cache reads counted in full. Means 282K vs 149K, n=49. Grep higher on 86%",
+   "conditions": "Paired per-question ratio, cache reads counted in full. Means 282K (n=49) and 149K (n=50), or 118K on the shared 49. Grep higher on 86%",
    "source": [
     {
      "type": "repo",
@@ -823,14 +824,14 @@
    "page": "home",
    "shows": [
     "0.10 → 0.85",
-    "from 0.10 to 0.85"
+    "same 20-question eval from 0.10 to 0.85"
    ],
-   "means": "Held-out eval before and after the retriever fix",
+   "means": "Same 20-question eval before and after the retriever fix",
    "value": {
     "before": 0.1,
     "after": 0.85
    },
-   "conditions": "n=20, 131K-token httpx and starlette corpus, llama-3.3-70b reader, non-Claude grader. Directional, no significance test",
+   "conditions": "n=20, 131K-token httpx and starlette corpus, llama-3.3-70b reader, non-Claude grader. The same questions exposed and rescored the bug. Directional, no significance test",
    "source": [
     {
      "type": "repo",
@@ -1184,7 +1185,7 @@
     "value": 1.256,
     "unit": "x"
    },
-   "conditions": "1.731 / 1.378",
+   "conditions": "1.731 / 1.378. Bare and fused CSVs are 2 days apart. The bf16 lift is about 1.45x",
    "source": [
     {
      "type": "repo",
@@ -1316,7 +1317,7 @@
     "median": 47,
     "machines": 25
    },
-   "conditions": "gpt-oss C=14. Limit from Belady's MIN and probed read rates. 5 unstable rentals excluded",
+   "conditions": "gpt-oss C=14. Limit from Belady's MIN and probed read rates, so relative to the probe, not physical. Consumer scope set after the data. 5 unstable rentals excluded. 3 server machines reach 12-46%",
    "source": [
     {
      "type": "repo",
@@ -1523,14 +1524,18 @@
    "page": "home",
    "shows": [
     "5.55× at S=1024",
-    "5.55×"
+    "2.78-5.55×",
+    "5 sizes"
    ],
    "means": "Fused SDPA against manual matmul and softmax",
    "value": {
-    "value": 5.55,
+    "range": [
+     2.78,
+     5.55
+    ],
     "unit": "x"
    },
-   "conditions": "B=1, H=8, S=1024, D=64, fp16, p50 latency. 2.61 ms against 0.47 ms",
+   "conditions": "B=1, H=8, D=64, fp16, p50 latency. S=64 to 1024. Best at S=1024, 2.61 ms against 0.47 ms",
    "source": [
     {
      "type": "repo",
@@ -1604,12 +1609,12 @@
    ],
    "means": "NVIDIA certificate date",
    "value": "2025-07-14",
-   "conditions": "Accelerated Computing in Modern CUDA C++",
+   "conditions": "Getting Started with Accelerated Computing in Modern CUDA C++",
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
+     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
      "path": "site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
      "note": "Issue date on the certificate"
     }
@@ -1628,8 +1633,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
+     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
      "path": "site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
      "note": "Issue date on the certificate"
     }
@@ -1648,8 +1653,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/reports",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/reports",
+     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
      "path": "site/reports",
      "note": "Dated on each page"
     }
@@ -1671,17 +1676,17 @@
     "value": 100,
     "qualifier": "over"
    },
-   "conditions": "One operator, one MacBook, about 2 months",
+   "conditions": "One operator, one MacBook. The published paper reports about 90 cycles over about two weeks",
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/Recursive_Verification_Surface_Collapse_paper.pdf",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
      "path": "site/Recursive_Verification_Surface_Collapse_paper.pdf",
      "note": "Published paper"
     }
    ],
-   "checked": "Matched the paper only"
+   "checked": "Page figure. Differs from the paper"
   },
   {
    "id": "note.judges",
@@ -1697,8 +1702,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/notes/llm-judge-bias/index.html",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/notes/llm-judge-bias/index.html",
+     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
      "path": "site/notes/llm-judge-bias/index.html",
      "note": "Published note"
     }
@@ -1727,8 +1732,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/notes/tier-per-task/index.html",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/notes/tier-per-task/index.html",
+     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
      "path": "site/notes/tier-per-task/index.html",
      "note": "Published note"
     }
@@ -1806,13 +1811,13 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/Recursive_Verification_Surface_Collapse_paper.pdf",
-     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
      "path": "site/Recursive_Verification_Surface_Collapse_paper.pdf",
      "note": "Published paper"
     }
    ],
-   "checked": "Matched the paper. \"Cycle 96\" and \"cycle 130\" are on the page only"
+   "checked": "1,688 and 7 match the paper. 32 is PASS_WITH_ADVISORIES cycles there. 9 consecutive and 17 cycles are page only"
   }
  ]
 }
