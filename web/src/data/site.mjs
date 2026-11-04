@@ -100,7 +100,7 @@ export const WORK = {
   i: [
     {
       title: 'Where the Seconds Go: MoE decode from host memory', href: '/work/where-the-seconds-go/', state: 'Public manuscript and code, not peer reviewed',
-      blurb: 'Built a llama.cpp expert cache for batch-1 MoE decode when the model doesn\'t fit on the GPU. On RTX 5090 hosts, gpt-oss-120b ran at [[sec.speed|58-153 tokens/s]] with [[sec.speed|11-40%]] of its experts on the GPU, and the cache ran faster than FreeToken in [[sec.vs_ft|11 of 12]] configurations. At gpt-oss\'s smallest cache on [[sec.limit|25 consumer machines]], it reached [[sec.limit|31-54%]] of a computed speed limit. I chose that consumer scope after seeing the data and excluded [[sec.limit|5 unstable rentals]].',
+      blurb: 'Built a llama.cpp expert cache for batch-1 MoE decode when the model doesn\'t fit on the GPU. On RTX 5090 hosts, gpt-oss-120b ran at [[sec.speed|58-153 tokens/s]] with [[sec.speed|11-40%]] of its experts on the GPU, and the cache ran faster than FreeToken in [[sec.vs_ft|11 of 12]] configurations. At gpt-oss\'s smallest cache on [[sec.limit|25 consumer machines]], it reached [[sec.limit|31-54%]] of a computed speed limit. I chose that consumer scope after seeing the data.',
     },
     {
       title: 'vLLM RFC #46295: speculative decoding on MoE', href: 'https://github.com/vllm-project/vllm/issues/46295#issuecomment-5788867616', state: 'Comment on someone else\'s RFC',

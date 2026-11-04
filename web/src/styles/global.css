@@ -71,6 +71,7 @@ code { font-family: var(--mono); font-size: .92em; }
 .span .barl { display: block; height: 14px; background: var(--b); }
 .mark { position: absolute; width: 14px; height: 14px; background: var(--c); border: 2px solid var(--bg); transform: rotate(45deg); }
 .mlabel { position: absolute; display: flex; gap: 8px; color: var(--c); white-space: nowrap; }
+.mlabel a { display: inline-flex; align-items: center; min-height: 24px; transform: translateY(-3px); }
 .mlabel a:hover { color: var(--c); text-decoration-thickness: 2px; }
 
 /* Sections */
@@ -156,6 +157,7 @@ dialog.pop button { font: inherit; color: var(--hi); background: none; border: 1
 .claims { display: grid; gap: 0; }
 .claim { padding: 14px 0; border-top: 1px solid var(--line); scroll-margin-top: 76px; }
 .claim:target { background: #181B20; outline: 2px solid var(--a); outline-offset: 4px; }
+.claim { overflow-wrap: anywhere; }
 .claim h3 { font: 700 16px var(--mono); color: var(--hi); }
 .claim p { margin-top: 4px; font-size: 16px; max-width: 80ch; }
 

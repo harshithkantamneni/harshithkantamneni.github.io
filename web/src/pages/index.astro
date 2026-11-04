@@ -67,7 +67,7 @@ const blurbs = {
           <h3><a href={w.href}>{w.title}</a></h3>
           <p set:html={rich(w.blurb)} />
         </div>
-        <div class="state"><span set:html={rich(`[[writing.dates|${w.date}]]`)} /><br>{w.kind}</div>
+        <div class="state">{w.date}<br>{w.kind}</div>
       </article>
     ))}
   </section>
