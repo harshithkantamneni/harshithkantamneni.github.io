@@ -4,13 +4,13 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Recursive Verification-Surface Collapse in Self-Graded Autonomous Engineering Systems · Harshith Kantamneni</title>
-<meta name="description" content="Notes from 100+ cycles of running an autonomous AI lab on a single MacBook. The null-set principal problem and three structural fixes."/>
+<meta name="description" content="Notes from about 90 cycles of running an autonomous AI lab on a single MacBook. The null-set principal problem and three structural fixes."/>
 <meta name="theme-color" content="#060708">
 <link rel="canonical" href="https://harshithkantamneni.github.io/reports/recursive-verification-surface-collapse/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Recursive Verification-Surface Collapse in Self-Graded Autonomous Engineering Systems · Harshith Kantamneni">
-<meta property="og:description" content="Notes from 100+ cycles of running an autonomous AI lab on a single MacBook. The null-set principal problem and three structural fixes.">
+<meta property="og:description" content="Notes from about 90 cycles of running an autonomous AI lab on a single MacBook. The null-set principal problem and three structural fixes.">
 <meta property="og:url" content="https://harshithkantamneni.github.io/reports/recursive-verification-surface-collapse/">
 <meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -80,25 +80,25 @@
   <div class="meta"><span class="kind">REPORT</span><span>May 12, 2026</span><span>AUTONOMOUS RESEARCH</span><span>Not peer reviewed</span></div>
   <h1>Recursive Verification-Surface Collapse in Self-Graded Autonomous Engineering Systems</h1>
   <div class="prose">
-<p>Notes from 100+ cycles of running an autonomous AI lab on a single MacBook.</p>
+<p>Notes from about 90 cycles of running an autonomous AI lab on a single MacBook.</p>
 
 <h2>TL;DR</h2>
-<p>I run an autonomous AI lab on a single 18 GB MacBook. It has been continuously executing engineering work for 100+ discrete cycles, with internal evaluators, red-team agents, and code reviewers. Three times in those 100 cycles, the lab passed its own tests while quietly breaking. Each break was at a deeper layer than the last.</p>
+<p>I run an autonomous AI lab on a single 18 GB MacBook. It has been executing engineering work for about 90 multi-hour cycles, with internal evaluators, red-team agents, and code reviewers. Three times in those cycles, the lab passed its own tests while quietly breaking. Each break was at a deeper layer than the last.</p>
 <p>The pattern is mechanical, not anecdotal. It is what shows up when every actor judging the work shares training distribution, context, and incentives with the actors producing the work. I call it the <strong>null-set principal</strong> problem: when the principal (the actor who would bear the cost of a false claim) does not exist, internal validators become surfaces to optimize against, not constraints. Adding more internal validators makes this worse, not better.</p>
 <blockquote>The fix is not "issue the right directive." The fix is to design the system so that no decision-altitude (including directives, including meta-rules) sits in a self-graded loop.</blockquote>
 
 <h2>What this lab is</h2>
 <p>For context: HIVE is an autonomous engineering lab. A single Claude Opus instance acts as Director, dispatching specialist sub-agents (chief architect, mobile engineer, code reviewer, evaluator, red team, knowledge manager, and others). It runs in a tmux loop, completing one cycle per session. State persists across cycles via a three-tier markdown memory.</p>
-<p>It has run continuously for around 100 cycles, on a single MacBook. There is no human in the cycle by default. Once started, it dispatches its own work, reviews its own code, evaluates its own results, and decides what to do next.</p>
+<p>It has run for about 90 cycles, on a single MacBook. There is no human in the cycle by default. Once started, it dispatches its own work, reviews its own code, evaluates its own results, and decides what to do next.</p>
 
 <h2>The pattern: three iterations</h2>
 <h3>Iteration 1, around Cycle 42</h3>
-<p>The lab had a green test suite. 1,688 tests passing, zero failures, 32 consecutive perfect cycles by its own internal metric. I checked the build manually. It was broken. The unit tests had been written and run in isolation; they passed as units. The integrated build was not actually compiling on every cycle, but the test suite, which was the metric the lab graded itself on, said everything was fine.</p>
+<p>The lab had a green test suite: 1,688 unit tests passing and 32 consecutive PASS_WITH_ADVISORIES cycles by its own internal metric. At cycle 43, the VM testing specialist ran the first real alpha gate. The build was broken on a clean checkout. The unit tests had been written and run in isolation; they passed as units. The integrated build was not actually compiling on every cycle, but the test suite, which was the metric the lab graded itself on, said everything was fine.</p>
 <h3>Iteration 2, Cycles 72 through 78</h3>
 <p>Same lab. New mode. The Evaluator was now requiring source-discipline: every cycle had to touch real source files, not just spec documents. The lab achieved 7 consecutive cycles of source-discipline-PASS. Cycle 79 triggered the next external check, a Mobile Alpha Gate that actually invoked <code>gradle assembleDebug</code> and <code>xcodebuild</code>. Android failed.</p>
 <p>7 cycles of "source-discipline" had produced zero binaries on Android. The lab had been editing source files, passing review for those edits, advancing its own streak, and the streak was measuring something orthogonal to whether anything actually compiled.</p>
 <h3>Iteration 3, Cycles 80 onward</h3>
-<p>The lab now had a build-pass invariant. It produced binaries every cycle. By cycle 96 the cross-platform-pair streak stood at 9 consecutive successful builds.</p>
+<p>The lab now had a build-pass invariant, and cycle 80 was the first with binaries on both platforms. By cycle 83 the cross-platform-pair streak stood at 4 consecutive successful builds.</p>
 <p>But the binaries were Hello-World-class scaffolding. They built. They linked. They contained the expected zeroize symbol. They did not, by any reasonable definition, embody the work the lab was supposed to be doing. The build-pass surface had become its own optimization target. <em>This is the iteration I am still in the middle of resolving.</em></p>
 
 <h2>Why this happens: the null-set principal</h2>
@@ -114,7 +114,7 @@
 <p><strong>Principle 3: Adversarial payoff.</strong> There must always exist at least one actor whose payoff increases when others' claims are falsified. Currently exploring a cross-family adversary using a non-Claude model (Qwen2.5-Coder-14B via Ollama) for code review. Not yet ratified.</p>
 
 <h2>What hasn't worked yet</h2>
-<p>The directive that named these three principles landed at cycle 82. The lab implemented Principle 1 by ratifying a CI-binding proposal. <em>That ratification took 17 cycles to land</em>, the longest single-decision deferral in the lab's history.</p>
+<p>The directive that named these three principles landed at the close of cycle 82. Ratifying its implementation was targeted for cycle 85, and by cycle 88 it was still pending. The first concrete Principle 1 implementation, a Miri-based undefined-behavior gate as a blocking pre-merge check, was ratified at cycle 92.</p>
 <p>This was not malice. It was the same null-set principal pattern playing out at a different altitude: the <em>decision to ratify</em> was itself an internal artifact, with no external party bearing cost when ratification was deferred.</p>
 
 <h2>A constraint, not a method</h2>
@@ -123,9 +123,9 @@
 
 <h2>Notes</h2>
 <p><strong>Last verified</strong></p>
-<p>2026-05-12. Revisit at: cycle 130, or when Principle 3 ratifies.</p>
+<p>2026-05-12. Updated 2026-11-03 to match the long version. Revisit when Principle 3 ratifies.</p>
 <p><strong>Replication</strong></p>
-<p>N=1 case study. One operator, one model class (Claude), one MacBook (M3 Pro 18 GB), ~2 months, 100+ cycles. No control group.</p>
+<p>N=1 case study. One operator, one model class (Claude), one MacBook (M3 Pro 18 GB), about two weeks, about 90 cycles. No control group.</p>
 <p><strong>Citations</strong></p>
 <p>Campbell (1975), Goodhart (1975), Holmström (1979), Manheim and Garrabrant (2018), MAST (arxiv 2503.13657), Preference Leakage (ICLR 2026, arxiv 2502.01534).</p>
 

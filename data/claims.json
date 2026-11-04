@@ -1,6 +1,6 @@
 {
  "as_of": "2026-11-03",
- "site_commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
+ "site_commit": "14081bdb295e85221d745c17824da6db4f512cd0",
  "claims": [
   {
    "id": "profile.degree",
@@ -1548,26 +1548,6 @@
    "checked": "Recomputed from the CSV"
   },
   {
-   "id": "ml.gain",
-   "page": "home",
-   "shows": [
-    "3.2%"
-   ],
-   "means": "End-to-end training time improvement",
-   "value": {
-    "value": 3.2,
-    "unit": "%"
-   },
-   "conditions": "15.53 s to 15.04 s, a 0.49 s gain, from the report table",
-   "source": [
-    {
-     "type": "not_public",
-     "note": "ECE 759 course report. Not in the public repo"
-    }
-   ],
-   "checked": "Recomputed from the report table"
-  },
-  {
    "id": "ml.team",
    "page": "home",
    "shows": [
@@ -1613,8 +1593,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
-     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
      "path": "site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
      "note": "Issue date on the certificate"
     }
@@ -1633,8 +1613,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
-     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
      "path": "site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
      "note": "Issue date on the certificate"
     }
@@ -1653,8 +1633,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/reports",
-     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/reports",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
      "path": "site/reports",
      "note": "Dated on each page"
     }
@@ -1665,28 +1645,24 @@
    "id": "writing.cycles",
    "page": "home",
    "shows": [
-    "100+ autonomous cycles",
-    "100+ cycles",
-    "100+ discrete cycles",
-    "in those 100 cycles",
-    "around 100 cycles"
+    "about 90 autonomous cycles"
    ],
    "means": "Cycles behind the verification report",
    "value": {
-    "value": 100,
-    "qualifier": "over"
+    "value": 90,
+    "qualifier": "about"
    },
-   "conditions": "One operator, one MacBook. The published paper reports about 90 cycles over about two weeks",
+   "conditions": "One operator, one MacBook, about two weeks, per the published paper",
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/Recursive_Verification_Surface_Collapse_paper.pdf",
-     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
      "path": "site/Recursive_Verification_Surface_Collapse_paper.pdf",
      "note": "Published paper"
     }
    ],
-   "checked": "Page figure. Differs from the paper"
+   "checked": "Matched the paper"
   },
   {
    "id": "note.judges",
@@ -1702,8 +1678,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/notes/llm-judge-bias/index.html",
-     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/notes/llm-judge-bias/index.html",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
      "path": "site/notes/llm-judge-bias/index.html",
      "note": "Published note"
     }
@@ -1732,8 +1708,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/notes/tier-per-task/index.html",
-     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/notes/tier-per-task/index.html",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
      "path": "site/notes/tier-per-task/index.html",
      "note": "Published note"
     }
@@ -1793,31 +1769,29 @@
    "id": "rvsc.streaks",
    "page": "reports/recursive-verification-surface-collapse",
    "shows": [
-    "1,688 tests",
+    "1,688 unit tests",
     "32 consecutive",
     "7 consecutive",
-    "9 consecutive",
-    "17 cycles"
+    "4 consecutive"
    ],
    "means": "Streaks and counts in the case study",
    "value": {
     "tests": 1688,
-    "perfect_cycles": 32,
+    "pass_with_advisories_cycles": 32,
     "source_discipline_cycles": 7,
-    "build_streak": 9,
-    "ratification_cycles": 17
+    "build_streak": 4
    },
    "conditions": "N=1, one operator, one model class, one MacBook, no control group",
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/aa2c84811d1c0338bf31642f8d06226ddebb72d2/site/Recursive_Verification_Surface_Collapse_paper.pdf",
-     "commit": "aa2c84811d1c0338bf31642f8d06226ddebb72d2",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/14081bdb295e85221d745c17824da6db4f512cd0/site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "commit": "14081bdb295e85221d745c17824da6db4f512cd0",
      "path": "site/Recursive_Verification_Surface_Collapse_paper.pdf",
      "note": "Published paper"
     }
    ],
-   "checked": "1,688 and 7 match the paper. 32 is PASS_WITH_ADVISORIES cycles there. 9 consecutive and 17 cycles are page only"
+   "checked": "Matched the paper"
   }
  ]
 }
