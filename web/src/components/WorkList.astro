@@ -1,0 +1,15 @@
+---
+import { prState } from '../data/site.mjs';
+import { rich } from '../lib/rich.mjs';
+
+const { items, compact = false } = Astro.props;
+---
+{items.map((w) => (
+  <article class="work">
+    <div>
+      <h3><a href={w.href}>{w.title}</a></h3>
+      {!compact && <p set:html={rich(w.blurb)} />}
+    </div>
+    <div class="state">{w.state || prState(w.pr)}</div>
+  </article>
+))}

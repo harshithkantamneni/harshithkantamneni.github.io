@@ -1,0 +1,43 @@
+---
+import Base from './Base.astro';
+import WorkList from '../components/WorkList.astro';
+import { LANES, WORK } from '../data/site.mjs';
+import { rich } from '../lib/rich.mjs';
+
+const { cls, heading, lead } = Astro.props;
+const lane = LANES.find((l) => l.cls === cls);
+const others = LANES.filter((l) => l.cls !== cls);
+---
+<Base
+  title={`${heading}: Harshith Kantamneni`}
+  description={lead}
+  image={`/og/${lane.id}.png`}
+  active={cls}
+  resume={lane.resume.href}
+>
+  <div class={`wrap ${cls}`}>
+    <div class="page-head">
+      <h1>{heading}</h1>
+      <p class="lead">{lead}</p>
+      <p class="lead" set:html={rich(lane.proof)} />
+      <div class="meta">
+        <span>Milwaukee, WI (open to relocation)</span>
+        <span>Open to full-time roles</span>
+      </div>
+      <a class="btn" href={lane.resume.href}>{lane.resume.label}</a>
+    </div>
+    <section class="section">
+      <div class="sec-head"><h2 class="layer">{lane.title}</h2></div>
+      <WorkList items={WORK[cls]} />
+    </section>
+  </div>
+  {others.map((l) => (
+    <section class={`section wrap ${l.cls}`}>
+      <div class="sec-head">
+        <h2 class="layer"><a href={l.track} style="text-decoration:none">Also: {l.title}</a></h2>
+        <a class="res" href={l.resume.href}>{l.resume.label}</a>
+      </div>
+      <WorkList items={WORK[l.cls]} compact />
+    </section>
+  ))}
+</Base>

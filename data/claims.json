@@ -1,6 +1,6 @@
 {
  "as_of": "2026-11-03",
- "site_commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
+ "site_commit": "a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d",
  "claims": [
   {
    "id": "profile.degree",
@@ -1594,8 +1594,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
-     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d/site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
+     "commit": "a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d",
      "path": "site/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf",
      "note": "Issue date on the certificate"
     }
@@ -1614,8 +1614,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
-     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d/site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
+     "commit": "a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d",
      "path": "site/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf",
      "note": "Issue date on the certificate"
     }
@@ -1635,8 +1635,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/reports",
-     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d/site/reports",
+     "commit": "a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d",
      "path": "site/reports",
      "note": "Dated on each page"
     }
@@ -1658,8 +1658,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/Recursive_Verification_Surface_Collapse_paper.pdf",
-     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d/site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "commit": "a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d",
      "path": "site/Recursive_Verification_Surface_Collapse_paper.pdf",
      "note": "Published paper"
     }
@@ -1680,8 +1680,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/notes/llm-judge-bias/index.html",
-     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d/site/notes/llm-judge-bias/index.html",
+     "commit": "a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d",
      "path": "site/notes/llm-judge-bias/index.html",
      "note": "Published note"
     }
@@ -1710,8 +1710,8 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/notes/tier-per-task/index.html",
-     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d/site/notes/tier-per-task/index.html",
+     "commit": "a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d",
      "path": "site/notes/tier-per-task/index.html",
      "note": "Published note"
     }
@@ -1787,13 +1787,95 @@
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/6af35fa9c6b2e070ac091c8c0f405171daf27950/site/Recursive_Verification_Surface_Collapse_paper.pdf",
-     "commit": "6af35fa9c6b2e070ac091c8c0f405171daf27950",
+     "url": "https://github.com/harshithkantamneni/harshithkantamneni.github.io/blob/a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d/site/Recursive_Verification_Surface_Collapse_paper.pdf",
+     "commit": "a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d",
      "path": "site/Recursive_Verification_Surface_Collapse_paper.pdf",
      "note": "Published paper"
     }
    ],
    "checked": "Matched the paper"
+  },
+  {
+   "id": "mk.v3",
+   "page": "home",
+   "shows": [
+    "32×64×64",
+    "0.51-0.69%",
+    "3 models"
+   ],
+   "means": "Timing error of model v3 on one test tile, with predictions frozen before the rental",
+   "value": {
+    "rms_pct": {
+     "mixtral-8x7b": 0.51,
+     "phi-3.5-moe": 0.69,
+     "olmoe-1b-7b": 0.54
+    }
+   },
+   "conditions": "One GH200, bf16, 700 W limit, 1710 MHz lock, skewed routing, R3's 32x64x64 test tile. Rentals 6 and 7. This is not one of vLLM's own tiles",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/b2fb34021eb6a2030cf76b8a9cbe7270ec353c51/scripts/scoring/rental7/skew.score.txt#L10",
+     "commit": "b2fb34021eb6a2030cf76b8a9cbe7270ec353c51",
+     "path": "scripts/scoring/rental7/skew.score.txt",
+     "line": 10
+    }
+   ],
+   "checked": "Recomputed from the scorer JSON"
+  },
+  {
+   "id": "mk.decode",
+   "page": "home",
+   "shows": [
+    "11.4%",
+    "5 unseen models",
+    "1.5%"
+   ],
+   "means": "Decode blind test, pooled rms, against the bar registered then",
+   "value": {
+    "rms": 0.114,
+    "mean": 0.06,
+    "worst": 0.392,
+    "models": 5,
+    "bar": 0.015
+   },
+   "conditions": "One GH200, bf16, 700 W, 220 cells. Predicted too slow on average, mean +6.0%, worst 39.2%. Per model: DeepSeek-V2-Lite 2.35%, Qwen1.5 5.3%, Phi-3.5 9.5%, Granite-3B 13.4%, JetMoE 19.5%. No model certified",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/b2fb34021eb6a2030cf76b8a9cbe7270ec353c51/scripts/scoring/decode/blind.score.txt#L11",
+     "commit": "b2fb34021eb6a2030cf76b8a9cbe7270ec353c51",
+     "path": "scripts/scoring/decode/blind.score.txt",
+     "line": 11
+    }
+   ],
+   "checked": "Recomputed from the scorer JSON"
+  },
+  {
+   "id": "pr1223.kv",
+   "page": "home",
+   "shows": [
+    "1.15-2.19×"
+   ],
+   "means": "Multi-token steps with K/V copies removed, against develop",
+   "value": {
+    "range": [
+     1.15,
+     2.19
+    ],
+    "unit": "x"
+   },
+   "conditions": "A100, bf16, batch 1, S_q=2, S_kv=128K, 5 shapes. The gain follows the head ratio: 2.19x at 64/8 d128, 1.15x at 8/1 d128",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/1223",
+     "commit": "3de9ba6c625ec5a189a339ec1a5f4b3811ab7ffb",
+     "locator": "PR description",
+     "checked": "2026-11-03"
+    }
+   ],
+   "checked": "Matched the PR table"
   }
  ]
 }

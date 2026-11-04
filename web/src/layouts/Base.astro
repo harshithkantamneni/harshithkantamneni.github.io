@@ -1,0 +1,93 @@
+---
+import '../styles/global.css';
+import { LANES } from '../data/site.mjs';
+
+const {
+  title,
+  description,
+  image = '/og/home.png',
+  active = null,
+  resume = null,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const imageUrl = new URL(image, Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="theme-color" content="#101216">
+  <link rel="canonical" href={canonical}>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonts/atkinson.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/iosevka-400.woff2" as="font" type="font/woff2" crossorigin>
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={imageUrl}>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content={imageUrl}>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="navbar">
+    <nav class="nav wrap" aria-label="Main">
+      <a class="brand" href="/">Harshith Kantamneni</a>
+      <div class="layers">
+        {LANES.map((l) => (
+          <a class={l.cls} href={l.track} aria-current={active === l.cls ? 'page' : undefined}>{l.name}</a>
+        ))}
+        <a class="w" href="/#writing">Writing</a>
+        {resume
+          ? <a href={resume}>Résumé</a>
+          : <a href="/#resumes">Résumés</a>}
+      </div>
+    </nav>
+  </header>
+  <main id="main">
+    <slot />
+  </main>
+  <footer class="foot">
+    <div class="wrap">
+      <span>Harshith Kantamneni, Milwaukee, WI</span>
+      <span class="contact">
+        <a href="mailto:kantamneniharshith@gmail.com">Email</a>
+        <a href="https://github.com/harshithkantamneni">GitHub</a>
+        <a href="https://www.linkedin.com/in/hk4231">LinkedIn</a>
+        <a href="/numbers/">Every number and its source</a>
+      </span>
+    </div>
+  </footer>
+  <dialog class="pop" id="pop" aria-labelledby="pop-t">
+    <h2 id="pop-t"></h2>
+    <p id="pop-c"></p>
+    <div class="row">
+      <a id="pop-a" href="/numbers/">Source and full row</a>
+      <button type="button" id="pop-x">Close</button>
+    </div>
+  </dialog>
+  <script is:inline>
+    (function () {
+      var d = document.getElementById('pop');
+      if (!d || !d.showModal) return;
+      var t = document.getElementById('pop-t'), c = document.getElementById('pop-c'), a = document.getElementById('pop-a');
+      document.addEventListener('click', function (e) {
+        var n = e.target.closest && e.target.closest('a.n');
+        if (!n || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+        e.preventDefault();
+        t.textContent = n.dataset.m;
+        c.textContent = n.dataset.c;
+        a.href = n.getAttribute('href');
+        d.showModal();
+      });
+      document.getElementById('pop-x').addEventListener('click', function () { d.close(); });
+      d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+    })();
+  </script>
+  <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "2e4646d7e5e149c0a3c87132e9fa66f1"}'></script>
+</body>
+</html>

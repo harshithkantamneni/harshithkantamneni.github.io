@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import { claims, asOf, fmtDate } from '../lib/rich.mjs';
+
+const label = (s) => {
+  if (s.type === 'not_public') return null;
+  if (s.type === 'pr') return s.locator ? `PR, ${s.locator}` : 'PR';
+  if (s.type === 'comment') return 'Comment';
+  return s.path ? `Repo: ${s.path}` : 'Source';
+};
+---
+<Base
+  title="Every number and its source: Harshith Kantamneni"
+  description="Each number on this site, with what it means, the conditions it was measured under and a commit-pinned source."
+>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>Every number and its source</h1>
+      <p class="lead">What each number on this site means, the conditions it holds under, and where to check it. Repo links are pinned to a commit. Sources checked {fmtDate(asOf)}.</p>
+    </div>
+    <div class="claims">
+      {claims.map((c) => (
+        <article class="claim" id={c.id}>
+          <h3>{c.shows.join(', ')}</h3>
+          <p>{c.means}</p>
+          <p class="quiet">{c.conditions}</p>
+          <p>
+            {c.source.map((s, i) => (
+              <>
+                {i > 0 && ', '}
+                {s.url ? <a href={s.url}>{label(s)}</a> : <span class="quiet">Not public: {s.note}</span>}
+              </>
+            ))}
+          </p>
+        </article>
+      ))}
+    </div>
+  </div>
+</Base>

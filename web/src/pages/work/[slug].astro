@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+import { CASES, LANES } from '../../data/site.mjs';
+import { rich } from '../../lib/rich.mjs';
+
+export function getStaticPaths() {
+  return Object.keys(CASES).map((slug) => ({ params: { slug } }));
+}
+const { slug } = Astro.params;
+const c = CASES[slug];
+const lane = LANES.find((l) => l.cls === c.lane);
+const files = import.meta.glob('../../content/work/*.html', { query: '?raw', import: 'default', eager: true });
+const body = files[`../../content/work/${slug}.html`];
+if (!body) throw new Error(`No content for ${slug}`);
+const next = CASES[c.next];
+const nextLane = LANES.find((l) => l.cls === next.lane);
+---
+<Base
+  title={`${c.title}: Harshith Kantamneni`}
+  description={c.lead}
+  image={`/og/${lane.id}.png`}
+  active={c.lane}
+  resume={lane.resume.href}
+>
+  <div class={`wrap ${c.lane}`}>
+    <nav class="crumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span>
+      <a class="here" href={lane.track}>{lane.name}</a>
+    </nav>
+    <div class="page-head">
+      <h1>{c.title}</h1>
+      <p class="lead">{c.lead}</p>
+      <p class="state">{c.state}</p>
+    </div>
+    <div class="prose" set:html={rich(body)} />
+    <div class="next">
+      <span class="quiet">Next in {nextLane.name}:</span>
+      <a href={`/work/${c.next}/`}>{next.title}</a>
+    </div>
+  </div>
+</Base>

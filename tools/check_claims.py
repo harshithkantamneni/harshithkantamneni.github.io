@@ -11,12 +11,19 @@ from html.parser import HTMLParser
 
 PAGES = {'home': 'site/index.html'}
 # Dated reports and notes are archives: their numbers trace to the document they report on.
+# The numbers page is the ledger itself, and the 404 page has none.
+WEB_SKIP = ('reports', 'notes', 'numbers', '404')
+for built in sorted(pathlib.Path('web/dist').glob('**/index.html')):
+    parts = built.relative_to('web/dist').parts
+    if parts[0] not in WEB_SKIP:
+        PAGES['web/' + '/'.join(parts[:-1])] = str(built)
 BLOCK = {'p', 'li', 'h1', 'h2', 'h3', 'h4', 'td', 'th', 'tr', 'div', 'figcaption', 'section', 'article', 'text'}
 # Names and chart scales, not claims.
 ALLOW = [r'gpt-oss-120b', r'Qwen2\.5-7B', r'bge-base-en-v1\.5', r'nDCG@10', r'JSON-RPC 2\.0', r'4-bit', r'RTX \d{4}', r'\b[34]090\b',
          r'ECE \d{3}', r'ICLR 2026', r'#\d+', r'^76$', r'^10$', r'at 2 measured memory sizes', r'the 2 measured sizes', r'PARITY 1\.0×',
          r'^1\.0$', r'^\.75$', r'^\.50$', r'^\.25$', r'^0$', r'^50K$', r'^100K$', r'^500K$', r'^1M$', r'^2M$',
-         r'^1\.4×$', r'^0\.6×$', r'^128$', r'^256$', r'^512$', r'^1024$', r'^2048$']
+         r'^1\.4×$', r'^0\.6×$', r'^128$', r'^256$', r'^512$', r'^1024$', r'^2048$',
+         r'States checked [A-Z][a-z]{2} \d{1,2}, \d{4}', r'^[A-Z][a-z]{2} \d{1,2}$', r'(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{1,2}(, 2026)?', r'ECE \d{3}', r'2026 log', r'in 2026', r'Dec 2025', r'^0$']
 
 
 class Text(HTMLParser):

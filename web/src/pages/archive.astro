@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import scatter from '../content/triton-scatter.svg?raw';
+import { rich } from '../lib/rich.mjs';
+
+const r = (s) => rich(s);
+---
+<Base
+  title="Archive: Harshith Kantamneni"
+  description="Older work, with team credit shown: Triton vs cuBLAS, Jetson profiling, gem5 modeling, ML-guided config and HIVE."
+>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>Archive</h1>
+      <p class="lead">Older projects, with team credit shown.</p>
+    </div>
+
+    <section id="triton" class="prose k">
+      <h2>Triton vs cuBLAS</h2>
+      <p>Eager PyTorch runs a projection as separate kernels: a GEMM, then bias, then GeLU. I built one Triton kernel that does all three in a single launch and benchmarked it across <span set:html={r('[[tri.shapes|76 LLM-shaped GEMMs]]')} /> on an A100. The baseline is a cuBLAS GEMM plus separate bias and GeLU.</p>
+      <figure>
+        <figcaption><span set:html={r('[[tri.median|Median 0.96×]] across [[tri.shapes|76 shapes]], with [[tri.faster|27 faster]] than the unfused path, so fusing alone doesn\'t decide the result.')} /></figcaption>
+        <div class="scatter" tabindex="0" role="group" aria-label="Scatter of speedup by shape" set:html={scatter} />
+        <p class="cap"><span set:html={r('Each point is the [[tri.trials|median of 10 trial means]]. fp16, A100.')} /></p>
+      </figure>
+      <p set:html={r('The best shape reached [[tri.best|1.73×]] at [[tri.best|M=128, N=11008, K=4096]] in fp16. The same shape is [[tri.bf16|1.28×]] in bf16, and bare Triton already ran [[tri.bare|1.38×]] there in fp16, so fusion\'s own lift is [[tri.lift|about 1.25×]].')} />
+      <h3>The correction</h3>
+      <p set:html={r('I first read this as small batches being memory-bound. The counts don\'t support that: fused is faster on [[tri.ridge|10 of 30]] cells left of the ridge and [[tri.ridge|42 of 122]] right of it, and bytes saved cover [[tri.bytes|about 10%]] of the best cell\'s time gap. What tracks the result best is how close bare Triton already is to cuBLAS on that shape.')} />
+      <p><a href="https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks">Code and raw data</a></p>
+    </section>
+
+    <section id="jetson" class="prose i">
+      <h2>Jetson Orin Nano profiling</h2>
+      <p set:html={r('Attention and KV-cache decode kernels profiled with Nsight on a [[jet.power|15 W]] edge SoC. Fused SDPA ran [[jet.fused|2.78-5.55×]] faster than a manual matmul and softmax baseline across [[jet.fused|5 sizes]], with the best at [[jet.fused|5.55× at S=1024]].')} />
+      <p><a href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling">Repo</a></p>
+    </section>
+
+    <section id="gem5" class="prose">
+      <h2>MI300X and gem5 modeling</h2>
+      <p set:html={r('A team project in ECE 752. [[gem5.team|Team of 3]]. I built the gem5 full-system setup and wrote HIP benchmarks for the AMD MI300X memory hierarchy. Parameter tuning was a teammate\'s part of the work.')} />
+    </section>
+
+    <section id="ml" class="prose">
+      <h2>ML-guided kernel config</h2>
+      <p set:html={r('A team project in ECE 759. [[ml.team|Team of 4]]. A PyTorch model predicts kernel runtime and picks a config by argmin over a grid.')} />
+      <p><a href="https://github.com/harshithkantamneni/Ml-Guided-CUDA-Config">Repo</a></p>
+    </section>
+
+    <section id="hive" class="prose a">
+      <h2>HIVE</h2>
+      <p>A privacy-first peer-to-peer reasoning engine in Rust. Alpha research prototype.</p>
+      <p><a href="https://github.com/harshithkantamneni/hive-engine">Repo</a></p>
+    </section>
+  </div>
+</Base>

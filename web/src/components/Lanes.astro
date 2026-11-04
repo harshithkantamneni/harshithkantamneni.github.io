@@ -1,0 +1,48 @@
+---
+import { LANES, CHECKED } from '../data/site.mjs';
+import { rich, pct, monthTicks, fmtDate } from '../lib/rich.mjs';
+
+const end = CHECKED;
+const ticks = monthTicks(end);
+const left = (iso) => pct(iso, end).toFixed(2) + '%';
+const width = (a, b) => (pct(b || end, end) - pct(a, end)).toFixed(2) + '%';
+---
+<section id="resumes" class="lanes wrap" aria-label="Silicon to agents, 2026">
+  <p class="key">Work in 2026, from silicon up to agents. Bars are projects, by résumé dates. Diamonds are merged PRs and the lab audit. States checked {fmtDate(CHECKED)}.</p>
+  <div class="axis" aria-hidden="true">
+    <div class="side"></div>
+    <div class="tick-row">
+      {ticks.map((t) => <span style={`left:${t.left}`}>{t.label}</span>)}
+      <span style="right:0">{fmtDate(end, false)}</span>
+    </div>
+  </div>
+  {LANES.map((l) => (
+    <article id={`lane-${l.id}`} class={`lane ${l.cls}`}>
+      <div class="lane-info">
+        <h2><a href={l.track}>{l.name}</a></h2>
+        <a class="res" href={l.resume.href}>{l.resume.label}</a>
+        <p set:html={rich(l.proof)} />
+        <div class="quick" style="grid-column:1/-1">
+          {l.quick.map((q) => <a href={q.href}>{q.t}</a>)}
+        </div>
+      </div>
+      <div class="track">
+        {ticks.map((t) => <span class="gl" aria-hidden="true" style={`left:${t.left}`}></span>)}
+        {l.spans.map((s) => (
+          <a class={`span${s.right ? ' right' : ''}`} href={s.href} style={`left:${left(s.start)};width:${width(s.start, s.end)};top:${s.top}px`}>
+            <span class="lbl">{s.label}</span>
+            <span class="barl"></span>
+          </a>
+        ))}
+        {l.labels.map((m) => (
+          <div class="mlabel" style={m.style}>
+            {m.html.map((t, i) => <a href={m.hrefs[i]}>{t}</a>)}
+          </div>
+        ))}
+        {l.marks.map((m) => (
+          <span class="mark" aria-hidden="true" style={`left:calc(${left(m.date)} - 7px);top:${m.top}px`}></span>
+        ))}
+      </div>
+    </article>
+  ))}
+</section>
