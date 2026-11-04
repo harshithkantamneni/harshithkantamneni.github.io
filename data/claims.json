@@ -938,7 +938,8 @@
    "shows": [
     "0.86",
     "against 0.66",
-    "0.97"
+    "0.97",
+    "0.66"
    ],
    "means": "Multi-turn MCP against one-shot, and grep",
    "value": {
