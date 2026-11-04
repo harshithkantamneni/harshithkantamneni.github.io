@@ -1,0 +1,78 @@
+<h2>What I built</h2>
+<p>bert is a local MCP server with hybrid retrieval. sqlite-vec stores bge-base-en-v1.5 dense vectors, BM25 covers exact keywords, reciprocal-rank fusion merges the two lists, and a cross-encoder reranks the top hits. It runs as a single-user stdio process over JSON-RPC 2.0. Retrieval needs no API keys and makes no LLM calls. The host calls memory_search, gets chunks back, and its own model answers.</p>
+<p>The repo also carries an orchestration harness. The server registers [[bertc.tools|12 tools]], and the memory and code runs use memory_search.</p>
+
+<h2>What I measured</h2>
+<p>The memory test uses one reader, Claude Sonnet with a [[bert.corpus|200K window]], and changes only how it reaches the notes. [[bertc.arms|50 questions]] go to [[bertc.judges|3 non-Claude judges]], graded by majority. All three are Llama models, so they are independent of Claude, not of each other. The corpus is synthetic, and I measured Claude Code only, no other MCP host.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>On a synthetic corpus through Claude Code, bert and grep both scored 0.90 at 1.26M tokens with no significant difference, while full context fell to 0.08. [[bertc.arms]]</caption>
+<thead><tr><th scope="col">Arm</th><th scope="col">98,519 tokens</th><th scope="col">95% interval</th><th scope="col">1.26M tokens</th><th scope="col">95% interval</th></tr></thead>
+<tbody>
+<tr><th scope="row">bert over MCP</th><td class="num">{{bar:0.96/1}}</td><td class="num">[0.90, 1.00]</td><td class="num">{{bar:0.90/1}}</td><td class="num">[0.82, 0.98]</td></tr>
+<tr><th scope="row">Agentic grep</th><td class="num">{{bar:0.92/1}}</td><td class="num">[0.84, 0.98]</td><td class="num">{{bar:0.90/1}}</td><td class="num">[0.82, 0.98]</td></tr>
+<tr><th scope="row">Full context</th><td class="num">{{bar:0.90/1}}</td><td class="num">[0.80, 0.98]</td><td class="num">{{bar:0.08/1}}</td><td class="num">[0.02, 0.16]</td></tr>
+<tr><th scope="row">Naive vector</th><td class="num">{{bar:0.50/1}}</td><td class="num">[0.36, 0.64]</td><td class="num">{{bar:0.40/1}}</td><td class="num">[0.26, 0.54]</td></tr>
+<tr><th scope="row">No memory</th><td class="num">{{bar:0.10/1}}</td><td class="num">[0.02, 0.20]</td><td class="num">{{bar:0.04/1}}</td><td class="num">[0.00, 0.10]</td></tr>
+</tbody></table></div>
+<p>At the [[bert.corpus|1.26M-token]] size, [[bert.corpus|about 6×]] the window, bert and grep [[bert.large|both scored 0.90]] ([[bertc.pair|45/50]] and [[bertc.pair|44/49]]), with no significant difference. The paired difference is [[bertc.pair|+0.020]], interval [[bertc.pair|-0.08 to +0.12]], on [[bertc.pair|7 discordant questions]]. Grep used a [[bert.tokens|median 1.46×]] bert's tokens per question, counting cache reads in full.</p>
+<p>Full context [[bert.fullctx|fell to 0.08]]. That reader was capped at a [[bertc.budget|120K budget]], which keeps only [[bertc.budget|about the newest 10%]]. I read this as truncation losing history, not as evidence for bert. A [[bertc.budget|1M-context reader]] would hold [[bertc.budget|about 80%]] of this corpus and would not collapse the same way. I did not run one.</p>
+
+<h3>Where grep scored higher</h3>
+<p>On code, grep scored higher, [[bert.code|0.97 to 0.86]], and used fewer tokens, a mean of [[bertc.codetokens|70,537]] per question against [[bertc.codetokens|149,648]]. Of the [[bertc.codearms|249 questions]], [[bertc.codearms|228 are graded by exact value]] and [[bertc.codearms|21 by the same judges]].</p>
+<div class="tw" tabindex="0"><table class="t"><caption>On 249 questions about real code, agentic grep scored highest and bert over MCP second. [[bertc.codearms]]</caption>
+<thead><tr><th scope="col">Arm</th><th scope="col">Access</th><th scope="col">Accuracy</th><th scope="col">95% interval</th></tr></thead>
+<tbody>
+<tr><th scope="row">Agentic grep</th><td>Multi-turn</td><td class="num">{{bar:0.968/1}}</td><td class="num">[0.944, 0.988]</td></tr>
+<tr><th scope="row">bert over MCP</th><td>Multi-turn</td><td class="num">{{bar:0.855/1}}</td><td class="num">[0.811, 0.900]</td></tr>
+<tr><th scope="row">bert hybrid</th><td>One-shot</td><td class="num">{{bar:0.663/1}}</td><td class="num">[0.606, 0.719]</td></tr>
+<tr><th scope="row">BM25 only</th><td>One-shot</td><td class="num">{{bar:0.643/1}}</td><td class="num">[0.582, 0.703]</td></tr>
+<tr><th scope="row">Closed book</th><td>None</td><td class="num">{{bar:0.610/1}}</td><td class="num">[0.550, 0.671]</td></tr>
+<tr><th scope="row">Vector only</th><td>One-shot</td><td class="num">{{bar:0.510/1}}</td><td class="num">[0.450, 0.570]</td></tr>
+<tr><th scope="row">Smart truncation</th><td>One-shot</td><td class="num">{{bar:0.177/1}}</td><td class="num">[0.133, 0.225]</td></tr>
+<tr><th scope="row">Aider RepoMap</th><td>One-shot</td><td class="num">{{bar:0.177/1}}</td><td class="num">[0.129, 0.225]</td></tr>
+<tr><th scope="row">Naive truncation</th><td>One-shot</td><td class="num">{{bar:0.120/1}}</td><td class="num">[0.080, 0.161]</td></tr>
+</tbody></table></div>
+<p>On [[bertc.semantic|30 conceptual questions]], grep also scored higher, [[bertc.semantic|0.967 to 0.900]], on [[bertc.semantic|4 discordant questions]], too few to separate them. There, grep used more tokens.</p>
+
+<h3>Orchestration</h3>
+<p>I tested the harness with Opus on both sides. It changed judged quality by a median [[bertc.orch|+0.007]] [[bertc.orch|on a 0 to 1 scale]], [[bertc.orch|n=11]], at [[bertc.orch|1.3-5.7×]] the tokens and [[bertc.orch|1.4-4.5×]] the wall clock. I read that as no measured gain.</p>
+
+<h3>The bug the eval caught</h3>
+<p>A dict-key mismatch zeroed the dense signal in the shipped retriever, and a [[bert.cap|240-character]] cap cut answer spans, so hybrid was really keyword-only. The fix moved the [[bert.bug|same 20-question eval from 0.10 to 0.85]]. That is directional: no significance test, a llama-3.3-70b reader rather than Claude Code, and the same questions exposed the bug and scored the fix.</p>
+
+<h3>Public retrieval data</h3>
+<div class="tw" tabindex="0"><table class="t"><caption>On BEIR scifact the full stack scored 0.745 and dense alone 0.740, with overlapping intervals, and BM25 alone scored 0.658. [[bertc.beirtable]]</caption>
+<thead><tr><th scope="col">Method</th><th scope="col">nDCG@10</th><th scope="col">95% interval</th><th scope="col">Mean latency</th></tr></thead>
+<tbody>
+<tr><th scope="row">Full stack</th><td class="num">{{bar:0.745/1}}</td><td class="num">[0.707, 0.783]</td><td class="num">3376 ms</td></tr>
+<tr><th scope="row">Dense only</th><td class="num">{{bar:0.740/1}}</td><td class="num">[0.696, 0.779]</td><td class="num">17 ms</td></tr>
+<tr><th scope="row">Hybrid, no rerank</th><td class="num">{{bar:0.719/1}}</td><td class="num">[0.676, 0.759]</td><td class="num">23 ms</td></tr>
+<tr><th scope="row">BM25 only</th><td class="num">{{bar:0.658/1}}</td><td class="num">[0.614, 0.703]</td><td class="num">8 ms</td></tr>
+</tbody></table></div>
+<p>I read [[bert.beir|0.745]] against [[bert.beir|0.740]] as the embedding model earning most of it. Rerank moved hybrid [[bertc.beir3|0.356 to 0.434]] on fiqa and [[bertc.beir3|0.355 to 0.354]] on nfcorpus, so its effect depends on the dataset.</p>
+
+<h2>What limited it</h2>
+<ul>
+<li>On code, the gap sits in one corpus. On the [[bertc.codegap|41M-token]] set, bert got [[bertc.codegap|45/80]] and grep [[bertc.codegap|78/80]]. On the other three, [[bertc.codegap|168/169]] and [[bertc.codegap|163/169]], [[bertc.codegap|p = 0.125]]. I measured where the gap is, not why.</li>
+<li>One-shot retrieval. The same retriever scored [[bert.multi|0.86]] over several turns, [[bert.multi|against 0.66]] in one shot, a significant gap. These rows can't say why.</li>
+<li>Rerank latency. On scifact the full stack averaged [[bertc.beirtable|3376 ms]] per query against [[bertc.beirtable|17 ms]] for dense, on an [[bertc.beirtable|18 GB]] laptop.</li>
+</ul>
+
+<h2>What it doesn't show</h2>
+<ul>
+<li>That bert scores higher than grep. No comparison here shows that at a significant level.</li>
+<li>That they are equal on memory. This sample leaves the tie unresolved.</li>
+<li>Anything about real projects. The memory corpus is [[bertc.corpus|one fictional project]], with filler from [[bertc.corpus|8 templates]].</li>
+<li>What hybrid plus rerank adds in multi-turn use. Naive vector is one-shot and bert multi-turn, so two things changed. I did not run multi-turn dense alone.</li>
+<li>Facts that change. The one such question [[bertc.update|scored 0.00 on every arm]].</li>
+<li>Dollars. Token counts lump input, cache reads and cache writes together.</li>
+</ul>
+
+<h2>Links</h2>
+<ul>
+<li><a href="https://github.com/harshithkantamneni/bert">Repository</a></li>
+<li><a href="https://github.com/harshithkantamneni/bert/blob/main/benchmarks/M1_REPORT.md">Memory benchmark report</a></li>
+<li><a href="https://github.com/harshithkantamneni/bert/blob/main/benchmarks/RETRIEVAL_BENCHMARK.md">Code benchmark report</a></li>
+<li><a href="https://github.com/harshithkantamneni/bert/blob/main/benchmarks/BENCHMARK_SYNTHESIS.md">Orchestration results</a></li>
+<li><a href="https://github.com/harshithkantamneni/bert/blob/main/benchmarks/results/B9_RAG_RESULT.md">Bug eval result</a></li>
+<li><a href="https://github.com/harshithkantamneni/bert/blob/main/benchmarks/results/B2_BEIR_MULTI_RESULT.md">BEIR results</a></li>
+</ul>

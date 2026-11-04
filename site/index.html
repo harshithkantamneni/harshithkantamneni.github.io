@@ -253,6 +253,121 @@
   .stack-frames .viz{position:relative;height:auto;top:0}.stack-frames .tframes{display:flex;flex-direction:column;gap:28px}.stack-frames .tframe{position:relative;opacity:1!important;visibility:visible!important}.stack-frames .tframe .rb.g{transform:none!important}.stack-frames .step{min-height:auto;padding:28px 0;opacity:1!important}
   .kbd .tframe{visibility:visible!important}.kbd .tframe:focus-within{opacity:1!important;z-index:3;background:#090a0c}
   @media(hover:none){.hov{display:none}}
+  /* ---- chapters, field, rail ---- */
+  canvas#field{opacity:1}
+  canvas#fieldTop{position:fixed;inset:0;z-index:30;pointer-events:none}
+  .gl-c{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.1s}
+  .wrap.case,.wrap.closing{max-width:1460px}
+  .spine{display:none}
+  .rail{position:fixed;left:18px;top:50%;height:min(44vh,340px);transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:5px;width:4px}
+  .rail a{position:relative;display:block;width:4px;border-radius:3px;background:var(--c);opacity:.22;transition:opacity .4s}
+  .rail a::before{content:"";position:absolute;left:-14px;right:-18px;top:0;bottom:0}
+  .rail a.on{opacity:.75}
+  .rail a span{position:absolute;left:16px;top:50%;transform:translate(-6px,-50%);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;color:var(--ink);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+  .rail a:hover{opacity:1}.rail a:hover span{opacity:1;transform:translate(0,-50%)}
+  .tok{position:absolute;left:50%;bottom:0;width:11px;height:11px;margin:0 0 -5px -5.5px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px color-mix(in srgb,var(--ch,#9398A0) 55%,transparent),0 0 20px 4px var(--ch,#9398A0);pointer-events:none;transition:box-shadow .5s}
+  .pbar{display:none}
+  @media(max-width:1180px){.rail{display:none}.pbar{display:block;position:fixed;left:0;right:0;top:74px;height:2px;z-index:51;background:var(--ch,#9398A0);transform:scaleX(0);transform-origin:left}}
+
+  .plate{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;padding:110px 0 80px}
+  .plate .wrap{width:100%;max-width:1460px}
+  .pmeta{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--c)}
+  .ptitle{font-size:clamp(66px,17.5vw,272px);line-height:1;font-weight:600;letter-spacing:-.05em;color:var(--c);margin:10px 0 0 -.04em;white-space:nowrap}
+  .plate.mid .ptitle{font-size:clamp(58px,13.5vw,208px)}
+  .plate.hot .ptitle{text-shadow:0 0 90px rgba(255,106,77,.32)}
+  .field-on .ptitle{color:transparent;text-shadow:none;-webkit-text-stroke:1px color-mix(in srgb,var(--c) 34%,transparent)}
+  .pline{font-size:clamp(20px,2.3vw,32px);line-height:1.3;letter-spacing:-.015em;max-width:760px;margin-top:22px;font-weight:500}
+  .pscenes{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin-top:44px;border-top:1px solid var(--line)}
+  .pscenes a{display:block;padding:18px 20px 18px 0;border-bottom:1px solid var(--line);transition:padding .25s}
+  .pscenes a:hover{padding-left:10px}
+  .pscenes b{display:block;font-weight:500;font-size:17px}
+  .pscenes span{display:block;margin-top:4px;font-family:var(--mono);font-size:12px;line-height:1.45;color:var(--c)}
+  .phint{font-family:var(--mono);font-size:12px;line-height:1.5;color:var(--dim);margin-top:16px}.short .phint{display:none}
+  .plain{display:none}
+
+  .stack .layer.lit{padding:28px 22px}.stack .layer.lit .nm{font-size:24px;font-weight:600}
+  .stackhead span::after{content:" ↑";color:var(--k)}
+  .hlinks{display:flex;gap:18px;margin-top:18px;font-family:var(--mono);font-size:13px;letter-spacing:.04em}
+  .hlinks a{color:var(--mid);display:inline-flex;align-items:center;min-height:32px;border-bottom:1px solid transparent}.hlinks a:hover{color:#fff}
+  button.btn{background:none;cursor:pointer}
+  .viz.sv{position:sticky}.stok{position:absolute;left:-6px;top:0;width:11px;height:11px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.14),0 0 18px 3px var(--stc,#FF6A4D);transition:top .7s cubic-bezier(.2,.7,.2,1),box-shadow .5s;z-index:3}
+  .dl[data-l="0"]{padding:28px 18px}.dl[data-l="0"] .dn{font-size:22px}
+
+  @media(min-width:881px){
+    .scrolly{grid-template-columns:minmax(0,1.38fr) minmax(0,.62fr);gap:clamp(36px,4.4vw,72px)}
+    .scrolly.flip{grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr)}.scrolly.flip .viz{order:2}
+    .viz{top:12vh;height:76vh;padding:26px 30px}
+    .step{min-height:66vh}.step h3{font-size:clamp(22px,2.05vw,30px)}.step p{font-size:16px;max-width:none}
+  }
+  .chartwrap{min-height:0}.chartwrap>svg{position:absolute;inset:0}.short .chartwrap>svg,.stack-frames .chartwrap>svg{position:relative}
+  .field-on .d{visibility:hidden}.field-on .waf .d{transition:none}
+
+  .warps{display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:clamp(6px,.9vw,14px)}
+  .warps .d{aspect-ratio:1;border-radius:50%;background:#2c3138}.warps .d.c1{background:#FF6A4D}.warps .d.c2{background:#FFB454}
+  .copyrow{display:grid;grid-template-columns:minmax(150px,230px) minmax(0,1fr);gap:clamp(18px,3vw,36px);align-items:center}
+  .copyz{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px}
+  .copyz .d{aspect-ratio:1;border-radius:50%;background:#FF6A4D;opacity:1}.copyz .d.s{background:#fff}.copyz .sp{grid-column:1/-1;height:6px}
+  .expz{display:grid;grid-template-columns:minmax(0,.26fr) minmax(0,.74fr);gap:10px}
+  .mem{border:1px solid var(--line);border-radius:10px;padding:8px 10px 10px;min-width:0}.mem.gpu{border-color:color-mix(in srgb,var(--i) 50%,var(--line))}
+  .mem span{display:block;font-family:var(--mono);font-size:11px;color:var(--mid);margin-bottom:7px}
+  .md{display:grid;gap:4px;grid-template-columns:repeat(6,minmax(0,1fr))}.host .md{grid-template-columns:repeat(18,minmax(0,1fr))}
+  .md .d{aspect-ratio:1;border-radius:50%;background:#4a505a}.gpu .md .d{background:#FFB454}
+  #seconds .tframe{gap:12px}.sws{grid-template-columns:repeat(3,minmax(0,1fr))}.sw{min-height:64px;align-items:center;padding:8px 12px}
+  @media(max-width:1180px){.sws{grid-template-columns:1fr}.sw{min-height:44px}}
+  .waf{display:grid;grid-template-columns:repeat(39,minmax(0,1fr));gap:2px;margin:10px auto 0;width:100%;max-width:min(100%,calc((76vh - 200px)*1.95));align-content:start;flex:none}
+  .waf .d{aspect-ratio:1;border-radius:2px;background:#232830;transition:background .5s,border-color .5s}
+  .waf[data-state="1"] .w1{background:var(--a)}
+  .waf[data-state="2"] .w1,.waf[data-state="3"] .w1{background:transparent;border:1.5px solid var(--a)}
+
+  .codew{display:flex;flex-direction:column;gap:10px;min-height:0}
+  #code-pre{font-family:var(--mono);font-size:clamp(11px,.86vw,12.5px);line-height:1.62;overflow:auto;background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:10px;padding:12px 0}
+  #code-pre .ln{display:block;padding:0 14px;color:#7f858e;white-space:pre;border-left:2px solid transparent;transition:color .25s,background .25s}
+  #code-pre .ln.hl{color:#EEEFF1;background:rgba(255,106,77,.09);border-left-color:var(--k)}
+  #code-say{font-size:15px;line-height:1.45;min-height:44px}
+  .codelink{font-family:var(--mono);font-size:12px;color:var(--mid);text-decoration:underline;text-underline-offset:3px}.codelink:hover{color:#fff}
+
+  .gpugrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,5vw,72px);align-items:center;border:1px solid color-mix(in srgb,var(--k) 26%,var(--line));border-radius:22px;padding:clamp(20px,3.2vw,44px);background:radial-gradient(120% 120% at 0 0,color-mix(in srgb,var(--k) 12%,transparent),transparent 56%),linear-gradient(180deg,#0c0b0c,#070809)}
+  .case-title.sm{font-size:clamp(28px,3.4vw,46px)}
+  .hm{display:grid;grid-template-columns:30px repeat(7,minmax(0,1fr));gap:3px;font-family:var(--mono)}
+  .hm b{font-weight:400;font-size:11px;color:var(--dim);display:flex;align-items:center;justify-content:center;min-height:24px}
+  .hm i{aspect-ratio:1;border-radius:6px;background:#101216;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:clamp(10px,.86vw,12px);min-width:0;transition:background .35s}
+  .hm i.no{background:repeating-linear-gradient(135deg,transparent 0 4px,rgba(255,255,255,.04) 4px 5px)}
+  .hm i.best{outline:2px solid #fff;outline-offset:1px}
+  .hmax{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:10px}
+  .gpu-copy p{color:var(--mid);font-size:16px;line-height:1.6;margin-top:14px}
+  #gpu-run{margin-top:22px;border:0;cursor:pointer}#gpu-run[disabled]{opacity:.5;cursor:not-allowed}
+  #gpu-out{color:var(--ink);font-size:15px;line-height:1.55;margin-top:18px;min-height:48px}
+  @media(max-width:880px){.gpugrid{grid-template-columns:1fr}.copyrow{grid-template-columns:1fr}.copyz{max-width:220px}.plate{min-height:82vh}}
+
+  .closing{padding-top:0;padding-bottom:clamp(40px,6vh,70px)}
+  .pr{padding-top:clamp(30px,5vh,60px)}
+  .seg.up{margin:18px 0 6px}.seg.up button{min-height:36px;--lc:var(--k)}
+  @media(hover:hover){
+    #upstream .wsub{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s,opacity .3s}
+    #upstream .wrow:hover .wsub,#upstream .wrow:focus-visible .wsub{max-height:220px;opacity:1}
+  }
+  .wrow[hidden]{display:none}
+  .sparkb{display:flex;align-items:flex-end;gap:5px;height:66px;margin-top:16px}
+  .sparkb i{flex:1;background:var(--c);border-radius:3px 3px 0 0;opacity:.9;min-height:3px}
+  .sparkl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:5px}
+
+  .nl .nbtn{font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--mid);background:none;border:0;cursor:pointer;min-height:32px;padding:0;display:inline-flex;align-items:center;gap:6px}.nl .nbtn:hover{color:#fff}.nl .nbtn[aria-pressed="true"]{color:var(--r)}
+  #short-bar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:12px;background:#14171b;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:8px 10px 8px 14px;font-size:14px;color:var(--mid);white-space:nowrap}
+  #short-bar[hidden]{display:none}
+  #short-bar button{font-family:var(--mono);font-size:12px;color:var(--ink);background:none;border:1px solid var(--line);border-radius:8px;min-height:36px;padding:0 10px;cursor:pointer}
+  #step-hud{position:fixed;right:20px;bottom:20px;z-index:60;font-family:var(--mono);font-size:12px;color:var(--ink);background:#14171b;border:1px solid var(--line);border-radius:8px;padding:6px 10px;opacity:0;transition:opacity .25s;pointer-events:none}#step-hud.on{opacity:1}
+
+  /* the 60-second version */
+  .short .marquee,.short #stack .scrolly,.short #yourgpu,.short .closing,.short #writing,.short .princ,.short .certs,.short .bento,.short .pmeta,.short .pscenes,.short .steps,.short .case-sub{display:none}
+  .short .plate{min-height:0;padding:70px 0 0;display:block}.short .plate .ptitle,.short .plate.mid .ptitle{font-size:clamp(44px,7vw,88px)}.short .pline{font-size:18px;margin-top:10px}
+  .short .case{padding-top:34px;padding-bottom:18px}.short .case-top{margin-bottom:18px}.short .case-title{font-size:clamp(26px,3.4vw,42px)}
+  .short .plain{display:block;max-width:760px;margin-top:12px;font-size:18px;line-height:1.5;color:var(--ink)}
+  .short .scrolly{display:block}.short .viz{position:relative;top:0;height:auto;max-width:860px}
+  .short .tframes{position:relative;display:block;margin:12px 0 0}.short .tframe{position:relative;display:none;opacity:1!important;visibility:visible!important}.short .tframe[data-key]{display:flex}.short .tframe .rb.g{transform:none!important}
+  .short #triton .tbar .rb{transform:none!important}.short .bertline,.short .truncline,.short .dline{stroke-dashoffset:0!important}.short .pt{opacity:1!important}.short .tfoot{display:none}
+  .short .chartwrap svg{max-height:380px}.short .scatterwrap svg{height:340px}.short .chartwrap{height:auto}
+  .short .waf .w1{background:transparent!important;border:1.5px solid var(--a)!important}
+  .short .waf{max-width:min(100%,680px)}.short .about{padding-top:40px;padding-bottom:0}.short footer{margin-top:30px}
   @media(max-width:640px){.wrow,.pr .wrow{grid-template-columns:minmax(0,1fr);gap:6px}}
   @media(max-width:1024px){.hero{grid-template-columns:minmax(0,1fr);gap:36px;padding:104px var(--pad) 50px}.bento{grid-template-columns:repeat(2,1fr)}.pgrid{grid-template-columns:repeat(2,1fr)}.span3{grid-column:span 1}.span2{grid-column:span 1}.span6,.proj.feat{grid-column:span 2}}
   @media(max-width:880px){.scrolly{grid-template-columns:1fr}.viz{position:relative;height:auto;min-height:auto;top:0}.step{min-height:auto;padding:36px 0;opacity:1!important}.ann{display:none}.tframe{position:relative;opacity:1!important}.tframes{display:flex;flex-direction:column;gap:22px;margin:14px 0}.bento,.princ{grid-template-columns:repeat(2,1fr)}.pgrid{grid-template-columns:1fr}.span3,.span2,.span6{grid-column:auto}.proj.feat{flex-direction:column;align-items:flex-start;gap:16px}.proj.feat .pbig{text-align:left}nav{height:56px}.brand{display:none}.nl{gap:2px;width:100%;justify-content:space-between;overflow-x:auto}.nl a{display:inline-flex;align-items:center;min-height:44px;padding:0 6px;letter-spacing:.04em;white-space:nowrap}.nl a.ha{display:none}.hero{min-height:0;gap:12px;padding-top:66px}h1{margin-top:12px}.chip{padding:5px 12px}.lede{margin-top:10px;line-height:1.45}.cta{margin-top:10px;gap:8px}.hero .btn{padding:0 12px;min-height:44px}.cta .btn.p{display:none}.herometa{flex-direction:row;flex-wrap:wrap;gap:4px 16px;margin-top:8px}.stackhead{margin-bottom:6px}.stack{gap:6px}.layer{padding:2px 12px 8px;gap:0 12px}.layer .pf{font-size:13px;line-height:1.4}.foot-links a{display:inline-flex;align-items:center;min-height:44px}h1{font-size:clamp(32px,8.4vw,56px)}.hero .btn{font-size:12px}.tbar .rb{transform:none!important}.tframe .rb.g{transform:none!important}.tframe[aria-hidden="true"]{visibility:visible!important}.tbar.sm .rl{width:112px}.trace .sp-l{font-size:11px}.trace{padding:20px 18px 12px}#tracks .ln:nth-of-type(2) .ln-t{height:56px!important}#tracks .ln:nth-of-type(2) .sp-l.r{top:36px!important}.tlead{flex-wrap:wrap;gap:8px 16px}.tbar .rv{width:auto}.tframe .tbar .rl{width:84px}.tbar.sm .rl{width:112px}.seg button{padding:0 12px}.nsearch{display:none}.layer .rz{min-height:40px}}
@@ -273,12 +388,14 @@
 </head>
 <body>
 <a href="#main" class="skip">Skip to content</a>
-<canvas id="field" aria-hidden="true"></canvas>
-<div class="spine"><a class="sp" data-l="0" href="#upstream" aria-label="Kernels" data-t="Kernels" style="--c:var(--k)"></a><a class="sp" data-l="1" href="#seconds" aria-label="Inference" data-t="Inference" style="--c:var(--i)"></a><a class="sp" data-l="2" href="#bert" aria-label="Agents" data-t="Agents" style="--c:var(--a)"></a><a class="sp" data-l="3" href="#work" aria-label="More work" data-t="More work" style="--c:var(--r)"></a></div>
+<div class="gl-c" style="background:radial-gradient(70vw 70vh at 84% 8%,rgba(255,106,77,.13),transparent 70%)"></div><div class="gl-c" style="background:radial-gradient(70vw 70vh at 84% 8%,rgba(255,180,84,.09),transparent 70%)"></div><div class="gl-c" style="background:radial-gradient(70vw 70vh at 84% 8%,rgba(106,168,255,.1),transparent 70%)"></div>
+<canvas id="field" aria-hidden="true"></canvas><canvas id="fieldTop" aria-hidden="true"></canvas>
+<div class="rail"><a data-l="2" href="#ch-a" aria-label="Agents" style="--c:var(--a);flex:1"><span>Agents</span></a><a data-l="1" href="#ch-i" aria-label="Inference" style="--c:var(--i);flex:1"><span>Inference</span></a><a data-l="0" href="#ch-k" aria-label="Kernels" style="--c:var(--k);flex:2"><span>Kernels</span></a><i class="tok"></i></div>
+<div class="pbar" aria-hidden="true"></div>
 
 <nav>
   <a class="brand" href="#top">HARSHITH KANTAMNENI</a>
-  <div class="nl"><a data-l="0" style="--c:var(--k)" href="#upstream">Kernels</a><a data-l="1" style="--c:var(--i)" href="#seconds">Inference</a><a data-l="2" style="--c:var(--a)" href="#bert">Agents</a><a class="ha" data-l="3" style="--c:var(--r)" href="#work">Work</a><a class="ha" href="#about">About</a><a class="ha" href="#writing">Writing</a><button type="button" class="nsearch" id="find-open" aria-label="Search this site" hidden>Search <kbd>/</kbd></button><a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
+  <div class="nl"><a data-l="0" style="--c:var(--k)" href="#ch-k">Kernels</a><a data-l="1" style="--c:var(--i)" href="#ch-i">Inference</a><a data-l="2" style="--c:var(--a)" href="#ch-a">Agents</a><a class="ha" href="#about">About</a><a class="ha" href="#writing">Writing</a><button type="button" class="nsearch" id="find-open" aria-label="Search this site" hidden>Search <kbd>/</kbd></button><button type="button" class="nbtn ha" data-short aria-pressed="false">60-sec</button><a id="nav-res" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></div>
 </nav>
 
 <main id="main">
@@ -287,16 +404,17 @@
     <span class="chip reveal"><span class="dot"></span> Open to full-time roles</span>
     <h1 class="reveal">Harshith Kantamneni</h1>
     <p class="lede reveal"><b>I build AI-systems infrastructure, from GPU kernels up.</b> CUDA and Triton kernels and inference profiling at the bottom, retrieval and multi-agent systems at the top. I measure every layer, and I keep the results that disagree with me.</p>
-    <div class="cta reveal"><a href="#upstream" class="btn p">Start at the kernels</a><a href="/Harshith_Kantamneni_Resume.pdf" class="btn g">Résumé</a><a href="https://github.com/harshithkantamneni" class="btn g">GitHub</a><a href="https://www.linkedin.com/in/hk4231" class="btn g">LinkedIn</a><a href="mailto:kantamneniharshith@gmail.com" class="btn g">Email</a></div>
+    <div class="cta reveal"><a href="#ch-k" class="btn p">Start at the kernels</a><button type="button" class="btn g" data-short aria-pressed="false">60-second version</button><a href="/Harshith_Kantamneni_Resume.pdf" class="btn g">Résumé</a></div>
+    <div class="hlinks reveal"><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a><a href="mailto:kantamneniharshith@gmail.com">Email</a></div>
     <div class="herometa reveal"><span><b>Milwaukee, WI (open to relocation)</b></span><span><b>M.S. ECE, UW-Madison, Dec 2025</b></span></div>
     <p class="latest reveal">Latest: KV-cache decoding merged in flash-linear-attention, Oct 27.</p>
   </div>
   <div class="reveal">
-    <div class="stackhead"><span>Silicon to agents</span></div>
+    <div class="stackhead"><span>From the kernels up</span></div>
     <div class="stack">
-      <div class="layer lit" style="--c:var(--k)"><a class="nm" href="#upstream">GPU kernels</a><a class="rz" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a><p class="pf">3 PRs merged: tests in NVIDIA cuDNN frontend, Triton kernels and KV-cache decoding in flash-linear-attention.</p></div>
-      <div class="layer" style="--c:var(--i)"><a class="nm" href="#seconds">LLM inference</a><a class="rz" href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a><p class="pf">Built a llama.cpp expert cache for MoE decode, measured on 3 GPU models. vLLM RFC measurement, load tests and profiling on a 15 W Jetson.</p></div>
-      <div class="layer" style="--c:var(--a)"><a class="nm" href="#bert">Agent systems</a><a class="rz" href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a><p class="pf">Built sign-off verification for a 31-role agent lab, audited it against runner logs, shipped a better detector.</p></div>
+      <div class="layer" data-rgb="106,168,255" style="--c:var(--a)"><a class="nm" href="#ch-a">Agent systems</a><a class="rz" href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a><p class="pf">Built sign-off verification for a 31-role agent lab, audited it against runner logs, shipped a better detector.</p></div>
+      <div class="layer" data-rgb="255,180,84" style="--c:var(--i)"><a class="nm" href="#ch-i">LLM inference</a><a class="rz" href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a><p class="pf">Built a llama.cpp expert cache for MoE decode, measured on 3 GPU models. vLLM RFC measurement, load tests and profiling on a 15 W Jetson.</p></div>
+      <div class="layer lit" data-rgb="255,106,77" style="--c:var(--k)"><a class="nm" href="#ch-k">GPU kernels</a><a class="rz" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a><p class="pf">3 PRs merged: tests in NVIDIA cuDNN frontend, Triton kernels and KV-cache decoding in flash-linear-attention.</p></div>
     </div>
   </div>
 </header>
@@ -306,34 +424,21 @@
   <b class="h">CUDA /</b><b>Triton /</b><b>FlashAttention /</b><b>KV-cache /</b><b class="h">MCP /</b><b>sqlite-vec /</b><b>BM25 /</b><b>reciprocal-rank fusion /</b><b>cross-encoder rerank /</b><b class="h">C17 /</b><b>Apple Metal /</b><b>4-bit QAT /</b><b>libp2p /</b><b>Rust /</b><b>gem5 /</b><b>Nsight /</b><b>roofline /</b>
 </div></div>
 
-<!-- UPSTREAM -->
-<section class="wrap pr" id="upstream">
-  <div class="shead reveal"><h2>Upstream work</h2><span class="srule"></span></div>
-  <p class="case-sub reveal">Open-source GPU kernel and inference work since March 2026. States checked Nov 3, 2026.</p>
-  <div class="wlist">
-    <a class="wrow reveal" href="https://github.com/fla-org/flash-linear-attention/pull/1412" target="_blank" rel="noopener"><span class="wd">Oct 27, 2026</span><span class="wt">flash-linear-attention #1412: KV-cache decoding<span class="wsub">Added KV-cache decoding for stick-breaking attention, tested against the uncached forward. On H200 at batch 1 and 64K keys, 32 programs on 132 SMs take 4.3 ms, against a K/V read floor of about 0.06 ms at rated bandwidth.</span></span><span class="wm st-ok">Merged</span></a>
-    <a class="wrow reveal" href="https://github.com/fla-org/flash-linear-attention/pull/1319" target="_blank" rel="noopener"><span class="wd">Oct 8, 2026</span><span class="wt">flash-linear-attention #1319: stick-breaking attention in Triton<span class="wsub">Continued #599 to add forward and backward Triton kernels. Rewrote the backward to fix a silent zero gradient at saturated logits, caught in review. On H100, 64×32 tiles fit 57-89 KiB of shared memory where 64×64 needed 129-193 KiB. Nothing saturates in the backward at about 12% occupancy, which I read as stalls on fp32 scans. It still takes 1.04-1.42× the original authors' time, and I haven't isolated why.</span></span><span class="wm st-ok">Merged</span></a>
-    <a class="wrow reveal" href="https://github.com/NVIDIA/cudnn-frontend/pull/1287" target="_blank" rel="noopener"><span class="wd">Oct 6, 2026</span><span class="wt">NVIDIA cuDNN frontend #1287: GQA tests<span class="wsub">Tests for native grouped-query attention, which catch 3 injected bugs that NVIDIA's SM80 tests missed.</span></span><span class="wm st-ok">Tests merged</span></a>
-    <a class="wrow reveal" href="https://github.com/NVIDIA/TransformerEngine/pull/3591" target="_blank" rel="noopener"><span class="wd">Open</span><span class="wt">NVIDIA TransformerEngine #3591: grouped NVFP4 dequantization<span class="wsub">CUDA kernel and a fixed PyTorch binding, reading offsets on device so it runs in a CUDA graph. Output matches per-tensor results bitwise.</span></span><span class="wm st-open">In review</span></a>
-    <a class="wrow reveal" href="https://github.com/vllm-project/vllm/pull/38338" target="_blank" rel="noopener"><span class="wd">Oct 7, 2026</span><span class="wt">vLLM #38338: Triton NVFP4 GEMM reference<span class="wsub">Ordered grouped tiles and autotuned tile sizes, holding 1,014-1,076 TFLOP/s on RTX 5090 for one shape from batch 8192 up, where the first revision fell to 418. On Llama QKV with hot L2: 1.38-3.04× CUTLASS up to batch 128, 0.77-0.91× above, and about 0.27× across 4 Llama shapes on B200 from batch 1024. I closed it after #21014 was closed as not planned.</span></span><span class="wm">Closed, not merged</span></a>
-    <a class="wrow reveal" href="https://github.com/NVIDIA/cudnn-frontend/pull/1223" target="_blank" rel="noopener"><span class="wd">Sep 27, 2026</span><span class="wt">NVIDIA cuDNN frontend #1223: native GQA prototype<span class="wsub">On A100 at 64/8 heads and a 128K KV cache, K/V head copies took 7.28 ms against a 6.0-6.7 ms kernel. Removing them made 6 batched rows 2.6-3.3× faster, and 10 more stopped running out of memory. The cuDNN backend stayed faster on 27 of 31 multi-token rows. Closed after NVIDIA shipped native GQA in #1239.</span></span><span class="wm">Closed, not merged</span></a>
-    <a class="wrow reveal" href="https://github.com/vllm-project/vllm/issues/46295#issuecomment-5788867616" target="_blank" rel="noopener"><span class="wd">Sep 23, 2026</span><span class="wt">vLLM RFC #46295: speculative decoding on MoE<span class="wsub">A measurement comment on someone else's RFC. On one H200 with CPU ngram drafts, offline and synthetic, a per-workload oracle improved on the best static batch-size table by at most 1.8%. vLLM's MFU byte model overcounted expert reads, up to 3× in the worst cell.</span></span><span class="wm">Comment</span></a>
-  </div>
-</section>
-
+<!-- ABOUT -->
 <!-- STACK DESCENT -->
 <section class="wrap case" id="stack">
-  <div class="case-top"><div><div class="case-tag">Silicon to agents</div><h2 class="case-title">One stack, from the kernels up.</h2><p class="case-sub">GPU kernels at the bottom, multi-agent systems at the top. Working every layer is how I find the one that owns the latency.</p></div></div>
+  <div class="case-top"><div><div class="case-tag">The thesis</div><h2 class="case-title">One token, from the kernels up.</h2><p class="case-sub">Every token an agent reads was computed by a kernel and scheduled by an engine. I work on each of those layers, because that's how I find the one that owns the latency.</p></div></div>
   <div class="scrolly">
     <div class="viz sv">
-      <div class="dl act" data-l="0" style="--c:var(--k)"><div><div class="dn">GPU kernels</div><div class="dt">CUDA, Triton, tiling, Nsight Compute</div></div><div class="dm">3 merged</div></div>
-      <div class="dl" data-l="1" style="--c:var(--i)"><div><div class="dn">LLM inference</div><div class="dt">KV cache, MoE decode, vLLM, llama.cpp</div></div><div class="dm">3 GPUs</div></div>
+      <i class="stok" aria-hidden="true"></i>
       <div class="dl" data-l="2" style="--c:var(--a)"><div><div class="dn">Agent systems</div><div class="dt">Multi-agent labs, MCP, evaluation</div></div><div class="dm">31 roles</div></div>
+      <div class="dl" data-l="1" style="--c:var(--i)"><div><div class="dn">LLM inference</div><div class="dt">KV cache, MoE decode, vLLM, llama.cpp</div></div><div class="dm">3 GPUs</div></div>
+      <div class="dl act" data-l="0" style="--c:var(--k)"><div><div class="dn">GPU kernels</div><div class="dt">CUDA, Triton, tiling, Nsight Compute</div></div><div class="dm">3 merged</div></div>
     </div>
     <div class="steps" id="sy-stack">
-      <div class="step" data-step="0"><div class="k" style="color:var(--k)">GPU kernels</div><h3>Attention and GEMM kernels.</h3><p>Triton attention kernels and KV-cache decoding merged in flash-linear-attention, and tests merged in NVIDIA cuDNN frontend. A Triton NVFP4 GEMM reference held 1,014-1,076 TFLOP/s on RTX 5090 for one shape.</p></div>
-      <div class="step" data-step="1"><div class="k" style="color:var(--i)">LLM inference</div><h3>Decode, measured.</h3><p>Built a llama.cpp expert cache for MoE decode when the model doesn't fit on the GPU, and benchmarked it on RTX 5090, 4090 and 3090 hosts. Measured speculative decoding on a vLLM RFC, load-tested vLLM on H100 NVL, and profiled attention and decode on a 15 W Jetson Orin Nano.</p></div>
-      <div class="step" data-step="2"><div class="k" style="color:var(--a)">Agent systems</div><h3>Agent systems, audited.</h3><p>Designed and ran a research lab of 31 Claude Code agent roles, built its sign-off verification, audited it against runner logs and shipped an improved detector. bert gives coding agents searchable project memory.</p></div>
+      <div class="step" data-step="0"><div class="k" style="color:var(--k)">GPU kernels</div><h3>It starts as math on a GPU.</h3><p>Triton attention kernels and KV-cache decoding merged in flash-linear-attention, and tests merged in NVIDIA cuDNN frontend. A Triton NVFP4 GEMM reference held 1,014-1,076 TFLOP/s on RTX 5090 for one shape.</p></div>
+      <div class="step" data-step="1"><div class="k" style="color:var(--i)">LLM inference</div><h3>Then an engine has to serve it.</h3><p>Built a llama.cpp expert cache for MoE decode when the model doesn't fit on the GPU, and benchmarked it on RTX 5090, 4090 and 3090 hosts. Measured speculative decoding on a vLLM RFC, load-tested vLLM on H100 NVL, and profiled attention and decode on a 15 W Jetson Orin Nano.</p></div>
+      <div class="step" data-step="2"><div class="k" style="color:var(--a)">Agent systems</div><h3>Then an agent acts on it, and someone has to check the agent.</h3><p>Designed and ran a research lab of 31 Claude Code agent roles, built its sign-off verification, audited it against runner logs and shipped an improved detector. bert gives coding agents searchable project memory.</p></div>
     </div>
   </div>
   <div class="trace reveal" id="trace">
@@ -342,61 +447,83 @@
     <div class="tracks" id="tracks"><i class="play" aria-hidden="true"></i>
       <div class="ln" style="--c:var(--a)"><a class="ln-n" href="#bert">Agents</a><div class="ln-t" style="height:66px"><i class="gl" style="left:0.00%"></i><i class="gl" style="left:10.13%"></i><i class="gl" style="left:19.28%"></i><i class="gl" style="left:29.41%"></i><i class="gl" style="left:39.22%"></i><i class="gl" style="left:49.35%"></i><i class="gl" style="left:59.15%"></i><i class="gl" style="left:69.28%"></i><i class="gl" style="left:79.41%"></i><i class="gl" style="left:89.22%"></i><a class="sb" href="#lab" aria-label="Autonomous research lab, April to September" data-say="Autonomous research lab, April to September" style="left:29.41%;width:55.56%;top:16px"></a><a class="sp-l" tabindex="-1" aria-hidden="true" href="#lab" style="left:29.41%;top:-1px">Research lab</a><a class="sb" href="#bert" aria-label="bert: searchable memory for coding agents, May to June" data-say="bert: searchable memory for coding agents, May to June" style="left:39.22%;width:19.61%;top:50px"></a><a class="sp-l" tabindex="-1" aria-hidden="true" href="#bert" style="left:39.22%;top:33px">bert</a><a class="mk" href="#lab" aria-label="Lab audit and improved detector, Sep 18" data-say="Lab audit and improved detector, Sep 18" style="left:84.97%;top:15px"></a></div></div>
       <div class="ln" style="--c:var(--i)"><a class="ln-n" href="#seconds">Inference</a><div class="ln-t" style="height:34px"><i class="gl" style="left:0.00%"></i><i class="gl" style="left:10.13%"></i><i class="gl" style="left:19.28%"></i><i class="gl" style="left:29.41%"></i><i class="gl" style="left:39.22%"></i><i class="gl" style="left:49.35%"></i><i class="gl" style="left:59.15%"></i><i class="gl" style="left:69.28%"></i><i class="gl" style="left:79.41%"></i><i class="gl" style="left:89.22%"></i><a class="sb" href="#inference-more" aria-label="Profiling attention and decode on a Jetson Orin Nano, February" data-say="Profiling attention and decode on a Jetson Orin Nano, February" style="left:10.13%;width:8.82%;top:18px"></a><a class="sp-l" tabindex="-1" aria-hidden="true" href="#inference-more" style="left:10.13%;top:1px">Jetson Orin Nano</a><a class="sb" href="#inference-more" aria-label="vLLM serving benchmark, June" data-say="vLLM serving benchmark, June" style="left:49.35%;width:9.48%;top:18px"></a><a class="sp-l" tabindex="-1" aria-hidden="true" href="#inference-more" style="left:49.35%;top:1px">vLLM serving</a><a class="sb" href="#seconds" aria-label="Where the Seconds Go, since September" data-say="Where the Seconds Go, since September" style="left:79.41%;width:20.59%;top:18px"></a><a class="sp-l r" tabindex="-1" aria-hidden="true" href="#seconds" style="left:100%;top:1px">Where the Seconds Go</a></div></div>
-      <div class="ln lit" style="--c:var(--k)"><a class="ln-n" href="#upstream">Kernels</a><div class="ln-t" style="height:50px"><i class="gl" style="left:0.00%"></i><i class="gl" style="left:10.13%"></i><i class="gl" style="left:19.28%"></i><i class="gl" style="left:29.41%"></i><i class="gl" style="left:39.22%"></i><i class="gl" style="left:49.35%"></i><i class="gl" style="left:59.15%"></i><i class="gl" style="left:69.28%"></i><i class="gl" style="left:79.41%"></i><i class="gl" style="left:89.22%"></i><a class="sb" href="#triton" aria-label="Triton vs cuBLAS benchmark, January and February" data-say="Triton vs cuBLAS benchmark, January and February" style="left:0.00%;width:18.95%;top:20px"></a><a class="sp-l" tabindex="-1" aria-hidden="true" href="#triton" style="left:0.00%;top:3px">Triton</a><a class="sb" href="#upstream" aria-label="Upstream GPU kernel work, since March" data-say="Upstream GPU kernel work, since March" style="left:19.28%;width:80.72%;top:20px"></a><a class="sp-l" tabindex="-1" aria-hidden="true" href="#upstream" style="left:19.28%;top:3px">Upstream GPU kernel work</a><a class="mk" href="https://github.com/NVIDIA/cudnn-frontend/pull/1287" aria-label="Tests merged in NVIDIA cuDNN frontend (#1287), Oct 6" data-say="Tests merged in NVIDIA cuDNN frontend (#1287), Oct 6" style="left:90.85%;top:-2px"></a><a class="mk" href="https://github.com/fla-org/flash-linear-attention/pull/1319" aria-label="Triton kernels merged in flash-linear-attention (#1319), Oct 8" data-say="Triton kernels merged in flash-linear-attention (#1319), Oct 8" style="left:91.50%;top:23px"></a><a class="mk" href="https://github.com/fla-org/flash-linear-attention/pull/1412" aria-label="KV-cache decoding merged in flash-linear-attention (#1412), Oct 27" data-say="KV-cache decoding merged in flash-linear-attention (#1412), Oct 27" style="left:97.71%;top:23px"></a></div></div>
+      <div class="ln lit" style="--c:var(--k)"><a class="ln-n" href="#ch-k">Kernels</a><div class="ln-t" style="height:50px"><i class="gl" style="left:0.00%"></i><i class="gl" style="left:10.13%"></i><i class="gl" style="left:19.28%"></i><i class="gl" style="left:29.41%"></i><i class="gl" style="left:39.22%"></i><i class="gl" style="left:49.35%"></i><i class="gl" style="left:59.15%"></i><i class="gl" style="left:69.28%"></i><i class="gl" style="left:79.41%"></i><i class="gl" style="left:89.22%"></i><a class="sb" href="#triton" aria-label="Triton vs cuBLAS benchmark, January and February" data-say="Triton vs cuBLAS benchmark, January and February" style="left:0.00%;width:18.95%;top:20px"></a><a class="sp-l" tabindex="-1" aria-hidden="true" href="#triton" style="left:0.00%;top:3px">Triton</a><a class="sb" href="#ch-k" aria-label="Upstream GPU kernel work, since March" data-say="Upstream GPU kernel work, since March" style="left:19.28%;width:80.72%;top:20px"></a><a class="sp-l" tabindex="-1" aria-hidden="true" href="#ch-k" style="left:19.28%;top:3px">Upstream GPU kernel work</a><a class="mk" href="https://github.com/NVIDIA/cudnn-frontend/pull/1287" aria-label="Tests merged in NVIDIA cuDNN frontend (#1287), Oct 6" data-say="Tests merged in NVIDIA cuDNN frontend (#1287), Oct 6" style="left:90.85%;top:-2px"></a><a class="mk" href="https://github.com/fla-org/flash-linear-attention/pull/1319" aria-label="Triton kernels merged in flash-linear-attention (#1319), Oct 8" data-say="Triton kernels merged in flash-linear-attention (#1319), Oct 8" style="left:91.50%;top:23px"></a><a class="mk" href="https://github.com/fla-org/flash-linear-attention/pull/1412" aria-label="KV-cache decoding merged in flash-linear-attention (#1412), Oct 27" data-say="KV-cache decoding merged in flash-linear-attention (#1412), Oct 27" style="left:97.71%;top:23px"></a></div></div>
     </div>
     <p class="readout" id="readout">Move across the chart to read the year.</p>
   </div>
 </section>
 
+<section class="plate hot" id="ch-k" style="--c:var(--k)"><div class="wrap">
+  <div class="pmeta">The base of the stack</div>
+  <h2 class="ptitle" data-rgb="255,106,77">Kernels</h2>
+  <p class="pline">Where a token's time actually goes. Merged upstream, measured down to the register.</p>
+  <div class="pscenes"><a href="#kernels"><b>Stick-breaking attention</b><span>52.7× faster than recomputing at 64K keys</span></a><a href="#gqa"><b>The K/V copy</b><span>7.28 ms copying before a 6.0-6.7 ms kernel</span></a><a href="#triton"><b>Triton vs cuBLAS</b><span>Up to 1.73×, median 0.96× across 76 shapes</span></a><a href="#yourgpu"><b>Run a kernel on your GPU</b><span>A live tile sweep in your browser</span></a></div>
+  <p class="phint">Click any large number for its conditions and source. J and K step through the page, one idea at a time.</p>
+</div></section>
+
 <!-- CASE STUDY: MERGED KERNELS -->
 <section class="wrap case hot" id="kernels" style="--lc:var(--k)">
-  <div class="case-top"><div><div class="case-tag" style="color:var(--k)">GPU kernels: merged upstream</div><h2 class="case-title">Stick-breaking attention</h2><p class="case-sub">Forward, backward and KV-cache decoding kernels in Triton, merged in flash-linear-attention. What they gained, and where they're still slower.</p></div><div class="cta2"><a href="https://github.com/fla-org/flash-linear-attention/pull/1319" class="btn g">#1319</a><a href="https://github.com/fla-org/flash-linear-attention/pull/1412" class="btn g">#1412</a></div></div>
+  <div class="case-top"><div><div class="case-tag" style="color:var(--k)">GPU kernels: merged upstream</div><h2 class="case-title">Stick-breaking attention</h2><p class="case-sub">Forward, backward and KV-cache decoding kernels in Triton, merged in flash-linear-attention. What they gained, and where they're still slower.</p><p class="plain">Attention kernels merged into a public library. With a long cache, one decoding step ran 52.7× faster than recomputing the prefix. They still take 1.04-1.42× the original authors' time.</p></div><div class="cta2"><a href="https://github.com/fla-org/flash-linear-attention/pull/1319" class="btn g">#1319</a><a href="https://github.com/fla-org/flash-linear-attention/pull/1412" class="btn g">#1412</a><a href="/work/stick-breaking-kernels/" class="btn g">Read the write-up</a></div></div>
   <div class="scrolly">
     <div class="viz tviz">
       <div class="vh"><span class="fvh">decode vs recompute, H200</span><span class="fvh2">microseconds, log</span></div>
       <div class="tframes first">
-        <div class="tframe" data-f="0">
-          <div class="tlead"><div class="tnum" data-count="52.7" data-unit="×" data-fix="1">52.7×</div><div class="tcap">faster than recomputing<br>at 64K keys, batch 1</div></div>
+        <div class="tframe" data-key data-f="0">
+          <div class="tlead"><div class="tnum has-c" data-c="sbk.op" role="button" tabindex="0" data-count="52.7" data-unit="×" data-fix="1">52.7×</div><div class="tcap">faster than recomputing<br>at 64K keys, batch 1</div></div>
           <div class="scatterwrap"><svg viewBox="40 0 400 290" width="100%" height="100%" font-family="JetBrains Mono" role="img" aria-label="One decode step against recomputing the prefix on an H200, by keys in the cache, microseconds on a log scale. At 1024 keys both take about 72 microseconds. At 65536 keys decode takes 4301.8 and recompute 226529.2, 52.7 times longer."><polyline class="dline" points="64,217.0 184,158.9 304,96.8 424,33.6" fill="none" stroke="#9398A0" stroke-width="2" stroke-dasharray="760"/><polyline class="dline" points="64,217.1 184,186.7 304,155.4 424,124.0" fill="none" stroke="#FF6A4D" stroke-width="2" stroke-dasharray="760"/><circle cx="64" cy="217.0" r="4.5" fill="#9398A0"/><text x="64" y="206.0" fill="#EEEFF1" font-size="11" text-anchor="start">72.8</text><circle cx="184" cy="158.9" r="4.5" fill="#9398A0"/><text x="176" y="147.9" fill="#EEEFF1" font-size="11" text-anchor="end">929.4</text><circle cx="304" cy="96.8" r="4.5" fill="#9398A0"/><text x="296" y="85.8" fill="#EEEFF1" font-size="11" text-anchor="end">14190.3</text><circle cx="424" cy="33.6" r="4.5" fill="#9398A0"/><text x="424" y="22.6" fill="#EEEFF1" font-size="11" text-anchor="end">226529.2</text><circle cx="64" cy="217.1" r="4.5" fill="#FF6A4D"/><text x="64" y="236.1" fill="#EEEFF1" font-size="11" text-anchor="start">72.4</text><circle cx="184" cy="186.7" r="4.5" fill="#FF6A4D"/><text x="184" y="205.7" fill="#EEEFF1" font-size="11" text-anchor="middle">275.0</text><circle cx="304" cy="155.4" r="4.5" fill="#FF6A4D"/><text x="304" y="174.4" fill="#EEEFF1" font-size="11" text-anchor="middle">1082.4</text><circle cx="424" cy="124.0" r="4.5" fill="#FF6A4D"/><text x="424" y="143.0" fill="#EEEFF1" font-size="11" text-anchor="end">4301.8</text><text x="64" y="262" fill="#9398A0" font-size="11" text-anchor="start">T=1024</text><text x="64" y="280" fill="#FF6A4D" font-size="13" font-weight="700" text-anchor="start">1.0×</text><text x="184" y="262" fill="#9398A0" font-size="11" text-anchor="middle">T=4096</text><text x="184" y="280" fill="#FF6A4D" font-size="13" font-weight="700" text-anchor="middle">3.4×</text><text x="304" y="262" fill="#9398A0" font-size="11" text-anchor="middle">T=16384</text><text x="304" y="280" fill="#FF6A4D" font-size="13" font-weight="700" text-anchor="middle">13.1×</text><text x="424" y="262" fill="#9398A0" font-size="11" text-anchor="end">T=65536</text><text x="424" y="280" fill="#FF6A4D" font-size="13" font-weight="700" text-anchor="end">52.7×</text></svg></div>
           <div class="legend"><span><i style="background:#FF6A4D"></i>Decode with the cache</span><span><i style="background:#9398A0"></i>Recompute the prefix</span></div>
         </div>
         <div class="tframe" data-f="1">
-          <div class="tlead"><div class="tnum rng">57-89 KiB</div><div class="tcap">shared memory per kernel<br>with 64×32 tiles, H100</div></div>
-          <div class="tbar "><div class="row"><span class="rl">64×64 tiles</span><div class="rbtrack"><div class="rb g cu" style="width:100.0%"></div></div><span class="rv">129-193 KiB</span></div><div class="row"><span class="rl">64×32 tiles</span><div class="rbtrack"><div class="rb g " style="width:46.0%"></div></div><span class="rv">57-89 KiB</span></div></div>
+          <div class="seg sm" id="code-tabs" role="group" aria-label="Part of the kernel"><button type="button" data-r="0-3" data-say="Start at the newest keys and step back one block at a time." aria-pressed="true">Walk the cache</button><button type="button" data-r="4-7" data-say="Load one block of keys and values, masked where it runs past the start of the sequence." aria-pressed="false">Read one block</button><button type="button" data-r="9-12" data-say="Each block's weights depend on what the nearer blocks left over, so that remainder carries backward." aria-pressed="false">Carry the stick</button></div>
+          <div class="codew"><pre id="code-pre" tabindex="0"><code><span class="ln"># visit nearer blocks first to carry their remaining stick into earlier blocks</span><span class="ln">for i_s in range(0, TK, BS):</span><span class="ln">    o_k = TK - BS - i_s + tl.arange(0, BS)</span><span class="ln">    m_k = o_k &gt;= 0</span><span class="ln">    p_k = k + (bos * H + i_h) * K + o_k[:, None] * (H*K) + o_d[None, :]</span><span class="ln">    p_v = v + (bos * H + i_h) * V + o_k[:, None] * (H*V) + o_v[None, :]</span><span class="ln">    b_k = tl.load(p_k, mask=m_k[:, None] &amp; (o_d[None, :] &lt; K), other=0.)</span><span class="ln">    b_v = tl.load(p_v, mask=m_k[:, None] &amp; (o_v[None, :] &lt; V), other=0.)</span><span class="ln"> </span><span class="ln">    b_s = tl.sum(b_q[None, :] * b_k.to(tl.float32), 1) * scale * RCP_LN2</span><span class="ln">    b_log_om_beta, b_p = _stickbreaking_attn_weights(b_s=b_s, b_log_rem=b_log_rem, m_s=m_k, AXIS=0)</span><span class="ln">    b_o += tl.sum(b_p.to(b_v.dtype).to(tl.float32)[:, None] * b_v.to(tl.float32), 0)</span><span class="ln">    b_log_rem += tl.sum(b_log_om_beta, 0)</span></code></pre></div>
+          <p id="code-say" role="status"></p>
+          <a class="codelink" href="https://github.com/fla-org/flash-linear-attention/blob/main/fla/ops/stickbreaking_attn/decoding.py" target="_blank" rel="noopener">fla/ops/stickbreaking_attn/decoding.py</a>
         </div>
         <div class="tframe" data-f="2">
-          <div class="tlead"><div class="tnum rng">1.04-1.42×</div><div class="tcap">the original<br>authors' time</div></div>
+          <div class="tlead"><div class="tnum rng has-c" data-c="pr1319.tiles" role="button" tabindex="0">57-89 KiB</div><div class="tcap">shared memory per kernel<br>with 64×32 tiles, H100</div></div>
+          <div class="tbar "><div class="row"><span class="rl">64×64 tiles</span><div class="rbtrack"><div class="rb g cu" style="width:100.0%"></div></div><span class="rv">129-193 KiB</span></div><div class="row"><span class="rl">64×32 tiles</span><div class="rbtrack"><div class="rb g " style="width:46.0%"></div></div><span class="rv">57-89 KiB</span></div></div>
+        </div>
+        <div class="tframe" data-f="3">
+          <div class="tlead"><div class="tnum rng has-c" data-c="pr1319.vs_authors" role="button" tabindex="0">1.04-1.42×</div><div class="tcap">the original<br>authors' time</div></div>
           <div class="tbar sm"><div class="row"><span class="rl">B=8, T=1024</span><div class="rbtrack"><div class="rb g " style="width:8.0%"></div></div><span class="rv">1.04×</span></div><div class="row"><span class="rl">B=4, T=2048</span><div class="rbtrack"><div class="rb g " style="width:14.0%"></div></div><span class="rv">1.07×</span></div><div class="row"><span class="rl">B=2, T=4096</span><div class="rbtrack"><div class="rb g " style="width:32.0%"></div></div><span class="rv">1.16×</span></div><div class="row"><span class="rl">B=1, T=8192</span><div class="rbtrack"><div class="rb g " style="width:40.0%"></div></div><span class="rv">1.20×</span></div><div class="row"><span class="rl">B=4, T=2048, H=32</span><div class="rbtrack"><div class="rb g " style="width:84.0%"></div></div><span class="rv">1.42×</span></div><div class="row"><span class="rl">Packed 512+...+5120</span><div class="rbtrack"><div class="rb g " style="width:14.0%"></div></div><span class="rv">1.07×</span></div><div class="row"><span class="rl">Packed 8×1024</span><div class="rbtrack"><div class="rb g " style="width:64.0%"></div></div><span class="rv">1.32×</span></div><div class="row"><span class="rl">Packed 8192</span><div class="rbtrack"><div class="rb g " style="width:38.0%"></div></div><span class="rv">1.19×</span></div></div>
           <div class="tnote">The left edge is parity with the authors.</div>
+        </div>
+        <div class="tframe" data-f="4">
+          <div class="tlead"><div class="tnum rng has-c" data-c="sbk.occ" role="button" tabindex="0">12.5%</div><div class="tcap">of an SM's warps fit<br>at 255 registers per thread</div></div>
+          <div class="warps" id="fz-warps" role="img" aria-label="An SM with 64 warp slots. 8 are filled, 2 CTAs of 4 warps each. The other 56 are empty."><i class="d c1"></i><i class="d c1"></i><i class="d c1"></i><i class="d c1"></i><i class="d c2"></i><i class="d c2"></i><i class="d c2"></i><i class="d c2"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></div>
+          <div class="legend"><span><i style="background:#FF6A4D;border-radius:50%"></i>First CTA</span><span><i style="background:#FFB454;border-radius:50%"></i>Second CTA</span><span><i style="background:#2c3138;border-radius:50%"></i>Empty warp slot</span></div>
+          <div class="tnote">Each dot is one warp slot on an SM. This is the arithmetic, not a measurement of which slots ran.</div>
         </div>
       </div>
     </div>
     <div class="steps" id="sy-kernels">
       <div class="step" data-step="0"><div class="k">The result</div><h3>The bigger the cache, the bigger the gain.</h3><p>KV-cache decoding merged in #1412, tested against the uncached forward. At 64K keys one decode step ran 52.7× faster than recomputing the prefix, with no gain at 1024 keys. At model level, on random weights, a token still takes about 9 ms, slower than recomputing at batch 1 with short prompts, and I can't yet explain why.</p></div>
-      <div class="step" data-step="1"><div class="k">The build</div><h3>Smaller tiles, less than half the shared memory.</h3><p>Forward and backward kernels continued #599 and merged in #1319. 64×32 tiles fit 57-89 KiB of shared memory where 64×64 needed 129-193 KiB. Review caught a silent zero gradient at saturated logits, so I rewrote the backward.</p></div>
-      <div class="step" data-step="2"><div class="k">Still slower</div><h3>Still slower than the original authors' kernels.</h3><p>1.04-1.42× their time on all 8 shapes, and I haven't isolated why. Registers cap occupancy: at 255 registers per thread, 2 CTAs of 4 warps fit on an SM, which is 12.5%. Nothing saturates in the backward, so I read the rest as stalls on fp32 scans.</p></div>
+      <div class="step" data-step="1"><div class="k">The kernel</div><h3>Short enough to read.</h3><p>One program walks the cache from the newest keys back, a block at a time, and carries what's left of the stick. This is the merged code. Click through it.</p></div>
+      <div class="step" data-step="2"><div class="k">The build</div><h3>Smaller tiles, less than half the shared memory.</h3><p>Forward and backward kernels continued #599 and merged in #1319. 64×32 tiles fit 57-89 KiB of shared memory where 64×64 needed 129-193 KiB. Review caught a silent zero gradient at saturated logits, so I rewrote the backward.</p></div>
+      <div class="step" data-step="3"><div class="k">Still slower</div><h3>Still slower than the original authors' kernels.</h3><p>1.04-1.42× their time on all 8 shapes, forward plus backward on H100, and I haven't isolated why.</p></div>
+      <div class="step" data-step="4"><div class="k">Why I think so</div><h3>Registers cap occupancy at 12.5%.</h3><p>At 255 registers per thread, 2 CTAs of 4 warps fit on an SM. Nothing saturates in the backward: ALU runs 22-32% and XU 14-18%. I read the rest as stalls on dependent fp32 scans and exp2 and log2 results. That is inference, not a line-level measurement.</p></div>
     </div>
   </div>
 </section>
 
 <!-- CASE STUDY: GQA -->
 <section class="wrap case hot" id="gqa" style="--lc:var(--k)">
-  <div class="case-top"><div><div class="case-tag" style="color:var(--k)">GPU kernels: NVIDIA cuDNN</div><h2 class="case-title">The copy took longer than the math.</h2><p class="case-sub">What removing K/V head copies did on an A100, why that code closed, and the tests that merged.</p></div><div class="cta2"><a href="/notes/kv-copies-gqa" class="btn g">Read the worklog</a><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287" class="btn g">#1287</a></div></div>
-  <div class="scrolly">
+  <div class="case-top"><div><div class="case-tag" style="color:var(--k)">GPU kernels: NVIDIA cuDNN</div><h2 class="case-title">The copy took longer than the math.</h2><p class="case-sub">What removing K/V head copies did on an A100, why that code closed, and the tests that merged.</p><p class="plain">NVIDIA's library spent 7.28 ms copying data before a 6.0-6.7 ms computation, at one shape. NVIDIA shipped its own fix. The tests that merged catch 3 injected bugs that NVIDIA's tests missed. Click a shape below to see where the bug hides.</p></div><div class="cta2"><a href="/work/cudnn-gqa/" class="btn g">Read the write-up</a><a href="https://github.com/NVIDIA/cudnn-frontend/pull/1287" class="btn g">#1287</a></div></div>
+  <div class="scrolly flip">
     <div class="viz tviz">
       <div class="vh"><span class="fvh">one attention call, A100</span><span class="fvh2">64/8 heads, 128K KV cache</span></div>
       <div class="tframes first">
         <div class="tframe" data-f="0">
-          <div class="tlead"><div class="tnum" data-count="7.28" data-fix="2" data-small=" ms">7.28<span class="tu"> ms</span></div><div class="tcap">copying K and V<br>before attention began</div></div>
-          <div class="tbar "><div class="row"><span class="rl">K/V copies</span><div class="rbtrack"><div class="rb g " style="width:91.0%"></div></div><span class="rv">7.28 ms</span></div><div class="row"><span class="rl">Attention</span><div class="rbtrack"><div class="rb g cu" style="width:84.0%"></div></div><span class="rv">6.0-6.7 ms</span></div></div>
-          <div class="tnote">The copy writes the same K and V out once per query head.</div>
+          <div class="tlead"><div class="tnum has-c" data-c="pr1223.copy" role="button" tabindex="0" data-count="7.28" data-fix="2" data-small=" ms">7.28<span class="tu"> ms</span></div><div class="tcap">copying K and V<br>before attention began</div></div>
+          <div class="copyrow"><div class="copyz" id="fz-copy" role="img" aria-label="8 KV heads in a row, and below each one the 8 copies written for the query heads that read it, 64 in all."><i class="d s"></i><i class="d s"></i><i class="d s"></i><i class="d s"></i><i class="d s"></i><i class="d s"></i><i class="d s"></i><i class="d s"></i><span class="sp"></span><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></div><div class="tbar"><div class="row"><span class="rl">K/V copies</span><div class="rbtrack"><div class="rb g " style="width:91.0%"></div></div><span class="rv">7.28 ms</span></div><div class="row"><span class="rl">Attention</span><div class="rbtrack"><div class="rb g cu" style="width:84.0%"></div></div><span class="rv">6.0-6.7 ms</span></div></div></div>
+          <div class="tnote">Top row: the KV heads. Below each one: the same K and V written out again for each query head that reads it.</div>
         </div>
         <div class="tframe" data-f="1">
           <div class="legend"><span><i style="background:#2a2e34"></i>Develop</span><span><i style="background:linear-gradient(90deg,#FF6A4D,#FFB454)"></i>My prototype</span><span><i style="background:#C9CED6"></i>cuDNN backend</span></div>
           <div class="cls"><div class="cl"><div class="cl-l">64/8 d128<span>2.19×</span></div><div class="cl-b"><div class="clb"><div class="rbtrack"><div class="rb g cu" style="width:80.9%"></div></div><span class="rv">14.57</span></div><div class="clb"><div class="rbtrack"><div class="rb g " style="width:37.0%"></div></div><span class="rv">6.66</span></div><div class="clb"><div class="rbtrack"><div class="rb g be" style="width:18.3%"></div></div><span class="rv">3.30</span></div></div></div><div class="cl"><div class="cl-l">64/8 d64<span>1.95×</span></div><div class="cl-b"><div class="clb"><div class="rbtrack"><div class="rb g cu" style="width:45.7%"></div></div><span class="rv">8.23</span></div><div class="clb"><div class="rbtrack"><div class="rb g " style="width:23.5%"></div></div><span class="rv">4.23</span></div><div class="clb"><div class="rbtrack"><div class="rb g be" style="width:22.7%"></div></div><span class="rv">4.09</span></div></div></div><div class="cl"><div class="cl-l">32/8 d128<span>1.49×</span></div><div class="cl-b"><div class="clb"><div class="rbtrack"><div class="rb g cu" style="width:55.1%"></div></div><span class="rv">9.91</span></div><div class="clb"><div class="rbtrack"><div class="rb g " style="width:37.0%"></div></div><span class="rv">6.66</span></div><div class="clb"><div class="rbtrack"><div class="rb g be" style="width:18.3%"></div></div><span class="rv">3.30</span></div></div></div><div class="cl"><div class="cl-l">32/2 d256<span>1.37×</span></div><div class="cl-b"><div class="clb"><div class="rbtrack"><div class="rb g cu" style="width:95.3%"></div></div><span class="rv">17.15</span></div><div class="clb"><div class="rbtrack"><div class="rb g " style="width:69.7%"></div></div><span class="rv">12.55</span></div><div class="clb"><div class="rbtrack"><div class="rb g be" style="width:55.3%"></div></div><span class="rv">9.96</span></div></div></div><div class="cl"><div class="cl-l">8/1 d128<span>1.15×</span></div><div class="cl-b"><div class="clb"><div class="rbtrack"><div class="rb g cu" style="width:42.2%"></div></div><span class="rv">7.59</span></div><div class="clb"><div class="rbtrack"><div class="rb g " style="width:36.8%"></div></div><span class="rv">6.63</span></div><div class="clb"><div class="rbtrack"><div class="rb g be" style="width:18.3%"></div></div><span class="rv">3.30</span></div></div></div></div>
           <div class="tnote">Multi-token steps at batch 1, milliseconds. Query heads/KV heads, head dimension.</div>
         </div>
-        <div class="tframe" data-f="2">
+        <div class="tframe" data-key data-f="2">
           <div class="seg" id="heads" role="group" aria-label="Query heads over KV heads"><button type="button" data-q="4" data-kv="2" aria-pressed="false">4/2</button><button type="button" data-q="16" data-kv="4" aria-pressed="false">16/4</button><button type="button" data-q="8" data-kv="4" aria-pressed="true">8/4</button><button type="button" data-q="8" data-kv="2" aria-pressed="false">8/2</button></div>
           <div><div class="hl">Correct formula</div><div class="cells" id="hm-a" style="grid-template-columns:repeat(8,minmax(0,1fr))" role="img" aria-label="Correct mapping: 0 0 1 1 2 2 3 3"><i class="c0" data-n="0"></i><i class="c0" data-n="0"></i><i class="c1" data-n="1"></i><i class="c1" data-n="1"></i><i class="c2" data-n="2"></i><i class="c2" data-n="2"></i><i class="c3" data-n="3"></i><i class="c3" data-n="3"></i></div></div>
           <div><div class="hl">A planted bug NVIDIA's tests missed</div><div class="cells" id="hm-b" style="grid-template-columns:repeat(8,minmax(0,1fr))" role="img" aria-label="Planted bug: 0 0 0 0 1 1 1 1"><i class="c0" data-n="0"></i><i class="c0" data-n="0"></i><i class="c0" data-n="0"></i><i class="c0" data-n="0"></i><i class="c1" data-n="1"></i><i class="c1" data-n="1"></i><i class="c1" data-n="1"></i><i class="c1" data-n="1"></i></div></div>
@@ -415,7 +542,7 @@
 
 <!-- CASE STUDY: TRITON -->
 <section class="wrap case" id="triton" style="--lc:var(--k)">
-  <div class="case-top"><div><div class="case-tag" style="color:var(--k)">GPU kernels: benchmark</div><h2 class="case-title">Triton vs cuBLAS</h2><p class="case-sub">Can one Triton kernel doing linear, bias and GeLU run faster than a cuBLAS GEMM plus separate bias and GeLU kernels? I built the benchmark across 76 LLM-shaped GEMMs on an A100.</p></div><a href="https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks" class="btn g">View the repo</a></div>
+  <div class="case-top"><div><div class="case-tag" style="color:var(--k)">GPU kernels: benchmark</div><h2 class="case-title">Triton vs cuBLAS</h2><p class="case-sub">Can one Triton kernel doing linear, bias and GeLU run faster than a cuBLAS GEMM plus separate bias and GeLU kernels? I built the benchmark across 76 LLM-shaped GEMMs on an A100.</p><p class="plain">Fusing three GPU steps into one kernel ran up to 1.73× faster on one shape. The median across 76 shapes was 0.96×, and that's the number that matters.</p></div><a href="https://github.com/harshithkantamneni/triton-vs-cublas-llm-benchmarks" class="btn g">View the repo</a></div>
   <div class="scrolly">
     <div class="viz tviz">
       <div class="vh"><span id="tvh">separate passes over global memory</span><span>A100</span></div>
@@ -429,14 +556,14 @@
           <div class="tnote">One launch. The intermediate stays in registers. Two HBM round-trips and two kernel launches, gone.</div>
         </div>
         <div class="tframe" data-f="2">
-          <div class="tlead"><div class="tnum">1.73×</div><div class="tcap">vs the unfused path<br>on one shape, fp16</div></div>
+          <div class="tlead"><div class="tnum has-c" data-c="tri.best" role="button" tabindex="0">1.73×</div><div class="tcap">vs the unfused path<br>on one shape, fp16</div></div>
           <div class="tbar">
             <div class="row"><span class="rl">unfused</span><div class="rbtrack"><div class="rb cu" style="width:58%"></div></div><span class="rv">1.00×</span></div>
             <div class="row"><span class="rl">fused, fp16</span><div class="rbtrack"><div class="rb" style="width:100%"></div></div><span class="rv" style="color:var(--i)">1.73×</span></div>
             <div class="row"><span class="rl">fused, bf16</span><div class="rbtrack"><div class="rb" style="width:74%"></div></div><span class="rv">1.28×</span></div>
           </div>
         </div>
-        <div class="tframe" data-f="3">
+        <div class="tframe" data-key data-f="3">
           <div class="seg sm" id="sc-seg" role="group" aria-label="Precision"><button type="button" data-v="fp16" aria-pressed="true">fp16</button><button type="button" data-v="bf16" aria-pressed="false">bf16</button></div>
           <div class="scatterwrap"><svg viewBox="0 0 420 290" width="100%" height="100%" id="scatter" role="img" aria-label="76 fused-kernel GEMM shapes benchmarked against the unfused path (a cuBLAS GEMM plus separate bias and GeLU) on an A100, fp16. Speedup ranges from 0.58 to 1.73 times with a median of 0.96. 27 of 76 shapes run faster than the unfused path, at similar rates across batch sizes."><line x1="40" y1="165" x2="406" y2="165" stroke="#41D6C3" stroke-width="1" stroke-dasharray="4"/><text x="44" y="160" fill="#7C828B" font-size="9" font-family="JetBrains Mono">PARITY 1.0×</text><text x="406" y="42" fill="#FFB454" font-size="9" font-family="JetBrains Mono" text-anchor="end">FASTER ↑</text><g fill="#7C828B" font-size="8.5" font-family="JetBrains Mono" text-anchor="end"><text x="37" y="45">1.73×</text><text x="37" y="101">1.4×</text><text x="37" y="235">0.6×</text></g><g id="sc-dots"><circle cx="52.0" cy="189.3" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.86" data-bf16="0.88" data-s="M=128, N=4096, K=4096"/><circle cx="56.0" cy="166.5" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.99" data-bf16="1.02" data-s="M=128, N=5120, K=5120"/><circle cx="60.0" cy="205.6" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.76" data-bf16="0.70" data-s="M=128, N=4096, K=11008"/><circle cx="64.0" cy="41.8" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.73" data-bf16="1.28" data-s="M=128, N=11008, K=4096"/><circle cx="68.0" cy="216.2" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.70" data-bf16="0.62" data-s="M=128, N=4096, K=16384"/><circle cx="72.0" cy="171.5" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.96" data-bf16="0.97" data-s="M=128, N=8192, K=8192"/><circle cx="76.0" cy="163.3" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.01" data-bf16="0.99" data-s="M=128, N=16384, K=4096"/><circle cx="80.0" cy="192.8" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.83" data-bf16="0.77" data-s="M=128, N=5120, K=13824"/><circle cx="84.0" cy="108.4" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.34" data-bf16="1.39" data-s="M=128, N=13824, K=5120"/><circle cx="88.0" cy="209.7" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.73" data-bf16="0.73" data-s="M=128, N=5120, K=20480"/><circle cx="92.0" cy="170.7" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.97" data-bf16="0.98" data-s="M=128, N=20480, K=5120"/><circle cx="96.0" cy="212.7" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.72" data-bf16="0.73" data-s="M=128, N=8192, K=28672"/><circle cx="100.0" cy="151.7" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.08" data-bf16="1.28" data-s="M=128, N=28672, K=8192"/><circle cx="104.0" cy="214.3" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.71" data-bf16="0.72" data-s="M=128, N=8192, K=32768"/><circle cx="108.0" cy="151.3" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.08" data-bf16="1.26" data-s="M=128, N=32768, K=8192"/><circle cx="122.0" cy="151.7" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.08" data-bf16="1.12" data-s="M=256, N=4096, K=4096"/><circle cx="126.0" cy="151.8" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.08" data-bf16="1.08" data-s="M=256, N=5120, K=5120"/><circle cx="130.0" cy="202.6" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.78" data-bf16="0.77" data-s="M=256, N=4096, K=11008"/><circle cx="134.0" cy="156.2" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.05" data-bf16="1.01" data-s="M=256, N=11008, K=4096"/><circle cx="138.0" cy="212.5" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.72" data-bf16="0.71" data-s="M=256, N=4096, K=16384"/><circle cx="142.0" cy="201.1" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.79" data-bf16="0.77" data-s="M=256, N=8192, K=8192"/><circle cx="146.0" cy="162.5" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.01" data-bf16="1.24" data-s="M=256, N=16384, K=4096"/><circle cx="150.0" cy="185.8" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.88" data-bf16="0.97" data-s="M=256, N=5120, K=13824"/><circle cx="154.0" cy="165.8" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.99" data-bf16="1.00" data-s="M=256, N=13824, K=5120"/><circle cx="158.0" cy="199.5" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.80" data-bf16="0.80" data-s="M=256, N=5120, K=20480"/><circle cx="162.0" cy="155.8" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.05" data-bf16="1.21" data-s="M=256, N=20480, K=5120"/><circle cx="166.0" cy="235.4" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.58" data-bf16="0.61" data-s="M=256, N=8192, K=28672"/><circle cx="170.0" cy="175.0" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.94" data-bf16="0.95" data-s="M=256, N=28672, K=8192"/><circle cx="174.0" cy="231.8" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.60" data-bf16="0.62" data-s="M=256, N=8192, K=32768"/><circle cx="178.0" cy="171.4" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.96" data-bf16="0.97" data-s="M=256, N=32768, K=8192"/><circle cx="192.0" cy="182.0" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.90" data-bf16="1.04" data-s="M=512, N=4096, K=4096"/><circle cx="196.0" cy="111.1" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.32" data-bf16="0.94" data-s="M=512, N=5120, K=5120"/><circle cx="200.0" cy="211.6" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.72" data-bf16="0.74" data-s="M=512, N=4096, K=11008"/><circle cx="204.0" cy="162.5" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.01" data-bf16="1.00" data-s="M=512, N=11008, K=4096"/><circle cx="208.0" cy="218.5" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.68" data-bf16="0.70" data-s="M=512, N=4096, K=16384"/><circle cx="212.0" cy="160.2" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.03" data-bf16="1.16" data-s="M=512, N=16384, K=4096"/><circle cx="216.0" cy="150.7" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.08" data-bf16="0.94" data-s="M=512, N=8192, K=8192"/><circle cx="220.0" cy="210.7" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.73" data-bf16="0.73" data-s="M=512, N=5120, K=13824"/><circle cx="224.0" cy="166.8" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.99" data-bf16="0.98" data-s="M=512, N=13824, K=5120"/><circle cx="228.0" cy="212.7" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.72" data-bf16="0.72" data-s="M=512, N=5120, K=20480"/><circle cx="232.0" cy="165.2" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="1.00" data-bf16="1.00" data-s="M=512, N=20480, K=5120"/><circle cx="236.0" cy="206.4" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.75" data-bf16="0.77" data-s="M=512, N=8192, K=28672"/><circle cx="240.0" cy="170.9" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.96" data-bf16="1.00" data-s="M=512, N=28672, K=8192"/><circle cx="244.0" cy="207.2" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.75" data-bf16="0.77" data-s="M=512, N=8192, K=32768"/><circle cx="248.0" cy="176.6" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.93" data-bf16="0.94" data-s="M=512, N=32768, K=8192"/><circle cx="262.0" cy="142.1" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.14" data-bf16="1.19" data-s="M=1024, N=4096, K=4096"/><circle cx="265.7" cy="157.9" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.04" data-bf16="1.21" data-s="M=1024, N=5120, K=5120"/><circle cx="269.5" cy="197.7" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.81" data-bf16="0.85" data-s="M=1024, N=4096, K=11008"/><circle cx="273.2" cy="144.3" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.12" data-bf16="1.13" data-s="M=1024, N=11008, K=4096"/><circle cx="276.9" cy="196.5" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.81" data-bf16="0.79" data-s="M=1024, N=4096, K=16384"/><circle cx="280.7" cy="170.0" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.97" data-bf16="0.96" data-s="M=1024, N=8192, K=8192"/><circle cx="284.4" cy="162.6" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.01" data-bf16="1.07" data-s="M=1024, N=16384, K=4096"/><circle cx="288.1" cy="168.2" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.98" data-bf16="0.90" data-s="M=1024, N=5120, K=13824"/><circle cx="291.9" cy="152.0" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.08" data-bf16="1.02" data-s="M=1024, N=13824, K=5120"/><circle cx="295.6" cy="175.2" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.94" data-bf16="0.86" data-s="M=1024, N=5120, K=20480"/><circle cx="299.3" cy="154.6" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.06" data-bf16="1.01" data-s="M=1024, N=20480, K=5120"/><circle cx="303.1" cy="176.4" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.93" data-bf16="0.88" data-s="M=1024, N=8192, K=16384"/><circle cx="306.8" cy="184.0" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.89" data-bf16="0.89" data-s="M=1024, N=8192, K=28672"/><circle cx="310.5" cy="168.7" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.98" data-bf16="0.97" data-s="M=1024, N=28672, K=8192"/><circle cx="314.3" cy="184.9" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.88" data-bf16="0.89" data-s="M=1024, N=8192, K=32768"/><circle cx="318.0" cy="151.4" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.08" data-bf16="0.96" data-s="M=1024, N=32768, K=8192"/><circle cx="332.0" cy="159.9" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.03" data-bf16="1.16" data-s="M=2048, N=4096, K=4096"/><circle cx="336.0" cy="152.6" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.07" data-bf16="1.00" data-s="M=2048, N=5120, K=5120"/><circle cx="340.0" cy="180.2" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.91" data-bf16="0.92" data-s="M=2048, N=4096, K=11008"/><circle cx="344.0" cy="142.3" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.14" data-bf16="1.11" data-s="M=2048, N=11008, K=4096"/><circle cx="348.0" cy="187.0" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.87" data-bf16="0.87" data-s="M=2048, N=4096, K=16384"/><circle cx="352.0" cy="178.6" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.92" data-bf16="0.92" data-s="M=2048, N=8192, K=8192"/><circle cx="356.0" cy="142.0" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.14" data-bf16="1.09" data-s="M=2048, N=16384, K=4096"/><circle cx="360.0" cy="187.6" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.87" data-bf16="0.86" data-s="M=2048, N=5120, K=13824"/><circle cx="364.0" cy="161.0" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.02" data-bf16="1.02" data-s="M=2048, N=13824, K=5120"/><circle cx="368.0" cy="192.3" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.84" data-bf16="0.84" data-s="M=2048, N=5120, K=20480"/><circle cx="372.0" cy="162.0" r="3.4" fill="#FFB454" opacity="0.95" data-fp16="1.02" data-bf16="1.02" data-s="M=2048, N=20480, K=5120"/><circle cx="376.0" cy="192.9" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.83" data-bf16="0.84" data-s="M=2048, N=8192, K=28672"/><circle cx="380.0" cy="176.3" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.93" data-bf16="0.93" data-s="M=2048, N=28672, K=8192"/><circle cx="384.0" cy="187.0" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.87" data-bf16="0.88" data-s="M=2048, N=8192, K=32768"/><circle cx="388.0" cy="166.4" r="2.6" fill="#6c7178" opacity="0.5" data-fp16="0.99" data-bf16="0.94" data-s="M=2048, N=32768, K=8192"/></g><g fill="#7C828B" font-size="9" font-family="JetBrains Mono" text-anchor="middle"><text x="80" y="276">128</text><text x="150" y="276">256</text><text x="220" y="276">512</text><text x="290" y="276">1024</text><text x="360" y="276">2048</text></g><text x="223" y="288" fill="#7C828B" font-size="8.5" font-family="JetBrains Mono" text-anchor="middle">batch size M</text></svg></div>
           <div class="tnote"><span class="hov">Hover a dot for its shape. </span><span id="sc-note">76 shapes in fp16. Median 0.96×, with 27 faster than the unfused path: 14 of 45 at M≤512 and 13 of 31 at M≥1024. Batch size alone doesn't explain the result.</span></div>
@@ -452,31 +579,79 @@
     </div>
   </div>
   <div class="bento">
-    <div class="b reveal"><div class="bl">Shapes benchmarked</div><div class="bn">76</div><div class="bd">LLM-shaped GEMMs across Triton and cuBLAS on an A100.</div></div>
-    <div class="b accent reveal" style="background:linear-gradient(180deg,rgba(255,180,84,.09),transparent)"><div class="bl">Peak throughput</div><div class="bn" style="color:var(--i)">213</div><div class="bd">TFLOP/s, 68% of fp16 tensor-core peak, bare autotuned GEMM.</div></div>
-    <div class="b reveal"><div class="bl">Best speedup</div><div class="bn">1.73×</div><div class="bd">on one shape, 1.28× in bf16. Median across 76 shapes is 0.96×, with 27 faster than the unfused path.</div></div>
+    <div class="b reveal"><div class="bl">Shapes benchmarked</div><div class="bn has-c" data-c="tri.shapes" role="button" tabindex="0">76</div><div class="bd">LLM-shaped GEMMs across Triton and cuBLAS on an A100.</div></div>
+    <div class="b accent reveal" style="background:linear-gradient(180deg,rgba(255,180,84,.09),transparent)"><div class="bl">Peak throughput</div><div class="bn has-c" data-c="tri.peak" role="button" tabindex="0" style="color:var(--i)">213</div><div class="bd">TFLOP/s, 68% of fp16 tensor-core peak, bare autotuned GEMM.</div></div>
+    <div class="b reveal"><div class="bl">Best speedup</div><div class="bn has-c" data-c="tri.best" role="button" tabindex="0">1.73×</div><div class="bd">on one shape, 1.28× in bf16. Median across 76 shapes is 0.96×, with 27 faster than the unfused path.</div></div>
     <div class="b reveal"><div class="bl">Repeats</div><div class="bn">10</div><div class="bd">Trials per shape. p90 over p50 here is spread across trials, not per-call tail latency.</div></div>
   </div>
 </section>
 
+<section class="wrap case hot" id="yourgpu" style="--lc:var(--k)">
+  <div class="gpugrid">
+    <div>
+      <div class="hm" id="hm" role="img" aria-label="Heatmap of throughput by workgroup shape, filled in when you run it."></div>
+      <div class="hmax"><span>Rows: workgroup height</span><span>Columns: workgroup width</span></div>
+    </div>
+    <div class="gpu-copy">
+      <div class="case-tag" style="color:var(--k)">Try it</div>
+      <h2 class="case-title sm">Same math. Different shape.</h2>
+      <p>A kernel's speed depends on how the work is tiled. This runs one matrix multiply on your GPU in every workgroup shape, times each one, and checks the answers against your CPU.</p>
+      <button type="button" class="btn p" id="gpu-run">Run it on my GPU</button>
+      <p id="gpu-out" role="status"></p>
+      <p class="tnote" style="margin-top:12px">It runs on your machine through WebGPU in fp32, and nothing is sent anywhere. It's a demonstration of tiling, not one of the measurements on this page.</p>
+    </div>
+  </div>
+</section>
+
+<!-- UPSTREAM -->
+<section class="wrap pr closing" id="upstream">
+  <div class="shead reveal"><h2>Everything upstream</h2><span class="srule"></span></div>
+  <p class="case-sub reveal" style="display:block">Open-source GPU kernel work since March 2026, closed PRs included. States checked Nov 3, 2026.</p>
+  <div class="seg up" id="up-filter" role="group" aria-label="Filter by state"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="merged" aria-pressed="false">Merged</button><button type="button" data-v="open" aria-pressed="false">In review</button><button type="button" data-v="closed" aria-pressed="false">Closed</button></div>
+  <div class="wlist">
+    <a class="wrow reveal" data-st="merged" href="https://github.com/fla-org/flash-linear-attention/pull/1412" target="_blank" rel="noopener"><span class="wd">Oct 27, 2026</span><span class="wt">flash-linear-attention #1412: KV-cache decoding<span class="wsub">Added KV-cache decoding for stick-breaking attention, tested against the uncached forward. On H200 at batch 1 and 64K keys, 32 programs on 132 SMs take 4.3 ms, against a K/V read floor of about 0.06 ms at rated bandwidth.</span></span><span class="wm st-ok">Merged</span></a>
+    <a class="wrow reveal" data-st="merged" href="https://github.com/fla-org/flash-linear-attention/pull/1319" target="_blank" rel="noopener"><span class="wd">Oct 8, 2026</span><span class="wt">flash-linear-attention #1319: stick-breaking attention in Triton<span class="wsub">Continued #599 to add forward and backward Triton kernels. Rewrote the backward to fix a silent zero gradient at saturated logits, caught in review. On H100, 64×32 tiles fit 57-89 KiB of shared memory where 64×64 needed 129-193 KiB. Nothing saturates in the backward at about 12% occupancy, which I read as stalls on fp32 scans. It still takes 1.04-1.42× the original authors' time, and I haven't isolated why.</span></span><span class="wm st-ok">Merged</span></a>
+    <a class="wrow reveal" data-st="merged" href="https://github.com/NVIDIA/cudnn-frontend/pull/1287" target="_blank" rel="noopener"><span class="wd">Oct 6, 2026</span><span class="wt">NVIDIA cuDNN frontend #1287: GQA tests<span class="wsub">Tests for native grouped-query attention, which catch 3 injected bugs that NVIDIA's SM80 tests missed.</span></span><span class="wm st-ok">Tests merged</span></a>
+    <a class="wrow reveal" data-st="open" href="https://github.com/NVIDIA/TransformerEngine/pull/3591" target="_blank" rel="noopener"><span class="wd">Open</span><span class="wt">NVIDIA TransformerEngine #3591: grouped NVFP4 dequantization<span class="wsub">CUDA kernel and a fixed PyTorch binding, reading offsets on device so it runs in a CUDA graph. Output matches per-tensor results bitwise.</span></span><span class="wm st-open">In review</span></a>
+    <a class="wrow reveal" data-st="closed" href="https://github.com/vllm-project/vllm/pull/38338" target="_blank" rel="noopener"><span class="wd">Oct 7, 2026</span><span class="wt">vLLM #38338: Triton NVFP4 GEMM reference<span class="wsub">Ordered grouped tiles and autotuned tile sizes, holding 1,014-1,076 TFLOP/s on RTX 5090 for one shape from batch 8192 up, where the first revision fell to 418. On Llama QKV with hot L2: 1.38-3.04× CUTLASS up to batch 128, 0.77-0.91× above, and about 0.27× across 4 Llama shapes on B200 from batch 1024. I closed it after #21014 was closed as not planned.</span></span><span class="wm">Closed, not merged</span></a>
+    <a class="wrow reveal" data-st="closed" href="https://github.com/NVIDIA/cudnn-frontend/pull/1223" target="_blank" rel="noopener"><span class="wd">Sep 27, 2026</span><span class="wt">NVIDIA cuDNN frontend #1223: native GQA prototype<span class="wsub">On A100 at 64/8 heads and a 128K KV cache, K/V head copies took 7.28 ms against a 6.0-6.7 ms kernel. Removing them made 6 batched rows 2.6-3.3× faster, and 10 more stopped running out of memory. The cuDNN backend stayed faster on 27 of 31 multi-token rows. Closed after NVIDIA shipped native GQA in #1239.</span></span><span class="wm">Closed, not merged</span></a>
+  </div>
+</section>
+
+<section class="wrap closing" id="work">
+  <div class="pgrid">
+    <a class="proj span6 feat" href="https://github.com/harshithkantamneni/moe-kernels/tree/gh200-analysis-2026-09-27" target="_blank" rel="noopener" style="--c:var(--k)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">GPU kernels, public repo</div><div class="pn">moe-kernels: a timing model of vLLM's fused MoE kernel</div><div class="pd">Predicts each call's time from the routing and the tile, with predictions frozen before each rental, on rented GH200s. On one 32×64×64 test tile, model v3's time predictions held at 0.51-0.69% rms. Its byte predictions missed by 11.76% on OLMoE's first wave, and the decode blind test failed at 11.4% against a 1.5% bar. No model is blind-certified on vLLM's own tiles.</div></div><div class="pbig" style="color:var(--k)">0.51-0.69%<span>time error, one test tile</span></div></a>
+    <a class="proj span3" href="https://github.com/harshithkantamneni/Ml-Guided-CUDA-Config" target="_blank" rel="noopener" style="--c:var(--k)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">Team project, ECE 759</div><div class="pn">ML-guided kernel config</div><div class="pd">A PyTorch model predicts kernel runtime and picks a config by argmin over a grid.</div></div><div class="pm">Team of 4</div></a>
+    <div class="proj span3" style="--c:var(--k);cursor:default"><div><div class="pl">Team project, ECE 752</div><div class="pn">MI300X + gem5 modeling</div><div class="pd">Built the gem5 full-system setup and HIP benchmarks for the AMD MI300X memory hierarchy.</div></div><div class="pm">Team of 3</div></div>
+  </div>
+</section>
+
+<section class="plate mid" id="ch-i" style="--c:var(--i)"><div class="wrap">
+  <div class="pmeta">The middle of the stack</div>
+  <h2 class="ptitle" data-rgb="255,180,84">Inference</h2>
+  <p class="pline">What happens when the model doesn't fit on the GPU.</p>
+  <div class="pscenes"><a href="#seconds"><b>Where the Seconds Go</b><span>Faster than FreeToken in 11 of 12 configurations</span></a><a href="#inference-more"><b>From a 15 W Jetson to H100 NVL</b><span>Decode profiled, vLLM load-tested, an RFC measured</span></a></div>
+</div></section>
+
 <!-- CASE STUDY: WHERE THE SECONDS GO -->
 <section class="wrap case" id="seconds" style="--lc:var(--i)">
-  <div class="case-top"><div><div class="case-tag" style="color:var(--i)">LLM inference: MoE decode</div><h2 class="case-title">Where the Seconds Go</h2><p class="case-sub">A llama.cpp expert cache for batch-1 MoE decode when the model doesn't fit on the GPU, and a computed limit to read it against. Public manuscript and code, not peer reviewed.</p></div><div class="cta2"><a href="https://github.com/harshithkantamneni/moe-speed-of-light" class="btn g">View the repo</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper/ieee-paper.pdf" class="btn g">Manuscript</a></div></div>
-  <div class="scrolly">
+  <div class="case-top"><div><div class="case-tag" style="color:var(--i)">LLM inference: MoE decode</div><h2 class="case-title">Where the Seconds Go</h2><p class="case-sub">A llama.cpp expert cache for batch-1 MoE decode when the model doesn't fit on the GPU, and a computed limit to read it against. Public manuscript and code, not peer reviewed.</p><p class="plain">When a model doesn't fit on the GPU, most of it waits in host memory. This cache for llama.cpp ran faster than FreeToken in 11 of 12 configurations, at batch 1. Pick a host and a model.</p></div><div class="cta2"><a href="https://github.com/harshithkantamneni/moe-speed-of-light" class="btn g">View the repo</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper/ieee-paper.pdf" class="btn g">Manuscript</a><a href="/work/where-the-seconds-go/" class="btn g">Read the write-up</a></div></div>
+  <div class="scrolly flip">
     <div class="viz tviz">
       <div class="vh"><span class="fvh">time per token, RTX 5090</span><span class="fvh2">gpt-oss-120b, 11% on GPU</span></div>
       <div class="tframes first">
         <div class="tframe" data-f="0" id="foresight">
-          <div class="tlead"><div class="tnum"><span id="fs-v">20.59</span><span class="tu"> ms</span></div><div class="tcap" id="fs-n" role="status">The deployed cache,<br>with no foresight.</div></div>
+          <div class="tlead"><div class="tnum has-c" data-c="wsg.breakdown" role="button" tabindex="0"><span id="fs-v">20.59</span><span class="tu"> ms</span></div><div class="tcap" id="fs-n" role="status">The deployed cache,<br>with no foresight.</div></div>
+          <div class="expz" id="fz-exp" role="img" aria-label="11 of 100 expert dots sit in GPU memory. The other 89 wait in host memory."><div class="mem gpu"><span>GPU memory</span><div class="md"><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></div></div><div class="mem host"><span>Host memory</span><div class="md"><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i></div></div></div>
           <div class="fsbar"><div class="rb" id="fs-b"></div><i class="limit" style="left:48.66%"></i></div>
-          <div class="tnote">The white tick is the computed limit, 10.02 ms, relative to my own bandwidth probe.</div>
+          <div class="tnote">Each dot is a hundredth of the experts. The host dots pulse once per token, slowed so you can see it. The white tick is the computed limit, 10.02 ms, relative to my own bandwidth probe.</div>
           <div class="sws">
             <button type="button" class="sw" role="switch" aria-checked="false"><span>Follow the oracle's cache schedule</span><i class="sw-k"></i></button>
             <button type="button" class="sw" role="switch" aria-checked="false"><span>Read each cached expert only once</span><i class="sw-k"></i></button>
             <button type="button" class="sw" role="switch" aria-checked="false" disabled><span>Also issue the copies ahead of time<em> (needs both above)</em></span><i class="sw-k"></i></button>
           </div>
         </div>
-        <div class="tframe" data-f="1" id="gridx">
+        <div class="tframe" data-key data-f="1" id="gridx">
           <div class="seg" data-k="host" role="group" aria-label="Host"><button type="button" data-v="B" aria-pressed="true">Faster memory</button><button type="button" data-v="S" aria-pressed="false">Stock clocks</button></div>
           <div class="seg" data-k="model" role="group" aria-label="Model"><button type="button" data-v="gpt" aria-pressed="true">gpt-oss-120b</button><button type="button" data-v="qwen" aria-pressed="false">Qwen3-30B-A3B</button></div>
           <div class="legend"><span><i style="background:linear-gradient(90deg,#FF6A4D,#FFB454)"></i>My cache</span><span><i style="background:#C9CED6"></i>FreeToken</span><span><i style="background:#2a2e34"></i>Stock llama.cpp</span></div>
@@ -487,26 +662,31 @@
     <div class="steps" id="sy-seconds">
       <div class="step" data-step="0"><div class="k">The problem</div><h3>The model doesn't fit.</h3><p>gpt-oss-120b needs about 61 GB and an RTX 5090 has 32 GB, so most experts wait in host memory and each token stalls on reads. I built an expert cache in llama.cpp for this, for batch-1 decode.</p></div>
       <div class="step" data-step="1"><div class="k">The limit</div><h3>How close is that to the best possible?</h3><p>I computed a limit and added oracles to the engine, with its copy table on. An oracle's cache schedule barely moves the time alone, and neither does reading each expert once, but together they reach 15.13 ms. Flip the switches yourself.</p></div>
-      <div class="step" data-step="2"><div class="k">What's left</div><h3>Even with all three, part of the gap stays.</h3><p>On this machine 36% of the gap stayed after all three, and 43-52% averaged over three groups of machines. Four policies without foresight got at most 6% of what the read-ahead oracle gained, on 5 fast-link machines.</p></div>
+      <div class="step" data-step="2"><div class="k">What's left</div><h3>Even with all three, part of the gap stays.</h3><p>On this machine 36% of the gap stayed after all three, and 43-52% averaged over three groups of machines. Four policies without foresight got at most 6% of what the read-ahead oracle gained, on 5 fast-link machines. At gpt-oss's smallest cache on 25 consumer machines, the cache reached 31-54% of the computed limit, a scope I chose after seeing the data.</p></div>
       <div class="step" data-step="3"><div class="k">The result</div><h3>Faster than FreeToken in 11 of 12 configurations.</h3><p>And 2.0-4.0× stock llama.cpp in all of them, on 2 RTX 5090 hosts, which is a weak baseline. On a separate rental with FreeToken tuned, across six cells, the ratio is 0.98-1.17×. Pick a host and a model.</p></div>
       <div class="step" data-step="4"><div class="k">The caveats</div><h3>One slower cell, and batch 1 only.</h3><p>The slower cell is 0.97×, at the largest Qwen3 budget on the stock-clock host. On that host, swapping my admission rule for LRU ran 6-21% slower, so I read most of the difference as that rule.</p></div>
     </div>
   </div>
-  <div class="bento">
-    <div class="b reveal"><div class="bl">Against FreeToken</div><div class="bn" style="color:var(--i)">11 of 12</div><div class="bd">Configurations faster, on 2 RTX 5090 hosts at batch 1.</div></div>
-    <div class="b reveal"><div class="bl">Against stock</div><div class="bn">2.0-4.0×</div><div class="bd">llama.cpp's tokens per second in all 12.</div></div>
-    <div class="b reveal"><div class="bl">Against the limit</div><div class="bn">31-54%</div><div class="bd">Of the computed limit, at gpt-oss's smallest cache on 25 consumer machines. I chose that scope after seeing the data.</div></div>
-    <div class="b reveal"><div class="bl">Without foresight</div><div class="bn">at most 6%</div><div class="bd">Of the read-ahead oracle's gain, from four policies on 5 fast-link machines.</div></div>
-  </div>
-  <div class="pgrid" id="inference-more">
-    <a class="proj span3" href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling" target="_blank" rel="noopener" style="--c:var(--i)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">LLM inference, edge</div><div class="pn">Jetson Orin Nano profiling</div><div class="pd">Attention and KV-cache decode kernels profiled with Nsight on a 15 W edge SoC. Decode holds steady up to 1024 keys, then climbs. Fused SDPA ran 2.78-5.55× faster than a manual matmul and softmax baseline across 5 sizes, which is a low bar.</div></div><div class="pm">5.55× at S=1024</div></a>
-    <a class="proj span3" href="https://github.com/harshithkantamneni/llm-inference-benchmarking" target="_blank" rel="noopener" style="--c:var(--i)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">LLM inference, first pass</div><div class="pn">vLLM serving benchmark</div><div class="pd">Load-tested vLLM with Qwen2.5-7B on H100 NVL across offered rates. TPOT ran 31-34% lower with CUDA graphs than eager, and FP8 cut it 27-36%. One run per rate.</div></div><div class="pm">vLLM, H100 NVL</div></a>
+</section>
+
+<section class="wrap closing" id="inference-more">
+  <div class="pgrid">
+    <a class="proj span2" href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling" target="_blank" rel="noopener" style="--c:var(--i)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">Edge, 15 W</div><div class="pn">Jetson Orin Nano profiling</div><div class="pd">Attention and KV-cache decode kernels profiled with Nsight. Decode holds steady up to 1024 keys, then climbs. Fused SDPA ran 2.78-5.55× faster than a manual matmul and softmax baseline across 5 sizes, which is a low bar.</div></div><div><div class="sparkb" role="img" aria-label="Decode time by keys in the cache: 256 keys 63.1, 512 keys 63.9, 1024 keys 64.9, 2048 keys 114.6, 4096 keys 209.4, 8192 keys 398.1 microseconds."><i style="height:15.9%"></i><i style="height:16.1%"></i><i style="height:16.3%"></i><i style="height:28.8%"></i><i style="height:52.6%"></i><i style="height:100.0%"></i></div><div class="sparkl"><span>256 keys</span><span>8192 keys</span></div></div></a>
+    <a class="proj span2" href="https://github.com/harshithkantamneni/llm-inference-benchmarking" target="_blank" rel="noopener" style="--c:var(--i)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">Serving, first pass</div><div class="pn">vLLM on H100 NVL</div><div class="pd">Load-tested vLLM with Qwen2.5-7B across offered rates. TPOT ran 31-34% lower with CUDA graphs than eager, and FP8 cut it 27-36%. One run per rate.</div></div><div class="pm">31-34% lower TPOT</div></a>
+    <a class="proj span2" href="https://github.com/vllm-project/vllm/issues/46295#issuecomment-5788867616" target="_blank" rel="noopener" style="--c:var(--i)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">Comment on someone else's RFC</div><div class="pn">Speculative decoding on MoE</div><div class="pd">On one H200 with CPU ngram drafts, offline and synthetic, a per-workload oracle improved on the best static batch-size table by at most 1.8%. vLLM's MFU byte model overcounted expert reads, up to 3× in the worst cell.</div></div><div class="pm">at most 1.8%</div></a>
   </div>
 </section>
 
+<section class="plate mid" id="ch-a" style="--c:var(--a)"><div class="wrap">
+  <div class="pmeta">The top of the stack</div>
+  <h2 class="ptitle" data-rgb="106,168,255">Agents</h2>
+  <p class="pline">Memory for coding agents, and a lab that had to be audited.</p>
+  <div class="pscenes"><a href="#bert"><b>bert</b><span>0.90 where full context fell to 0.08</span></a><a href="#lab"><b>The check that never ran</b><span>0 of 270 eligible sessions, by my count</span></a></div>
+</div></section>
+
 <!-- CASE STUDY: BERT -->
 <section class="wrap case" id="bert" style="--lc:var(--a)">
-  <div class="case-top"><div><div class="case-tag" style="color:var(--a)">Agent systems: retrieval and memory</div><h2 class="case-title">bert</h2><p class="case-sub">A local MCP server that gives a coding agent searchable memory of a whole project. Once the history outgrows the context window, stuffing it all in fails and truncation drops the answer. bert returns the slice that holds it.</p></div><a href="https://github.com/harshithkantamneni/bert" class="btn g">View the repo</a></div>
+  <div class="case-top"><div><div class="case-tag" style="color:var(--a)">Agent systems: retrieval and memory</div><h2 class="case-title">bert</h2><p class="case-sub">A local MCP server that gives a coding agent searchable memory of a whole project. Once the history outgrows the context window, stuffing it all in fails and truncation drops the answer. bert returns the slice that holds it.</p><p class="plain">Searchable memory for coding agents. On a project far larger than the model's window, it scored 0.90 where full context fell to 0.08, with no significant difference from agentic grep.</p></div><div class="cta2"><a href="https://github.com/harshithkantamneni/bert" class="btn g">View the repo</a><a href="/work/bert/" class="btn g">Read the write-up</a></div></div>
   <div class="scrolly">
     <div class="viz">
       <div class="vh"><span>Accuracy at 2 measured memory sizes</span><span id="vizlabel">one Claude reader, only the method varies</span></div>
@@ -526,7 +706,7 @@
           <text class="pt" x="375.4" y="300" fill="#C4C7CC" font-size="11" text-anchor="end">full-context .08</text>
         </svg>
       </div>
-      <div class="bigstat"><span class="num" id="vstat">0.90</span><span class="cap" id="vcap">bert and agentic grep, no significant difference</span></div>
+      <div class="bigstat"><span class="num has-c" data-c="bert.large" role="button" tabindex="0" id="vstat">0.90</span><span class="cap" id="vcap">bert and agentic grep, no significant difference</span></div>
     </div>
     <div class="steps" id="sy-bert">
       <div class="step" data-step="0"><div class="k">The problem</div><h3>A project's memory outgrows the model's window.</h3><p>A mature project's decisions, designs and post-mortems can run past any context window. Stuff it all in and the request fails. Keep only the recent slice and you lose the fact you need.</p></div>
@@ -538,21 +718,20 @@
   </div>
   <div class="bento">
     <div class="b reveal"><div class="bl">Interface</div><div class="bn">MCP</div><div class="bd">Local stdio server, JSON-RPC 2.0. Built for MCP hosts, measured on Claude Code.</div></div>
-    <div class="b accent reveal"><div class="bl">BEIR scifact</div><div class="bn">0.745</div><div class="bd">nDCG@10 with hybrid retrieval and rerank. Dense alone scores 0.740.</div></div>
-    <div class="b reveal"><div class="bl">Past the window</div><div class="bn">0.90</div><div class="bd">On a 1.26M-token synthetic memory with a 200K reader, no significant difference from agentic grep.</div></div>
-    <div class="b reveal"><div class="bl">On code</div><div class="bn">0.86</div><div class="bd">Multi-turn search through MCP, against 0.66 one-shot. Agentic grep scored higher at 0.97.</div></div>
+    <div class="b accent reveal"><div class="bl">BEIR scifact</div><div class="bn has-c" data-c="bert.beir" role="button" tabindex="0">0.745</div><div class="bd">nDCG@10 with hybrid retrieval and rerank. Dense alone scores 0.740.</div></div>
+    <div class="b reveal"><div class="bl">Past the window</div><div class="bn has-c" data-c="bert.large" role="button" tabindex="0">0.90</div><div class="bd">On a 1.26M-token synthetic memory with a 200K reader, no significant difference from agentic grep.</div></div>
+    <div class="b reveal"><div class="bl">On code</div><div class="bn has-c" data-c="bert.multi" role="button" tabindex="0">0.86</div><div class="bd">Multi-turn search through MCP, against 0.66 one-shot. Agentic grep scored higher at 0.97.</div></div>
   </div>
 </section>
 
-
 <!-- CASE STUDY: LAB -->
 <section class="wrap case" id="lab" style="--lc:var(--a)">
-  <div class="case-top"><div><div class="case-tag" style="color:var(--a)">Agent systems: verification</div><h2 class="case-title">The check that never ran.</h2><p class="case-sub">Sign-off verification for a lab of 31 Claude Code agent roles on one 18 GB MacBook, an audit of it against runner logs, and what the audit taught me.</p></div><div class="cta2"><a href="https://github.com/harshithkantamneni/agi-lab-framework" class="btn g">View the repo</a><a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps" class="btn g">Known gaps</a></div></div>
-  <div class="scrolly">
+  <div class="case-top"><div><div class="case-tag" style="color:var(--a)">Agent systems: verification</div><h2 class="case-title">The check that never ran.</h2><p class="case-sub">Sign-off verification for a lab of 31 Claude Code agent roles on one 18 GB MacBook, an audit of it against runner logs, and what the audit taught me.</p><p class="plain">The agent running the lab wrote 5 PI sign-offs without ever calling the PI agent. I built a check to stop that, then audited the check against the logs. By my count, it ran on 0 of 270 eligible sessions.</p></div><div class="cta2"><a href="https://github.com/harshithkantamneni/agi-lab-framework" class="btn g">View the repo</a><a href="https://github.com/harshithkantamneni/agi-lab-framework/blob/main/audits/README.md#known-gaps" class="btn g">Known gaps</a><a href="/work/lab-verification/" class="btn g">Read the write-up</a></div></div>
+  <div class="scrolly flip">
     <div class="viz">
       <div class="vh"><span>One square per runner log, in date order</span><span>public per-session table</span></div>
-      <div class="bigstat"><span class="num" id="lstat" style="color:var(--a)">0 of 270</span><span class="cap" id="lcap">eligible sessions where it ran, by my count</span></div>
-      <div class="chartwrap waf" id="waf" data-state="3"><svg viewBox="0 0 741 380" width="100%" role="img" aria-label="763 squares, one per runner log in date order. 270 are outlined as eligible. None is filled as run."><path class="w0" d="M1 1h14v14h-14zM20 1h14v14h-14zM172 1h14v14h-14zM229 1h14v14h-14zM286 1h14v14h-14zM343 1h14v14h-14zM362 1h14v14h-14zM400 1h14v14h-14zM438 1h14v14h-14zM476 1h14v14h-14zM495 1h14v14h-14zM514 1h14v14h-14zM533 1h14v14h-14zM704 1h14v14h-14zM77 20h14v14h-14zM96 20h14v14h-14zM172 20h14v14h-14zM248 20h14v14h-14zM305 20h14v14h-14zM324 20h14v14h-14zM343 20h14v14h-14zM419 20h14v14h-14zM438 20h14v14h-14zM533 20h14v14h-14zM571 20h14v14h-14zM590 20h14v14h-14zM609 20h14v14h-14zM628 20h14v14h-14zM647 20h14v14h-14zM723 20h14v14h-14zM20 39h14v14h-14zM77 39h14v14h-14zM172 39h14v14h-14zM191 39h14v14h-14zM210 39h14v14h-14zM248 39h14v14h-14zM362 39h14v14h-14zM419 39h14v14h-14zM457 39h14v14h-14zM685 39h14v14h-14zM704 39h14v14h-14zM723 39h14v14h-14zM96 58h14v14h-14zM362 58h14v14h-14zM400 58h14v14h-14zM419 58h14v14h-14zM438 58h14v14h-14zM495 58h14v14h-14zM514 58h14v14h-14zM533 58h14v14h-14zM552 58h14v14h-14zM647 58h14v14h-14zM666 58h14v14h-14zM685 58h14v14h-14zM704 58h14v14h-14zM723 58h14v14h-14zM20 77h14v14h-14zM58 77h14v14h-14zM77 77h14v14h-14zM115 77h14v14h-14zM153 77h14v14h-14zM172 77h14v14h-14zM267 77h14v14h-14zM305 77h14v14h-14zM324 77h14v14h-14zM343 77h14v14h-14zM362 77h14v14h-14zM381 77h14v14h-14zM419 77h14v14h-14zM457 77h14v14h-14zM495 77h14v14h-14zM514 77h14v14h-14zM533 77h14v14h-14zM571 77h14v14h-14zM590 77h14v14h-14zM609 77h14v14h-14zM647 77h14v14h-14zM58 96h14v14h-14zM96 96h14v14h-14zM153 96h14v14h-14zM191 96h14v14h-14zM210 96h14v14h-14zM229 96h14v14h-14zM267 96h14v14h-14zM286 96h14v14h-14zM362 96h14v14h-14zM400 96h14v14h-14zM438 96h14v14h-14zM457 96h14v14h-14zM495 96h14v14h-14zM647 96h14v14h-14zM58 115h14v14h-14zM134 115h14v14h-14zM210 115h14v14h-14zM229 115h14v14h-14zM305 115h14v14h-14zM419 115h14v14h-14zM438 115h14v14h-14zM457 115h14v14h-14zM476 115h14v14h-14zM514 115h14v14h-14zM552 115h14v14h-14zM628 115h14v14h-14zM647 115h14v14h-14zM723 115h14v14h-14zM39 134h14v14h-14zM58 134h14v14h-14zM115 134h14v14h-14zM134 134h14v14h-14zM172 134h14v14h-14zM191 134h14v14h-14zM267 134h14v14h-14zM286 134h14v14h-14zM305 134h14v14h-14zM324 134h14v14h-14zM343 134h14v14h-14zM362 134h14v14h-14zM400 134h14v14h-14zM419 134h14v14h-14zM438 134h14v14h-14zM457 134h14v14h-14zM476 134h14v14h-14zM495 134h14v14h-14zM514 134h14v14h-14zM533 134h14v14h-14zM552 134h14v14h-14zM571 134h14v14h-14zM609 134h14v14h-14zM628 134h14v14h-14zM647 134h14v14h-14zM666 134h14v14h-14zM685 134h14v14h-14zM704 134h14v14h-14zM723 134h14v14h-14zM20 153h14v14h-14zM39 153h14v14h-14zM58 153h14v14h-14zM77 153h14v14h-14zM96 153h14v14h-14zM115 153h14v14h-14zM134 153h14v14h-14zM153 153h14v14h-14zM172 153h14v14h-14zM191 153h14v14h-14zM210 153h14v14h-14zM229 153h14v14h-14zM248 153h14v14h-14zM267 153h14v14h-14zM286 153h14v14h-14zM305 153h14v14h-14zM343 153h14v14h-14zM362 153h14v14h-14zM381 153h14v14h-14zM400 153h14v14h-14zM419 153h14v14h-14zM438 153h14v14h-14zM457 153h14v14h-14zM476 153h14v14h-14zM495 153h14v14h-14zM514 153h14v14h-14zM552 153h14v14h-14zM571 153h14v14h-14zM609 153h14v14h-14zM628 153h14v14h-14zM647 153h14v14h-14zM666 153h14v14h-14zM685 153h14v14h-14zM704 153h14v14h-14zM723 153h14v14h-14zM1 172h14v14h-14zM20 172h14v14h-14zM58 172h14v14h-14zM77 172h14v14h-14zM115 172h14v14h-14zM172 172h14v14h-14zM210 172h14v14h-14zM229 172h14v14h-14zM267 172h14v14h-14zM286 172h14v14h-14zM305 172h14v14h-14zM324 172h14v14h-14zM343 172h14v14h-14zM362 172h14v14h-14zM381 172h14v14h-14zM419 172h14v14h-14zM457 172h14v14h-14zM476 172h14v14h-14zM571 172h14v14h-14zM590 172h14v14h-14zM628 172h14v14h-14zM647 172h14v14h-14zM704 172h14v14h-14zM723 172h14v14h-14zM1 191h14v14h-14zM20 191h14v14h-14zM58 191h14v14h-14zM77 191h14v14h-14zM96 191h14v14h-14zM115 191h14v14h-14zM134 191h14v14h-14zM153 191h14v14h-14zM172 191h14v14h-14zM191 191h14v14h-14zM210 191h14v14h-14zM229 191h14v14h-14zM248 191h14v14h-14zM286 191h14v14h-14zM324 191h14v14h-14zM343 191h14v14h-14zM381 191h14v14h-14zM400 191h14v14h-14zM419 191h14v14h-14zM438 191h14v14h-14zM457 191h14v14h-14zM476 191h14v14h-14zM495 191h14v14h-14zM514 191h14v14h-14zM533 191h14v14h-14zM552 191h14v14h-14zM571 191h14v14h-14zM590 191h14v14h-14zM609 191h14v14h-14zM628 191h14v14h-14zM647 191h14v14h-14zM666 191h14v14h-14zM685 191h14v14h-14zM704 191h14v14h-14zM1 210h14v14h-14zM20 210h14v14h-14zM39 210h14v14h-14zM58 210h14v14h-14zM77 210h14v14h-14zM96 210h14v14h-14zM115 210h14v14h-14zM134 210h14v14h-14zM153 210h14v14h-14zM172 210h14v14h-14zM191 210h14v14h-14zM210 210h14v14h-14zM229 210h14v14h-14zM248 210h14v14h-14zM267 210h14v14h-14zM286 210h14v14h-14zM305 210h14v14h-14zM324 210h14v14h-14zM343 210h14v14h-14zM362 210h14v14h-14zM381 210h14v14h-14zM400 210h14v14h-14zM419 210h14v14h-14zM457 210h14v14h-14zM495 210h14v14h-14zM552 210h14v14h-14zM571 210h14v14h-14zM590 210h14v14h-14zM609 210h14v14h-14zM628 210h14v14h-14zM647 210h14v14h-14zM666 210h14v14h-14zM685 210h14v14h-14zM704 210h14v14h-14zM723 210h14v14h-14zM20 229h14v14h-14zM39 229h14v14h-14zM58 229h14v14h-14zM77 229h14v14h-14zM96 229h14v14h-14zM115 229h14v14h-14zM134 229h14v14h-14zM153 229h14v14h-14zM172 229h14v14h-14zM191 229h14v14h-14zM210 229h14v14h-14zM229 229h14v14h-14zM267 229h14v14h-14zM286 229h14v14h-14zM305 229h14v14h-14zM324 229h14v14h-14zM362 229h14v14h-14zM400 229h14v14h-14zM419 229h14v14h-14zM438 229h14v14h-14zM514 229h14v14h-14zM533 229h14v14h-14zM552 229h14v14h-14zM571 229h14v14h-14zM590 229h14v14h-14zM609 229h14v14h-14zM628 229h14v14h-14zM666 229h14v14h-14zM685 229h14v14h-14zM704 229h14v14h-14zM723 229h14v14h-14zM1 248h14v14h-14zM20 248h14v14h-14zM39 248h14v14h-14zM58 248h14v14h-14zM77 248h14v14h-14zM96 248h14v14h-14zM115 248h14v14h-14zM153 248h14v14h-14zM172 248h14v14h-14zM191 248h14v14h-14zM210 248h14v14h-14zM229 248h14v14h-14zM248 248h14v14h-14zM267 248h14v14h-14zM286 248h14v14h-14zM305 248h14v14h-14zM324 248h14v14h-14zM343 248h14v14h-14zM362 248h14v14h-14zM381 248h14v14h-14zM400 248h14v14h-14zM419 248h14v14h-14zM438 248h14v14h-14zM457 248h14v14h-14zM476 248h14v14h-14zM514 248h14v14h-14zM533 248h14v14h-14zM552 248h14v14h-14zM571 248h14v14h-14zM590 248h14v14h-14zM609 248h14v14h-14zM628 248h14v14h-14zM647 248h14v14h-14zM685 248h14v14h-14zM77 267h14v14h-14zM96 267h14v14h-14zM115 267h14v14h-14zM153 267h14v14h-14zM191 267h14v14h-14zM210 267h14v14h-14zM229 267h14v14h-14zM286 267h14v14h-14zM305 267h14v14h-14zM324 267h14v14h-14zM400 267h14v14h-14zM419 267h14v14h-14zM438 267h14v14h-14zM457 267h14v14h-14zM476 267h14v14h-14zM514 267h14v14h-14zM533 267h14v14h-14zM552 267h14v14h-14zM590 267h14v14h-14zM609 267h14v14h-14zM628 267h14v14h-14zM666 267h14v14h-14zM704 267h14v14h-14zM723 267h14v14h-14zM1 286h14v14h-14zM39 286h14v14h-14zM58 286h14v14h-14zM96 286h14v14h-14zM134 286h14v14h-14zM153 286h14v14h-14zM172 286h14v14h-14zM191 286h14v14h-14zM210 286h14v14h-14zM229 286h14v14h-14zM248 286h14v14h-14zM267 286h14v14h-14zM286 286h14v14h-14zM305 286h14v14h-14zM343 286h14v14h-14zM362 286h14v14h-14zM381 286h14v14h-14zM400 286h14v14h-14zM419 286h14v14h-14zM438 286h14v14h-14zM495 286h14v14h-14zM533 286h14v14h-14zM552 286h14v14h-14zM571 286h14v14h-14zM590 286h14v14h-14zM628 286h14v14h-14zM647 286h14v14h-14zM666 286h14v14h-14zM685 286h14v14h-14zM20 305h14v14h-14zM39 305h14v14h-14zM58 305h14v14h-14zM115 305h14v14h-14zM134 305h14v14h-14zM153 305h14v14h-14zM191 305h14v14h-14zM229 305h14v14h-14zM248 305h14v14h-14zM267 305h14v14h-14zM324 305h14v14h-14zM362 305h14v14h-14zM400 305h14v14h-14zM438 305h14v14h-14zM457 305h14v14h-14zM476 305h14v14h-14zM495 305h14v14h-14zM514 305h14v14h-14zM552 305h14v14h-14zM571 305h14v14h-14zM590 305h14v14h-14zM609 305h14v14h-14zM628 305h14v14h-14zM685 305h14v14h-14zM723 305h14v14h-14zM1 324h14v14h-14zM39 324h14v14h-14zM77 324h14v14h-14zM96 324h14v14h-14zM172 324h14v14h-14zM191 324h14v14h-14zM210 324h14v14h-14zM229 324h14v14h-14zM267 324h14v14h-14zM305 324h14v14h-14zM324 324h14v14h-14zM343 324h14v14h-14zM362 324h14v14h-14zM381 324h14v14h-14zM400 324h14v14h-14zM419 324h14v14h-14zM457 324h14v14h-14zM495 324h14v14h-14zM514 324h14v14h-14zM533 324h14v14h-14zM552 324h14v14h-14zM571 324h14v14h-14zM590 324h14v14h-14zM628 324h14v14h-14zM647 324h14v14h-14zM666 324h14v14h-14zM685 324h14v14h-14zM704 324h14v14h-14zM723 324h14v14h-14zM1 343h14v14h-14zM20 343h14v14h-14zM39 343h14v14h-14zM58 343h14v14h-14zM77 343h14v14h-14zM96 343h14v14h-14zM115 343h14v14h-14zM134 343h14v14h-14zM153 343h14v14h-14zM172 343h14v14h-14zM191 343h14v14h-14zM210 343h14v14h-14zM229 343h14v14h-14zM248 343h14v14h-14zM267 343h14v14h-14zM286 343h14v14h-14zM324 343h14v14h-14zM343 343h14v14h-14zM362 343h14v14h-14zM381 343h14v14h-14zM400 343h14v14h-14zM419 343h14v14h-14zM438 343h14v14h-14zM457 343h14v14h-14zM476 343h14v14h-14zM495 343h14v14h-14zM514 343h14v14h-14zM533 343h14v14h-14zM552 343h14v14h-14zM571 343h14v14h-14zM590 343h14v14h-14zM609 343h14v14h-14zM628 343h14v14h-14zM647 343h14v14h-14zM666 343h14v14h-14zM685 343h14v14h-14zM704 343h14v14h-14zM723 343h14v14h-14zM1 362h14v14h-14zM20 362h14v14h-14zM39 362h14v14h-14zM58 362h14v14h-14zM77 362h14v14h-14zM96 362h14v14h-14zM115 362h14v14h-14zM134 362h14v14h-14zM153 362h14v14h-14zM172 362h14v14h-14zM191 362h14v14h-14zM210 362h14v14h-14zM229 362h14v14h-14zM248 362h14v14h-14zM286 362h14v14h-14zM305 362h14v14h-14zM324 362h14v14h-14zM343 362h14v14h-14zM362 362h14v14h-14zM381 362h14v14h-14zM400 362h14v14h-14z"/><path class="w1" d="M39 1h14v14h-14zM58 1h14v14h-14zM77 1h14v14h-14zM96 1h14v14h-14zM115 1h14v14h-14zM134 1h14v14h-14zM153 1h14v14h-14zM191 1h14v14h-14zM210 1h14v14h-14zM248 1h14v14h-14zM267 1h14v14h-14zM305 1h14v14h-14zM324 1h14v14h-14zM381 1h14v14h-14zM419 1h14v14h-14zM457 1h14v14h-14zM552 1h14v14h-14zM571 1h14v14h-14zM590 1h14v14h-14zM609 1h14v14h-14zM628 1h14v14h-14zM647 1h14v14h-14zM666 1h14v14h-14zM685 1h14v14h-14zM723 1h14v14h-14zM1 20h14v14h-14zM20 20h14v14h-14zM39 20h14v14h-14zM58 20h14v14h-14zM115 20h14v14h-14zM134 20h14v14h-14zM153 20h14v14h-14zM191 20h14v14h-14zM210 20h14v14h-14zM229 20h14v14h-14zM267 20h14v14h-14zM286 20h14v14h-14zM362 20h14v14h-14zM381 20h14v14h-14zM400 20h14v14h-14zM457 20h14v14h-14zM476 20h14v14h-14zM495 20h14v14h-14zM514 20h14v14h-14zM552 20h14v14h-14zM666 20h14v14h-14zM685 20h14v14h-14zM704 20h14v14h-14zM1 39h14v14h-14zM39 39h14v14h-14zM58 39h14v14h-14zM96 39h14v14h-14zM115 39h14v14h-14zM134 39h14v14h-14zM153 39h14v14h-14zM229 39h14v14h-14zM267 39h14v14h-14zM286 39h14v14h-14zM305 39h14v14h-14zM324 39h14v14h-14zM343 39h14v14h-14zM381 39h14v14h-14zM400 39h14v14h-14zM438 39h14v14h-14zM476 39h14v14h-14zM495 39h14v14h-14zM514 39h14v14h-14zM533 39h14v14h-14zM552 39h14v14h-14zM571 39h14v14h-14zM590 39h14v14h-14zM609 39h14v14h-14zM628 39h14v14h-14zM647 39h14v14h-14zM666 39h14v14h-14zM1 58h14v14h-14zM20 58h14v14h-14zM39 58h14v14h-14zM58 58h14v14h-14zM77 58h14v14h-14zM115 58h14v14h-14zM134 58h14v14h-14zM153 58h14v14h-14zM172 58h14v14h-14zM191 58h14v14h-14zM210 58h14v14h-14zM229 58h14v14h-14zM248 58h14v14h-14zM267 58h14v14h-14zM286 58h14v14h-14zM305 58h14v14h-14zM324 58h14v14h-14zM343 58h14v14h-14zM381 58h14v14h-14zM457 58h14v14h-14zM476 58h14v14h-14zM571 58h14v14h-14zM590 58h14v14h-14zM609 58h14v14h-14zM628 58h14v14h-14zM1 77h14v14h-14zM39 77h14v14h-14zM96 77h14v14h-14zM134 77h14v14h-14zM191 77h14v14h-14zM210 77h14v14h-14zM229 77h14v14h-14zM248 77h14v14h-14zM286 77h14v14h-14zM400 77h14v14h-14zM438 77h14v14h-14zM476 77h14v14h-14zM552 77h14v14h-14zM628 77h14v14h-14zM666 77h14v14h-14zM685 77h14v14h-14zM704 77h14v14h-14zM723 77h14v14h-14zM1 96h14v14h-14zM20 96h14v14h-14zM39 96h14v14h-14zM77 96h14v14h-14zM115 96h14v14h-14zM134 96h14v14h-14zM172 96h14v14h-14zM248 96h14v14h-14zM305 96h14v14h-14zM324 96h14v14h-14zM343 96h14v14h-14zM381 96h14v14h-14zM419 96h14v14h-14zM476 96h14v14h-14zM514 96h14v14h-14zM533 96h14v14h-14zM552 96h14v14h-14zM571 96h14v14h-14zM590 96h14v14h-14zM609 96h14v14h-14zM628 96h14v14h-14zM666 96h14v14h-14zM685 96h14v14h-14zM704 96h14v14h-14zM723 96h14v14h-14zM1 115h14v14h-14zM20 115h14v14h-14zM39 115h14v14h-14zM77 115h14v14h-14zM96 115h14v14h-14zM115 115h14v14h-14zM153 115h14v14h-14zM172 115h14v14h-14zM191 115h14v14h-14zM248 115h14v14h-14zM267 115h14v14h-14zM286 115h14v14h-14zM324 115h14v14h-14zM343 115h14v14h-14zM362 115h14v14h-14zM381 115h14v14h-14zM400 115h14v14h-14zM495 115h14v14h-14zM533 115h14v14h-14zM571 115h14v14h-14zM590 115h14v14h-14zM609 115h14v14h-14zM666 115h14v14h-14zM685 115h14v14h-14zM704 115h14v14h-14zM1 134h14v14h-14zM20 134h14v14h-14zM77 134h14v14h-14zM96 134h14v14h-14zM153 134h14v14h-14zM210 134h14v14h-14zM229 134h14v14h-14zM248 134h14v14h-14zM381 134h14v14h-14zM590 134h14v14h-14zM1 153h14v14h-14zM324 153h14v14h-14zM533 153h14v14h-14zM590 153h14v14h-14zM39 172h14v14h-14zM96 172h14v14h-14zM134 172h14v14h-14zM153 172h14v14h-14zM191 172h14v14h-14zM248 172h14v14h-14zM400 172h14v14h-14zM438 172h14v14h-14zM495 172h14v14h-14zM514 172h14v14h-14zM533 172h14v14h-14zM552 172h14v14h-14zM609 172h14v14h-14zM666 172h14v14h-14zM685 172h14v14h-14zM39 191h14v14h-14zM267 191h14v14h-14zM305 191h14v14h-14zM362 191h14v14h-14zM723 191h14v14h-14zM438 210h14v14h-14zM476 210h14v14h-14zM514 210h14v14h-14zM533 210h14v14h-14zM1 229h14v14h-14zM248 229h14v14h-14zM343 229h14v14h-14zM381 229h14v14h-14zM457 229h14v14h-14zM476 229h14v14h-14zM495 229h14v14h-14zM647 229h14v14h-14zM134 248h14v14h-14zM495 248h14v14h-14zM666 248h14v14h-14zM704 248h14v14h-14zM723 248h14v14h-14zM1 267h14v14h-14zM20 267h14v14h-14zM39 267h14v14h-14zM58 267h14v14h-14zM134 267h14v14h-14zM172 267h14v14h-14zM248 267h14v14h-14zM267 267h14v14h-14zM343 267h14v14h-14zM362 267h14v14h-14zM381 267h14v14h-14zM495 267h14v14h-14zM571 267h14v14h-14zM647 267h14v14h-14zM685 267h14v14h-14zM20 286h14v14h-14zM77 286h14v14h-14zM115 286h14v14h-14zM324 286h14v14h-14zM457 286h14v14h-14zM476 286h14v14h-14zM514 286h14v14h-14zM609 286h14v14h-14zM704 286h14v14h-14zM723 286h14v14h-14zM1 305h14v14h-14zM77 305h14v14h-14zM96 305h14v14h-14zM172 305h14v14h-14zM210 305h14v14h-14zM286 305h14v14h-14zM305 305h14v14h-14zM343 305h14v14h-14zM381 305h14v14h-14zM419 305h14v14h-14zM533 305h14v14h-14zM647 305h14v14h-14zM666 305h14v14h-14zM704 305h14v14h-14zM20 324h14v14h-14zM58 324h14v14h-14zM115 324h14v14h-14zM134 324h14v14h-14zM153 324h14v14h-14zM248 324h14v14h-14zM286 324h14v14h-14zM438 324h14v14h-14zM476 324h14v14h-14zM609 324h14v14h-14zM305 343h14v14h-14zM267 362h14v14h-14z"/></svg></div>
+      <div class="bigstat"><span class="num has-c" data-c="lab.gate" role="button" tabindex="0" id="lstat" style="color:var(--a)">0 of 270</span><span class="cap" id="lcap">eligible sessions where it ran, by my count</span></div>
+      <div class="waf" id="waf" data-state="3" role="img" aria-label="763 squares, one per runner log in date order. 270 are eligible. None of them ran the check."><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w1"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w1"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i><i class="d w0"></i></div>
       <div class="tfoot"><span>The logs stay private, so you can check the table's sums, not its rows.</span></div>
     </div>
     <div class="steps" id="sy-lab">
@@ -564,25 +743,19 @@
   </div>
 </section>
 
-<!-- MORE WORK -->
-<section class="wrap" id="work">
-  <div class="shead reveal"><h2>More work</h2><span class="srule"></span></div>
+<section class="wrap closing" id="agents-more">
   <div class="pgrid">
-    <a class="proj span6 feat" href="https://github.com/harshithkantamneni/moe-kernels/tree/gh200-analysis-2026-09-27" target="_blank" rel="noopener" style="--c:var(--k)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">GPU kernels, public repo</div><div class="pn">moe-kernels: a timing model of vLLM's fused MoE kernel</div><div class="pd">Predicts each call's time from the routing and the tile, with predictions frozen before each rental, on rented GH200s. On one 32×64×64 test tile, model v3's time predictions held at 0.51-0.69% rms. Its byte predictions missed by 11.76% on OLMoE's first wave, and the decode blind test failed at 11.4% against a 1.5% bar. No model is blind-certified on vLLM's own tiles.</div></div><div class="pbig" style="color:var(--k)">0.51-0.69%<span>time error, one test tile</span></div></a>
     <a class="proj span3" href="https://github.com/harshithkantamneni/obsidian-engine" target="_blank" rel="noopener" style="--c:var(--a)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">Agent systems</div><div class="pn">The Obsidian Archive</div><div class="pd">A 13-stage autonomous pipeline that researches, writes, renders and uploads a documentary from one topic, with atomic checkpoints and resume, automatic retries, an optional budget cap on Claude spend and failure alerts.</div></div><div class="pm">13 stages</div></a>
     <a class="proj span3" href="https://github.com/harshithkantamneni/hive-engine" target="_blank" rel="noopener" style="--c:var(--a)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">Agent systems</div><div class="pn">HIVE</div><div class="pd">A privacy-first peer-to-peer reasoning engine in Rust.</div></div><div class="pm">Alpha research prototype</div></a>
-    <a class="proj span3" href="https://github.com/harshithkantamneni/Ml-Guided-CUDA-Config" target="_blank" rel="noopener" style="--c:var(--k)"><span class="arrow" aria-hidden="true">↗</span><div><div class="pl">Team project, ECE 759</div><div class="pn">ML-guided kernel config</div><div class="pd">A PyTorch model predicts kernel runtime and picks a config by argmin over a grid.</div></div><div class="pm">Team of 4</div></a>
-    <div class="proj span3" style="--c:var(--k);cursor:default"><div><div class="pl">Team project, ECE 752</div><div class="pn">MI300X + gem5 modeling</div><div class="pd">Built the gem5 full-system setup and HIP benchmarks for the AMD MI300X memory hierarchy.</div></div><div class="pm">Team of 3</div></div>
   </div>
 </section>
 
-<!-- ABOUT -->
 <section class="wrap about" id="about">
   <div class="shead reveal"><h2>About</h2><span class="srule"></span></div>
   <p class="abig reveal">I <em>keep the results that disagree with me</em>. Working on CUDA and Triton kernels taught me to test bottleneck stories against counts. Building the layers on top, LLM inference, retrieval, and multi-agent systems, taught me which of those bottlenecks the real workload <em>actually cares about</em>. I say what I didn't measure.</p>
   <div class="princ">
     <div class="pc reveal"><div class="ph">Kernels to agents</div><div class="pp">CUDA and Triton kernels at the bottom, retrieval and multi-agent systems at the top. Every layer on this page has a project behind it.</div></div>
-    <div class="pc reveal"><div class="ph">Measured, with conditions</div><div class="pp">I name the hardware and the shape, and say where a result stops holding.</div></div>
+    <div class="pc reveal"><div class="ph">Measured, with conditions</div><div class="pp">I name the hardware and the shape, and say where a result stops holding. <a href="/numbers/" style="color:var(--ink);text-decoration:underline;text-underline-offset:3px">Every number and its source</a>.</div></div>
     <div class="pc reveal"><div class="ph">Open to checking</div><div class="pp">PRs and public repos you can open and read for yourself. Not public: the lab's logs, the floor report's sources, the RFC results, some Nsight reports and course reports.</div></div>
   </div>
   <p class="certs">NVIDIA certificates of competency: <a href="/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf">Getting Started with Accelerated Computing in Modern CUDA C++</a> (Jul 2025) and <a href="/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf">The Art of Compressing LLMs</a> (Feb 2026).</p>
@@ -611,13 +784,15 @@
 </footer>
 
 <dialog class="find" id="find" aria-labelledby="find-l">
-  <label id="find-l" for="find-q">Search my work</label>
+  <label id="find-l" for="find-q">Search or jump</label>
   <input id="find-q" type="search" autocomplete="off" spellcheck="false">
-  <div class="find-s" id="find-s"><button type="button">NVIDIA</button><button type="button">KV cache</button><button type="button">Jetson</button><button type="button">FreeToken</button><button type="button">occupancy</button><button type="button">grep</button></div>
-  <div class="find-r" id="find-r" role="listbox" aria-label="Results"></div>
-  <div class="find-f" id="find-f">BM25 over this page's text, running in your browser. No server and no model.</div>
+    <div class="find-r" id="find-r" role="listbox" aria-label="Results"></div>
+  <div class="find-f" id="find-f">Type to search with BM25, in your browser. J and K step through the page.</div>
 </dialog>
 <div class="tip" id="tip" role="status"></div>
+<div id="short-bar" hidden><span>The 60-second version</span><button type="button" data-short aria-pressed="true">Read the full page</button></div>
+<div id="step-hud" aria-hidden="true"></div>
+<noscript><style>.tframes{display:flex;flex-direction:column;gap:28px}.tframe{position:relative!important;opacity:1!important}.viz{position:relative!important;height:auto!important}.step{min-height:auto!important;padding:24px 0}.rail{display:none}</style></noscript>
 
 <svg class="grain"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
 
@@ -640,10 +815,10 @@ if(hm){const A=$('#hm-a'),B=$('#hm-b'),V=$('#hm-v');
 const fs=$('#foresight');
 if(fs){const MS={'000':20.59,'010':20.18,'100':20.11,'110':15.13,'111':13.78};
   const NAME={'000':'The deployed cache,<br>with no foresight.','010':"The deployed cache's choices,<br>each expert read once.",'100':"The oracle's schedule,<br>each expert read twice.",'110':"The oracle's schedule,<br>each expert read once.",'111':"The oracle's schedule, read once,<br>with copies issued ahead."};
-  const sw=$$('.sw',fs),out=$('#fs-v'),bar=$('#fs-b'),note=$('#fs-n');let touched=false,cur=20.59,raf=0;
+  const sw=$$('.sw',fs),out=$('#fs-v'),bar=$('#fs-b'),note=$('#fs-n');let touched=false,cur=20.59,raf=0;window.__ms=20.59;
   const on=b=>b.getAttribute('aria-checked')==='true',key=()=>sw.map(b=>on(b)?'1':'0').join('');
   const count=to=>{cancelAnimationFrame(raf);const from=cur,t0=performance.now();const tick=t=>{const f=Math.min(1,(t-t0)/500),e=1-Math.pow(1-f,3);cur=from+(to-from)*e;out.textContent=cur.toFixed(2);if(f<1)raf=requestAnimationFrame(tick);else{cur=to;out.textContent=to.toFixed(2);}};raf=requestAnimationFrame(tick);};
-  const paint=()=>{const ok=on(sw[0])&&on(sw[1]);sw[2].disabled=!ok;if(!ok)sw[2].setAttribute('aria-checked','false');const v=MS[key()];count(v);bar.style.transform='scaleX('+(v/20.59).toFixed(4)+')';note.innerHTML=NAME[key()];};
+  const paint=()=>{const ok=on(sw[0])&&on(sw[1]);sw[2].disabled=!ok;if(!ok)sw[2].setAttribute('aria-checked','false');const v=MS[key()];window.__ms=v;count(v);bar.style.transform='scaleX('+(v/20.59).toFixed(4)+')';note.innerHTML=NAME[key()];};
   sw.forEach(b=>b.addEventListener('click',()=>{touched=true;b.setAttribute('aria-checked',on(b)?'false':'true');paint();}));
   window.__fs=k=>{if(touched)return;sw.forEach((b,i)=>b.setAttribute('aria-checked',k[i]==='1'?'true':'false'));paint();};
 }
@@ -683,8 +858,9 @@ if(matchMedia('(hover:hover)').matches&&!matchMedia('(prefers-reduced-motion: re
 addEventListener('keydown',e=>{if(e.key==='Tab')document.documentElement.classList.add('kbd');},{once:true});
 
 /* Search this page: a small BM25, the same idea as the sparse half of bert */
-const D=$('#find'),Q=$('#find-q'),RS=$('#find-r'),SG=$('#find-s'),OPEN=$('#find-open');
+const D=$('#find'),Q=$('#find-q'),RS=$('#find-r'),OPEN=$('#find-open');
 if(D&&D.showModal&&OPEN){OPEN.hidden=false;
+  let cur=[],sel=0;
   const tok=s=>(s.toLowerCase().match(/[a-z0-9][a-z0-9.\-+#×]*/g)||[]).map(t=>t.replace(/[.\-]+$/,''));
   let docs=null,df,avg;
   const build=()=>{docs=[];$$('.step,.wrow,.proj,.b,.case-top,.pc,.dl').forEach(el=>{const h=el.querySelector('h3,h2,.wt,.pn,.bl,.dn,.ph');const title=h?(h.firstChild&&h.firstChild.textContent||h.textContent).trim():'';const text=el.textContent.replace(/\s+/g,' ').trim();if(!text)return;const sec=el.closest('section');const tag=sec&&sec.querySelector('.case-title,h2');const t=tok(text);const f={};t.forEach(w=>f[w]=(f[w]||0)+1);docs.push({el,title,text,tag:tag?tag.textContent.trim():'',f,n:t.length});});
@@ -692,9 +868,9 @@ if(D&&D.showModal&&OPEN){OPEN.hidden=false;
   const search=q=>{const ws=tok(q),N=docs.length,k1=1.2,b=.75;return docs.map(d=>{let s=0;ws.forEach(w=>{const f=d.f[w]||0;if(!f)return;const idf=Math.log(1+(N-df[w]+.5)/(df[w]+.5));s+=idf*f*(k1+1)/(f+k1*(1-b+b*d.n/avg));});return{d,s};}).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,7);};
   const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
   const snip=(t,ws)=>{const l=t.toLowerCase();let at=-1;for(const w of ws){at=l.indexOf(w);if(at>=0)break;}const st=Math.max(0,at-50);let o=esc((st?'...':'')+t.slice(st,st+150)+(t.length>st+150?'...':''));ws.forEach(w=>{if(w.length>1)o=o.replace(new RegExp('('+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'),'<mark>$1</mark>');});return o;};
-  let cur=[],sel=0;
-  const go=i=>{const r=cur[i];if(!r)return;D.close();const el=r.d.el;if(window.__lenis)window.__lenis.scrollTo(el,{offset:-90});else el.scrollIntoView({block:'center'});el.classList.remove('focus-flash');void el.offsetWidth;el.classList.add('focus-flash');};
-  const paint=()=>{const q=Q.value.trim();SG.hidden=!!q;if(!q){RS.innerHTML='';cur=[];return;}if(!docs)build();cur=search(q);sel=0;const ws=tok(q);
+    const go=i=>{const r=cur[i];if(!r)return;D.close();if(r.act){r.act();return;}const el=r.d.el;if(window.__lenis)window.__lenis.scrollTo(el,{offset:-90});else el.scrollIntoView({block:'center'});el.classList.remove('focus-flash');void el.offsetWidth;el.classList.add('focus-flash');};
+  const ACT=[['Go to Kernels',()=>window.__go('#ch-k')],['Go to Inference',()=>window.__go('#ch-i')],['Go to Agents',()=>window.__go('#ch-a')],['Run a kernel on my GPU',()=>window.__go('#yourgpu')],['Read the 60-second version',()=>window.__short(true,true)],['Open the résumé',()=>{location.href=$('#nav-res').getAttribute('href');}],['Copy my email address',()=>{const e='kantamneniharshith@gmail.com';if(navigator.clipboard)navigator.clipboard.writeText(e).catch(()=>{});$('#step-hud').textContent=e;$('#step-hud').classList.add('on');setTimeout(()=>$('#step-hud').classList.remove('on'),2200);}]];
+  const paint=()=>{const q=Q.value.trim();if(!q){cur=ACT.map(a=>({act:a[1]}));sel=0;RS.innerHTML=ACT.map((a,i)=>'<a href="#" role="option" data-i="'+i+'" class="'+(i?'':'on')+'"><b>'+a[0]+'</b></a>').join('');return;}if(!docs)build();cur=search(q);sel=0;const ws=tok(q);
     if(!cur.length){RS.innerHTML='<p style="padding:12px;color:var(--mid);font-size:14px">Nothing on this page matches that. Try a GPU, a model or a PR number, such as H200 or #1319.</p>';return;}
     RS.innerHTML=cur.map((r,i)=>'<a href="#" role="option" data-i="'+i+'" class="'+(i?'':'on')+'"><b>'+esc(r.d.title||r.d.tag)+'</b><small>'+snip(r.d.text,ws)+'</small></a>').join('');};
   const open=()=>{D.showModal();Q.value='';paint();Q.focus();};
@@ -703,7 +879,6 @@ if(D&&D.showModal&&OPEN){OPEN.hidden=false;
   Q.addEventListener('input',paint);
   Q.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(!cur.length)return;sel=(sel+(e.key==='ArrowDown'?1:cur.length-1))%cur.length;$$('a',RS).forEach((a,i)=>{a.classList.toggle('on',i===sel);if(i===sel)a.scrollIntoView({block:'nearest'});});}else if(e.key==='Enter'){e.preventDefault();go(sel);}});
   RS.addEventListener('click',e=>{const a=e.target.closest('a');if(!a)return;e.preventDefault();go(+a.dataset.i);});
-  $$('button',SG).forEach(b=>b.addEventListener('click',()=>{Q.value=b.textContent;paint();Q.focus();}));
   D.addEventListener('click',e=>{if(e.target===D)D.close();});
 }
 })();
@@ -712,24 +887,136 @@ if(D&&D.showModal&&OPEN){OPEN.hidden=false;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script>
+/* One field of dots. In the background it drifts. In a scene it becomes what is being measured. */
+(function(){
+const root=document.documentElement,qs=new URLSearchParams(location.search);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const back=document.getElementById('field'),over=document.getElementById('fieldTop');
+const api={on:false,bind(){},text(){},release(){},releaseIf(){},tint(){},sync(){}};
+window.__field=api;
+if(reduce||qs.has('static')||!back||!over)return;
+const bx=back.getContext('2d'),ox=over.getContext('2d');
+const N=(navigator.hardwareConcurrency||8)<4?800:1000;
+const AMB=[150,170,200];
+let W=0,H=0,dpr=1,mx=-999,my=-999,tt=0,running=false,cur=null,tint=AMB.slice(),tintT=AMB.slice(),last=0;
+const P=[],idx=[];
+for(let i=0;i<N;i++){idx.push(i);P.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,hx:0,hy:0,vis:-1,r:.7,a:0,c:AMB.slice(),tr:.7,ta:0,tc:AMB,sq:0,tsq:0,h:0,b:0,ox:0,oy:0,e:.055+Math.random()*.07,fly:0,pu:0});}
+const shuffle=()=>{for(let i=N-1;i>0;i--){const j=Math.random()*(i+1)|0,t=idx[i];idx[i]=idx[j];idx[j]=t;}};
+function layout(){
+  W=innerWidth;H=innerHeight;dpr=W>880?Math.min(devicePixelRatio||1,2):1;
+  [back,over].forEach(c=>{c.width=W*dpr;c.height=H*dpr;});
+  let gap=46;while(Math.floor(W/gap)*Math.floor(H/gap)>N)gap+=4;
+  let i=0;
+  for(let x=gap;x<W;x+=gap)for(let y=gap;y<H;y+=gap){if(i>=N)break;const p=P[i++];p.hx=x;p.hy=y;p.vis=((x/gap+y/gap)&1)?0:1;}
+  for(;i<N;i++){const p=P[i];p.hx=Math.random()*W;p.hy=Math.random()*H;p.vis=-1;}
+}
+const enabled=()=>api.on&&W>880&&!root.classList.contains('short');
+function clear(){for(const p of P){if(p.b){p.b=0;p.fly=1;p.pu=0;p.tsq=0;p.h=0;}}}
+function release(){clear();cur=null;}
+const rgb=s=>{const m=s.match(/[\d.]+/g);if(!m)return null;if(m.length>3&&+m[3]===0)return null;return[+m[0],+m[1],+m[2]];};
+
+/* Each .d element is the layout: the dot flies to its centre and takes its size and colour. */
+function bind(zone,opts){
+  if(!enabled())return;
+  if(typeof zone==='string')zone=document.querySelector(zone);if(!zone)return;
+  const same=cur&&cur.zone===zone;
+  if(!same){clear();shuffle();}
+  const zr=zone.getBoundingClientRect(),els=zone.querySelectorAll('.d');
+  els.forEach((el,i)=>{
+    if(i>=N)return;
+    const p=P[idx[i]],r=el.getBoundingClientRect(),cs=getComputedStyle(el),fill=rgb(cs.backgroundColor);
+    p.b=1;p.fly=0;p.ox=r.left-zr.left+r.width/2;p.oy=r.top-zr.top+r.height/2;p.tr=r.width/2;p.ta=1;
+    p.tc=fill||rgb(cs.borderTopColor)||AMB;p.h=fill?0:1;p.tsq=cs.borderTopLeftRadius==='50%'?0:1;
+    p.pu=opts&&opts.pulse&&el.closest('.host')?1:0;
+  });
+  cur={zone,pulse:opts&&opts.pulse,again:()=>bind(zone,opts)};
+}
+
+/* A chapter title is drawn by the dots, glyph by glyph where the page really set it. */
+function sample(h){
+  const r=h.getBoundingClientRect(),w=Math.ceil(r.width),hh=Math.ceil(r.height)+40,cs=getComputedStyle(h);
+  const c=document.createElement('canvas');c.width=w;c.height=hh;const o=c.getContext('2d',{willReadFrequently:true});
+  o.font=cs.fontWeight+' '+cs.fontSize+' '+cs.fontFamily;o.fillStyle='#fff';o.textBaseline='alphabetic';
+  const probe=document.createElement('span');probe.style.cssText='display:inline-block;width:0;height:0;vertical-align:baseline';h.appendChild(probe);
+  const base=probe.getBoundingClientRect().bottom-r.top;probe.remove();
+  const t=h.firstChild,rg=document.createRange();
+  for(let i=0;i<t.length;i++){rg.setStart(t,i);rg.setEnd(t,i+1);o.fillText(t.data[i],rg.getBoundingClientRect().left-r.left,base+20);}
+  const d=o.getImageData(0,0,w,hh).data;
+  for(let s=5;s<24;s++){
+    const pts=[];
+    for(let y=0,row=0;y<hh;y+=s*.88,row++)for(let x=row%2?s/2:0;x<w;x+=s){const a=d[((y|0)*w+(x|0))*4+3];if(a>140)pts.push([x,y-20]);}
+    if(pts.length<=N*.94)return{pts,s};
+  }
+  return{pts:[],s:8};
+}
+function text(h){
+  if(!enabled()||(cur&&cur.zone===h))return;
+  const go=()=>{
+    if(!enabled())return;
+    const {pts,s}=sample(h);if(!pts.length)return;
+    clear();shuffle();
+    const col=(h.dataset.rgb||'255,255,255').split(',').map(Number);
+    pts.forEach((q,i)=>{const p=P[idx[i]];p.b=1;p.fly=0;p.ox=q[0];p.oy=q[1];p.tr=s*.36;p.ta=.95;p.tc=col;p.h=0;p.tsq=0;p.pu=0;});
+    cur={zone:h,again:()=>{cur=null;text(h);}};
+  };
+  (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(go);
+}
+
+function draw(now){
+  if(document.hidden){running=false;return;}
+  running=true;tt+=.006;
+  const dt=Math.min(100,last?now-last:16.67)/16.67;last=now;const ease=e=>1-Math.pow(1-e,dt);const k14=ease(.14),k10=ease(.1),k20=ease(.2);
+  bx.setTransform(dpr,0,0,dpr,0,0);bx.clearRect(0,0,W,H);ox.setTransform(dpr,0,0,dpr,0,0);ox.clearRect(0,0,W,H);
+  let zr=null;
+  if(cur){zr=cur.zone.getBoundingClientRect();if(zr.bottom<-80||zr.top>H+80){release();zr=null;}}
+  for(let k=0;k<3;k++)tint[k]+=(tintT[k]-tint[k])*.04;
+  const per=cur&&cur.pulse?cur.pulse():0,ph=per?(now%per)/per:0,zw=zr?zr.width:1;
+  let lastB='',lastO='';
+  for(let i=0;i<N;i++){
+    const p=P[i];let tx,ty,tr,ta,tc,boost=1;
+    const d=Math.hypot(p.x-mx,p.y-my),infl=d<240?1-d/240:0;
+    if(p.b&&zr){
+      tx=zr.left+p.ox;ty=zr.top+p.oy;tr=p.tr*(1+infl*.3);ta=p.ta;tc=p.tc;
+      if(p.pu){const u=Math.abs(p.ox/zw-ph);boost=u<.1?2.4-u*14:1;}
+    }else{
+      tx=p.hx;ty=p.hy;tc=tint;
+      if(p.vis<0||(!p.vis&&infl===0)){ta=0;tr=.7;}
+      else{tr=.7+infl*2.4+Math.sin(tt*2+p.hx*.01+p.hy*.01)*.3;ta=(.05+infl*.5)*.5;}
+    }
+    const ke=1-Math.pow(1-p.e,dt);p.x+=(tx-p.x)*ke;p.y+=(ty-p.y)*ke;p.r+=(tr-p.r)*k14;p.a+=(ta-p.a)*k10;p.sq+=(p.tsq-p.sq)*k20;
+    p.c[0]+=(tc[0]-p.c[0])*k10;p.c[1]+=(tc[1]-p.c[1])*k10;p.c[2]+=(tc[2]-p.c[2])*k10;
+    if(p.fly&&Math.abs(p.x-p.hx)+Math.abs(p.y-p.hy)<4)p.fly=0;
+    if(p.a<.006)continue;
+    const onTop=p.b||p.fly,g=onTop?ox:bx,r=Math.max(.2,p.r);
+    const col='rgb('+(Math.min(255,p.c[0]*boost)|0)+','+(Math.min(255,p.c[1]*boost)|0)+','+(Math.min(255,p.c[2]*boost)|0)+')';
+    g.globalAlpha=Math.min(1,p.a);
+    if(p.h&&p.b){if(onTop?lastO!==col:lastB!==col){g.strokeStyle=col;}g.lineWidth=1.5;g.strokeRect(p.x-r+.75,p.y-r+.75,2*r-1.5,2*r-1.5);continue;}
+    if(onTop){if(lastO!==col){g.fillStyle=col;lastO=col;}}else if(lastB!==col){g.fillStyle=col;lastB=col;}
+    if(p.sq>.5)g.fillRect(p.x-r,p.y-r,2*r,2*r);
+    else{g.beginPath();g.arc(p.x,p.y,r,0,6.2832);g.fill();}
+  }
+  requestAnimationFrame(draw);
+}
+
+api.on=!!window.gsap;
+const mark=()=>root.classList.toggle('field-on',api.on&&innerWidth>880&&!root.classList.contains('short'));
+mark();
+api.bind=bind;api.text=text;api.release=release;
+api.releaseIf=z=>{if(typeof z==='string')z=document.querySelector(z);if(cur&&cur.zone===z)release();};
+api.tint=c=>{tintT=c||AMB;};
+api.sync=()=>{mark();if(root.classList.contains('short'))release();};
+layout();
+addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;},{passive:true});
+addEventListener('resize',()=>{layout();mark();if(innerWidth<=880)release();else if(cur&&cur.again)cur.again();});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!running)requestAnimationFrame(draw);});
+requestAnimationFrame(draw);
+})();
+</script>
+<script>
 (function(){
 if(new URLSearchParams(location.search).has('static')||!window.gsap||matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('stack-frames');
 if(new URLSearchParams(location.search).has('static')) return;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-let mx=innerWidth/2,my=innerHeight/2;
-if(!reduce)addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-const cv=document.getElementById('field'),ctx=cv.getContext('2d');
-function size(){cv.width=innerWidth;cv.height=innerHeight;} size(); addEventListener('resize',size);
-const gap=46; let tt=0, running=false;
-function draw(){if(document.hidden){running=false;return;}running=true;tt+=0.006;ctx.clearRect(0,0,cv.width,cv.height);
-  for(let x=gap;x<cv.width;x+=gap)for(let y=gap;y<cv.height;y+=gap){
-    const d=Math.hypot(x-mx,y-my),infl=Math.max(0,1-d/240);
-    if(infl===0&&((x/gap+y/gap)&1))continue;
-    const r=0.7+infl*2.4+Math.sin(tt*2+x*0.01+y*0.01)*0.3;
-    ctx.beginPath();ctx.arc(x,y,Math.max(0.2,r),0,6.28);ctx.fillStyle='rgba(150,170,200,'+(0.05+infl*0.5)+')';ctx.fill();}
-  requestAnimationFrame(draw);}
-if(!reduce){draw();document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!running)draw();});}
 
 /* magnet hover effect removed in review pass */
 
@@ -763,33 +1050,30 @@ if(!reduce && window.gsap){
   ScrollTrigger.create({trigger:'#sy-bert .step[data-step="3"]',start:'top 55%',once:true,onEnter:()=>{const o={v:.1};gsap.to(o,{v:.85,duration:1.4,ease:'power2.out',onUpdate:()=>document.getElementById('cnt').textContent=o.v.toFixed(2)});}});
 
   const dls=document.querySelectorAll('#stack .dl');
-  const sps=document.querySelectorAll('.spine .sp');
-  const navs=document.querySelectorAll('.nl a[data-l]');
-  const spine=i=>{sps.forEach(s=>s.classList.toggle('on',+s.dataset.l===i));navs.forEach(a=>a.classList.toggle('on',+a.dataset.l===i));};
-  const spineAll=v=>{sps.forEach(s=>s.classList.toggle('on',v));navs.forEach(a=>a.classList.remove('on'));};
-  scrolly('#sy-stack',i=>{dls.forEach(d=>d.classList.toggle('act',+d.dataset.l===i));});
-  ScrollTrigger.create({trigger:'.hero',start:'top 50%',end:'bottom 35%',onToggle:s=>{if(s.isActive)spineAll(true);}});
-  ScrollTrigger.create({trigger:'#upstream',endTrigger:'#triton',start:'top 55%',end:'bottom 45%',onToggle:s=>{if(s.isActive)spine(0);}});
-  ScrollTrigger.create({trigger:'#seconds',start:'top 55%',end:'bottom 45%',onToggle:s=>{if(s.isActive)spine(1);}});
-  ScrollTrigger.create({trigger:'#bert',endTrigger:'#lab',start:'top 55%',end:'bottom 45%',onToggle:s=>{if(s.isActive)spine(2);}});
-  ScrollTrigger.create({trigger:'#work',start:'top 65%',onToggle:s=>{if(s.isActive)spine(3);}});
+  const stok=document.querySelector('.stok');const stC=['#FF6A4D','#FFB454','#6AA8FF'];const stPlace=i=>{dls.forEach(d=>{const on=+d.dataset.l===i;d.classList.toggle('act',on);if(on&&stok){stok.style.top=(d.offsetTop+d.offsetHeight/2-5)+'px';stok.style.setProperty('--stc',stC[i]);}});};stPlace(0);addEventListener('load',()=>stPlace(0));
+  scrolly('#sy-stack',stPlace);
   // Figures that change with the story
   const countUp=el=>{if(!el||el.dataset.done)return;el.dataset.done='1';const to=+el.dataset.count,fx=+el.dataset.fix,u=el.dataset.unit||'',sm=el.dataset.small||'',o={v:0};gsap.to(o,{v:to,duration:1.2,ease:'power2.out',onUpdate:()=>{el.innerHTML=o.v.toFixed(fx)+u+(sm?'<span class="tu">'+sm+'</span>':'');}});};
   function frames(sec,sel,map,heads,after){const fr=document.querySelectorAll(sec+' .tframe'),h=document.querySelector(sec+' .fvh'),h2=document.querySelector(sec+' .fvh2');
     const show=f=>{fr.forEach(x=>{const on=+x.dataset.f===f;x.style.opacity=on?1:0;x.style.visibility=on?'visible':'hidden';x.setAttribute('aria-hidden',on?'false':'true');if(on)countUp(x.querySelector('[data-count]'));});if(heads&&heads[f]){if(h)h.textContent=heads[f][0];if(h2)h2.textContent=heads[f][1];}};
     fr.forEach(x=>{const on=+x.dataset.f===map[0];x.style.opacity=on?1:0;x.style.visibility=on?'visible':'hidden';x.setAttribute('aria-hidden',on?'false':'true');});
     ScrollTrigger.create({trigger:sec,start:'top 60%',once:true,onEnter:()=>{const a=document.querySelector(sec+' .tframe[aria-hidden="false"]');if(a)countUp(a.querySelector('[data-count]'));}});
-    scrolly(sel,i=>{show(map[i]);after&&after(i);});}
+    let last=0;scrolly(sel,i=>{last=i;show(map[i]);after&&after(i);});
+    if(after)ScrollTrigger.create({trigger:sec+' .scrolly',start:'top 80%',end:'bottom 15%',onToggle:t=>{if(t.isActive)after(last);}});}
   gsap.set('#kernels .dline',{strokeDashoffset:760});
   ScrollTrigger.create({trigger:'#kernels',start:'top 55%',once:true,onEnter:()=>gsap.to('#kernels .dline',{strokeDashoffset:0,duration:1.3,ease:'power2.out',stagger:.15})});
-  frames('#kernels','#sy-kernels',[0,1,2],[['decode vs recompute, H200','microseconds, log'],['shared memory per kernel','H100'],['over the original authors','forward + backward, H100']]);
-  frames('#gqa','#sy-gqa',[0,1,2],[['one attention call, A100','64/8 heads, 128K KV cache'],['multi-token steps, A100','batch 1, ms'],['which KV head each query head reads','try each shape']]);
+  const F=window.__field;
+  frames('#kernels','#sy-kernels',[0,1,2,3,4],[['decode vs recompute, H200','microseconds, log'],['the merged decode kernel','flash-linear-attention'],['shared memory per kernel','H100'],['over the original authors','forward + backward, H100'],['one SM, 64 warp slots','H100']],i=>{if(i===4)F.bind('#fz-warps');else F.releaseIf('#fz-warps');});
+  frames('#gqa','#sy-gqa',[0,1,2],[['one attention call, A100','64/8 heads, 128K KV cache'],['multi-token steps, A100','batch 1, ms'],['which KV head each query head reads','try each shape']],i=>{if(i===0)F.bind('#fz-copy');else F.releaseIf('#fz-copy');});
   const fsKeys=['000','110','111'];
-  frames('#seconds','#sy-seconds',[0,0,0,1,1],[['time per token, RTX 5090','gpt-oss-120b, 11% on GPU'],['tokens per second, 2 RTX 5090 hosts','batch 1']],i=>{if(i<3&&window.__fs)window.__fs(fsKeys[i]);if(i===3&&window.__grid)window.__grid('B','gpt');if(i===4&&window.__grid)window.__grid('S','qwen');});
+  frames('#seconds','#sy-seconds',[0,0,0,1,1],[['time per token, RTX 5090','gpt-oss-120b, 11% on GPU'],['tokens per second, 2 RTX 5090 hosts','batch 1']],i=>{if(i<3)F.bind('#fz-exp',{pulse:()=>(window.__ms||20.59)*90});else F.releaseIf('#fz-exp');if(i<3&&window.__fs)window.__fs(fsKeys[i]);if(i===3&&window.__grid)window.__grid('B','gpt');if(i===4&&window.__grid)window.__grid('S','qwen');});
   const waf=document.getElementById('waf'),ls=document.getElementById('lstat'),lc=document.getElementById('lcap');
   const wafS=[['763','runner logs'],['270',"logs matching the gate's precondition, a text match"],['0 of 270','eligible sessions where it ran, by my count'],['0 of 270','eligible sessions where it ran, by my count']];
   waf.dataset.state='0';ls.textContent='763';lc.textContent='runner logs';
-  scrolly('#sy-lab',i=>{waf.dataset.state=i;ls.textContent=wafS[i][0];lc.textContent=wafS[i][1];});
+  let labI=0;scrolly('#sy-lab',i=>{labI=i;waf.dataset.state=i;ls.textContent=wafS[i][0];lc.textContent=wafS[i][1];F.bind('#waf');});
+  ScrollTrigger.create({trigger:'#lab .scrolly',start:'top 80%',end:'bottom 15%',onToggle:t=>{if(t.isActive)F.bind('#waf');}});
+  document.querySelectorAll('.ptitle').forEach(h=>ScrollTrigger.create({trigger:h.closest('.plate'),start:'top 72%',end:'bottom 28%',onToggle:t=>{if(t.isActive)F.text(h);else F.releaseIf(h);}}));
+  gsap.utils.toArray('.plate .pline,.plate .pscenes a,.plate .pmeta').forEach(el=>gsap.from(el,{opacity:0,y:18,duration:.7,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 92%'}}));
   let tdone=false;
   scrolly('#sy-triton',i=>{
     document.querySelector('#triton .viz').classList.toggle('scat',i===3);document.querySelectorAll('#triton .tframe').forEach(f=>{const on=+f.dataset.f===i;f.style.opacity=on?1:0;f.setAttribute('aria-hidden',on?'false':'true');});
@@ -800,6 +1084,166 @@ if(!reduce && window.gsap){
 }
 })();
 </script>
+<script>
+(function(){
+const $=(q,r)=>(r||document).querySelector(q),$$=(q,r)=>[...(r||document).querySelectorAll(q)];
+const root=document.documentElement,qs=new URLSearchParams(location.search);
+const go=el=>{if(typeof el==='string')el=$(el);if(!el)return;if(window.__lenis)window.__lenis.scrollTo(el,{offset:-80});else el.scrollIntoView();};
+window.__go=go;
+
+/* The token climbs the rail as the page goes down. The Résumé link follows the chapter. */
+const CH=[['#ch-k',0,.5,'#FF6A4D','/Harshith_Kantamneni_Resume.pdf',[255,106,77]],['#ch-i',.5,.75,'#FFB454','/resume/inference/Harshith_Kantamneni_Resume.pdf',[255,180,84]],['#ch-a',.75,1,'#6AA8FF','/resume/agents/Harshith_Kantamneni_Resume.pdf',[106,168,255]]];
+const tok=$('.tok'),bar=$('.pbar'),nav=$('#nav-res'),rail=$('.rail');
+let tops=[],endY=0,active=-2;
+const measure=()=>{tops=CH.map(c=>{const e=$(c[0]);return e?e.getBoundingClientRect().top+scrollY:0;});const ab=$('#about');endY=ab?ab.getBoundingClientRect().top+scrollY:document.documentElement.scrollHeight;tick();};
+function tick(){
+  if(!tops.length)return;
+  const y=scrollY+innerHeight*.5;let ch=-1,t=0;
+  for(let i=0;i<CH.length;i++){const a=tops[i],b=i<CH.length-1?tops[i+1]:endY;if(y>=a){ch=i;const u=Math.min(1,(y-a)/Math.max(1,b-a));t=CH[i][1]+(CH[i][2]-CH[i][1])*u;}}
+  if(tok){tok.style.bottom=(t*100)+'%';}
+  if(bar)bar.style.transform='scaleX('+t.toFixed(4)+')';
+  if(ch!==active){active=ch;
+    root.style.setProperty('--ch',ch>=0?CH[ch][3]:'#9398A0');
+    if(rail)rail.classList.toggle('live',ch>=0);
+    $$('.nl a[data-l]').forEach(a=>a.classList.toggle('on',+a.dataset.l===ch));
+    $$('.rail a').forEach(a=>a.classList.toggle('on',+a.dataset.l===ch));
+    $$('.gl-c').forEach((g,i)=>g.style.opacity=i===ch?1:0);
+    if(nav)nav.href=ch>=0?CH[ch][4]:CH[0][4];
+    if(window.__field)window.__field.tint(ch>=0?CH[ch][5]:null);
+    const lab=$('.tok-l');if(lab&&ch>=0)lab.textContent=['Kernels','Inference','Agents'][ch];
+  }
+}
+addEventListener('scroll',tick,{passive:true});addEventListener('resize',measure);addEventListener('load',measure);
+if(window.ResizeObserver)new ResizeObserver(measure).observe(document.body);
+measure();
+
+/* Hovering a layer in the hero tints the dots */
+$$('.layer').forEach(l=>{const c=l.dataset.rgb&&l.dataset.rgb.split(',').map(Number);if(!c)return;l.addEventListener('pointerenter',()=>window.__field&&window.__field.tint(c));l.addEventListener('pointerleave',()=>window.__field&&window.__field.tint(active>=0?CH[active][5]:null));});
+
+/* The 60-second version */
+const shortBar=$('#short-bar');
+function setShort(on,scroll){
+  root.classList.toggle('short',on);
+  $$('[data-short]').forEach(b=>b.setAttribute('aria-pressed',on?'true':'false'));
+  if(shortBar)shortBar.hidden=!on;
+  if(on){const set=(q,t)=>{const e=$(q);if(e)e.textContent=t;};set('#lstat','0 of 270');set('#lcap','eligible sessions where it ran, by my count');set('#tvh','76 GEMM shapes, fp16');set('#gqa .fvh','which KV head each query head reads');set('#gqa .fvh2','try each shape');set('#seconds .fvh','tokens per second, 2 RTX 5090 hosts');set('#seconds .fvh2','batch 1');}
+  if(window.__field)window.__field.sync();
+  try{const u=new URL(location.href);on?u.searchParams.set('short',''):u.searchParams.delete('short');history.replaceState(null,'',u.toString().replace('short=&','short&').replace(/short=$/,'short'));}catch(e){}
+  requestAnimationFrame(()=>{if(window.ScrollTrigger)ScrollTrigger.refresh();measure();if(scroll)go(on?'#ch-k':'#top');});
+}
+window.__short=setShort;
+$$('[data-short]').forEach(b=>b.addEventListener('click',()=>setShort(!root.classList.contains('short'),true)));
+if(qs.has('short'))setShort(true,false);
+
+/* J and K step through the page, for walking someone through it */
+const hud=$('#step-hud');let hudT=0;
+const stops=()=>$$('.plate,.step,#yourgpu,#trace').filter(e=>e.offsetParent!==null);
+function stepTo(dir){
+  const s=stops(),mid=innerHeight/2;let i=-1;
+  s.forEach((e,k)=>{const r=e.getBoundingClientRect();if(r.top+r.height/2<=mid+4)i=k;});
+  const n=Math.max(0,Math.min(s.length-1,dir>0?i+1:i-1)),e=s[n];if(!e)return;
+  const r=e.getBoundingClientRect(),off=-(mid-Math.min(r.height,innerHeight)/2);
+  if(window.__lenis)window.__lenis.scrollTo(e,{offset:off,duration:.8});else e.scrollIntoView({block:'center'});
+  if(hud){hud.textContent=(n+1)+' / '+s.length;hud.classList.add('on');clearTimeout(hudT);hudT=setTimeout(()=>hud.classList.remove('on'),1300);}
+}
+window.__step=stepTo;
+addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName||'')||e.metaKey||e.ctrlKey||e.altKey||$('dialog[open]'))return;const k=e.key.toLowerCase();if(k==='j'){e.preventDefault();stepTo(1);}else if(k==='k'){e.preventDefault();stepTo(-1);}});
+
+/* Upstream list filter */
+const uf=$('#up-filter');
+if(uf){const rows=$$('#upstream .wrow'),count=$('#up-count');
+  const set=v=>{let n=0;rows.forEach(r=>{const on=v==='all'||r.dataset.st===v;r.hidden=!on;if(on)n++;});if(count)count.textContent='';$$('button',uf).forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v?'true':'false'));if(window.ScrollTrigger)ScrollTrigger.refresh();};
+  $$('button',uf).forEach(b=>b.addEventListener('click',()=>set(b.dataset.v)));}
+
+/* Reading the merged kernel */
+const ct=$('#code-tabs');
+if(ct){const lines=$$('#code-pre .ln'),say=$('#code-say');
+  const set=b=>{$$('button',ct).forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));const [a,z]=b.dataset.r.split('-').map(Number);lines.forEach((l,i)=>l.classList.toggle('hl',i>=a&&i<=z));say.textContent=b.dataset.say;};
+  $$('button',ct).forEach(b=>b.addEventListener('click',()=>set(b)));set($('button',ct));}
+
+/* Run a kernel on your GPU */
+const runB=$('#gpu-run');
+if(runB){
+  const out=$('#gpu-out'),hm=$('#hm'),SZ=[1,2,4,8,16,32,64],cells={};
+  hm.innerHTML='<span></span>'+SZ.map(x=>'<b>'+x+'</b>').join('')+SZ.map(y=>'<b>'+y+'</b>'+SZ.map(x=>{const ok=x*y<=256;return '<i data-x="'+x+'" data-y="'+y+'"'+(ok?'':' class="no"')+'></i>';}).join('')).join('');
+  $$('i',hm).forEach(c=>{cells[c.dataset.x+'x'+c.dataset.y]=c;});
+  let stopped=false,running=false;
+  const say=t=>{out.textContent=t;};
+  if(!navigator.gpu){runB.disabled=true;runB.textContent='WebGPU not available here';say("This browser doesn't expose WebGPU here. Current Chrome, Edge and Safari do on most machines.");}
+  const WGSL='struct P{n:u32};@group(0)@binding(0)var<storage,read>a:array<f32>;@group(0)@binding(1)var<storage,read>b:array<f32>;@group(0)@binding(2)var<storage,read_write>c:array<f32>;@group(0)@binding(3)var<uniform>p:P;override WX:u32=1;override WY:u32=1;@compute @workgroup_size(WX,WY)fn main(@builtin(global_invocation_id)g:vec3<u32>){let n=p.n;if(g.x>=n||g.y>=n){return;}var s=0.0;let ro=g.y*n;let co=g.x*n;for(var k=0u;k<n;k++){s+=a[ro+k]*b[co+k];}c[ro+g.x]=s;}';
+  const fill=(arr,seed)=>{let x=seed>>>0||1;for(let i=0;i<arr.length;i++){x^=x<<13;x>>>=0;x^=x>>>17;x^=x<<5;x>>>=0;arr[i]=(x/2147483648)-1;}};
+  const median=v=>v.slice().sort((p,q)=>p-q)[v.length>>1];
+  function paint(res){
+    const vals=Object.values(res);if(!vals.length)return;
+    const lo=Math.log(Math.min(...vals)),hi=Math.log(Math.max(...vals)),best=Math.max(...vals);
+    Object.entries(res).forEach(([k,v])=>{const c=cells[k],u=hi>lo?(Math.log(v)-lo)/(hi-lo):1;c.style.background='color-mix(in srgb,#FF6A4D '+Math.round(8+u*84)+'%,#101216)';c.textContent=v>=100?Math.round(v):v>=1?v.toFixed(v>=10?0:1):v.toFixed(2);c.title=k.replace('x','×')+': '+(v<1?v.toFixed(3):v.toFixed(1))+' GFLOP/s';c.classList.toggle('best',v===best);c.classList.add('done');c.style.color=u>.55?'#120B06':'#EEEFF1';});
+  }
+  async function sweep(){
+    running=true;stopped=false;runB.textContent='Stop';
+    Object.values(cells).forEach(c=>{c.style.background='';c.textContent='';c.classList.remove('best','done');c.style.color='';});
+    let device;
+    try{
+      const adapter=await navigator.gpu.requestAdapter({powerPreference:'high-performance'});
+      if(!adapter)throw new Error("No GPU adapter is available to this page.");
+      const ts=adapter.features.has('timestamp-query');
+      device=await adapter.requestDevice({requiredFeatures:ts?['timestamp-query']:[]});
+      device.lost.then(i=>{if(running&&!stopped)say('The browser ended the GPU session ('+(i.message||i.reason||'device lost')+'). Results above are still valid.');});
+      const info=adapter.info||{},name=[info.vendor,info.architecture].filter(Boolean).join(' ')||'your GPU';
+      const soft=!!(info.isFallbackAdapter||adapter.isFallbackAdapter);
+      const mod=device.createShaderModule({code:WGSL});
+      const lay=device.createBindGroupLayout({entries:[{binding:0,visibility:GPUShaderStage.COMPUTE,buffer:{type:'read-only-storage'}},{binding:1,visibility:GPUShaderStage.COMPUTE,buffer:{type:'read-only-storage'}},{binding:2,visibility:GPUShaderStage.COMPUTE,buffer:{type:'storage'}},{binding:3,visibility:GPUShaderStage.COMPUTE,buffer:{type:'uniform'}}]});
+      const pl=device.createPipelineLayout({bindGroupLayouts:[lay]});
+      const pipe=(wx,wy)=>device.createComputePipelineAsync({layout:pl,compute:{module:mod,entryPoint:'main',constants:{WX:wx,WY:wy}}});
+      const qset=ts?device.createQuerySet({type:'timestamp',count:2}):null,qb=ts?device.createBuffer({size:16,usage:GPUBufferUsage.QUERY_RESOLVE|GPUBufferUsage.COPY_SRC}):null,rb=ts?device.createBuffer({size:16,usage:GPUBufferUsage.COPY_DST|GPUBufferUsage.MAP_READ}):null;
+      let n=256,A,B,ba,bb,bc,bu,br,group;
+      const alloc=m=>{n=m;[ba,bb,bc,bu,br].forEach(x=>x&&x.destroy());const s=n*n*4;A=new Float32Array(n*n);B=new Float32Array(n*n);ba=device.createBuffer({size:s,usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST});bb=device.createBuffer({size:s,usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST});bc=device.createBuffer({size:s,usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_SRC|GPUBufferUsage.COPY_DST});br=device.createBuffer({size:s,usage:GPUBufferUsage.COPY_DST|GPUBufferUsage.MAP_READ});bu=device.createBuffer({size:16,usage:GPUBufferUsage.UNIFORM|GPUBufferUsage.COPY_DST});device.queue.writeBuffer(bu,0,new Uint32Array([n,0,0,0]));group=device.createBindGroup({layout:lay,entries:[{binding:0,resource:{buffer:ba}},{binding:1,resource:{buffer:bb}},{binding:2,resource:{buffer:bc}},{binding:3,resource:{buffer:bu}}]});};
+      const fresh=seed=>{fill(A,seed*2+1);fill(B,seed*2+2);device.queue.writeBuffer(ba,0,A);device.queue.writeBuffer(bb,0,B);};
+      async function once(p,wx,wy){
+        const enc=device.createCommandEncoder();enc.clearBuffer(bc);
+        const pass=enc.beginComputePass(ts?{timestampWrites:{querySet:qset,beginningOfPassWriteIndex:0,endOfPassWriteIndex:1}}:{});
+        pass.setPipeline(p);pass.setBindGroup(0,group);pass.dispatchWorkgroups(Math.ceil(n/wx),Math.ceil(n/wy));pass.end();
+        if(ts){enc.resolveQuerySet(qset,0,2,qb,0);enc.copyBufferToBuffer(qb,0,rb,0,16);}
+        const t0=performance.now();device.queue.submit([enc.finish()]);await device.queue.onSubmittedWorkDone();const t1=performance.now();
+        if(ts){await rb.mapAsync(GPUMapMode.READ);const q=new BigUint64Array(rb.getMappedRange().slice(0));rb.unmap();const ms=Number(q[1]-q[0])/1e6;if(ms>0)return ms;}
+        return t1-t0;
+      }
+      async function verify(){
+        const enc=device.createCommandEncoder();enc.copyBufferToBuffer(bc,0,br,0,n*n*4);device.queue.submit([enc.finish()]);
+        await br.mapAsync(GPUMapMode.READ);const C=new Float32Array(br.getMappedRange().slice(0));br.unmap();
+        for(let t=0;t<64;t++){const i=(t*2654435761>>>0)%n,j=(t*40503+7)%n;let s=0;for(let k=0;k<n;k++)s+=A[i*n+k]*B[j*n+k];if(Math.abs(C[i*n+j]-s)>1e-2*(1+Math.abs(s)))return false;}
+        return true;
+      }
+      /* Size the problem so the best shape takes tens of milliseconds, on any GPU */
+      say('Sizing the problem for '+name+'...');
+      alloc(256);fresh(1);const probe=await pipe(16,16);await once(probe,16,16);const pm=await once(probe,16,16);
+      let m=Math.round(256*Math.cbrt(25/Math.max(pm,.2))/64)*64;m=Math.max(128,Math.min(1024,m));if(m!==n)alloc(m);
+      const todo=[];SZ.forEach(x=>SZ.forEach(y=>{if(x*y<=256)todo.push([x,y]);}));
+      for(let i=todo.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[todo[i],todo[j]]=[todo[j],todo[i]];}
+      const res={};let bad=0,done=0;
+      for(const [x,y] of todo){
+        if(stopped)break;
+        fresh(done+3);
+        const p=await pipe(x,y);await once(p,x,y);
+        const t=[];for(let r=0;r<3&&!stopped;r++)t.push(await once(p,x,y));
+        if(!t.length)break;
+        if(!(await verify()))bad++;
+        res[x+'x'+y]=2*n*n*n/(median(t)*1e6);done++;
+        paint(res);say('Shape '+done+' of '+todo.length+' on '+name+', N='+n+'...');
+      }
+      const e=Object.entries(res).sort((p,q)=>q[1]-p[1]);
+      if(e.length){const [k,v]=e[0],lo=e[e.length-1][1];
+        say((stopped?'Stopped. ':'')+'On '+name+(soft?' (a software adapter, not a real GPU)':'')+', N='+n+': the fastest shape here is '+k.replace('x','×')+' at '+(v<1?v.toFixed(3):v.toFixed(1))+' GFLOP/s, '+(v/lo).toFixed(1)+'× the slowest. '+(bad?bad+' shapes returned answers that disagreed with your CPU, so ignore this run. ':'Answers matched your CPU on 64 sampled elements per shape. ')+'Timer: '+(ts?'GPU timestamps':'CPU clock around each submit')+', median of 3 runs after a warm-up.');
+      }else say('Stopped before the first shape finished.');
+      [ba,bb,bc,bu,br,qb,rb].forEach(x=>x&&x.destroy());if(qset)qset.destroy();
+    }catch(err){say("This run didn't finish: "+(err&&err.message||err)+'. Results above, if any, are still valid.');}
+    running=false;stopped=false;runB.textContent='Run it again';
+    if(device){const d=device;setTimeout(()=>{try{d.destroy();}catch(e){}},100);}
+  }
+  runB.addEventListener('click',()=>{if(running){stopped=true;return;}sweep();});
+}
+})();
+</script>
+<script src="/numbers/num.js" defer></script>
 <!-- Cloudflare Web Analytics -->
 <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2e4646d7e5e149c0a3c87132e9fa66f1"}'></script>
 <!-- End Cloudflare Web Analytics -->

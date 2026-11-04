@@ -10,6 +10,8 @@ import sys
 from html.parser import HTMLParser
 
 PAGES = {'home': 'site/index.html'}
+for page in sorted(pathlib.Path('site/work').glob('*/index.html')):
+    PAGES['work/' + page.parent.name] = str(page)
 # Dated reports and notes are archives: their numbers trace to the document they report on.
 # The numbers page is the ledger itself, and the 404 page has none.
 WEB_SKIP = ('reports', 'notes', 'numbers', '404')
@@ -19,7 +21,7 @@ for built in sorted(pathlib.Path('web/dist').glob('**/index.html')):
         PAGES['web/' + '/'.join(parts[:-1])] = str(built)
 BLOCK = {'p', 'li', 'h1', 'h2', 'h3', 'h4', 'td', 'th', 'tr', 'div', 'figcaption', 'section', 'article', 'text', 'button'}
 # Names and chart scales, not claims.
-ALLOW = [r'^B=\d+,.*$', r'^Packed .*', r'gpt-oss-120b', r'Qwen2\.5-7B', r'bge-base-en-v1\.5', r'nDCG@10', r'JSON-RPC 2\.0', r'4-bit', r'RTX \d{4}', r'\b[34]090\b',
+ALLOW = [r'60-sec(ond)?', r'^B=\d+,.*$', r'^Packed .*', r'gpt-oss-120b', r'Qwen2\.5-7B', r'bge-base-en-v1\.5', r'nDCG@10', r'JSON-RPC 2\.0', r'4-bit', r'RTX \d{4}', r'\b[34]090\b',
          r'ECE \d{3}', r'ICLR 2026', r'#\d+', r'^76$', r'^10$', r'at 2 measured memory sizes', r'the 2 measured sizes', r'PARITY 1\.0×',
          r'^1\.0$', r'^\.75$', r'^\.50$', r'^\.25$', r'^0$', r'^50K$', r'^100K$', r'^500K$', r'^1M$', r'^2M$',
          r'^1\.6×$', r'^1\.4×$', r'^1\.2×$', r'^1×$', r'^0\.8×$', r'^0\.6×$', r'^4/2$', r'^16/4$', r'^8/4$', r'^8/2$', r'^128$', r'^256$', r'^512$', r'^1024$', r'^2048$',
@@ -32,12 +34,12 @@ class Text(HTMLParser):
         self.skip, self.out = 0, []
 
     def handle_starttag(self, tag, attrs):
-        self.skip += tag in ('script', 'style', 'noscript')
+        self.skip += tag in ('script', 'style', 'noscript', 'pre')
         if tag in BLOCK:
             self.out.append('\n')
 
     def handle_endtag(self, tag):
-        self.skip -= tag in ('script', 'style', 'noscript')
+        self.skip -= tag in ('script', 'style', 'noscript', 'pre')
 
     def handle_data(self, data):
         if not self.skip:
