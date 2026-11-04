@@ -24,7 +24,8 @@
    "page": "home",
    "shows": [
     "3 PRs merged",
-    "3 merged"
+    "3 merged",
+    "3 merged, 1 in review, 2 closed, across 4 projects"
    ],
    "means": "Merged upstream PRs",
    "value": 3,

@@ -262,12 +262,14 @@ wr = ''.join(f'<a class="wk" href="{m.group(1).replace("https://harshithkantamne
 body_work = f"""<main style="--c:var(--k)">
 <div class="op" style="padding-bottom:10px"><span class="crumb">Everything, grouped by layer</span><h1>All work</h1><p class="lead">The <a href="/" style="text-decoration:underline;text-underline-offset:4px">home page</a> tells the story. This page is the index.</p></div>
 <div class="wsec">{trace}</div>
+<section class="wsec" id="open-source" style="--c:var(--ink)"><h2>Open-source contributions</h2>
+<h3 class="wh">Every PR, closed ones included. States checked Nov 3, 2026.</h3>
+{rows_up}
+</section>
 <section class="wsec" id="kernels" style="--c:var(--k)"><h2>GPU kernels</h2>
 {study('stick-breaking-kernels', 'Stick-breaking attention kernels', 'Forward, backward and KV-cache decoding kernels in Triton, merged in flash-linear-attention.')}
 {study('cudnn-gqa', 'GQA in NVIDIA cuDNN', 'What removing K/V head copies did on an A100, why that code closed, and the tests that merged.')}
 {card_row(by_name["moe-kernels: a timing model of vLLM's fused MoE kernel"])}
-<h3 class="wh">Every upstream PR, closed ones included. States checked Nov 3, 2026.</h3>
-{rows_up}
 <h3 class="wh">Team projects</h3>
 {card_row(by_name['ML-guided kernel config'])}{card_row(by_name['MI300X + gem5 modeling'])}
 </section>

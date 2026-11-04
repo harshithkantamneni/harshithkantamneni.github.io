@@ -23,7 +23,7 @@ const scrollToY=(y,opts)=>{if(lenis)lenis.scrollTo(y,Object.assign({duration:1},
 const yOf=el=>el.getBoundingClientRect().top+scrollY;
 function goTo(el){if(typeof el==='string')el=$(el);if(!el)return;const d=el.closest&&el.closest('details');if(d)d.open=true;const pin=el.closest&&el.closest('.pin');if(pin&&el.dataset.at!=null){const n=+pin.dataset.steps,top=yOf(pin),h=pin.offsetHeight-innerHeight;scrollToY(top+(+el.dataset.at+.5)/n*h);return;}const r=el.getBoundingClientRect();scrollToY(r.top+scrollY-(r.height<innerHeight*.8?(innerHeight-r.height)/2:90));}
 window.__go=goTo;
-document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a||a.getAttribute('href')==='#')return;const t=$(a.getAttribute('href'));if(t){e.preventDefault();scrollToY(yOf(t)-(t.classList.contains('story')?84:0));}});
+document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a||a.getAttribute('href')==='#')return;const t=$(a.getAttribute('href'));if(t){e.preventDefault();scrollToY(yOf(t)-(t.classList.contains('story')||t.id==='oss'?84:0));}});
 
 /* ---------- sentences that light up as you read ---------- */
 const says=$$('.say');
@@ -257,7 +257,7 @@ if(reduce||qs.has('static'))root.classList.add('static');
 
 /* ---------- J and K step through the story, for walking someone through it ---------- */
 const hud=$('#step-hud');let hudT=0,lastI=-1,lastT=0;
-function stops(){const out=[];const vh=innerHeight;$$('.hero,.pin,.plate,.beat,.block,.close,footer').forEach(e=>{if(e.offsetParent===null&&e.tagName!=='FOOTER')return;if(e.closest('.pin')&&!e.classList.contains('pin'))return;const r=e.getBoundingClientRect(),top=r.top+scrollY;if(!r.height)return;if(e.classList.contains('pin')&&!root.classList.contains('static')){const n=+e.dataset.steps,h=e.offsetHeight-vh;for(let i=0;i<n;i++)out.push(top+(i+.5)/n*h);return;}out.push(r.height>=vh*.9?top-70:top-(vh-r.height)/2);});return out.sort((a,b)=>a-b);}
+function stops(){const out=[];const vh=innerHeight;$$('.hero,.oss,.pin,.plate,.beat,.block,.close,footer').forEach(e=>{if(e.offsetParent===null&&e.tagName!=='FOOTER')return;if(e.closest('.pin')&&!e.classList.contains('pin'))return;const r=e.getBoundingClientRect(),top=r.top+scrollY;if(!r.height)return;if(e.classList.contains('pin')&&!root.classList.contains('static')){const n=+e.dataset.steps,h=e.offsetHeight-vh;for(let i=0;i<n;i++)out.push(top+(i+.5)/n*h);return;}out.push(r.height>=vh*.9?top-70:top-(vh-r.height)/2);});return out.sort((a,b)=>a-b);}
 function step(dir){const s=stops(),y=scrollY,t=performance.now();let i=s.findIndex(v=>v>y+8);i=i<0?s.length-1:i-1;if(t-lastT<900&&lastI>=0)i=lastI;const n=clamp(dir>0?i+1:i-1,0,s.length-1);lastI=n;lastT=t;scrollToY(s[n],{duration:.8});if(hud){hud.textContent=(n+1)+' / '+s.length;hud.classList.add('on');clearTimeout(hudT);hudT=setTimeout(()=>hud.classList.remove('on'),1300);}}
 window.__step=step;
 addEventListener('keydown',e=>{if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName||'')||e.metaKey||e.ctrlKey||e.altKey||$('dialog[open]'))return;const k=e.key.toLowerCase();if(k==='j'){e.preventDefault();step(1);}else if(k==='k'){e.preventDefault();step(-1);}});
@@ -271,7 +271,7 @@ if(D&&D.showModal&&OPEN){OPEN.hidden=false;
   let cur=[],sel=0;
   const tok=s=>(s.toLowerCase().match(/[a-z0-9][a-z0-9.\-+#×]*/g)||[]).map(t=>t.replace(/[.\-]+$/,''));
   let docs=null,df,avg;
-  const build=()=>{docs=[];$$('.say,.numb,.note,.eng-b p,.pincap p,.chase a,.more,figcaption').forEach(el=>{const title='';const text=el.textContent.replace(/\s+/g,' ').trim();if(!text)return;const sec=el.closest('article,section');const tag=sec&&sec.querySelector('.sname,.ptitle,.say');const t=tok(text);const f={};t.forEach(w=>f[w]=(f[w]||0)+1);docs.push({el,title,text,tag:tag?tag.textContent.trim():'',f,n:t.length});});
+  const build=()=>{docs=[];$$('.say,.numb,.note,.eng-b p,.pincap p,.chase a,.more,.orow,figcaption').forEach(el=>{const title='';const text=el.textContent.replace(/\s+/g,' ').trim();if(!text)return;const sec=el.closest('article,section');const tag=sec&&sec.querySelector('.sname,.ptitle,.say');const t=tok(text);const f={};t.forEach(w=>f[w]=(f[w]||0)+1);docs.push({el,title,text,tag:tag?tag.textContent.trim():'',f,n:t.length});});
     df={};docs.forEach(d=>Object.keys(d.f).forEach(w=>df[w]=(df[w]||0)+1));avg=docs.reduce((a,d)=>a+d.n,0)/docs.length;};
   const search=q=>{const ws=tok(q),N=docs.length,k1=1.2,b=.75;return docs.map(d=>{let s=0;ws.forEach(w=>{const f=d.f[w]||0;if(!f)return;const idf=Math.log(1+(N-df[w]+.5)/(df[w]+.5));s+=idf*f*(k1+1)/(f+k1*(1-b+b*d.n/avg));});return{d,s};}).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,7);};
   const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
