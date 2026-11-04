@@ -93,7 +93,7 @@ The fix is to tier the dispatch, not the role. Same agent, different model per c
 What it costs: a dispatcher has to make a real decision per call. Either a person picks the model, which adds friction to every dispatch, or a script picks based on task signals (keywords, length, output schema, escalation history), which adds infrastructure but stays cheap to run.
 </p>
 <p>
-What it buys: usually 2-5x cost reduction at matched quality, because most of what specialists do is bounded and doesn't need the top tier. The non-trivial cases pay opus, the trivial cases pay haiku, and the dispatcher routes between them.
+What it buys: in my lab, an estimated 2-3x cost reduction, corrected down from a first pass of 6-9x, because most of what specialists do is bounded and doesn't need the top tier. The non-trivial cases pay opus, the trivial cases pay haiku, and the dispatcher routes between them.
 </p>
 <p>
 The sister AGI lab landed this pattern recently. HIVE is porting it. The interesting non-obvious detail: the orchestrator becomes <em>more</em> load-bearing under task-tiering, not less. Bad decomposition silently corrupts everything downstream. Workers can't catch a wrongly-scoped task. So the dispatcher and the orchestrator both stay opus. The savings live in the bounded interior of the work, not at its edges.
