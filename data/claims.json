@@ -23,13 +23,13 @@
    "id": "count.merged",
    "page": "home",
    "shows": [
-    "3 PRs merged",
-    "3 merged",
-    "3 merged, 1 open, 2 closed, across 4 projects"
+    "4 PRs merged",
+    "4 merged",
+    "4 merged, 1 open, 2 closed, across 4 projects"
    ],
    "means": "Merged upstream PRs",
-   "value": 3,
-   "conditions": "flash-linear-attention #1319 and #1412, cuDNN frontend #1287, which is tests only",
+   "value": 4,
+   "conditions": "flash-linear-attention #1319 and #1412, cuDNN frontend #2575, a kernel, and #1287, which is tests only",
    "source": [
     {
      "type": "pr",
@@ -51,6 +51,13 @@
      "commit": "09304e19e1269115d44cea5c36208c25d5523577",
      "locator": "PR description",
      "checked": "2026-11-03"
+    },
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/2575",
+     "commit": "040d0cd5e9397f539640fe915c6da150ad3bd337",
+     "locator": "PR description",
+     "checked": "2026-11-20"
     }
    ],
    "checked": "Matched merge state in the PR records"
@@ -4303,6 +4310,245 @@
     }
    ],
    "checked": "Read from the paper's generated numbers"
+  },
+  {
+   "id": "hop.vs_cudnn",
+   "page": "home",
+   "shows": [
+    "1.062×",
+    "1.054×",
+    "45 of 48",
+    "47 of 48",
+    "96 shapes",
+    "48 causal",
+    "48 dense",
+    "over 48 causal shapes",
+    "48 causal shapes",
+    "the same 48",
+    "sequence lengths 128 to 12288",
+    "cuDNN 9.27",
+    "4 rounds",
+    "about 10%",
+    "96 H100 shapes",
+    "45 of 48 at or above 1",
+    "Above 1 means faster"
+   ],
+   "means": "The new kernel's speed over cuDNN's own kernel on an H100",
+   "value": {
+    "causal_median": 1.062,
+    "causal_at_or_above_1": [
+     45,
+     48
+    ],
+    "dense_median": 1.054,
+    "dense_at_or_above_1": [
+     47,
+     48
+    ],
+    "shapes": 96
+   },
+   "conditions": "H100 SXM, a frozen study against cuDNN 9.27: 96 shapes, 48 causal and the same 48 dense, mostly square, MHA, GQA and MQA, top-left and bottom-right masks, sequence lengths 128 to 12288, head dims (128, 128). CUPTI kernel time, bf16 with Stats, 4 rounds with independently compiled twins. The ratio is cuDNN's time over the kernel's, median. My measurements, reported in the PR. The maintainers validated tests, not timing. On a broader grid cuDNN is at parity or up to about 10% faster on long-KV rectangles with medium query lengths, and the placement table routes those shapes to it",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/2575",
+     "commit": "040d0cd5e9397f539640fe915c6da150ad3bd337",
+     "locator": "PR description, Why",
+     "checked": "2026-11-20"
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/commit/17c35ab4d00fa2dd583d42cccd78e3a9a056c325",
+     "commit": "17c35ab4d00fa2dd583d42cccd78e3a9a056c325",
+     "path": "merge commit"
+    }
+   ],
+   "checked": "Matched the PR table"
+  },
+  {
+   "id": "hop.vs_prev",
+   "page": "home",
+   "shows": [
+    "96 of 96",
+    "2.5×",
+    "0.429×",
+    "0.421×",
+    "96 of 96 shapes"
+   ],
+   "means": "The new kernel's speed over the path the frontend used before for this head size",
+   "value": {
+    "faster_on": [
+     96,
+     96
+    ],
+    "median": 2.5
+   },
+   "conditions": "The same 96 H100 shapes. The earlier path ran (128, 128) heads through a kernel body built for 512-wide heads, with a 64 x 64 tile. It ran at a median 0.429 and 0.421 of cuDNN's speed, causal and dense. My measurements, reported in the PR",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/2575",
+     "commit": "040d0cd5e9397f539640fe915c6da150ad3bd337",
+     "locator": "PR description, Why",
+     "checked": "2026-11-20"
+    }
+   ],
+   "checked": "Matched the PR table"
+  },
+  {
+   "id": "hop.reads",
+   "page": "home",
+   "shows": [
+    "0.81-0.99",
+    "1.26-2.16×",
+    "1.00-1.03×",
+    "1.00×"
+   ],
+   "means": "K and V bytes read from GPU memory, relative to reading each once",
+   "value": {
+    "first_causal_schedule": [
+     1.26,
+     2.16
+    ],
+    "cudnn": 1.0,
+    "natural_order": [
+     1.0,
+     1.03
+    ],
+    "first_schedule_speed_vs_cudnn": [
+     0.81,
+     0.99
+    ]
+   },
+   "conditions": "Nsight Compute on H100 SXM, causal MHA shapes. The first causal schedule ran at 0.81 to 0.99 of cuDNN's speed and read K and V at 1.26 to 2.16 times the read-once floor, where cuDNN read 1.00. On the same shapes the NATURAL-order stride read 1.00 to 1.03. Every causal schedule that shipped walks its work in NATURAL order. My measurements, reported in the PR",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/2575",
+     "commit": "040d0cd5e9397f539640fe915c6da150ad3bd337",
+     "locator": "PR description, The causal gap",
+     "checked": "2026-11-20"
+    }
+   ],
+   "checked": "Matched the PR text"
+  },
+  {
+   "id": "hop.tests",
+   "page": "home",
+   "shows": [
+    "702 passed",
+    "746 passed",
+    "0 failed",
+    "15 of 15",
+    "4 environments",
+    "12 skipped",
+    "bit for bit"
+   ],
+   "means": "Test results on the merged kernel",
+   "value": {
+    "gh200_per_env": {
+     "passed": 702,
+     "skipped": 12,
+     "failed": 0,
+     "environments": 4
+    },
+    "maintainer_h100": {
+     "passed": 746,
+     "skipped": 12,
+     "failed": 0
+    },
+    "sanitizer_clean": [
+     15,
+     15
+    ]
+   },
+   "conditions": "My runs on the final tree on a GH200: 702 passed, 12 skipped, 0 failed in each of 4 environments (CUDA 12 and 13, CuTe DSL 4.8.0 and 4.8.1). The maintainer's final validation on H100 of the merged source: 746 passed, 12 skipped for missing runtime goldens, 0 failed. compute-sanitizer memcheck, racecheck and synccheck on 5 cells: 15 of 15 runs clean. Every causal schedule computes the one-tile kernel's O and Stats bit for bit",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/2575",
+     "commit": "040d0cd5e9397f539640fe915c6da150ad3bd337",
+     "locator": "PR description, Testing",
+     "checked": "2026-11-20"
+    },
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/2575",
+     "commit": "040d0cd5e9397f539640fe915c6da150ad3bd337",
+     "locator": "Maintainer's merge comment",
+     "checked": "2026-11-20"
+    }
+   ],
+   "checked": "Matched the PR text and the merge comment"
+  },
+  {
+   "id": "hop.date",
+   "page": "home",
+   "shows": [
+    "Nov 14, 2026",
+    "Nov 14"
+   ],
+   "means": "Merge date",
+   "value": "2026-11-14",
+   "conditions": "UTC. Merged into develop as 17c35ab4, milestone Frontend 1.33.0",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/commit/17c35ab4d00fa2dd583d42cccd78e3a9a056c325",
+     "commit": "17c35ab4d00fa2dd583d42cccd78e3a9a056c325",
+     "path": "merge commit"
+    },
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/2575",
+     "commit": "040d0cd5e9397f539640fe915c6da150ad3bd337",
+     "locator": "Merge event",
+     "checked": "2026-11-20"
+    }
+   ],
+   "checked": "Matched PR metadata"
+  },
+  {
+   "id": "hop.design",
+   "page": "home",
+   "shows": [
+    "Heads of 128",
+    "512-wide heads",
+    "a 64 × 64 tile",
+    "A 128 × 128 tile",
+    "64 query rows",
+    "128-wide heads",
+    "65 query rows",
+    "two-stage",
+    "CUDA 12 and 13",
+    "two CuTe DSL versions",
+    "one cell per schedule",
+    "four schedules",
+    "four schedules",
+    "one of four schedules"
+   ],
+   "means": "The kernel's design and where it applies",
+   "value": {
+    "tile": [
+     128,
+     128
+    ],
+    "compute_warpgroups": 2,
+    "rows_per_warpgroup": 64,
+    "earlier_body": "D512, 64 x 64 tile",
+    "min_query_rows": 65
+   },
+   "conditions": "SM90, exact (128, 128) head dims, FP16 and BF16. One producer warpgroup issues TMA loads, two compute warpgroups each handle 64 query rows, two-stage K/V rings. Before it, (128, 128) heads ran through the D512 body's 64 x 64 tile. The frontend offers it first only from 65 query rows per request. Tests ran in 4 environments: CUDA 12 and 13, CuTe DSL 4.8.0 and 4.8.1",
+   "source": [
+    {
+     "type": "pr",
+     "url": "https://github.com/NVIDIA/cudnn-frontend/pull/2575",
+     "commit": "040d0cd5e9397f539640fe915c6da150ad3bd337",
+     "locator": "PR description, Summary and Testing",
+     "checked": "2026-11-20"
+    }
+   ],
+   "checked": "Matched the PR text"
   }
  ]
 }

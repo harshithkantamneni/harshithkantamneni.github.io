@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hopper attention in NVIDIA cuDNN: Harshith Kantamneni</title>
+<meta name="description" content="A new attention kernel for H100 GPUs and 128-wide heads, merged in NVIDIA&#x27;s cuDNN frontend. How it runs against cuDNN, and the read-order fix behind the causal case."/>
+<meta name="theme-color" content="#14171e">
+<link rel="canonical" href="https://harshithkantamneni.github.io/work/cudnn-hopper/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hopper attention in NVIDIA cuDNN: Harshith Kantamneni">
+<meta property="og:description" content="A new attention kernel for H100 GPUs and 128-wide heads, merged in NVIDIA&#x27;s cuDNN frontend. How it runs against cuDNN, and the read-order fix behind the causal case.">
+<meta property="og:url" content="https://harshithkantamneni.github.io/work/cudnn-hopper/">
+<meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://harshithkantamneni.github.io/og.png">
+<link rel="preload" href="/assets/fonts/space-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Space Grotesk';font-style:normal;font-weight:300 700;font-display:swap;src:url(/assets/fonts/space-grotesk-latin-wght-normal.woff2) format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 800;font-display:swap;src:url(/assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format('woff2')}
+.skip{position:fixed;left:8px;top:-60px;z-index:200;background:#EEEFF1;color:#060708;padding:10px 16px;border-radius:8px;font-size:14px}.skip:focus{top:8px}
+:root{--bg:#14171e;--ink:#EEEFF1;--mid:#A2A7AF;--dim:#8D939C;--line:rgba(255,255,255,.08);--k:#FF6A4D;--i:#FFB454;--r:#41D6C3;--a:#6AA8FF;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;--pad:clamp(20px,6.5vw,104px);--edge:max(var(--pad),calc((100vw - 1560px)/2))}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
+body{background-image:radial-gradient(rgba(150,170,200,.2) 1px,transparent 1.2px);background-size:46px 46px;background-attachment:fixed}
+a{color:inherit;text-decoration:none}
+a:focus-visible,input:focus-visible,.tw:focus-visible{outline:2px solid var(--a);outline-offset:3px;border-radius:4px}
+::selection{background:var(--a);color:#04111f}
+.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:64px;padding:0 var(--edge);background:var(--bg);border-bottom:1px solid var(--line)}
+.brand{font-size:15px;font-weight:500;letter-spacing:-.01em}
+.nl{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:14px}
+.nl a{color:var(--mid);min-height:32px;display:inline-flex;align-items:center}.nl a:hover{color:#fff}.nl a.on{color:var(--c)}
+.op{padding:clamp(56px,10vh,110px) var(--edge) clamp(28px,5vh,52px);background:radial-gradient(70vw 60vh at 86% 0,color-mix(in srgb,var(--c) 14%,transparent),transparent 72%)}
+.crumb{font-size:clamp(16px,1.4vw,19px);font-weight:500;color:var(--c)}
+.crumb:hover{text-decoration:underline;text-underline-offset:4px}
+h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacing:-.04em;margin-top:14px;max-width:1100px;text-wrap:balance}
+.lead{font-size:clamp(18px,2vw,24px);line-height:1.4;max-width:760px;margin-top:22px;letter-spacing:-.01em}
+.state{font-family:var(--mono);font-size:12px;color:var(--mid);margin-top:14px}
+.keys{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 28px;margin-top:40px;border-top:1px solid var(--line)}
+.kn{padding:18px 0;border-bottom:1px solid var(--line)}
+.kv{font-family:var(--mono);font-size:clamp(28px,3.4vw,44px);font-weight:700;letter-spacing:-.02em;color:var(--c);line-height:1.1}
+.kl{font-size:14px;line-height:1.45;color:var(--mid);margin-top:6px}
+.grid{display:grid;grid-template-columns:minmax(0,720px) minmax(0,270px);justify-content:space-between;gap:48px;padding:12px var(--edge) 40px}
+.toc{position:sticky;top:104px;align-self:start;display:flex;flex-direction:column;gap:2px;font-size:14px;padding-top:40px}
+.toc span{font-size:14px;color:var(--dim);margin-bottom:6px}
+.toc a{color:var(--mid);min-height:32px;display:flex;align-items:center}.toc a:hover,.toc a.on{color:#fff}
+.prose{font-size:17px;line-height:1.72;color:#cfd3d9;padding-top:18px;min-width:0}
+.prose>*+*{margin-top:20px}
+.prose h2{font-size:clamp(24px,3vw,34px);font-weight:600;letter-spacing:-.02em;color:var(--ink);margin-top:52px;line-height:1.15;scroll-margin-top:96px}
+.prose h3{font-size:20px;font-weight:600;color:var(--ink);margin-top:34px;line-height:1.25}
+.prose a{color:var(--ink);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent);text-underline-offset:3px}
+.prose a:hover{text-decoration-color:var(--c)}
+.prose a.n{font-family:var(--mono);font-size:.92em;color:var(--c);text-decoration:underline dotted;text-underline-offset:4px}
+.prose ul,.prose ol{padding-left:22px}.prose li{margin-top:8px}.prose li::marker{color:var(--dim)}
+.prose code{font-family:var(--mono);font-size:.86em;background:rgba(255,255,255,.06);border:1px solid var(--line);padding:1px 6px;border-radius:5px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+.prose table{width:100%;border-collapse:collapse;font-size:14px;font-family:var(--mono);min-width:520px;line-height:1.45}
+.prose th,.prose td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.prose tr:last-child td{border-bottom:0}.prose th{color:var(--mid);font-size:12px;font-weight:500}
+.prose td.num,.prose th.num{text-align:right;white-space:nowrap}
+.barv{display:inline-flex;align-items:center;gap:8px;min-width:120px}.barv .bt{flex:1;min-width:60px;height:7px;border-radius:4px;background:rgba(255,255,255,.07);overflow:hidden;display:block}.barv i{display:block;height:100%;background:var(--c)}
+.next{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;padding:30px var(--edge);border-top:1px solid var(--line)}
+.next a{font-size:clamp(20px,2.4vw,30px);font-weight:600;letter-spacing:-.02em}.next a:hover{text-decoration:underline;text-underline-offset:5px}
+.next small{display:block;font-size:14px;font-weight:400;letter-spacing:0;color:var(--dim);margin-bottom:6px}
+.foot{display:flex;flex-wrap:wrap;gap:8px 22px;padding:28px var(--edge) 48px;border-top:1px solid var(--line);font-size:14px;color:var(--mid)}.foot a{min-height:28px;display:inline-flex;align-items:center}.foot a:hover{color:#fff}
+.nf{display:block;font-size:14px;color:var(--dim);margin-top:28px}
+.nf input{display:block;width:100%;max-width:560px;margin-top:8px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;min-height:48px;padding:0 14px;font:400 16px var(--sans);color:var(--ink);letter-spacing:0;text-transform:none}
+.claims{padding:10px var(--edge) 60px}.claim>*{max-width:76ch}
+.claim{padding:20px 0;border-bottom:1px solid var(--line);scroll-margin-top:90px}
+.claim:target{background:linear-gradient(90deg,rgba(255,180,84,.07),transparent);padding-left:12px}
+.claim h2{font-size:18px;font-weight:500;line-height:1.35}
+.claim .v{font-family:var(--mono);font-size:13px;color:var(--i);margin-top:6px;line-height:1.5}
+.claim p{font-size:15px;line-height:1.55;color:var(--mid);margin-top:6px}
+.claim p a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+@media(max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}.toc{display:none}.nl a.ha{display:none}}
+.brand{white-space:nowrap}@media(max-width:560px){.nl a:not(:last-child){display:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="brand" href="/">Harshith Kantamneni</a><nav class="nl" aria-label="Main"><a class=on style="--c:var(--k)" href="/#ch-k">Kernels</a><a style="--c:var(--i)" href="/#ch-i">Inference</a><a style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a></nav></header>
+<main id="main" style="--c:var(--k)">
+<div class="op"><a class="crumb" href="/#ch-k">Kernels</a><h1>Hopper attention in NVIDIA cuDNN</h1><p class="lead">A new attention kernel for H100 GPUs and 128-wide heads, merged in NVIDIA&#x27;s cuDNN frontend. How it runs against cuDNN, and the read-order fix behind the causal case.</p><p class="state">Merged Nov 14, 2026. The speed numbers are my measurements</p><div class="keys"><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#hop.vs_cudnn" data-c="hop.vs_cudnn">1.062×</a></div><div class="kl">as fast as cuDNN&#x27;s own kernel, median of 48 causal shapes on an H100</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#hop.vs_prev" data-c="hop.vs_prev">96 of 96</a></div><div class="kl">shapes faster than the frontend&#x27;s earlier path</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#hop.reads" data-c="hop.reads">1.00-1.03×</a></div><div class="kl">K/V reads against the read-once floor, after the fix</div></div></div></div>
+<div class="grid"><article class="prose">
+<p>On H100 GPUs, NVIDIA's open-source cuDNN frontend served attention with 128-wide heads, the most common size, through a kernel body built for 512-wide heads with a 64 × 64 tile. I built a dedicated forward kernel for that size, FP16 and BF16, and it merged on <a class="n" href="/numbers/#hop.date" data-c="hop.date">Nov 14, 2026</a>.</p>
+<p>The speed numbers below are my measurements, reported in the PR. The maintainers validated tests, not timing.</p>
+
+<h2 id="what-i-built">What I built</h2>
+<p>A 128 × 128 tile. One producer warpgroup issues TMA loads, and two compute warpgroups each run QK, the online softmax and PV on 64 query rows. QK and PV of neighbouring KV tiles overlap inside each warpgroup, with two-stage K/V rings. It covers causal top-left and bottom-right masks, MHA, GQA and MQA, and optional Stats.</p>
+<p>Non-causal work runs a persistent loop, at most one CTA per SM. For causal work the plan picks one of four schedules: one tile per CTA, query tiles taken in pairs of equal KV work, a NATURAL-order stride, or a claim counter that hands work to free CTAs. Every schedule computes the one-tile kernel's output and Stats <a class="n" href="/numbers/#hop.tests" data-c="hop.tests">bit for bit</a>.</p>
+<p>The kernel only takes what it serves. Paged KV, split-KV, sliding windows, sinks and single-row decode keep the earlier path, and below 65 query rows per request the frontend keeps its old plan order.</p>
+
+<h2 id="what-i-measured">What I measured</h2>
+<p>A frozen study on an H100 SXM against cuDNN 9.27: <a class="n" href="/numbers/#hop.vs_cudnn" data-c="hop.vs_cudnn">96 shapes</a>, <a class="n" href="/numbers/#hop.vs_cudnn" data-c="hop.vs_cudnn">48 causal</a> and the same <a class="n" href="/numbers/#hop.vs_cudnn" data-c="hop.vs_cudnn">48 dense</a>, mostly square, sequence lengths 128 to 12288, CUPTI kernel time, bf16 with Stats, and 4 rounds with independently compiled twins.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>Median of cuDNN's time over the kernel's. Above 1 means faster than cuDNN. <a class="n" href="/numbers/#hop.vs_cudnn" data-c="hop.vs_cudnn">conditions</a></caption>
+<thead><tr><th>Path</th><th>Causal</th><th>Dense</th></tr></thead>
+<tbody>
+<tr><td>This kernel</td><td class="num"><a class="n" href="/numbers/#hop.vs_cudnn" data-c="hop.vs_cudnn">1.062×</a>, <a class="n" href="/numbers/#hop.vs_cudnn" data-c="hop.vs_cudnn">45 of 48</a> at or above 1</td><td class="num"><a class="n" href="/numbers/#hop.vs_cudnn" data-c="hop.vs_cudnn">1.054×</a>, <a class="n" href="/numbers/#hop.vs_cudnn" data-c="hop.vs_cudnn">47 of 48</a></td></tr>
+<tr><td>The earlier path</td><td class="num">0.429×</td><td class="num">0.421×</td></tr>
+</tbody></table></div>
+<p>Against the earlier path, it ran faster on <a class="n" href="/numbers/#hop.vs_prev" data-c="hop.vs_prev">96 of 96</a> shapes, a median <a class="n" href="/numbers/#hop.vs_prev" data-c="hop.vs_prev">2.5×</a>.</p>
+<p>cuDNN isn't slower everywhere. On a broader grid it is at parity or up to about 10% faster on long-KV shapes with medium query lengths, and the frontend's placement table routes those shapes to it.</p>
+
+<h2 id="the-causal-gap">The causal gap</h2>
+<p>My first causal schedule ran at <a class="n" href="/numbers/#hop.reads" data-c="hop.reads">0.81-0.99</a> of cuDNN's speed on causal MHA. Nsight Compute showed it reading K and V from GPU memory at <a class="n" href="/numbers/#hop.reads" data-c="hop.reads">1.26-2.16×</a> the read-once floor, where cuDNN read <a class="n" href="/numbers/#hop.reads" data-c="hop.reads">1.00×</a>. On the same shapes, walking the work in NATURAL order read <a class="n" href="/numbers/#hop.reads" data-c="hop.reads">1.00-1.03×</a>. Every causal schedule that shipped walks its work in that order.</p>
+
+<h2 id="how-it-was-tested">How it was tested</h2>
+<ul>
+<li>On the final tree on a GH200: <a class="n" href="/numbers/#hop.tests" data-c="hop.tests">702 passed</a>, 12 skipped and <a class="n" href="/numbers/#hop.tests" data-c="hop.tests">0 failed</a> in each of <a class="n" href="/numbers/#hop.tests" data-c="hop.tests">4 environments</a>, CUDA 12 and 13 with two CuTe DSL versions.</li>
+<li>The maintainer's final run on an H100, on the merged source: <a class="n" href="/numbers/#hop.tests" data-c="hop.tests">746 passed</a>, 12 skipped for missing runtime goldens, <a class="n" href="/numbers/#hop.tests" data-c="hop.tests">0 failed</a>.</li>
+<li>compute-sanitizer memcheck, racecheck and synccheck on one cell per schedule: <a class="n" href="/numbers/#hop.tests" data-c="hop.tests">15 of 15</a> runs clean.</li>
+<li>A determinism test checks byte-for-byte replay and batch invariance across all four schedules, against an FP64 reference.</li>
+</ul>
+
+<h2 id="what-it-doesnt-show">What it doesn't show</h2>
+<ul>
+<li>H200. It wasn't measured there, though the placement entries key on compute capability, so they also answer H200 graphs.</li>
+<li>Decode-shaped work. Below 65 query rows the frontend keeps its old plan order, and the gain there is a follow-up.</li>
+<li>Backward. This is a forward kernel.</li>
+<li>An independent timing. The maintainers ran the tests, and the speed numbers are mine.</li>
+</ul>
+
+<h2 id="links">Links</h2>
+<ul>
+<li><a href="https://github.com/NVIDIA/cudnn-frontend/pull/2575">The PR, with the full measurement tables</a></li>
+<li><a href="https://github.com/NVIDIA/cudnn-frontend/commit/17c35ab4d00fa2dd583d42cccd78e3a9a056c325">The merge commit</a></li>
+</ul>
+
+</article><aside class="toc" aria-label="On this page"><span>On this page</span><a href="#what-i-built">What I built</a><a href="#what-i-measured">What I measured</a><a href="#the-causal-gap">The causal gap</a><a href="#how-it-was-tested">How it was tested</a><a href="#what-it-doesnt-show">What it doesn't show</a><a href="#links">Links</a><a href="/#hopper">See it in motion</a></aside></div>
+<div class="next"><a href="/#hopper"><small>On the home page</small>The interactive version</a><a href="/work/stick-breaking-kernels/"><small>Next, up the stack</small>Stick-breaking attention kernels</a></div>
+</main>
+<footer class="foot"><a href="/">Home</a><a href="/numbers/">Every number</a><a href="/Harshith_Kantamneni_Resume.pdf">Résumé</a><a href="mailto:kantamneniharshith@gmail.com">Email</a><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a></footer>
+<script src="/numbers/num.js" defer></script>
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2e4646d7e5e149c0a3c87132e9fa66f1"}'></script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>
