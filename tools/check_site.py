@@ -22,7 +22,7 @@ OLD_URLS = [
     '/Harshith_Kantamneni_LLM_Inference_Resume.pdf', '/Harshith_Kantamneni_Agentic_AI_Resume.pdf',
     '/Recursive_Verification_Surface_Collapse_paper.pdf',
     '/certificates/NVIDIA_Accelerated_Computing_Modern_CUDA_Cpp.pdf', '/certificates/NVIDIA_Art_of_Compressing_LLMs.pdf',
-    '/notes/kv-copies-gqa/', '/notes/llm-judge-bias/', '/notes/tier-per-task/',
+    '/work/where-the-seconds-go/', '/notes/kv-copies-gqa/', '/notes/llm-judge-bias/', '/notes/tier-per-task/',
     '/reports/recursive-verification-surface-collapse/',
     '/reports/below-the-measurement-floor-a-pre-registered-dense-vs-moe-null-at-sub-100m-active-parameters/',
 ]

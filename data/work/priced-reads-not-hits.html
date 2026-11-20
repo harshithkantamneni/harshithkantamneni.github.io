@@ -1,0 +1,37 @@
+<h2>The question</h2>
+<p>When a Mixture-of-Experts model doesn't fit on the GPU, the engine keeps the experts in system memory and caches a few on the card. gpt-oss-120b has [[prn.size|36 layers of 128 experts at 13.25 MB each]], [[prn.size|about 61 GB]], against [[prn.size|32 GB]] on an RTX 5090. Expert caches are designed for hit rate. I asked whether hit rate actually orders cache designs by decode speed, one request at a time, in llama.cpp with my expert cache.</p>
+<p>A missed expert is read from system memory over one of two paths. CPU helper threads compute it where it is, or the PCIe link copies it into a GPU slot. The two run at different rates on every machine. Putting an expert in the cache is itself a read, and an expert the CPU computes and then also copies for later is read twice.</p>
+<h2>What I found</h2>
+<p>Hit rate misorders designs whose hits cost different numbers of reads. Raw read counts misorder designs that differ in which path carries the reads. Reads priced at each path's measured rate order both. The timing model built on that, GPU work plus priced reads in each layer, has no coefficient fitted to measured time.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>In two pre-registered tests, each on [[prn.pairs|5 new machines]] with the model frozen, priced reads ordered more pairs of designs right than hit rate did. [[prn.pairs]]</caption>
+<thead><tr><th>Share of pairs ordered right</th><th>First test, fast-link AMD desktops</th><th>Second test, slow-link Intel desktops</th></tr></thead>
+<tbody>
+<tr><td>Priced reads (the model)</td><td class="num">{{bar:94.9/100}}</td><td class="num">{{bar:94.4/100}}</td></tr>
+<tr><td>Hit rate, not registered</td><td class="num">{{bar:76.4/100}}</td><td class="num">{{bar:57.5/100}}</td></tr>
+</tbody></table></div>
+<ul>
+<li>More hits can mean slower. Always-admit, which copies every miss onto the GPU, had more hits than my default cache and was [[prn.always|slower on every machine]] in both tests. Prefetching every expert ahead had the most hits, and it was slower than two oracles with fewer.</li>
+<li>Upstream llama.cpp's merged expert cache copies every miss over the link. My default cache ran [[prn.upstream|1.77×]] and [[prn.upstream|1.63×]] as fast with 11% and 25% of experts on the GPU, timed on [[prn.upstream|3 machines]].</li>
+<li>Little speed separates sensible designs. The fastest was a median [[prn.stake|0.9%]] faster than my default. The model's main use is rejecting designs that buy hits with link copies.</li>
+<li>Choosing among online designs by the model, instead of timing them, lost at most a mean [[prn.regret|3.6%]] against the fastest. Choosing by hit rate lost up to [[prn.regret|87.8%]]. I computed these after the results.</li>
+</ul>
+<h2>How I tested it</h2>
+<p>I chose the model's form on [[prn.err|1,503 runs on 65 machines]], where its median error is [[prn.err|3.3%]]. Then I froze it and registered two tests. Every registered job's predictions were public on GitHub before its machines ran, [[prn.method|55 of 55]] by GitHub's push record. Before the frozen tests I made [[prn.method|214 rentals]].</p>
+<h2>Where it held, and where it failed</h2>
+<p>On the first test's fast-link AMD desktops with RTX 5090s, every clause held, with a median error of [[prn.err|1.7%]] against a threshold of [[prn.err|7%]]. Simpler path-priced forms pass that test too. On the second test's slow-link Intel desktops, the model under-predicts by a median [[prn.err|5.4%]], and that test refuted it. It failed the read-count check and one machine's timing check. I haven't found the cause.</p>
+<p>Across the project, [[prn.method|109 of 325]] registered predictions failed. The paper reports all of them.</p>
+<h2>How far from the limit</h2>
+<p>With 11% of experts on the GPU, on RTX 5090 desktops, my default cache reached [[prn.floor|42%]] of an empirical floor's speed. The best oracle I timed, which knows the coming routing and copies ahead, reached [[prn.floor|58%]]. In an offline replay, the history-only forecasters I tried closed at most [[prn.foresight|19%]] of the gap to the fewest possible reads.</p>
+<h2>What it doesn't show</h2>
+<ul>
+<li>Anything outside its scope: one llama.cpp-based engine, RTX 4090 and RTX 5090 desktops, batch 1, emulated cache budgets, gpt-oss-120b on one text with contexts up to [[prn.scope|1,135 tokens]] in the tests.</li>
+<li>A general speed result against llama.cpp. The [[prn.upstream|1.77×]] is one cache design on [[prn.upstream|3 machines]].</li>
+<li>An untouched analysis. My analysis scripts were lost in October 2026 and rebuilt from the raw results. [[prn.rebuild|217 of 507]] checkable values changed, and no headline verdict did.</li>
+<li>Review. It's a preprint, not peer reviewed. The cache patch is not upstream.</li>
+</ul>
+<h2>Links</h2>
+<ul>
+<li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper.pdf">Paper (preprint PDF)</a></li>
+<li><a href="https://github.com/harshithkantamneni/moe-speed-of-light">Code and reproduction</a></li>
+<li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/tree/gpu">Raw data and pre-registered job scripts</a></li>
+</ul>
