@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Where the Seconds Go: Harshith Kantamneni</title>
-<meta name="description" content="A llama.cpp expert cache for batch-1 MoE decode when the model doesn&#x27;t fit on the GPU, and a computed limit to read it against."/>
+<title>Priced Reads, Not Hits: Harshith Kantamneni</title>
+<meta name="description" content="Hit rate can rank MoE expert caches in the wrong order. Counting reads from system memory, each priced by the path it takes, ranks them right, in two pre-registered tests on new machines."/>
 <meta name="theme-color" content="#14171e">
 <link rel="canonical" href="https://harshithkantamneni.github.io/work/where-the-seconds-go/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Where the Seconds Go: Harshith Kantamneni">
-<meta property="og:description" content="A llama.cpp expert cache for batch-1 MoE decode when the model doesn&#x27;t fit on the GPU, and a computed limit to read it against.">
+<meta property="og:title" content="Priced Reads, Not Hits: Harshith Kantamneni">
+<meta property="og:description" content="Hit rate can rank MoE expert caches in the wrong order. Counting reads from system memory, each priced by the path it takes, ranks them right, in two pre-registered tests on new machines.">
 <meta property="og:url" content="https://harshithkantamneni.github.io/work/where-the-seconds-go/">
 <meta property="og:image" content="https://harshithkantamneni.github.io/og.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -81,92 +81,52 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><a class="brand" href="/">Harshith Kantamneni</a><nav class="nl" aria-label="Main"><a style="--c:var(--k)" href="/#ch-k">Kernels</a><a class=on style="--c:var(--i)" href="/#ch-i">Inference</a><a style="--c:var(--a)" href="/#ch-a">Agents</a><a class="ha" href="/numbers/">Numbers</a><a href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a></nav></header>
 <main id="main" style="--c:var(--i)">
-<div class="op"><a class="crumb" href="/#ch-i">Inference</a><h1>Where the Seconds Go</h1><p class="lead">A llama.cpp expert cache for batch-1 MoE decode when the model doesn&#x27;t fit on the GPU, and a computed limit to read it against.</p><p class="state">Public manuscript and code, not peer reviewed</p><div class="keys"><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#wsg.grid" data-c="wsg.grid">2.0-4.0×</a></div><div class="kl">stock llama.cpp, a weak baseline</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#sec.vs_ft" data-c="sec.vs_ft">11 of 12</a></div><div class="kl">configurations faster than FreeToken</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#wsg.gap" data-c="wsg.gap">43-52%</a></div><div class="kl">of the gap stayed after all three oracles</div></div></div></div>
+<div class="op"><a class="crumb" href="/#ch-i">Inference</a><h1>Priced Reads, Not Hits</h1><p class="lead">Hit rate can rank MoE expert caches in the wrong order. Counting reads from system memory, each priced by the path it takes, ranks them right, in two pre-registered tests on new machines.</p><p class="state">Preprint and code, not peer reviewed</p><div class="keys"><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#prn.pairs" data-c="prn.pairs">94.9%</a></div><div class="kl">of design pairs ordered right in the first test, against 76.4% for hit rate</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#prn.upstream" data-c="prn.upstream">1.77×</a></div><div class="kl">as fast as llama.cpp&#x27;s own merged expert cache, on 3 machines</div></div><div class="kn"><div class="kv"><a class="n" style="color:inherit" href="/numbers/#prn.method" data-c="prn.method">55 of 55</a></div><div class="kl">jobs with their predictions public before the machines ran</div></div></div></div>
 <div class="grid"><article class="prose">
-<h2 id="what-i-built">What I built</h2>
-<p>An expert cache for llama.cpp, for <a class="n" href="/numbers/#wsg.batch" data-c="wsg.batch">batch 1</a> decode only. On RTX 5090 hosts it ran <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">2.0-4.0×</a> stock llama.cpp and faster than FreeToken in <a class="n" href="/numbers/#sec.vs_ft" data-c="sec.vs_ft">11 of 12</a> cells. gpt-oss-120b ran at <a class="n" href="/numbers/#sec.speed" data-c="sec.speed">58-153 tokens/s</a> with <a class="n" href="/numbers/#sec.speed" data-c="sec.speed">11-40%</a> of its experts on the GPU. At its smallest cache on <a class="n" href="/numbers/#sec.limit" data-c="sec.limit">25 consumer machines</a>, a scope I set after seeing the data, the cache reached <a class="n" href="/numbers/#sec.limit" data-c="sec.limit">31-54%</a> of a limit computed from my own bandwidth probe, not a physical one.</p>
-<p>That model has <a class="n" href="/numbers/#wsg.size" data-c="wsg.size">36 MoE layers of 128 experts at 13.25 MB each</a>, <a class="n" href="/numbers/#wsg.size" data-c="wsg.size">about 61 GB</a>, against <a class="n" href="/numbers/#wsg.size" data-c="wsg.size">32 GB</a> on the card. Each layer gets GPU slots. A miss goes to CPU helper threads through a mailbox the GPU writes, or a per-machine table copies it over PCIe into a slot. A decayed-frequency rule decides what stays, and an admitted miss is read twice: once by the CPU, once by a background copy.</p>
-<p>The limit is the fewest host reads any cache of that size can make (Belady's MIN with bypass, on the routing trace), at the machine's best probed read rate. Oracles in the engine read future routing from a recorded trace, so I could change one thing at a time.</p>
-<h2 id="what-i-measured">What I measured</h2>
-<p>First, one machine, teacher-forced so every row sees the same routing.</p>
-<div class="tw" tabindex="0"><table class="t"><caption>On one Ryzen 9 9950X, changing what's cached or how it's read moved little alone, and both together took 20.59 ms per token to 15.13, against a computed 10.02. <a class="n" href="/numbers/#wsg.breakdown" data-c="wsg.breakdown">conditions</a></caption>
-<thead><tr><th>State, gpt-oss-120b at 11% of experts on the GPU</th><th>ms per token</th></tr></thead>
+<h2 id="the-question">The question</h2>
+<p>When a Mixture-of-Experts model doesn't fit on the GPU, the engine keeps the experts in system memory and caches a few on the card. gpt-oss-120b has <a class="n" href="/numbers/#wsg.size" data-c="wsg.size">36 MoE layers of 128 experts at 13.25 MB each</a>, <a class="n" href="/numbers/#wsg.size" data-c="wsg.size">about 61 GB</a>, against <a class="n" href="/numbers/#wsg.size" data-c="wsg.size">32 GB</a> on an RTX 5090. Expert caches are designed for hit rate. I asked whether hit rate actually orders cache designs by decode speed, one request at a time, in llama.cpp with my expert cache.</p>
+<p>A missed expert is read from system memory over one of two paths. CPU helper threads compute it where it is, or the PCIe link copies it into a GPU slot. The two run at different rates on every machine. Putting an expert in the cache is itself a read, and an expert the CPU computes and then also copies for later is read twice.</p>
+<h2 id="what-i-found">What I found</h2>
+<p>Hit rate misorders designs whose hits cost different numbers of reads. Raw read counts misorder designs that differ in which path carries the reads. Reads priced at each path's measured rate order both. The timing model built on that, GPU work plus priced reads in each layer, has no coefficient fitted to measured time.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>In two pre-registered tests, each on <a class="n" href="/numbers/#prn.pairs" data-c="prn.pairs">5 new machines</a> with the model frozen, priced reads ordered far more pairs of designs right than hit rate did. <a class="n" href="/numbers/#prn.pairs" data-c="prn.pairs">conditions</a></caption>
+<thead><tr><th>Share of pairs ordered right</th><th>First test, fast-link AMD desktops</th><th>Second test, slow-link Intel desktops</th></tr></thead>
 <tbody>
-<tr><td>Deployed cache, no oracle</td><td class="num"><span class="barv"><span class="bt"><i style="width:100.0%"></i></span><span>20.59</span></span></td></tr>
-<tr><td>Deployed set, each admission read once</td><td class="num"><span class="barv"><span class="bt"><i style="width:98.0%"></i></span><span>20.18</span></span></td></tr>
-<tr><td>MIN's set, read twice (oracle)</td><td class="num"><span class="barv"><span class="bt"><i style="width:97.7%"></i></span><span>20.11</span></span></td></tr>
-<tr><td>MIN's set, read once (oracle)</td><td class="num"><span class="barv"><span class="bt"><i style="width:73.5%"></i></span><span>15.13</span></span></td></tr>
-<tr><td>MIN's set, read once, copies issued ahead (oracle)</td><td class="num"><span class="barv"><span class="bt"><i style="width:66.9%"></i></span><span>13.78</span></span></td></tr>
-<tr><td>Computed limit</td><td class="num"><span class="barv"><span class="bt"><i style="width:48.7%"></i></span><span>10.02</span></span></td></tr>
+<tr><td>Priced reads (the model)</td><td class="num"><span class="barv"><span class="bt"><i style="width:94.9%"></i></span><span>94.9</span></span></td><td class="num"><span class="barv"><span class="bt"><i style="width:94.4%"></i></span><span>94.4</span></span></td></tr>
+<tr><td>Hit rate, not registered</td><td class="num"><span class="barv"><span class="bt"><i style="width:76.4%"></i></span><span>76.4</span></span></td><td class="num"><span class="barv"><span class="bt"><i style="width:57.5%"></i></span><span>57.5</span></span></td></tr>
 </tbody></table></div>
-<p>Then the <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">12 cells</a>: <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">2 RTX 5090 hosts</a>, <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">30 AIME-25 problems</a>, first <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">256 greedy tokens</a>, equal GPU expert memory.</p>
-<div class="tw" tabindex="0"><table class="t"><caption>The cache was faster than FreeToken in 11 of 12 cells and ran 2.0-4.0× stock llama.cpp in all 12. <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">conditions</a></caption>
-<thead><tr><th>Model</th><th>Experts on GPU</th><th>Stock (tok/s)</th><th>FreeToken (tok/s)</th><th>Cache (tok/s)</th><th>Cache ÷ FreeToken (95% CI)</th><th>Cache ÷ stock</th></tr></thead>
-<tbody>
-<tr><th colspan="7">Host B: Ryzen 9 9950X3D, card memory 17001 MHz</th></tr>
-<tr><td>gpt-oss-120b</td><td class="num">11%</td><td class="num">34.9</td><td class="num">54.0</td><td class="num"><span class="barv"><span class="bt"><i style="width:45.8%"></i></span><span>69.9</span></span></td><td class="num">1.29 [1.28, 1.31]</td><td class="num">2.00</td></tr>
-<tr><td>gpt-oss-120b</td><td class="num">25%</td><td class="num">40.0</td><td class="num">85.6</td><td class="num"><span class="barv"><span class="bt"><i style="width:71.6%"></i></span><span>109.2</span></span></td><td class="num">1.27 [1.25, 1.29]</td><td class="num">2.73</td></tr>
-<tr><td>gpt-oss-120b</td><td class="num">40%</td><td class="num">47.7</td><td class="num">132.2</td><td class="num"><span class="barv"><span class="bt"><i style="width:100.0%"></i></span><span>152.5</span></span></td><td class="num">1.15 [1.13, 1.17]</td><td class="num">3.20</td></tr>
-<tr><td>Qwen3-30B-A3B</td><td class="num">12.5%</td><td class="num">19.5</td><td class="num">38.7</td><td class="num"><span class="barv"><span class="bt"><i style="width:26.2%"></i></span><span>40.0</span></span></td><td class="num">1.03 [1.02, 1.04]</td><td class="num">2.05</td></tr>
-<tr><td>Qwen3-30B-A3B</td><td class="num">25%</td><td class="num">22.1</td><td class="num">54.7</td><td class="num"><span class="barv"><span class="bt"><i style="width:41.4%"></i></span><span>63.1</span></span></td><td class="num">1.15 [1.13, 1.17]</td><td class="num">2.86</td></tr>
-<tr><td>Qwen3-30B-A3B</td><td class="num">43.75%</td><td class="num">28.4</td><td class="num">103.1</td><td class="num"><span class="barv"><span class="bt"><i style="width:71.0%"></i></span><span>108.2</span></span></td><td class="num">1.05 [1.04, 1.06]</td><td class="num">3.81</td></tr>
-<tr><th colspan="7">Host S: Ryzen 9 9950X, stock clock, card memory 14001 MHz</th></tr>
-<tr><td>gpt-oss-120b</td><td class="num">11%</td><td class="num">28.9</td><td class="num">48.0</td><td class="num"><span class="barv"><span class="bt"><i style="width:38.0%"></i></span><span>57.9</span></span></td><td class="num">1.21 [1.19, 1.22]</td><td class="num">2.00</td></tr>
-<tr><td>gpt-oss-120b</td><td class="num">25%</td><td class="num">33.6</td><td class="num">78.7</td><td class="num"><span class="barv"><span class="bt"><i style="width:61.7%"></i></span><span>94.1</span></span></td><td class="num">1.20 [1.16, 1.22]</td><td class="num">2.80</td></tr>
-<tr><td>gpt-oss-120b</td><td class="num">40%</td><td class="num">40.1</td><td class="num">122.2</td><td class="num"><span class="barv"><span class="bt"><i style="width:87.6%"></i></span><span>133.6</span></span></td><td class="num">1.09 [1.08, 1.11]</td><td class="num">3.34</td></tr>
-<tr><td>Qwen3-30B-A3B</td><td class="num">12.5%</td><td class="num">16.1</td><td class="num">32.7</td><td class="num"><span class="barv"><span class="bt"><i style="width:22.0%"></i></span><span>33.5</span></span></td><td class="num">1.03 [1.02, 1.04]</td><td class="num">2.08</td></tr>
-<tr><td>Qwen3-30B-A3B</td><td class="num">25%</td><td class="num">18.5</td><td class="num">51.4</td><td class="num"><span class="barv"><span class="bt"><i style="width:35.3%"></i></span><span>53.9</span></span></td><td class="num">1.05 [1.04, 1.06]</td><td class="num">2.91</td></tr>
-<tr><td>Qwen3-30B-A3B</td><td class="num">43.75%</td><td class="num">23.8</td><td class="num">98.3</td><td class="num"><span class="barv"><span class="bt"><i style="width:62.8%"></i></span><span>95.8</span></span></td><td class="num">0.97 [0.96, 0.99]</td><td class="num">4.02</td></tr>
-</tbody></table></div>
-<p>Beside those ratios:</p>
 <ul>
-<li>The <a class="n" href="/numbers/#wsg.headline" data-c="wsg.headline">1.29×</a> is host B, the faster-memory host. The same cell at stock clock is <a class="n" href="/numbers/#wsg.headline" data-c="wsg.headline">1.21×</a>.</li>
-<li>FreeToken was faster at one cell, <a class="n" href="/numbers/#wsg.slower" data-c="wsg.slower">0.97×</a> at Qwen3-30B-A3B <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">43.75%</a> on host S. I didn't separate why.</li>
-<li>The difference from FreeToken is mostly admission policy. On host S, LRU in place of my rule ran <a class="n" href="/numbers/#wsg.lru" data-c="wsg.lru">6-21%</a> slower, and slower than FreeToken at <a class="n" href="/numbers/#wsg.lru" data-c="wsg.lru">4 of 6</a> cells.</li>
-<li>Host S missed a band I registered before renting it: <a class="n" href="/numbers/#wsg.band" data-c="wsg.band">5 of 6</a> ratios fell outside <a class="n" href="/numbers/#wsg.band" data-c="wsg.band">±0.06</a> of host B's.</li>
-<li>With FreeToken tuned on a separate rental, the ratios are <a class="n" href="/numbers/#wsg.ft_tuned" data-c="wsg.ft_tuned">0.98-1.17×</a>.</li>
-<li>Stock llama.cpp is a weak baseline.</li>
+<li>More hits can mean slower. Always-admit, which copies every miss onto the GPU, had more hits and fewer reads than my default cache and was <a class="n" href="/numbers/#prn.always" data-c="prn.always">slower on every machine</a> in both tests.</li>
+<li>Upstream llama.cpp's merged expert cache also copies every miss over the link. My default cache ran <a class="n" href="/numbers/#prn.upstream" data-c="prn.upstream">1.77×</a> and <a class="n" href="/numbers/#prn.upstream" data-c="prn.upstream">1.63×</a> as fast with 11% and 25% of experts on the GPU, median over <a class="n" href="/numbers/#prn.upstream" data-c="prn.upstream">3 machines</a>, computed after the results.</li>
+<li>Little speed separates sensible designs. The fastest online design gained a median <a class="n" href="/numbers/#prn.stake" data-c="prn.stake">0.9%</a> over my default. The model's use is rejecting designs that buy hits with link copies.</li>
+<li>Choosing among online designs by the model, instead of timing them, lost a mean <a class="n" href="/numbers/#prn.regret" data-c="prn.regret">0.2%</a> and <a class="n" href="/numbers/#prn.regret" data-c="prn.regret">3.6%</a> against the fastest in the two tests. Choosing by hit rate lost <a class="n" href="/numbers/#prn.regret" data-c="prn.regret">16.4%</a> and <a class="n" href="/numbers/#prn.regret" data-c="prn.regret">87.8%</a>. I computed these after the results.</li>
 </ul>
-<h2 id="what-limited-it">What limited it</h2>
-<p>The gap is the deployed cache's time above the limit. I split it with the oracles.</p>
-<div class="tw" tabindex="0"><table class="t"><caption>With gpt-oss-120b at 11% of experts on the GPU, about half of the gap stayed after all three changes. <a class="n" href="/numbers/#wsg.gap" data-c="wsg.gap">conditions</a></caption>
-<thead><tr><th>Mean share of the gap, % (95% interval)</th><th>Copy table off (5 machines)</th><th>Table on, exploratory panel (15 machines)</th><th>Table on, registered test (5 machines)</th></tr></thead>
-<tbody>
-<tr><th colspan="4">Measured</th></tr>
-<tr><td>What is cached: MIN's set, read twice</td><td class="num">19 [13, 25]</td><td class="num">0 [-2, 3]</td><td class="num">3 [-1, 8]</td></tr>
-<tr><td>How it is read: the deployed set, read once</td><td class="num">8 [2, 14]</td><td class="num">0 [-2, 2]</td><td class="num">0 [-2, 1]</td></tr>
-<tr><td>Both: MIN's set, read once</td><td class="num">36 [13, 58]</td><td class="num">33 [21, 44]</td><td class="num">35 [22, 48]</td></tr>
-<tr><td>Then the read-ahead oracle</td><td class="num">18 [10, 25]</td><td class="num">15 [11, 19]</td><td class="num">19 [14, 24]</td></tr>
-<tr><td>Left after all three</td><td class="num">43 [31, 56]</td><td class="num">52 [43, 62]</td><td class="num">46 [38, 55]</td></tr>
-<tr><td>The copy table itself</td><td class="num">3 [-5, 12]</td><td class="num">n/a</td><td class="num">n/a</td></tr>
-<tr><th colspan="4">Attributed, of what is left</th></tr>
-<tr><td>The GPU's non-expert time</td><td class="num">25 [18, 31]</td><td class="num">27 [25, 30]</td><td class="num">28 [20, 36]</td></tr>
-<tr><td>The oracle's reads beyond MIN's</td><td class="num">18 [14, 23]</td><td class="num">21 [20, 23]</td><td class="num">18 [15, 20]</td></tr>
-<tr><td>Residual</td><td class="num">0 [-11, 12]</td><td class="num">4 [-6, 13]</td><td class="num">1 [-3, 4]</td></tr>
-</tbody></table></div>
-<p>At 11%, with the table on, it puts misses the cache didn't choose into its slots, so MIN's set read twice closes about none of the gap. With it off, that set closes <a class="n" href="/numbers/#wsg.gap" data-c="wsg.gap">19%</a>. Either way, <a class="n" href="/numbers/#wsg.gap" data-c="wsg.gap">43-52%</a> stays, and <a class="n" href="/numbers/#wsg.gap" data-c="wsg.gap">42-48%</a> at <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">25%</a>.</p>
-<p>Policies without foresight recovered <a class="n" href="/numbers/#wsg.online" data-c="wsg.online">at most 6%</a> of an oracle's gain on <a class="n" href="/numbers/#wsg.online" data-c="wsg.online">5 fast-link machines</a>, against a loose registered bound.</p>
-<p>I read this as: closing the rest would take reads issued before routing, at MIN's count.</p>
+<h2 id="how-i-tested-it">How I tested it</h2>
+<p>I chose the model's form on <a class="n" href="/numbers/#prn.err" data-c="prn.err">1,503 runs on 65 machines</a>, where its median error is <a class="n" href="/numbers/#prn.err" data-c="prn.err">3.3%</a>. Then I froze it and registered two tests. Every job's configurations, predictions and pass/fail thresholds were public on GitHub before its machines ran, <a class="n" href="/numbers/#prn.method" data-c="prn.method">55 of 55</a> by the push record. Most of the scoring scripts came later.</p>
+<p>The first test ran on fast-link AMD desktops with RTX 5090s. Every clause held, with a median error of <a class="n" href="/numbers/#prn.err" data-c="prn.err">1.7%</a> against a threshold of <a class="n" href="/numbers/#prn.err" data-c="prn.err">7%</a>. Simpler path-priced forms pass it too, so it supports the idea more than the exact formula.</p>
+<h2 id="where-it-failed">Where it failed</h2>
+<p>The second test ran the same protocol on slow-link Intel desktops. The model under-predicts there, by a median <a class="n" href="/numbers/#prn.err" data-c="prn.err">5.4%</a> computed after the results, and the in-step copies it predicted to pay never did. The test refuted it by its read-count check and one machine's timing. I haven't found the cause. The next step is a probe that measures each path's rate while the other one reads.</p>
+<p>Across the project, <a class="n" href="/numbers/#prn.method" data-c="prn.method">109 of 325</a> registered predictions had a failed clause. The paper lists all of them.</p>
+<h2 id="how-far-from-the-limit">How far from the limit</h2>
+<p>With 11% of experts on the GPU, on <a class="n" href="/numbers/#prn.floor" data-c="prn.floor">47 RTX 5090 desktops</a>, my default cache reached <a class="n" href="/numbers/#prn.floor" data-c="prn.floor">42%</a> of an empirical floor's speed. An oracle that knows the coming routing and copies ahead reached <a class="n" href="/numbers/#prn.floor" data-c="prn.floor">58%</a>, on <a class="n" href="/numbers/#prn.floor" data-c="prn.floor">32 of them</a>. Most of the remaining gap is reads beyond the fewest possible, not path prices.</p>
 <h2 id="what-it-doesnt-show">What it doesn't show</h2>
 <ul>
-<li>Anything above batch 1. At <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">25%</a> on host S, prefill ran <a class="n" href="/numbers/#wsg.batch" data-c="wsg.batch">79-83%</a> of stock and decode at <a class="n" href="/numbers/#wsg.batch" data-c="wsg.batch">2-4 sequences</a> ran <a class="n" href="/numbers/#wsg.batch" data-c="wsg.batch">77-79%</a>, one run per configuration.</li>
-<li>A production part. A GPU wait on a stuck helper aborts the process, after a <a class="n" href="/numbers/#wsg.abort" data-c="wsg.abort">default of 2 s</a>.</li>
-<li>A physical limit. It's relative to my probe and assumes exact routing, whole experts, per-layer slots and one token per step. A reader faster than my probe could go below it. None of <a class="n" href="/numbers/#wsg.under" data-c="wsg.under">302 timed runs</a> did, the closest at <a class="n" href="/numbers/#wsg.under" data-c="wsg.under">1.33×</a> the limit, but a closed-form estimate puts the implied read rate <a class="n" href="/numbers/#wsg.implied" data-c="wsg.implied">more than 5%</a> above the probe on <a class="n" href="/numbers/#wsg.implied" data-c="wsg.implied">12 of 84</a> launch and cache-size pairs.</li>
-<li>A registered range. The <a class="n" href="/numbers/#sec.limit" data-c="sec.limit">31-54%</a> is post hoc and covers gpt-oss's smallest cache only, <a class="n" href="/numbers/#wsg.shares" data-c="wsg.shares">median 47%</a>. At <a class="n" href="/numbers/#wsg.grid" data-c="wsg.grid">25%</a>, consumer machines reach <a class="n" href="/numbers/#wsg.shares" data-c="wsg.shares">23-36%</a>. My machine list drops <a class="n" href="/numbers/#wsg.excluded" data-c="wsg.excluded">5 unstable rentals</a>, all server processors, so the drop can only touch the server range. The <a class="n" href="/numbers/#wsg.shares" data-c="wsg.shares">3 server machines</a> left reach <a class="n" href="/numbers/#wsg.shares" data-c="wsg.shares">12-46%</a>, and I haven't established why.</li>
-<li>Other setups. Rented hosts as a convenience sample, clocks unlocked, one engine, two models, AIME prompts also used in development.</li>
-<li>Task accuracy. I didn't measure it.</li>
-<li>A clean prediction record. <a class="n" href="/numbers/#wsg.scorecard" data-c="wsg.scorecard">142 of 553</a> scored prediction clauses failed, all in the <a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/prereg/scorecard.json">scorecard</a>.</li>
-<li>Review. This is a public manuscript, not peer reviewed. The patch is not upstream.</li>
+<li>Anything outside its scope: one llama.cpp-based engine, RTX 4090 and RTX 5090 desktops, batch 1, emulated cache budgets, gpt-oss-120b on one text with contexts up to <a class="n" href="/numbers/#prn.scope" data-c="prn.scope">1,135 tokens</a> in the tests.</li>
+<li>A general speed result against llama.cpp. The <a class="n" href="/numbers/#prn.upstream" data-c="prn.upstream">1.77×</a> is one cache design on <a class="n" href="/numbers/#prn.upstream" data-c="prn.upstream">3 machines</a>.</li>
+<li>An untouched analysis. My analysis scripts were lost in October 2026 and rebuilt from the raw results. <a class="n" href="/numbers/#prn.rebuild" data-c="prn.rebuild">217 of 507</a> values with an earlier record changed, and none of the headline verdicts with a record did.</li>
+<li>Review. It's a preprint, not peer reviewed. The cache patch is not upstream.</li>
 </ul>
+<h2 id="the-earlier-analysis">The earlier analysis</h2>
+<p>An earlier analysis of the same experiments, Where the Seconds Go, computed a speed limit for this setup and compared the cache with FreeToken and stock llama.cpp. Its manuscript stays in the repository.</p>
 <h2 id="links">Links</h2>
 <ul>
+<li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper2/priced-reads-not-hits.pdf">Paper PDF (preprint)</a></li>
 <li><a href="https://github.com/harshithkantamneni/moe-speed-of-light">Code and data</a></li>
-<li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper/ieee-paper.pdf">Manuscript PDF</a></li>
-<li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/prereg/scorecard.json">Prediction scorecard</a></li>
+<li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/tree/gpu">Job scripts with their registered predictions, and raw results</a></li>
 <li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/runtime/llama.cpp-expert-cache-4da6337.patch">The llama.cpp patch</a></li>
+<li><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper/ieee-paper.pdf">The earlier analysis</a></li>
 </ul>
 
-</article><aside class="toc" aria-label="On this page"><span>On this page</span><a href="#what-i-built">What I built</a><a href="#what-i-measured">What I measured</a><a href="#what-limited-it">What limited it</a><a href="#what-it-doesnt-show">What it doesn't show</a><a href="#links">Links</a><a href="/#seconds">See it in motion</a></aside></div>
+</article><aside class="toc" aria-label="On this page"><span>On this page</span><a href="#the-question">The question</a><a href="#what-i-found">What I found</a><a href="#how-i-tested-it">How I tested it</a><a href="#where-it-failed">Where it failed</a><a href="#how-far-from-the-limit">How far from the limit</a><a href="#what-it-doesnt-show">What it doesn't show</a><a href="#the-earlier-analysis">The earlier analysis</a><a href="#links">Links</a><a href="/#seconds">See it in motion</a></aside></div>
 <div class="next"><a href="/#seconds"><small>On the home page</small>The interactive version</a><a href="/work/bert/"><small>Next, up the stack</small>bert</a></div>
 </main>
 <footer class="foot"><a href="/">Home</a><a href="/numbers/">Every number</a><a href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a><a href="mailto:kantamneniharshith@gmail.com">Email</a><a href="https://github.com/harshithkantamneni">GitHub</a><a href="https://www.linkedin.com/in/hk4231">LinkedIn</a></footer>
