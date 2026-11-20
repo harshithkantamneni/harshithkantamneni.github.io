@@ -16,8 +16,8 @@ LANE = {
     'a': ('Agents', '#ch-a', 'var(--a)', '/resume/agents/Harshith_Kantamneni_Resume.pdf'),
 }
 # Up the stack, the same order as the home page
-ORDER = ['cudnn-hopper', 'stick-breaking-kernels', 'cudnn-gqa', 'where-the-seconds-go', 'bert', 'lab-verification']
-SCENE = {'cudnn-hopper': '#hopper', 'stick-breaking-kernels': '#kernels', 'cudnn-gqa': '#gqa', 'where-the-seconds-go': '#seconds', 'bert': '#bert', 'lab-verification': '#lab'}
+ORDER = ['cudnn-hopper', 'stick-breaking-kernels', 'cudnn-gqa', 'priced-reads-not-hits', 'bert', 'lab-verification']
+SCENE = {'cudnn-hopper': '#hopper', 'stick-breaking-kernels': '#kernels', 'cudnn-gqa': '#gqa', 'priced-reads-not-hits': '#seconds', 'bert': '#bert', 'lab-verification': '#lab'}
 # Not confirmed anywhere public, so it stays out of the write-up
 DROP = [' I noticed an empty PI folder next to the approvals.']
 
@@ -277,7 +277,7 @@ body_work = f"""<main style="--c:var(--k)">
 {card_row(by_name['ML-guided kernel config'])}{card_row(by_name['MI300X + gem5 modeling'])}
 </section>
 <section class="wsec" id="inference" style="--c:var(--i)"><h2>LLM inference</h2>
-{study('where-the-seconds-go', 'Priced Reads, Not Hits', 'Why hit rate can rank MoE expert caches in the wrong order, and what ranks them right. Tested on new machines with the predictions public first.')}
+{study('priced-reads-not-hits', 'Priced Reads, Not Hits', 'Why hit rate can rank MoE expert caches in the wrong order, and what ranks them right. A preprint, not peer reviewed, tested on new machines with the predictions public first.')}
 {card_row(by_name['vLLM on H100 NVL'])}{card_row(by_name['Speculative decoding on MoE'])}
 <a class="wk" href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling"><h3>Jetson Orin Nano profiling</h3><p>Attention and KV-cache decode kernels profiled with Nsight on a 15 W edge board.</p><span>Public repo</span></a>
 </section>
@@ -295,3 +295,12 @@ EXTRAW = """<style>.wsec{padding:clamp(30px,6vh,60px) var(--edge) 0;scroll-margi
 out = SITE / 'work' / 'index.html'
 out.write_text(page('All work: Harshith Kantamneni', 'Every project, upstream PR and write-up, grouped by layer: GPU kernels, LLM inference and agent systems.', '/work/', body_work).replace('</head>', EXTRAW + '\n</head>').replace('<a class="ha" href="/numbers/">Numbers</a>', '<a class="ha on" style="--c:var(--ink)" href="/work/">All work</a>'))
 print('60 and work pages built')
+
+# The write-up's old address, kept for links in résumés and posts.
+redir = SITE / 'work' / 'where-the-seconds-go' / 'index.html'
+redir.parent.mkdir(parents=True, exist_ok=True)
+redir.write_text('<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Priced Reads, Not Hits: Harshith Kantamneni</title>'
+                 '<meta name="robots" content="noindex"><link rel="canonical" href="https://harshithkantamneni.github.io/work/priced-reads-not-hits/">'
+                 '<meta http-equiv="refresh" content="0; url=/work/priced-reads-not-hits/"></head>'
+                 '<body style="background:#14171e;color:#EEEFF1;font:16px system-ui,sans-serif;padding:24px">'
+                 '<p>This page moved to <a style="color:#FFB454" href="/work/priced-reads-not-hits/">Priced Reads, Not Hits</a>.</p></body></html>\n')
