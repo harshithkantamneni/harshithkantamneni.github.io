@@ -41,7 +41,7 @@
   "state": "Tests merged Oct 6, 2026. Prototype closed Sep 27, 2026",
   "next": "stick-breaking-kernels"
  },
- "where-the-seconds-go": {
+ "priced-reads-not-hits": {
   "lane": "i",
   "title": "Priced Reads, Not Hits",
   "lead": "Hit rate can rank MoE expert caches in the wrong order. Counting reads from system memory, each priced by the path it takes, ranks them right, in two pre-registered tests on new machines.",
@@ -52,7 +52,7 @@
    },
    {
     "v": "[[prn.upstream|1.77×]]",
-    "l": "as fast as llama.cpp's own merged expert cache, on 3 machines"
+    "l": "as fast as llama.cpp's own merged expert cache, timed on 3 machines"
    },
    {
     "v": "[[prn.method|55 of 55]]",

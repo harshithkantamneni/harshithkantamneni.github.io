@@ -241,7 +241,7 @@
 
 <article class="story" id="seconds" style="--c:var(--i)">
   <header class="shead"><h3 class="sname">Priced Reads, Not Hits</h3><span class="skind">Preprint</span></header>
-  <div class="sid"><p class="swhat">Why the usual way to judge caches for AI models too big for the GPU can pick the slower design, and a measure that picks right.</p><p class="sres">Result: on new machines it ordered 94.9% and 94.4% of design pairs right, against 76.4% and 57.5% for hit rate.</p><p class="smeta"><span>Public paper and code, not peer reviewed. The patch is not upstream.</span><a href="https://github.com/harshithkantamneni/moe-speed-of-light">moe-speed-of-light</a></p></div>
+  <div class="sid"><p class="swhat">Why the usual way to judge caches for AI models too big for the GPU can pick the slower design, and a measure that picks right.</p><p class="sres">Result: on new machines it ordered 94.9% and 94.4% of design pairs right, against 76.4% and 57.5% for hit rate.</p><p class="smeta"><span>Preprint and code, not peer reviewed. The patch is not upstream.</span><a href="https://github.com/harshithkantamneni/moe-speed-of-light">moe-speed-of-light</a></p></div>
   <div class="beat lane"><p class="say">The model, gpt-oss-120b, needs about 61 GB of memory. An RTX 5090 GPU has 32 GB.</p></div>
   <div class="block lane">
     <figure class="fg"><div class="memz" id="fz-mem" data-field role="img" aria-label="61 dots, one per gigabyte. A box around the first 32 marks what fits on the card."><i class="cardbox"><span>RTX 5090, 32 GB</span></i>/*MEM*/</div><figcaption>One dot per gigabyte, to scale.</figcaption></figure>
@@ -272,25 +272,11 @@
     <p class="say">I published every prediction before the machines ran. The model passed its first test and failed its second.</p>
     <p class="note">55 of 55 registered jobs were public before their machines ran. On new fast-link AMD desktops the median error was 1.7%. On slow-link Intel desktops it under-predicts, and that test refuted it. I haven't found why.</p>
   </div>
-  <div class="beat lane"><p class="say">Then the other question: how far is any cache from the limit? I let the engine see the future, one kind of foresight at a time.</p></div>
-  <div class="block lane">
-    <figure class="fg" id="fig-ruler">
-      <p class="rnum"><span id="fs-v">20.59</span><small> ms per token</small></p>
-      <p class="rnote" id="fs-n" role="status">The deployed cache, with no foresight.</p>
-      <svg role="img" aria-label="A ruler of time per token. 20.59 milliseconds for the deployed cache, 15.13 with the oracle's schedule and each expert read once, 13.78 with copies issued ahead, and a computed limit of 10.02."></svg>
-      <div class="sws" id="foresight">
-        <button type="button" class="sw" role="switch" aria-checked="false"><span>Know what to keep on the GPU</span><i class="sw-k"></i></button>
-        <button type="button" class="sw" role="switch" aria-checked="false"><span>Never read the same part twice</span><i class="sw-k"></i></button>
-        <button type="button" class="sw" role="switch" aria-checked="false" disabled><span>Start each copy before it's needed<em> (needs both above)</em></span><i class="sw-k"></i></button>
-      </div>
-      <figcaption>Flip them yourself. gpt-oss-120b with 11% of experts on the GPU, on one RTX 5090 machine. The limit is relative to my own bandwidth probe.</figcaption>
-    </figure>
-  </div>
   <div class="beat lane">
-    <p class="say">Across 47 RTX 5090 desktops, my default cache reached 42% of an empirical floor's speed. Knowing the future and copying ahead reached 58%.</p>
-    <p class="note">With 11% of experts on the GPU. The oracle ran on 32 of them. The ruler is one machine, from an earlier analysis of the same experiments.</p>
+    <p class="say">How far from the limit? My default cache reached 42% of an empirical floor's speed. Knowing the future and copying ahead reached 58%.</p>
+    <p class="note">With 11% of experts on the GPU, on RTX 5090 desktops. The floor is empirical, built from each machine's measured read rates.</p>
   </div>
-  <div class="block lane"><p class="slinks"><a href="/work/where-the-seconds-go/">Read the write-up</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light">View the repo</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper2/priced-reads-not-hits.pdf">Paper, not peer reviewed</a></p></div>
+  <div class="block lane"><p class="slinks"><a href="/work/priced-reads-not-hits/">Read the write-up</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper.pdf">Paper, a preprint not peer reviewed</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light">Code and reproduction</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light/tree/gpu">Raw data and pre-registered job scripts</a></p></div>
 </article>
 
 <article class="story" id="jetson" style="--c:var(--i)">
