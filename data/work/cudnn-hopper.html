@@ -1,0 +1,43 @@
+<p>On H100 GPUs, NVIDIA's open-source cuDNN frontend served attention with 128-wide heads, the most common size, through a kernel body built for 512-wide heads with a 64 × 64 tile. I built a dedicated forward kernel for that size, FP16 and BF16, and it merged on [[hop.date|Nov 14, 2026]].</p>
+<p>The speed numbers below are my measurements, reported in the PR. The maintainers validated tests, not timing.</p>
+
+<h2>What I built</h2>
+<p>A 128 × 128 tile. One producer warpgroup issues TMA loads, and two compute warpgroups each run QK, the online softmax and PV on 64 query rows. QK and PV of neighbouring KV tiles overlap inside each warpgroup, with two-stage K/V rings. It covers causal top-left and bottom-right masks, MHA, GQA and MQA, and optional Stats.</p>
+<p>Non-causal work runs a persistent loop, at most one CTA per SM. For causal work the plan picks one of four schedules: one tile per CTA, query tiles taken in pairs of equal KV work, a NATURAL-order stride, or a claim counter that hands work to free CTAs. Every schedule computes the one-tile kernel's output and Stats [[hop.tests|bit for bit]].</p>
+<p>The kernel only takes what it serves. Paged KV, split-KV, sliding windows, sinks and single-row decode keep the earlier path, and below 65 query rows per request the frontend keeps its old plan order.</p>
+
+<h2>What I measured</h2>
+<p>A frozen study on an H100 SXM against cuDNN 9.27: [[hop.vs_cudnn|96 shapes]], [[hop.vs_cudnn|48 causal]] and the same [[hop.vs_cudnn|48 dense]], mostly square, sequence lengths 128 to 12288, CUPTI kernel time, bf16 with Stats, and 4 rounds with independently compiled twins.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>Median of cuDNN's time over the kernel's. Above 1 means faster than cuDNN. [[hop.vs_cudnn]]</caption>
+<thead><tr><th>Path</th><th>Causal</th><th>Dense</th></tr></thead>
+<tbody>
+<tr><td>This kernel</td><td class="num">[[hop.vs_cudnn|1.062×]], [[hop.vs_cudnn|45 of 48]] at or above 1</td><td class="num">[[hop.vs_cudnn|1.054×]], [[hop.vs_cudnn|47 of 48]]</td></tr>
+<tr><td>The earlier path</td><td class="num">0.429×</td><td class="num">0.421×</td></tr>
+</tbody></table></div>
+<p>Against the earlier path, it ran faster on [[hop.vs_prev|96 of 96]] shapes, a median [[hop.vs_prev|2.5×]].</p>
+<p>cuDNN isn't slower everywhere. On a broader grid it is at parity or up to about 10% faster on long-KV shapes with medium query lengths, and the frontend's placement table routes those shapes to it.</p>
+
+<h2>The causal gap</h2>
+<p>My first causal schedule ran at [[hop.reads|0.81-0.99]] of cuDNN's speed on causal MHA. Nsight Compute showed it reading K and V from GPU memory at [[hop.reads|1.26-2.16×]] the read-once floor, where cuDNN read [[hop.reads|1.00×]]. On the same shapes, walking the work in NATURAL order read [[hop.reads|1.00-1.03×]]. Every causal schedule that shipped walks its work in that order.</p>
+
+<h2>How it was tested</h2>
+<ul>
+<li>On the final tree on a GH200: [[hop.tests|702 passed]], 12 skipped and [[hop.tests|0 failed]] in each of [[hop.tests|4 environments]], CUDA 12 and 13 with two CuTe DSL versions.</li>
+<li>The maintainer's final run on an H100, on the merged source: [[hop.tests|746 passed]], 12 skipped for missing runtime goldens, [[hop.tests|0 failed]].</li>
+<li>compute-sanitizer memcheck, racecheck and synccheck on one cell per schedule: [[hop.tests|15 of 15]] runs clean.</li>
+<li>A determinism test checks byte-for-byte replay and batch invariance across all four schedules, against an FP64 reference.</li>
+</ul>
+
+<h2>What it doesn't show</h2>
+<ul>
+<li>H200. It wasn't measured there, though the placement entries key on compute capability, so they also answer H200 graphs.</li>
+<li>Decode-shaped work. Below 65 query rows the frontend keeps its old plan order, and the gain there is a follow-up.</li>
+<li>Backward. This is a forward kernel.</li>
+<li>An independent timing. The maintainers ran the tests, and the speed numbers are mine.</li>
+</ul>
+
+<h2>Links</h2>
+<ul>
+<li><a href="https://github.com/NVIDIA/cudnn-frontend/pull/2575">The PR, with the full measurement tables</a></li>
+<li><a href="https://github.com/NVIDIA/cudnn-frontend/commit/17c35ab4d00fa2dd583d42cccd78e3a9a056c325">The merge commit</a></li>
+</ul>

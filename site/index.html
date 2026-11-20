@@ -248,6 +248,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 
 
 .pairs{display:grid;gap:26px;margin:6px 0 4px}.pairs .pg{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);column-gap:24px;row-gap:8px;align-items:center}.pairs .pl{grid-row:span 2;margin:0;font:14px/1.35 var(--mono);color:var(--mid)}.pairs .pl small{display:block;font-size:12px;color:var(--dim)}.pairs .pb{display:flex;align-items:center;gap:12px;margin:0;font:14px var(--mono);color:var(--mid)}.pairs .pb b{font-weight:400;min-width:4.2ch}.pairs .pt{flex:1;height:18px;display:block}.pairs .pt i{display:block;height:100%;border-radius:2px;background:var(--dim);opacity:.55}.pairs .pb.m{color:var(--ink)}.pairs .pb.m .pt i{background:var(--i);opacity:1}#fig-pairs .lg i.pm{background:var(--i)}#fig-pairs .lg i.ph{background:var(--dim);opacity:.55}@media(max-width:560px){.pairs .pg{grid-template-columns:minmax(0,1fr)}.pairs .pl{grid-row:auto}}
+.pairs .pt i.rng{background:var(--k);opacity:.75}#fig-reads .pairs .pg{grid-template-columns:minmax(0,190px) minmax(0,1fr)}#fig-reads .pairs .pl{grid-row:auto}#fig-reads .pb b{min-width:10ch}#fig-reads .pairs .pb.m .pt i{background:var(--k)}@media(max-width:560px){#fig-reads .pairs .pg{grid-template-columns:minmax(0,1fr)}}
 
 </style>
 <noscript><style>.pin{height:auto!important}.pin .stage{position:relative;min-height:0;height:auto}.intro-says p,.pincap p{opacity:1!important;position:relative!important;transform:none!important;inset:auto!important}.say .w{opacity:1!important}.idx,#field,#fieldTop,figure.fg svg,.hm,.hmax,#gpu-run,.seg,.sws,.rng,.cond{display:none!important}</style></noscript>
@@ -256,7 +257,7 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 <a href="#main" class="skip">Skip to content</a>
 <div class="ground" aria-hidden="true"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,106,77,.24),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,106,77,.11),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,180,84,.19),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,180,84,.09),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(106,168,255,.27),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(106,168,255,.13),transparent 70%)"></div>
 <canvas id="field" aria-hidden="true"></canvas><canvas id="fieldTop" aria-hidden="true"></canvas>
-<aside class="idx" aria-label="Projects on this page"><div class="ig" style="--c:var(--k)"><a class="ih" href="#ch-k">Kernels</a><a class="it" href="#kernels"><b>Stick-breaking kernels</b><span>2 merged PRs</span></a><a class="it" href="#gqa"><b>Grouped-query attention</b><span>Closed PR, merged tests</span></a><a class="it" href="#triton"><b>Triton vs cuBLAS</b><span>Personal project</span></a><a class="it" href="#yourgpu"><b>Try it on your GPU</b><span>Live demo</span></a></div><div class="ig" style="--c:var(--i)"><a class="ih" href="#ch-i">Inference</a><a class="it" href="#seconds"><b>Priced Reads, Not Hits</b><span>Preprint</span></a><a class="it" href="#jetson"><b>Jetson Orin Nano</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--a)"><a class="ih" href="#ch-a">Agents</a><a class="it" href="#bert"><b>bert</b><span>Personal project</span></a><a class="it" href="#lab"><b>Lab audit</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--ink)"><a class="ih" href="#oss">Open source</a></div></aside>
+<aside class="idx" aria-label="Projects on this page"><div class="ig" style="--c:var(--k)"><a class="ih" href="#ch-k">Kernels</a><a class="it" href="#hopper"><b>Hopper attention in NVIDIA cuDNN</b><span>Merged kernel</span></a><a class="it" href="#kernels"><b>Stick-breaking kernels</b><span>2 merged PRs</span></a><a class="it" href="#gqa"><b>Grouped-query attention</b><span>Closed PR, merged tests</span></a><a class="it" href="#triton"><b>Triton vs cuBLAS</b><span>Personal project</span></a><a class="it" href="#yourgpu"><b>Try it on your GPU</b><span>Live demo</span></a></div><div class="ig" style="--c:var(--i)"><a class="ih" href="#ch-i">Inference</a><a class="it" href="#seconds"><b>Priced Reads, Not Hits</b><span>Preprint</span></a><a class="it" href="#jetson"><b>Jetson Orin Nano</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--a)"><a class="ih" href="#ch-a">Agents</a><a class="it" href="#bert"><b>bert</b><span>Personal project</span></a><a class="it" href="#lab"><b>Lab audit</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--ink)"><a class="ih" href="#oss">Open source</a></div></aside>
 <div class="pbar" aria-hidden="true"></div>
 
 <nav>
@@ -277,16 +278,16 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
 </header>
 
 <section class="glance" id="glance" aria-label="The short version"><div class="lane">
-  <div class="gr" style="--c:var(--k)"><div class="grn">3 merged</div><div><h2><a href="#ch-k">GPU kernels</a></h2><p>The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, an open-source AI library. Tests merged in NVIDIA's cuDNN frontend, after a maintainer reproduced a bug they catch. On a long text (64K keys), one kernel step on an H200 GPU ran 52.7× faster than recomputing, a gain any cache gets.</p></div><div class="gracts"><a class="go" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-k">See the work</a></div></div>
+  <div class="gr" style="--c:var(--k)"><div class="grn">4 merged</div><div><h2><a href="#ch-k">GPU kernels</a></h2><p>The low-level code that does an AI model's math. An attention kernel for H100 GPUs, merged in NVIDIA's cuDNN frontend, ran a median 1.062× as fast as cuDNN's own kernel on 48 causal shapes in my tests. Kernels merged in flash-linear-attention, and tests merged in cuDNN after a maintainer reproduced a bug they catch.</p></div><div class="gracts"><a class="go" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-k">See the work</a></div></div>
   <div class="gr" style="--c:var(--i)"><div class="grn">94.9%</div><div><h2><a href="#ch-i">LLM inference</a></h2><p>Running AI models fast, even when they don't fit on the GPU. Caches for this are tuned for hit rate. In a preprint, I showed hit rate can pick the slower design. Pricing each read by its path ordered 94.9% and 94.4% of design pairs right on new machines, against 76.4% and 57.5% for hit rate.</p></div><div class="gracts"><a class="go" href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-i">See the work</a></div></div>
   <div class="gr" style="--c:var(--a)"><div class="grn">31 roles</div><div><h2><a href="#ch-a">Agent systems</a></h2><p>AI that acts on its own, and whether you can trust it. In my research lab of 31 Claude Code agent roles, one agent forged 5 approvals, so I built a check, audited it and rebuilt it. Also bert, searchable memory for coding agents.</p></div><div class="gracts"><a class="go" href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-a">See the work</a></div></div>
 </div></section>
 
 <section class="oss" id="oss" aria-labelledby="oss-h">
   <h2 id="oss-h">Open-source contributions</h2>
-  <p class="osum">3 merged, 1 open, 2 closed, across 4 projects.</p>
+  <p class="osum">4 merged, 1 open, 2 closed, across 4 projects.</p>
   <div class="ogroup"><h3 class="oname">flash-linear-attention</h3><div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/fla-org/flash-linear-attention/pull/1412">#1412</a><p>KV-cache decoding for stick-breaking attention, so a model reuses what it has already read. <a href="#kernels">The kernel story</a></p><span class="odate">Oct 27, 2026</span></div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/fla-org/flash-linear-attention/pull/1319">#1319</a><p>Forward and backward kernels for stick-breaking attention. <a href="#kernels">The kernel story</a></p><span class="odate">Oct 8, 2026</span></div></div></div>
-  <div class="ogroup"><h3 class="oname">NVIDIA cuDNN frontend</h3><div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a><p>Tests for grouped-query attention that catch 3 injected bugs NVIDIA's SM80 tests missed. <a href="#gqa">The cuDNN story</a></p><span class="odate">Oct 6, 2026</span></div><div class="orow"><span class="ostate"><i class="st closed"></i>Closed</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a><p>A prototype that removed slow data copies. Approved, then closed after NVIDIA shipped its own version. <a href="#gqa">The cuDNN story</a></p><span class="odate">Sep 27, 2026</span></div></div></div>
+  <div class="ogroup"><h3 class="oname">NVIDIA cuDNN frontend</h3><div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/2575">#2575</a><p>An attention kernel for H100 GPUs at the most common head size. A median 1.062× as fast as cuDNN's own kernel on 48 causal shapes, in my measurements. <a href="#hopper">The kernel story</a></p><span class="odate">Nov 14, 2026</span></div><div class="orow"><span class="ostate"><i class="st ok"></i>Merged</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1287">#1287</a><p>Tests for grouped-query attention that catch 3 injected bugs NVIDIA's SM80 tests missed. <a href="#gqa">The cuDNN story</a></p><span class="odate">Oct 6, 2026</span></div><div class="orow"><span class="ostate"><i class="st closed"></i>Closed</span><a class="opr" href="https://github.com/NVIDIA/cudnn-frontend/pull/1223">#1223</a><p>A prototype that removed slow data copies. Approved, then closed after NVIDIA shipped its own version. <a href="#gqa">The cuDNN story</a></p><span class="odate">Sep 27, 2026</span></div></div></div>
   <div class="ogroup"><h3 class="oname">NVIDIA TransformerEngine</h3><div><div class="orow"><span class="ostate"><i class="st open"></i>Open</span><a class="opr" href="https://github.com/NVIDIA/TransformerEngine/pull/3591">#3591</a><p>A CUDA kernel that unpacks compressed model weights, in the grouped NVFP4 format, on the GPU. Its output matches the per-tensor results bitwise.</p><span class="odate"></span></div></div></div>
   <div class="ogroup"><h3 class="oname">vLLM</h3><div><div class="orow"><span class="ostate"><i class="st closed"></i>Closed</span><a class="opr" href="https://github.com/vllm-project/vllm/pull/38338">#38338</a><p>A Triton kernel for matrix multiplies on compressed weights. I closed it after the issue it answered, #21014, was closed as not planned.</p><span class="odate">Oct 7, 2026</span></div></div></div>
   <p class="omore"><a href="/work/#open-source">Details and measurements for each one</a></p>
@@ -308,6 +309,39 @@ footer{padding:clamp(70px,14vh,150px) 0 48px}footer .lane{grid-template-columns:
   <h2 class="ptitle" data-rgb="255,106,77">Kernels</h2>
   <p class="pline">The small programs a GPU runs to do the math behind every word.</p>
 </div></section>
+
+<article class="story" id="hopper" style="--c:var(--k)">
+  <header class="shead"><h3 class="sname">Hopper attention in NVIDIA cuDNN</h3><span class="skind">Merged kernel</span></header>
+  <div class="sid"><p class="swhat">A new attention kernel for H100 GPUs, merged into the open-source frontend of cuDNN, NVIDIA's GPU library for AI.</p><p class="sres">Result: a median 1.062× as fast as cuDNN's own kernel on 48 causal shapes and 1.054× on 48 dense ones, in my measurements on an H100. <a href="/work/cudnn-hopper/">Technical detail</a></p><p class="smeta"><span><i class="st ok"></i>Merged Nov 14, 2026</span><a href="https://github.com/NVIDIA/cudnn-frontend/pull/2575">#2575</a></p></div>
+  <div class="beat lane"><p class="say">Attention is the step where each word looks back at the words before it.</p></div>
+  <div class="beat lane">
+    <p class="say">On H100 GPUs, cuDNN's open-source frontend ran the most common head size through a kernel built for bigger heads.</p>
+    <p class="note">Heads of 128 went through a body built for 512-wide heads, with a 64 × 64 tile.</p>
+  </div>
+  <div class="beat lane">
+    <p class="say">So I built one for that size. One group of threads loads the data while two others do the math.</p>
+    <p class="note">A 128 × 128 tile. One producer warpgroup issues TMA loads, and two compute warpgroups each run QK, the online softmax and PV on 64 query rows.</p>
+  </div>
+  <div class="beat lane numb">
+    <div class="num has-c" data-c="hop.vs_cudnn" role="button" tabindex="0">1.062×</div>
+    <p class="numm">as fast as cuDNN's own kernel, median over 48 causal shapes on an H100. <span class="nb">1.054×</span> on the same 48 without the causal mask.</p>
+    <button type="button" class="cond" data-c="hop.vs_cudnn">Conditions and source</button>
+    <p class="note">My measurements, reported in the PR. Faster than the frontend's earlier path on 96 of 96 shapes, a median 2.5×. cuDNN stays faster on some long-KV shapes, and the frontend routes those to it.</p>
+  </div>
+  <div class="beat lane"><p class="say">The first version was slower than cuDNN on causal shapes. Nsight Compute showed why: it read the same data from GPU memory more than once.</p></div>
+  <div class="block lane">
+    <figure class="fg" id="fig-reads"><div class="pairs" role="img" aria-label="K and V bytes read from GPU memory, relative to reading each once. cuDNN 1.00. The first causal schedule 1.26 to 2.16. The NATURAL-order schedule that shipped 1.00 to 1.03.">
+      <div class="pg"><p class="pl">cuDNN</p><p class="pb"><span class="pt"><i style="width:46.3%"></i></span><b>1.00×</b></p></div>
+      <div class="pg"><p class="pl">My first schedule</p><p class="pb"><span class="pt"><i class="rng" style="margin-left:58.3%;width:41.7%"></i></span><b>1.26-2.16×</b></p></div>
+      <div class="pg"><p class="pl">The order that shipped</p><p class="pb m"><span class="pt"><i style="width:47.7%"></i></span><b>1.00-1.03×</b></p></div>
+    </div><figcaption>K and V bytes read from GPU memory, as a multiple of reading each once, on causal shapes on an H100. Bars run to the top of each range.</figcaption></figure>
+  </div>
+  <div class="beat lane">
+    <p class="say">Walking the work in a different order fixed it. Every schedule that shipped gives bit-for-bit the same output.</p>
+    <p class="note">702 passed and 0 failed in each of 4 environments on a GH200. The maintainer's final run on an H100: 746 passed, 0 failed.</p>
+  </div>
+  <div class="block lane"><p class="slinks"><a href="/work/cudnn-hopper/">Read the write-up</a><a href="https://github.com/NVIDIA/cudnn-frontend/pull/2575">View the PR</a></p></div>
+</article>
 
 <article class="story" id="kernels" style="--c:var(--k)">
   <header class="shead"><h3 class="sname">Stick-breaking attention kernels</h3><span class="skind">2 merged PRs</span></header>

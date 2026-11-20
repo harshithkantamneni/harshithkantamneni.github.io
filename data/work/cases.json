@@ -1,4 +1,25 @@
 {
+ "cudnn-hopper": {
+  "lane": "k",
+  "title": "Hopper attention in NVIDIA cuDNN",
+  "lead": "A new attention kernel for H100 GPUs and 128-wide heads, merged in NVIDIA's cuDNN frontend. How it runs against cuDNN, and the read-order fix behind the causal case.",
+  "keys": [
+   {
+    "v": "[[hop.vs_cudnn|1.062×]]",
+    "l": "as fast as cuDNN's own kernel, median of 48 causal shapes on an H100"
+   },
+   {
+    "v": "[[hop.vs_prev|96 of 96]]",
+    "l": "shapes faster than the frontend's earlier path"
+   },
+   {
+    "v": "[[hop.reads|1.00-1.03×]]",
+    "l": "K/V reads against the read-once floor, after the fix"
+   }
+  ],
+  "state": "Merged Nov 14, 2026. The speed numbers are my measurements",
+  "next": "stick-breaking-kernels"
+ },
  "stick-breaking-kernels": {
   "lane": "k",
   "title": "Stick-breaking attention kernels",
