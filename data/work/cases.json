@@ -43,23 +43,23 @@
  },
  "where-the-seconds-go": {
   "lane": "i",
-  "title": "Where the Seconds Go",
-  "lead": "A llama.cpp expert cache for batch-1 MoE decode when the model doesn't fit on the GPU, and a computed limit to read it against.",
+  "title": "Priced Reads, Not Hits",
+  "lead": "Hit rate can rank MoE expert caches in the wrong order. Counting reads from system memory, each priced by the path it takes, ranks them right, in two pre-registered tests on new machines.",
   "keys": [
    {
-    "v": "[[wsg.grid|2.0-4.0×]]",
-    "l": "stock llama.cpp, a weak baseline"
+    "v": "[[prn.pairs|94.9%]]",
+    "l": "of design pairs ordered right in the first test, against 76.4% for hit rate"
    },
    {
-    "v": "[[sec.vs_ft|11 of 12]]",
-    "l": "configurations faster than FreeToken"
+    "v": "[[prn.upstream|1.77×]]",
+    "l": "as fast as llama.cpp's own merged expert cache, on 3 machines"
    },
    {
-    "v": "[[wsg.gap|43-52%]]",
-    "l": "of the gap stayed after all three oracles"
+    "v": "[[prn.method|55 of 55]]",
+    "l": "jobs with their predictions public before the machines ran"
    }
   ],
-  "state": "Public manuscript and code, not peer reviewed",
+  "state": "Preprint and code, not peer reviewed",
   "next": "stick-breaking-kernels"
  },
  "lab-verification": {

@@ -1,5 +1,5 @@
 {
- "as_of": "2026-11-03",
+ "as_of": "2026-11-20",
  "site_commit": "a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d",
  "claims": [
   {
@@ -1310,92 +1310,6 @@
     }
    ],
    "checked": "Read the bytes model"
-  },
-  {
-   "id": "sec.speed",
-   "page": "home",
-   "shows": [
-    "58-153 tokens/s",
-    "11-40%"
-   ],
-   "means": "gpt-oss-120b decode speed",
-   "value": {
-    "range": [
-     57.9,
-     152.5
-    ],
-    "unit": "tok/s",
-    "experts_on_gpu": [
-     0.11,
-     0.4
-    ]
-   },
-   "conditions": "RTX 5090, mean speed, 30 problems, 256 tokens, batch 1. 153 is the faster-memory host. Stock clock is 58-134",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/tab_grid.tex#L20",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/tab_grid.tex",
-     "line": 20
-    }
-   ],
-   "checked": "Recomputed from the paper table"
-  },
-  {
-   "id": "sec.limit",
-   "page": "home",
-   "shows": [
-    "25 consumer machines",
-    "31-54%"
-   ],
-   "means": "Cache speed as a share of the machine limit",
-   "value": {
-    "range": [
-     31,
-     54
-    ],
-    "median": 47,
-    "machines": 25
-   },
-   "conditions": "gpt-oss C=14. Limit from Belady's MIN and probed read rates, so relative to the probe, not physical. Consumer scope set after the data. 3 server machines reach 12-46%. The machine list drops 5 unstable rentals, all server processors, so the drop doesn't touch the consumer range",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/wsg_decomp.tex#L46",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/wsg_decomp.tex",
-     "line": 46
-    }
-   ],
-   "checked": "Matched paper macro and recheck output"
-  },
-  {
-   "id": "sec.vs_ft",
-   "page": "home",
-   "shows": [
-    "11 of 12"
-   ],
-   "means": "Configurations faster than FreeToken",
-   "value": {
-    "n": 11,
-    "of": 12,
-    "range": [
-     0.97,
-     1.29
-    ]
-   },
-   "conditions": "2 RTX 5090 hosts, 6 cells each, 30 problems per cell. The one slower cell is Qwen3 43.75% on host S at 0.97x",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/tab_grid.tex#L31",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/tab_grid.tex",
-     "line": 31
-    }
-   ],
-   "checked": "Recomputed from the paper table"
   },
   {
    "id": "lab.memory",
@@ -3767,429 +3681,6 @@
    "checked": "Read every row from the PR copy"
   },
   {
-   "id": "wsg.grid",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "2.0-4.0×",
-    "all 12",
-    "12 cells",
-    "11 of 12 cells",
-    "95% CI",
-    "2 RTX 5090 hosts",
-    "30 AIME-25 problems",
-    "256 greedy tokens",
-    "Ryzen 9 9950X3D",
-    "Ryzen 9 9950X",
-    "17001 MHz",
-    "14001 MHz",
-    "0.97 [0.96, 0.99]",
-    "1.03 [1.02, 1.04]",
-    "1.05 [1.04, 1.06]",
-    "1.09 [1.08, 1.11]",
-    "1.15 [1.13, 1.17]",
-    "1.20 [1.16, 1.22]",
-    "1.21 [1.19, 1.22]",
-    "1.27 [1.25, 1.29]",
-    "1.29 [1.28, 1.31]",
-    "103.1",
-    "108.2",
-    "109.2",
-    "11%",
-    "12.5%",
-    "122.2",
-    "132.2",
-    "133.6",
-    "152.5",
-    "16.1",
-    "18.5",
-    "19.5",
-    "2.00",
-    "2.05",
-    "2.08",
-    "2.73",
-    "2.80",
-    "2.86",
-    "2.91",
-    "22.1",
-    "23.8",
-    "25%",
-    "28.4",
-    "28.9",
-    "3.20",
-    "3.34",
-    "3.81",
-    "32.7",
-    "33.5",
-    "33.6",
-    "34.9",
-    "38.7",
-    "4.02",
-    "40%",
-    "40.0",
-    "40.1",
-    "43.75%",
-    "47.7",
-    "48.0",
-    "51.4",
-    "53.9",
-    "54.0",
-    "54.7",
-    "57.9",
-    "63.1",
-    "69.9",
-    "78.7",
-    "85.6",
-    "94.1",
-    "95.8",
-    "98.3"
-   ],
-   "means": "Decode speed and ratios in the 12-cell RTX 5090 grid",
-   "value": {
-    "cells": 12,
-    "over_stock": [
-     2.0,
-     4.02
-    ],
-    "over_freetoken": [
-     0.97,
-     1.29
-    ],
-    "rows": [
-     {
-      "host": "B",
-      "model": "gpt-oss-120b",
-      "budget": "11%",
-      "stock": "34.9",
-      "ft": "54.0",
-      "ours": "69.9",
-      "over_ft": "1.29 [1.28, 1.31]",
-      "over_stock": "2.00"
-     },
-     {
-      "host": "B",
-      "model": "gpt-oss-120b",
-      "budget": "25%",
-      "stock": "40.0",
-      "ft": "85.6",
-      "ours": "109.2",
-      "over_ft": "1.27 [1.25, 1.29]",
-      "over_stock": "2.73"
-     },
-     {
-      "host": "B",
-      "model": "gpt-oss-120b",
-      "budget": "40%",
-      "stock": "47.7",
-      "ft": "132.2",
-      "ours": "152.5",
-      "over_ft": "1.15 [1.13, 1.17]",
-      "over_stock": "3.20"
-     },
-     {
-      "host": "B",
-      "model": "Qwen3-30B-A3B",
-      "budget": "12.5%",
-      "stock": "19.5",
-      "ft": "38.7",
-      "ours": "40.0",
-      "over_ft": "1.03 [1.02, 1.04]",
-      "over_stock": "2.05"
-     },
-     {
-      "host": "B",
-      "model": "Qwen3-30B-A3B",
-      "budget": "25%",
-      "stock": "22.1",
-      "ft": "54.7",
-      "ours": "63.1",
-      "over_ft": "1.15 [1.13, 1.17]",
-      "over_stock": "2.86"
-     },
-     {
-      "host": "B",
-      "model": "Qwen3-30B-A3B",
-      "budget": "43.75%",
-      "stock": "28.4",
-      "ft": "103.1",
-      "ours": "108.2",
-      "over_ft": "1.05 [1.04, 1.06]",
-      "over_stock": "3.81"
-     },
-     {
-      "host": "S",
-      "model": "gpt-oss-120b",
-      "budget": "11%",
-      "stock": "28.9",
-      "ft": "48.0",
-      "ours": "57.9",
-      "over_ft": "1.21 [1.19, 1.22]",
-      "over_stock": "2.00"
-     },
-     {
-      "host": "S",
-      "model": "gpt-oss-120b",
-      "budget": "25%",
-      "stock": "33.6",
-      "ft": "78.7",
-      "ours": "94.1",
-      "over_ft": "1.20 [1.16, 1.22]",
-      "over_stock": "2.80"
-     },
-     {
-      "host": "S",
-      "model": "gpt-oss-120b",
-      "budget": "40%",
-      "stock": "40.1",
-      "ft": "122.2",
-      "ours": "133.6",
-      "over_ft": "1.09 [1.08, 1.11]",
-      "over_stock": "3.34"
-     },
-     {
-      "host": "S",
-      "model": "Qwen3-30B-A3B",
-      "budget": "12.5%",
-      "stock": "16.1",
-      "ft": "32.7",
-      "ours": "33.5",
-      "over_ft": "1.03 [1.02, 1.04]",
-      "over_stock": "2.08"
-     },
-     {
-      "host": "S",
-      "model": "Qwen3-30B-A3B",
-      "budget": "25%",
-      "stock": "18.5",
-      "ft": "51.4",
-      "ours": "53.9",
-      "over_ft": "1.05 [1.04, 1.06]",
-      "over_stock": "2.91"
-     },
-     {
-      "host": "S",
-      "model": "Qwen3-30B-A3B",
-      "budget": "43.75%",
-      "stock": "23.8",
-      "ft": "98.3",
-      "ours": "95.8",
-      "over_ft": "0.97 [0.96, 0.99]",
-      "over_stock": "4.02"
-     }
-    ]
-   },
-   "conditions": "Two RTX 5090 hosts, 2 models, 3 budgets each. Host B has a 9950X3D, card memory at 17001 MHz, a best probed host read of 88 GB/s and a 575 W limit. Host S has a 9950X, stock clock, card memory at 14001 MHz, 71 GB/s and a 400 W limit. Rented hosts, batch-1 decode, equal GPU expert memory, 30 AIME-25 problems, first 256 greedy tokens, each system decodes its own text. Ratios are of mean speeds, intervals are 95% paired bootstrap over problems. FreeToken uses its faster backend per budget, picked on host B. Host B rows come from 3 rentals of one machine. The Qwen3 25% row on host B is the selection launch only",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/tab_grid.tex#L18",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/tab_grid.tex",
-     "line": 18
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/prereg/stockclock_089.json#L49",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "prereg/stockclock_089.json",
-     "line": 49
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/tab_headline.tex#L8",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/tab_headline.tex",
-     "line": 8
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/tab_headline.tex#L16",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/tab_headline.tex",
-     "line": 16
-    }
-   ],
-   "checked": "Parsed every cell from the paper table and recomputed all 12 rows of speeds and ratios from prereg/stockclock_089.json"
-  },
-  {
-   "id": "wsg.headline",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "1.29×",
-    "1.21×"
-   ],
-   "means": "Largest ratio over FreeToken, and the same cell at stock clock",
-   "value": {
-    "host_b": 1.29,
-    "host_b_ci": [
-     1.28,
-     1.31
-    ],
-    "host_s": 1.21,
-    "host_s_ci": [
-     1.19,
-     1.22
-    ]
-   },
-   "conditions": "gpt-oss-120b at 11% of experts on the GPU. 1.29x is host B, the faster-memory host. 1.21x is host S, stock clock. Both 30 problems, 95% paired bootstrap",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/tab_headline.tex#L9",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/tab_headline.tex",
-     "line": 9
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/tab_headline.tex#L17",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/tab_headline.tex",
-     "line": 17
-    }
-   ],
-   "checked": "Matched the paper table and the grid recomputation"
-  },
-  {
-   "id": "wsg.slower",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "0.97×"
-   ],
-   "means": "The one cell where FreeToken was faster than the cache",
-   "value": {
-    "value": 0.97,
-    "ci": [
-     0.96,
-     0.99
-    ]
-   },
-   "conditions": "Qwen3-30B-A3B at 43.75% of experts on the GPU, host S, 30 problems. The interval is entirely below 1. Cause not separated",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/tab_grid.tex#L31",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/tab_grid.tex",
-     "line": 31
-    }
-   ],
-   "checked": "Recomputed from prereg/stockclock_089.json"
-  },
-  {
-   "id": "wsg.band",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "5 of 6",
-    "±0.06"
-   ],
-   "means": "Host S ratios outside the band registered against host B",
-   "value": {
-    "outside": 5,
-    "of": 6,
-    "band": 0.06,
-    "differences": [
-     -0.088,
-     -0.078,
-     -0.061,
-     -0.006,
-     -0.105,
-     -0.075
-    ]
-   },
-   "conditions": "Ratio over FreeToken on host S minus host B, registered before the rental. Every cell was below host B. gpt-oss 40% missed by 0.001",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/prereg/stockclock_outcome_089.md#L43",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "prereg/stockclock_outcome_089.md",
-     "line": 43
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/wsg_numbers2.tex#L416",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/wsg_numbers2.tex",
-     "line": 416
-    }
-   ],
-   "checked": "Recomputed from prereg/stockclock_089.json"
-  },
-  {
-   "id": "wsg.lru",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "6-21%",
-    "4 of 6"
-   ],
-   "means": "LRU in place of the decayed-frequency rule",
-   "value": {
-    "slower_pct": [
-     6,
-     21
-    ],
-    "cells_slower_than_freetoken": 4,
-    "of": 6,
-    "policy_share_gpt_25_40_pct": [
-     77,
-     84
-    ]
-   },
-   "conditions": "Host S, all else as in the full system, 6 cells. At the other 2 cells LRU was faster than FreeToken at gpt-oss 25% and its interval includes 1 at gpt-oss 40%. The rule accounts for 77-84% of the difference from FreeToken at gpt-oss 25 and 40%, and more than all of it at gpt-oss 11% and Qwen3 12.5 and 25%",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/wsg_numbers2.tex#L379",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/wsg_numbers2.tex",
-     "line": 379
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/app_wsg.tex#L88",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/app_wsg.tex",
-     "line": 88
-    }
-   ],
-   "checked": "Recomputed from prereg/stockclock_089.json"
-  },
-  {
-   "id": "wsg.ft_tuned",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "0.98-1.17×"
-   ],
-   "means": "Cache over FreeToken at its best setting, and how far tuning moved FreeToken",
-   "value": {
-    "range": [
-     0.98,
-     1.17
-    ],
-    "moved_pct": 4,
-    "settings": 5,
-    "cells": 6
-   },
-   "conditions": "One RTX 5090 with a Ryzen 9 9950X at 14001 MHz, one launch, 5 FreeToken settings per cell, 6 cells, shuffled order. Tuning moved FreeToken at most 4%. Still slower at Qwen3 43.75%. This rental is not host S",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/prereg/freetoken_outcome_098.md#L21",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "prereg/freetoken_outcome_098.md",
-     "line": 21
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/wsg_ft.tex#L8",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/wsg_ft.tex",
-     "line": 8
-    }
-   ],
-   "checked": "Recomputed from prereg/freetoken_tuned_098.json"
-  },
-  {
    "id": "wsg.size",
    "page": "work/where-the-seconds-go",
    "shows": [
@@ -4273,422 +3764,6 @@
    "checked": "Parsed the row from the paper table"
   },
   {
-   "id": "wsg.gap",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "0 [-11, 12]",
-    "0 [-2, 1]",
-    "0 [-2, 2]",
-    "0 [-2, 3]",
-    "1 [-3, 4]",
-    "15 [11, 19]",
-    "18 [10, 25]",
-    "18 [14, 23]",
-    "18 [15, 20]",
-    "19 [13, 25]",
-    "19 [14, 24]",
-    "21 [20, 23]",
-    "25 [18, 31]",
-    "27 [25, 30]",
-    "28 [20, 36]",
-    "3 [-1, 8]",
-    "3 [-5, 12]",
-    "33 [21, 44]",
-    "35 [22, 48]",
-    "36 [13, 58]",
-    "4 [-6, 13]",
-    "43 [31, 56]",
-    "46 [38, 55]",
-    "52 [43, 62]",
-    "8 [2, 14]",
-    "15 machines",
-    "5 machines",
-    "19%",
-    "43-52%",
-    "42-48%",
-    "95% interval"
-   ],
-   "means": "The deployed cache's gap to the limit, split by oracles in the engine",
-   "value": {
-    "rows_at_11pct": {
-     "set": [
-      "19 [13, 25]",
-      "0 [-2, 3]",
-      "3 [-1, 8]"
-     ],
-     "read": [
-      "8 [2, 14]",
-      "0 [-2, 2]",
-      "0 [-2, 1]"
-     ],
-     "both": [
-      "36 [13, 58]",
-      "33 [21, 44]",
-      "35 [22, 48]"
-     ],
-     "ahead": [
-      "18 [10, 25]",
-      "15 [11, 19]",
-      "19 [14, 24]"
-     ],
-     "left": [
-      "43 [31, 56]",
-      "52 [43, 62]",
-      "46 [38, 55]"
-     ],
-     "fetch": [
-      "3 [-5, 12]",
-      "--",
-      "--"
-     ],
-     "tgpu": [
-      "25 [18, 31]",
-      "27 [25, 30]",
-      "28 [20, 36]"
-     ],
-     "extra": [
-      "18 [14, 23]",
-      "21 [20, 23]",
-      "18 [15, 20]"
-     ],
-     "resid": [
-      "0 [-11, 12]",
-      "4 [-6, 13]",
-      "1 [-3, 4]"
-     ]
-    },
-    "left_at_25pct": [
-     "42 [29, 55]",
-     "48 [41, 55]",
-     "48 [44, 53]"
-    ]
-   },
-   "conditions": "gpt-oss-120b at 11% of experts on the GPU. Mean share of the gap in percent, 95% t-interval over machines. Panel: 15 machines, exploratory. New: 5 machines rented for a registered test. Copy table off: 5 machines of two registered tests. With the table on, the first row measures MIN's schedule with the table, not its set held. The last three rows are attributed, not measured. Left at 25% is 42-48%",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/tab_dm.tex#L13",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/tab_dm.tex",
-     "line": 13
-    }
-   ],
-   "checked": "Parsed every cell from the paper table"
-  },
-  {
-   "id": "wsg.online",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "at most 6%",
-    "5 fast-link machines"
-   ],
-   "means": "Share of the read-ahead oracle's gain recovered without foresight",
-   "value": {
-    "cap_pct": 6,
-    "machines": 5
-   },
-   "conditions": "gpt-oss-120b at 11%. Four variants built from the engine's admission margin and layer-ahead prediction. Registered. The registered capture bound, at most 35%, was loose",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/wsg_job109.tex#L101",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/wsg_job109.tex",
-     "line": 101
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/app_prereg.tex#L163",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/app_prereg.tex",
-     "line": 163
-    }
-   ],
-   "checked": "Matched paper macro and text"
-  },
-  {
-   "id": "wsg.batch",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "batch 1",
-    "79-83%",
-    "2-4 sequences",
-    "77-79%"
-   ],
-   "means": "Prefill and multi-sequence decode against stock llama.cpp",
-   "value": {
-    "prefill_pct": [
-     79,
-     83
-    ],
-    "sequences_pct": [
-     77,
-     79
-    ]
-   },
-   "conditions": "llama-batched-bench, host S, 25% of experts on the GPU, both models, prefill at 512 and 2,048 tokens, decode at 2 and 4 parallel sequences, tg 128. One run per configuration, so no intervals. The cache only serves single-token steps",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/wsg_numbers2.tex#L46",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/wsg_numbers2.tex",
-     "line": 46
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/runtime/llama.cpp-expert-cache-4da6337.patch#L1037",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "runtime/llama.cpp-expert-cache-4da6337.patch",
-     "line": 1037
-    }
-   ],
-   "checked": "Recomputed from prereg/stockclock_089.json and read the patch"
-  },
-  {
-   "id": "wsg.abort",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "default of 2 s"
-   ],
-   "means": "GPU wait on the CPU helpers before the process aborts",
-   "value": {
-    "value": 2000,
-    "unit": "ms"
-   },
-   "conditions": "LLAMA_EC_TIMEOUT_MS, default 2000, converted to GPU clock cycles assuming at most 2 GHz, so a higher clock reaches it sooner. Read from the patch, not measured",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/runtime/llama.cpp-expert-cache-4da6337.patch#L1510",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "runtime/llama.cpp-expert-cache-4da6337.patch",
-     "line": 1510
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/runtime/llama.cpp-expert-cache-4da6337.patch#L2345",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "runtime/llama.cpp-expert-cache-4da6337.patch",
-     "line": 2345
-    }
-   ],
-   "checked": "Read the patch"
-  },
-  {
-   "id": "wsg.under",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "302 timed runs",
-    "1.33×"
-   ],
-   "means": "Timed runs below the limit, and the closest",
-   "value": {
-    "runs": 302,
-    "below": 0,
-    "closest_over_limit": 1.33,
-    "launches": 25
-   },
-   "conditions": "gpt-oss-120b at 11% and 25%, 25 launches. The closest is the read-ahead oracle. This is consistent with the limit, not a proof of it",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/wsg_dm.tex#L88",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/wsg_dm.tex",
-     "line": 88
-    }
-   ],
-   "checked": "Matched paper macro"
-  },
-  {
-   "id": "wsg.implied",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "more than 5%",
-    "12 of 84"
-   ],
-   "means": "Launch-budgets where the engine's implied read rate tops the probe",
-   "value": {
-    "n": 12,
-    "of": 84,
-    "threshold_pct": 5,
-    "max_over_probe": 1.22
-   },
-   "conditions": "From the closed-form account of the time, not from counters. Up to 1.22x the probe",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/wsg_robust.tex#L4",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/wsg_robust.tex",
-     "line": 4
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/main_body.tex#L31",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/main_body.tex",
-     "line": 31
-    }
-   ],
-   "checked": "Matched paper macro and claims table"
-  },
-  {
-   "id": "wsg.shares",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "median 47%",
-    "23-36%",
-    "3 server machines",
-    "12-46%"
-   ],
-   "means": "Cache speed as a share of the limit, beside the headline range",
-   "value": {
-    "median_low": 47,
-    "consumer_25pct": [
-     23,
-     36
-    ],
-    "server_low": [
-     12,
-     46
-    ],
-    "server_machines": 3
-   },
-   "conditions": "Median and server range are gpt-oss-120b at 11%. 23-36% is the 25 consumer machines at gpt-oss 25%. Limit from Belady's MIN and probed read rates. The 31% low end is one Threadripper with a 178 GB/s probe. Consumer means Ryzen, Core and Threadripper, server means EPYC, Xeon and engineering samples",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/wsg_decomp.tex#L47",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/wsg_decomp.tex",
-     "line": 47
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/wsg_decomp.tex#L51",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/wsg_decomp.tex",
-     "line": 51
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/paper/main_body.tex#L41",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "paper/main_body.tex",
-     "line": 41
-    }
-   ],
-   "checked": "Matched paper macros and recheck output"
-  },
-  {
-   "id": "wsg.excluded",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "5 unstable rentals"
-   ],
-   "means": "Rentals the machine list drops",
-   "value": {
-    "n": 5,
-    "tags": [
-     "106c",
-     "106d",
-     "107c",
-     "107e",
-     "108b"
-    ],
-    "cpus": [
-     "EPYC 7302",
-     "Xeon Platinum 8347C",
-     "EPYC 9754",
-     "EPYC 7663",
-     "EPYC 7K62"
-    ]
-   },
-   "conditions": "Wrong outputs, or rounds more than 2% apart. All 5 have server processors, so the drop can only touch the server range, not the consumer one",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/scripts/fig_decomp.py#L26",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "scripts/fig_decomp.py",
-     "line": 26
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/prereg/onlineadmit_outcome_106.md#L13",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "prereg/onlineadmit_outcome_106.md",
-     "line": 13
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/prereg/onlineadmit_outcome_106.md#L14",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "prereg/onlineadmit_outcome_106.md",
-     "line": 14
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/prereg/newhosts_outcome_107.md#L19",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "prereg/newhosts_outcome_107.md",
-     "line": 19
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/prereg/newhosts_outcome_107.md#L21",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "prereg/newhosts_outcome_107.md",
-     "line": 21
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/prereg/smallhosts_outcome_108.md#L17",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "prereg/smallhosts_outcome_108.md",
-     "line": 17
-    }
-   ],
-   "checked": "Read the exclusion list and looked up each rental in its job outcome note"
-  },
-  {
-   "id": "wsg.scorecard",
-   "page": "work/where-the-seconds-go",
-   "shows": [
-    "142 of 553"
-   ],
-   "means": "Scored prediction clauses that failed",
-   "value": {
-    "failed": 142,
-    "scored": 553,
-    "clauses": 565,
-    "held": 218,
-    "held_on_point": 193,
-    "untested": 8,
-    "void": 4
-   },
-   "conditions": "Jobs 073-115. Clauses, not whole predictions. 12 more were untested or void. A clause fails when its point estimate is on the wrong side. Some registered thresholds were loose, and the paper marks them",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/prereg/scorecard.json#L12",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "prereg/scorecard.json",
-     "line": 12
-    },
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/2066feabfdc468fdd49f26f12cda1b953ce8f4fe/prereg/scorecard.json#L17",
-     "commit": "2066feabfdc468fdd49f26f12cda1b953ce8f4fe",
-     "path": "prereg/scorecard.json",
-     "line": 17
-    }
-   ],
-   "checked": "Recounted statuses in prereg/scorecard.json"
-  },
-  {
    "id": "labv.rebuilt",
    "page": "home",
    "shows": [
@@ -4734,6 +3809,500 @@
      "checked": "2026-11-04"
     }
    ]
+  },
+  {
+   "id": "prn.pairs",
+   "page": "home",
+   "shows": [
+    "94.9%",
+    "94.4%",
+    "76.4%",
+    "57.5%",
+    "390 and 395 pairs",
+    "5 new machines",
+    "94.9",
+    "94.4",
+    "76.4",
+    "57.5",
+    "5 machines"
+   ],
+   "means": "Pairs of configurations ordered right: the priced-reads model against hit rate, in the two registered frozen-model tests",
+   "value": {
+    "model": [
+     94.9,
+     94.4
+    ],
+    "hit_rate": [
+     76.4,
+     57.5
+    ],
+    "pairs": [
+     390,
+     395
+    ],
+    "contrasts": [
+     89,
+     90
+    ],
+    "machines_each": 5
+   },
+   "conditions": "Job 123: 5 new fast-link AMD desktops with RTX 5090s, 390 pairs (89 contrasts). Job 124: 5 new slow-link Intel desktops (two RTX 5090s and three RTX 4090s), 395 pairs (90 contrasts). A pair is two configurations timed on one machine at one cache budget, ordered right when the faster comes first. The model's share is a registered clause (T5). The hit rate's shares were not registered. gpt-oss-120b, batch 1, emulated budgets, the model frozen before both tests",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_core.tex#L14",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_core.tex",
+     "line": 14
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_jt.tex#L182",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_jt.tex",
+     "line": 182
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_core.tex#L13",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_core.tex",
+     "line": 13
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_jt.tex#L140",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_jt.tex",
+     "line": 140
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/body.tex#L334",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/body.tex",
+     "line": 334
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/priced-reads-not-hits.pdf",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/priced-reads-not-hits.pdf"
+    }
+   ],
+   "checked": "Read from the paper's generated numbers"
+  },
+  {
+   "id": "prn.always",
+   "page": "home",
+   "shows": [
+    "slower on every machine",
+    "every machine"
+   ],
+   "means": "Always-admit against the default cache in both frozen-model tests",
+   "value": {
+    "slower_on": "every machine",
+    "tests": 2
+   },
+   "conditions": "A registered contrast in jobs 123 and 124. Always-admit copies every miss into a GPU slot in its step. It has more hits and fewer host reads than the default cache, and every read goes over the PCIe link",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/body.tex#L40",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/body.tex",
+     "line": 40
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/priced-reads-not-hits.pdf",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/priced-reads-not-hits.pdf"
+    }
+   ],
+   "checked": "Read from the paper"
+  },
+  {
+   "id": "prn.err",
+   "page": "work/where-the-seconds-go",
+   "shows": [
+    "1.7%",
+    "5.4%",
+    "7%",
+    "3.3%",
+    "1,503 runs on 65 machines",
+    "5.7%",
+    "12.8%"
+   ],
+   "means": "Median error of the frozen model's predicted time per token",
+   "value": {
+    "job123_median_abs": 1.7,
+    "threshold": 7.0,
+    "job124_median_signed": -5.4,
+    "in_sample": 3.3,
+    "in_sample_runs": "1,503",
+    "in_sample_machines": 65
+   },
+   "conditions": "Job 123: 5 new fast-link AMD RTX 5090 desktops, a median absolute error of 1.7% against a threshold of at most 7% (clause T1), and every clause held. Job 124: 5 new slow-link Intel desktops, a median signed error of -5.4%, an under-prediction computed after the results, not a clause. Job 124's T1 held at 5.7%, and the test refuted the model by its read-count check (1.4% against a 1% tolerance) and one machine's error (12.8% against an 11% limit). In sample: 3.3% on the main set the model's form was chosen on, 1,503 teacher-forced runs on 65 consumer machines. Simpler path-priced forms also pass job 123",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_core.tex#L18",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_core.tex",
+     "line": 18
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_cf.tex#L31",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_cf.tex",
+     "line": 31
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_dn.tex#L99",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_dn.tex",
+     "line": 99
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_core.tex#L5",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_core.tex",
+     "line": 5
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_core.tex#L9",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_core.tex",
+     "line": 9
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_core.tex#L3",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_core.tex",
+     "line": 3
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/priced-reads-not-hits.pdf",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/priced-reads-not-hits.pdf"
+    }
+   ],
+   "checked": "Read from the paper's generated numbers"
+  },
+  {
+   "id": "prn.upstream",
+   "page": "home",
+   "shows": [
+    "1.77×",
+    "1.63×",
+    "3 machines",
+    "11%",
+    "25%"
+   ],
+   "means": "The default cache's speed over upstream llama.cpp's merged expert cache",
+   "value": {
+    "at_11pct": 1.77,
+    "at_25pct": 1.63,
+    "machines": 3
+   },
+   "conditions": "Exploratory, computed after the results. Timed, median over 3 machines, with 11% and 25% of each layer's experts on the GPU. Upstream's cache (llama.cpp PR #29887) copies every miss over the PCIe link in its step and has fewer hits. With upstream's fixed term replaced by the paper's profiled GPU time, 1.52x and 1.31x (priced, not timed). One cache design, gpt-oss-120b, batch 1",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_sy.tex#L208",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_sy.tex",
+     "line": 208
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_sy.tex#L209",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_sy.tex",
+     "line": 209
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_sy.tex#L210",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_sy.tex",
+     "line": 210
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/priced-reads-not-hits.pdf",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/priced-reads-not-hits.pdf"
+    }
+   ],
+   "checked": "Read from the paper's generated numbers"
+  },
+  {
+   "id": "prn.method",
+   "page": "home",
+   "shows": [
+    "55 of 55",
+    "109 of 325"
+   ],
+   "means": "Registered jobs public before their machines ran, and registered predictions that failed",
+   "value": {
+    "public_before": 55,
+    "jobs": 55,
+    "failed": 109,
+    "predictions": 325
+   },
+   "conditions": "By GitHub's push record of the job headers (branch gpu), a one-time snapshot. The headers held the configurations, predictions and thresholds. 77% of clauses were scored by scripts first committed after the job's first machine. A prediction counts as failed when at least one of its clauses failed, jobs 073-124. 3 more predictions with a failed clause belong to a job set apart as inconclusive. The paper lists every failed prediction",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_lg.tex#L23",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_lg.tex",
+     "line": 23
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_lg.tex#L20",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_lg.tex",
+     "line": 20
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_lg.tex#L22",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_lg.tex",
+     "line": 22
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_lg.tex#L21",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_lg.tex",
+     "line": 21
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/priced-reads-not-hits.pdf",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/priced-reads-not-hits.pdf"
+    }
+   ],
+   "checked": "Read from the paper's generated numbers"
+  },
+  {
+   "id": "prn.floor",
+   "page": "work/where-the-seconds-go",
+   "shows": [
+    "42%",
+    "58%",
+    "47 RTX 5090 desktops",
+    "32 of them"
+   ],
+   "means": "Share of an empirical floor's speed reached at 11% of experts on the GPU",
+   "value": {
+    "default": 42.0,
+    "machines": 47,
+    "min_ahead": 58.0,
+    "min_ahead_machines": 32
+   },
+   "conditions": "The median over machines of floor time over measured time. The floor is empirical: the reads of MIN with bypass, read once, over one pool of slots, at the machine's highest probed read rate, overlapping GPU work fully. MIN-ahead is an oracle that knows the coming routing and issues its copies ahead",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_sp.tex#L42",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_sp.tex",
+     "line": 42
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_sp.tex#L38",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_sp.tex",
+     "line": 38
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/priced-reads-not-hits.pdf",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/priced-reads-not-hits.pdf"
+    }
+   ],
+   "checked": "Read from the paper's generated numbers"
+  },
+  {
+   "id": "prn.stake",
+   "page": "work/where-the-seconds-go",
+   "shows": [
+    "0.9%"
+   ],
+   "means": "The fastest online configuration's gain over the default cache",
+   "value": {
+    "median": 0.9,
+    "interval": [
+     0.2,
+     2.0
+    ]
+   },
+   "conditions": "Median over cells, machine bootstrap interval [0.2, 2.0]. The default cache was the fastest in 33% of cells. Over the configurations that were run",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_ch.tex#L490",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_ch.tex",
+     "line": 490
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/priced-reads-not-hits.pdf",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/priced-reads-not-hits.pdf"
+    }
+   ],
+   "checked": "Read from the paper's generated numbers"
+  },
+  {
+   "id": "prn.regret",
+   "page": "work/where-the-seconds-go",
+   "shows": [
+    "0.2%",
+    "3.6%",
+    "16.4%",
+    "87.8%"
+   ],
+   "means": "Time lost against the fastest online configuration, choosing by the model or by hit rate",
+   "value": {
+    "model": [
+     0.2,
+     3.6
+    ],
+    "hit_rate": [
+     16.4,
+     87.8
+    ]
+   },
+   "conditions": "Exploratory, computed after the results. Mean over the tests' cells of the time lost against the fastest online configuration. Hit rate picks always-admit",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_jc.tex#L56",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_jc.tex",
+     "line": 56
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_jc.tex#L199",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_jc.tex",
+     "line": 199
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_jc.tex#L76",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_jc.tex",
+     "line": 76
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_jc.tex#L219",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_jc.tex",
+     "line": 219
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/priced-reads-not-hits.pdf",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/priced-reads-not-hits.pdf"
+    }
+   ],
+   "checked": "Read from the paper's generated numbers"
+  },
+  {
+   "id": "prn.rebuild",
+   "page": "work/where-the-seconds-go",
+   "shows": [
+    "217 of 507",
+    "October 2026"
+   ],
+   "means": "Values that changed when the lost analysis scripts were rebuilt",
+   "value": {
+    "differ": 217,
+    "checked": 507,
+    "headline": 9,
+    "headline_with_record": 6
+   },
+   "conditions": "The analysis scripts were lost in October 2026 and rebuilt from the raw results and job scripts. 217 of the 507 values with a record kept before the loss differ, mostly through a rebuilt set of pairs, runs or rules. Of the 9 headline values, 6 have such a record, and the rebuild changed none of their verdicts",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_rb.tex#L30",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_rb.tex",
+     "line": 30
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_rb.tex#L58",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_rb.tex",
+     "line": 58
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_pv.tex#L19",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_pv.tex",
+     "line": 19
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/priced-reads-not-hits.pdf",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/priced-reads-not-hits.pdf"
+    }
+   ],
+   "checked": "Read from the paper's generated numbers"
+  },
+  {
+   "id": "prn.scope",
+   "page": "work/where-the-seconds-go",
+   "shows": [
+    "1,135 tokens",
+    "batch 1"
+   ],
+   "means": "Longest context in the frozen-model tests",
+   "value": {
+    "tokens": "1,135"
+   },
+   "conditions": "One llama.cpp-based engine, RTX 4090 and RTX 5090 desktops, batch 1 (one request at a time), emulated cache budgets, teacher-forced decoding of gpt-oss-120b on one text. The chat protocol reached 2,454 tokens",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/gen/numbers_mm.tex#L5",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/gen/numbers_mm.tex",
+     "line": 5
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-speed-of-light/blob/f197d7131991244df8cc5e7d05c4bc113b0bc6ec/paper2/priced-reads-not-hits.pdf",
+     "commit": "f197d7131991244df8cc5e7d05c4bc113b0bc6ec",
+     "path": "paper2/priced-reads-not-hits.pdf"
+    }
+   ],
+   "checked": "Read from the paper's generated numbers"
   }
  ]
 }

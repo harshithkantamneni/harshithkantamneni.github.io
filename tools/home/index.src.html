@@ -25,7 +25,7 @@
 <a href="#main" class="skip">Skip to content</a>
 <div class="ground" aria-hidden="true"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,106,77,.24),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,106,77,.11),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(255,180,84,.19),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(255,180,84,.09),transparent 70%)"></div><div class="glow" style="background:radial-gradient(100vw 85vh at 84% -6%,rgba(106,168,255,.27),transparent 72%),radial-gradient(70vw 60vh at -4% 106%,rgba(106,168,255,.13),transparent 70%)"></div>
 <canvas id="field" aria-hidden="true"></canvas><canvas id="fieldTop" aria-hidden="true"></canvas>
-<aside class="idx" aria-label="Projects on this page"><div class="ig" style="--c:var(--k)"><a class="ih" href="#ch-k">Kernels</a><a class="it" href="#kernels"><b>Stick-breaking kernels</b><span>2 merged PRs</span></a><a class="it" href="#gqa"><b>Grouped-query attention</b><span>Closed PR, merged tests</span></a><a class="it" href="#triton"><b>Triton vs cuBLAS</b><span>Personal project</span></a><a class="it" href="#yourgpu"><b>Try it on your GPU</b><span>Live demo</span></a></div><div class="ig" style="--c:var(--i)"><a class="ih" href="#ch-i">Inference</a><a class="it" href="#seconds"><b>Where the Seconds Go</b><span>Research project</span></a><a class="it" href="#jetson"><b>Jetson Orin Nano</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--a)"><a class="ih" href="#ch-a">Agents</a><a class="it" href="#bert"><b>bert</b><span>Personal project</span></a><a class="it" href="#lab"><b>Lab audit</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--ink)"><a class="ih" href="#oss">Open source</a></div></aside>
+<aside class="idx" aria-label="Projects on this page"><div class="ig" style="--c:var(--k)"><a class="ih" href="#ch-k">Kernels</a><a class="it" href="#kernels"><b>Stick-breaking kernels</b><span>2 merged PRs</span></a><a class="it" href="#gqa"><b>Grouped-query attention</b><span>Closed PR, merged tests</span></a><a class="it" href="#triton"><b>Triton vs cuBLAS</b><span>Personal project</span></a><a class="it" href="#yourgpu"><b>Try it on your GPU</b><span>Live demo</span></a></div><div class="ig" style="--c:var(--i)"><a class="ih" href="#ch-i">Inference</a><a class="it" href="#seconds"><b>Priced Reads, Not Hits</b><span>Preprint</span></a><a class="it" href="#jetson"><b>Jetson Orin Nano</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--a)"><a class="ih" href="#ch-a">Agents</a><a class="it" href="#bert"><b>bert</b><span>Personal project</span></a><a class="it" href="#lab"><b>Lab audit</b><span>Personal project</span></a></div><div class="ig" style="--c:var(--ink)"><a class="ih" href="#oss">Open source</a></div></aside>
 <div class="pbar" aria-hidden="true"></div>
 
 <nav>
@@ -47,7 +47,7 @@
 
 <section class="glance" id="glance" aria-label="The short version"><div class="lane">
   <div class="gr" style="--c:var(--k)"><div class="grn">3 merged</div><div><h2><a href="#ch-k">GPU kernels</a></h2><p>The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, an open-source AI library. Tests merged in NVIDIA's cuDNN frontend, after a maintainer reproduced a bug they catch. On a long text (64K keys), one kernel step on an H200 GPU ran 52.7× faster than recomputing, a gain any cache gets.</p></div><div class="gracts"><a class="go" href="/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-k">See the work</a></div></div>
-  <div class="gr" style="--c:var(--i)"><div class="grn">11 of 12</div><div><h2><a href="#ch-i">LLM inference</a></h2><p>Running AI models fast, even when they don't fit on the GPU. I built a cache for llama.cpp that ran faster than FreeToken, another system for this problem, in 11 of 12 test setups at batch 1. With FreeToken tuned, on a separate machine, the ratio is 0.98-1.17×.</p></div><div class="gracts"><a class="go" href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-i">See the work</a></div></div>
+  <div class="gr" style="--c:var(--i)"><div class="grn">94.9%</div><div><h2><a href="#ch-i">LLM inference</a></h2><p>Running AI models fast, even when they don't fit on the GPU. Caches for this are tuned for hit rate. In a preprint, I showed hit rate can pick the slower design. Pricing each read by its path ordered 94.9% and 94.4% of design pairs right on new machines, against 76.4% and 57.5% for hit rate.</p></div><div class="gracts"><a class="go" href="/resume/inference/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-i">See the work</a></div></div>
   <div class="gr" style="--c:var(--a)"><div class="grn">31 roles</div><div><h2><a href="#ch-a">Agent systems</a></h2><p>AI that acts on its own, and whether you can trust it. In my research lab of 31 Claude Code agent roles, one agent forged 5 approvals, so I built a check, audited it and rebuilt it. Also bert, searchable memory for coding agents.</p></div><div class="gracts"><a class="go" href="/resume/agents/Harshith_Kantamneni_Resume.pdf">Résumé</a><a class="go" href="#ch-a">See the work</a></div></div>
 </div></section>
 
@@ -240,25 +240,39 @@
 </div></section>
 
 <article class="story" id="seconds" style="--c:var(--i)">
-  <header class="shead"><h3 class="sname">Where the Seconds Go</h3><span class="skind">Research project</span></header>
-  <div class="sid"><p class="swhat">A way to run AI models too big for the GPU's memory, built as a cache in llama.cpp, plus a calculation of how fast any such cache could get.</p><p class="sres">Result: faster than FreeToken in 11 of 12 setups at batch 1, and 0.98-1.17× with it tuned, on a separate machine.</p><p class="smeta"><span>Public code and manuscript, not peer reviewed. The patch is not upstream.</span><a href="https://github.com/harshithkantamneni/moe-speed-of-light">moe-speed-of-light</a></p></div>
+  <header class="shead"><h3 class="sname">Priced Reads, Not Hits</h3><span class="skind">Preprint</span></header>
+  <div class="sid"><p class="swhat">Why the usual way to judge caches for AI models too big for the GPU can pick the slower design, and a measure that picks right.</p><p class="sres">Result: on new machines it ordered 94.9% and 94.4% of design pairs right, against 76.4% and 57.5% for hit rate.</p><p class="smeta"><span>Public paper and code, not peer reviewed. The patch is not upstream.</span><a href="https://github.com/harshithkantamneni/moe-speed-of-light">moe-speed-of-light</a></p></div>
   <div class="beat lane"><p class="say">The model, gpt-oss-120b, needs about 61 GB of memory. An RTX 5090 GPU has 32 GB.</p></div>
   <div class="block lane">
     <figure class="fg"><div class="memz" id="fz-mem" data-field role="img" aria-label="61 dots, one per gigabyte. A box around the first 32 marks what fits on the card."><i class="cardbox"><span>RTX 5090, 32 GB</span></i>/*MEM*/</div><figcaption>One dot per gigabyte, to scale.</figcaption></figure>
   </div>
-  <div class="beat lane"><p class="say">So the rest of the model waits in slower system memory, and each word stalls while it's fetched.</p></div>
-  <div class="beat lane"><p class="say">I built a cache in llama.cpp that decides which parts stay on the GPU.</p></div>
+  <div class="beat lane"><p class="say">So most of it waits in system memory, and a cache decides which parts stay on the GPU.</p></div>
+  <div class="beat lane"><p class="say">Caches are judged by hit rate: how often the part a word needs is already there.</p></div>
+  <div class="beat lane">
+    <p class="say">But a missing part reaches the GPU two ways, at different speeds. And putting a part in the cache is itself a copy.</p>
+    <p class="note">The CPU computes a missing expert where it sits in memory, or the PCIe link copies it to the GPU. An expert the CPU computes and then also copies for later is read twice.</p>
+  </div>
   <div class="beat lane numb">
-    <div class="num has-c" data-c="sec.vs_ft" role="button" tabindex="0">11 of 12</div>
-    <p class="numm">test setups ran faster than FreeToken, another system for this problem, and <span class="nb">2.0-4.0×</span> stock llama.cpp in all of them. With FreeToken tuned, on a separate machine: 0.98-1.17×.</p>
-    <button type="button" class="cond" data-c="sec.vs_ft">Conditions and source</button>
-    <p class="note">At batch 1, on 2 RTX 5090 hosts. Stock is a weak baseline. The tuned comparison covers six cells. The one slower setup is 0.97×, at the largest Qwen3 budget on the stock-clock host. On that host, swapping my admission rule for LRU ran 6-21% slower, so I read most of the difference as that rule.</p>
+    <div class="num has-c" data-c="prn.pairs" role="button" tabindex="0">94.9%</div>
+    <p class="numm">of pairs of cache designs ordered right on new machines, by counting reads from system memory and pricing each by its path. Hit rate got <span class="nb">76.4%</span>.</p>
+    <button type="button" class="cond" data-c="prn.pairs">Conditions and source</button>
+    <p class="note">The first of two pre-registered tests, each on 5 new machines, with the model frozen. In the second, 94.4% against 57.5%. The hit rate's shares weren't registered.</p>
   </div>
-  <div class="block lane wide">
-    <figure class="fg" id="fig-grid"><p class="lg"><span><i class="o"></i>Stock llama.cpp</span><span><i class="f"></i>FreeToken</span><span><i class="c"></i>My cache</span></p><svg role="img" aria-label="Tokens per second for stock llama.cpp, FreeToken and my cache, at three GPU budgets, on two hosts and two models. My cache is fastest in 11 of 12 configurations."></svg><figcaption>Speed in tokens, roughly words, per second. Each row is the share of the model's experts, its swappable parts, kept on the GPU.</figcaption></figure>
+  <div class="block lane">
+    <figure class="fg" id="fig-pairs"><p class="lg"><span><i class="pm"></i>Priced reads</span><span><i class="ph"></i>Hit rate</span></p><div class="pairs" role="img" aria-label="Share of pairs of cache designs ordered right. First test: priced reads 94.9%, hit rate 76.4%. Second test: priced reads 94.4%, hit rate 57.5%."><div class="pg"><p class="pl">First test<small>fast-link AMD</small></p><p class="pb m"><span class="pt"><i style="width:94.9%"></i></span><b>94.9%</b></p><p class="pb"><span class="pt"><i style="width:76.4%"></i></span><b>76.4%</b></p></div><div class="pg"><p class="pl">Second test<small>slow-link Intel</small></p><p class="pb m"><span class="pt"><i style="width:94.4%"></i></span><b>94.4%</b></p><p class="pb"><span class="pt"><i style="width:57.5%"></i></span><b>57.5%</b></p></div></div><figcaption>Share of pairs of designs ordered right, each test on 5 new machines. The hit rate's shares weren't registered.</figcaption></figure>
   </div>
-  <div class="beat lane"><p class="say">Then the harder question: how much better could any cache get?</p></div>
-  <div class="beat lane"><p class="say">I computed the limit, then let the engine see the future, one kind of foresight at a time.</p></div>
+  <div class="beat lane"><p class="say">More hits can mean slower. Copying every missing part onto the GPU got more hits than my default cache, and it was slower on every machine.</p></div>
+  <div class="beat lane numb">
+    <div class="num has-c" data-c="prn.upstream" role="button" tabindex="0">1.77×</div>
+    <p class="numm">as fast as llama.cpp's own merged expert cache, which copies every miss over PCIe. <span class="nb">1.63×</span> with more of the model on the GPU.</p>
+    <button type="button" class="cond" data-c="prn.upstream">Conditions and source</button>
+    <p class="note">Median over 3 machines, with 11% and 25% of experts on the GPU, computed after the results. One cache design, gpt-oss-120b, one request at a time.</p>
+  </div>
+  <div class="beat lane">
+    <p class="say">I published every prediction before the machines ran. The model passed its first test and failed its second.</p>
+    <p class="note">55 of 55 registered jobs were public before their machines ran. On new fast-link AMD desktops the median error was 1.7%. On slow-link Intel desktops it under-predicts, and that test refuted it. I haven't found why.</p>
+  </div>
+  <div class="beat lane"><p class="say">Then the other question: how far is any cache from the limit? I let the engine see the future, one kind of foresight at a time.</p></div>
   <div class="block lane">
     <figure class="fg" id="fig-ruler">
       <p class="rnum"><span id="fs-v">20.59</span><small> ms per token</small></p>
@@ -273,10 +287,10 @@
     </figure>
   </div>
   <div class="beat lane">
-    <p class="say">Better guessing alone didn't get there. Four caching rules without foresight got at most 6% of the gain from knowing what to read ahead.</p>
-    <p class="note">On 5 fast-link machines. On this machine 36% of the gap stayed after all three kinds of foresight, and 43-52% averaged over three groups of machines. At gpt-oss's smallest cache on 25 consumer machines, the cache reached 31-54% of the computed limit, a scope I chose after seeing the data.</p>
+    <p class="say">Across 47 RTX 5090 desktops, my default cache reached 42% of an empirical floor's speed. Knowing the future and copying ahead reached 58%.</p>
+    <p class="note">With 11% of experts on the GPU. The oracle ran on 32 of them. The ruler is one machine, from an earlier analysis of the same experiments.</p>
   </div>
-  <div class="block lane"><p class="slinks"><a href="/work/where-the-seconds-go/">Read the write-up</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light">View the repo</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper/ieee-paper.pdf">Manuscript, not peer reviewed</a></p></div>
+  <div class="block lane"><p class="slinks"><a href="/work/where-the-seconds-go/">Read the write-up</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light">View the repo</a><a href="https://github.com/harshithkantamneni/moe-speed-of-light/blob/main/paper2/priced-reads-not-hits.pdf">Paper, not peer reviewed</a></p></div>
 </article>
 
 <article class="story" id="jetson" style="--c:var(--i)">
@@ -362,7 +376,7 @@
   <div class="chase">
     <a href="#kernels"><b>Where the rest of a full model's time goes.</b><span>My kernel step ran 52.7× faster than recomputing at 64K keys, but one full model step, on random weights, still takes about 9 ms.</span></a>
     <a href="#kernels"><b>Whether my kernels' design choices are what cost them speed.</b><span>Forward and backward together take 1.04-1.42× the time of the original authors' kernels on an H100 GPU, and the backward gives identical results run to run, which theirs doesn't. I haven't isolated how much of the gap that explains.</span></a>
-    <a href="#seconds"><b>How much slowdown better caching can never remove.</b><span>Even when the engine could see the future, 36% of the gap to the limit stayed, on one machine.</span></a>
+    <a href="#seconds"><b>Why my timing model fails on slow-link Intel desktops.</b><span>It under-predicts there, and the in-step copies it predicted to pay never did. The next step is measuring each path's rate while the other one reads.</span></a>
   </div>
 </div></section>
 

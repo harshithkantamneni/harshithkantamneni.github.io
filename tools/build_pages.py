@@ -215,7 +215,7 @@ body60 = f"""<main style="--c:var(--k)">
 <p class="state" style="font-size:13px">Open to full-time roles. Milwaukee, WI (open to relocation). M.S. ECE, UW-Madison, Dec 2025.</p></div>
 <div class="s60">
 {row('3 merged', 'GPU kernels', "The low-level code that does an AI model's math. Kernels merged in flash-linear-attention, where one step on an H200 ran 52.7× faster than recomputing at 64K keys, a gain any cache gets. Tests merged in NVIDIA's cuDNN frontend, which catch 3 injected bugs that NVIDIA's SM80 tests missed, reproduced by a maintainer.", '/Harshith_Kantamneni_Resume.pdf', 'var(--k)', '/#ch-k')}
-{row('11 of 12', 'LLM inference', 'A cache in llama.cpp for AI models too big for the GPU. Faster than FreeToken in 11 of 12 test setups at batch 1, on 2 RTX 5090 hosts. With FreeToken tuned, on a separate machine: 0.98-1.17×.', '/resume/inference/Harshith_Kantamneni_Resume.pdf', 'var(--i)', '/#ch-i')}
+{row('94.9%', 'LLM inference', 'Caches for AI models too big for the GPU are tuned for hit rate. In a preprint, I showed hit rate can pick the slower design. Pricing each read by its path ordered 94.9% and 94.4% of design pairs right on new machines, against 76.4% and 57.5% for hit rate.', '/resume/inference/Harshith_Kantamneni_Resume.pdf', 'var(--i)', '/#ch-i')}
 {row('31 roles', 'Agent systems', "A research lab of 31 Claude Code agent roles, where I caught an agent forging another agent's approvals, audited my own check against the logs, and rebuilt it so the same forgery is blocked in tests, not yet live. And bert, searchable memory for coding agents.", '/resume/agents/Harshith_Kantamneni_Resume.pdf', 'var(--a)', '/#ch-a')}
 </div>
 <div class="a60"><a class="b60 p" href="mailto:kantamneniharshith@gmail.com">Email me</a><a class="b60" href="/#intro">Read the full story</a><a class="b60" href="/work/">See all work</a></div>
@@ -276,7 +276,7 @@ body_work = f"""<main style="--c:var(--k)">
 {card_row(by_name['ML-guided kernel config'])}{card_row(by_name['MI300X + gem5 modeling'])}
 </section>
 <section class="wsec" id="inference" style="--c:var(--i)"><h2>LLM inference</h2>
-{study('where-the-seconds-go', 'Where the Seconds Go', "A llama.cpp cache for batch-1 decode when the model doesn't fit on the GPU, and a computed limit to read it against.")}
+{study('where-the-seconds-go', 'Priced Reads, Not Hits', 'Why hit rate can rank MoE expert caches in the wrong order, and what ranks them right. Tested on new machines with the predictions public first.')}
 {card_row(by_name['vLLM on H100 NVL'])}{card_row(by_name['Speculative decoding on MoE'])}
 <a class="wk" href="https://github.com/harshithkantamneni/edge-llm-gpu-profiling"><h3>Jetson Orin Nano profiling</h3><p>Attention and KV-cache decode kernels profiled with Nsight on a 15 W edge board.</p><span>Public repo</span></a>
 </section>

@@ -14,7 +14,7 @@ DIST = pathlib.Path('site')
 ARCHIVE = ('reports', 'notes', 'numbers')
 
 BANNED = [r'\bbeats?\b', r'\bwins?\b', r'half the cost', r'\bcursor\b', r'hand-?written', r'\bSaTML\b', r'\bMLSys\b',
-          r'Priced Reads', r'#378\b', r'\bSeattle\b', r'—', r'\bpublished paper', r'staffing']
+          r'#378\b', r'\bSeattle\b', r'—', r'\bpublished paper', r'staffing']
 
 OLD_URLS = [
     '/', '/404.html', '/favicon.svg', '/og.png', '/robots.txt', '/sitemap.xml',
