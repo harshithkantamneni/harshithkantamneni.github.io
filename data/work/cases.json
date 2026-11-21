@@ -62,6 +62,31 @@
   "state": "Tests merged Oct 6, 2026. Prototype closed Sep 27, 2026",
   "next": "stick-breaking-kernels"
  },
+ "moe-kernels": {
+  "lane": "k",
+  "title": "A timing model of vLLM's fused MoE kernel",
+  "lead": "It predicts how long vLLM's fused MoE kernel will take on an NVIDIA GH200 before the kernel runs, and was tested in real vLLM serving on eight MoE models it was never fit on.",
+  "keys": [
+   {
+    "v": "[[mk.serve.decode|1.27-4.04%]]",
+    "l": "average error on decode calls in vLLM serving, eight models"
+   },
+   {
+    "v": "[[mk.serve.decode|2.16-6.68%]]",
+    "l": "Frontier on the same calls, trained on each model on the same GPU"
+   },
+   {
+    "v": "[[mk.calls|2.5 million]]",
+    "l": "decode calls scored"
+   },
+   {
+    "v": "[[mk.cells537|537 cells]]",
+    "l": "predicted and made public before the GPU that measured them was launched"
+   }
+  ],
+  "state": "Paper draft and code public, not peer reviewed. Final model v10, merged Nov 21, 2026",
+  "next": "priced-reads-not-hits"
+ },
  "priced-reads-not-hits": {
   "lane": "i",
   "title": "Priced Reads, Not Hits",

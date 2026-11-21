@@ -1,5 +1,5 @@
 {
- "as_of": "2026-11-20",
+ "as_of": "2026-11-21",
  "site_commit": "a7249980cd1d2d2b8d0cacd3df54381ab8c67f8d",
  "claims": [
   {
@@ -1737,61 +1737,392 @@
    "checked": "Matched the report PDF"
   },
   {
-   "id": "mk.v3",
-   "page": "home",
+   "id": "mk.serve.decode",
+   "page": "work/moe-kernels",
    "shows": [
-    "32×64×64",
-    "0.51-0.69%",
-    "3 models",
-    "11.76%"
+    "1.27% to 4.04%",
+    "1.27-4.04%",
+    "2.16% to 6.68%",
+    "2.16-6.68%",
+    "12.60% to 36.02%",
+    "1.27",
+    "2.61",
+    "2.20",
+    "2.40",
+    "4.04",
+    "2.52",
+    "3.06",
+    "1.34",
+    "3.48",
+    "4.36",
+    "2.60",
+    "3.84",
+    "6.68",
+    "3.40",
+    "5.33",
+    "2.16",
+    "14.97",
+    "22.95",
+    "23.10",
+    "17.95",
+    "29.68",
+    "22.82",
+    "36.02",
+    "12.60"
    ],
-   "means": "Timing error of model v3 on one test tile, with predictions frozen before the rental",
+   "means": "Average error per decode call in vLLM serving: the final model, v10, beside Frontier's lowest arm on each model and a roofline",
    "value": {
-    "rms_pct": {
-     "mixtral-8x7b": 0.51,
-     "phi-3.5-moe": 0.69,
-     "olmoe-1b-7b": 0.54
+    "ERNIE-4.5-21B-A3B": {
+     "v10": 1.27,
+     "frontier_lowest": 3.48,
+     "frontier_arm": "cli-fills",
+     "roofline": 14.97
+    },
+    "Qwen3-30B-A3B": {
+     "v10": 2.61,
+     "frontier_lowest": 4.36,
+     "frontier_arm": "cli-fills",
+     "roofline": 22.95
+    },
+    "GLM-4.7-Flash": {
+     "v10": 2.2,
+     "frontier_lowest": 2.6,
+     "frontier_arm": "cli-fills",
+     "roofline": 23.1
+    },
+    "Trinity-Mini": {
+     "v10": 2.4,
+     "frontier_lowest": 3.84,
+     "frontier_arm": "simpath",
+     "roofline": 17.95
+    },
+    "Ling-mini-2.0": {
+     "v10": 4.04,
+     "frontier_lowest": 6.68,
+     "frontier_arm": "cli-fills",
+     "roofline": 29.68
+    },
+    "LFM2-8B-A1B": {
+     "v10": 2.52,
+     "frontier_lowest": 3.4,
+     "frontier_arm": "simpath",
+     "roofline": 22.82
+    },
+    "Phi-mini-MoE": {
+     "v10": 3.06,
+     "frontier_lowest": 5.33,
+     "frontier_arm": "simpath",
+     "roofline": 36.02
+    },
+    "granite-4.0-h-small": {
+     "v10": 1.34,
+     "frontier_lowest": 2.16,
+     "frontier_arm": "simpath",
+     "roofline": 12.6
     }
    },
-   "conditions": "One rented GH200 per rental, bf16, 700 W limit, 1710 MHz lock, skewed routing, R3's 32x64x64 test tile. Rentals 6 and 7. This is not one of vLLM's own tiles. Byte predictions on OLMoE w1 failed their open test, 11.76% rms, scored apart",
+   "conditions": "Kernel-sum MAPE, every MoE call scored. vLLM 0.27.1 serving on one GH200, Triton backend, decode tiles at a 1710 MHz lock, real weights and routing. v10 then Frontier's lowest arm: ERNIE-4.5-21B-A3B 1.27% and 3.48% (cli-fills), Qwen3-30B-A3B 2.61% and 4.36% (cli-fills), GLM-4.7-Flash 2.20% and 2.60% (cli-fills), Trinity-Mini 2.40% and 3.84% (simpath), Ling-mini-2.0 4.04% and 6.68% (cli-fills), LFM2-8B-A1B 2.52% and 3.40% (simpath), Phi-mini-MoE 3.06% and 5.33% (simpath), granite-4.0-h-small 1.34% and 2.16% (simpath). Roofline 12.60% to 36.02%. Frontier was profiled and trained per model on the same board; v10 was fit on none of the eight. v10's decode is v8's, frozen before every run. For the six models of the v9 and v10 runs the frozen code was public before the board launched; the ERNIE and Qwen3 runs had no registration commit. Qwen3's simpath arm was trained after its run",
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/b2fb34021eb6a2030cf76b8a9cbe7270ec353c51/scripts/scoring/rental7/skew.score.txt#L10",
-     "commit": "b2fb34021eb6a2030cf76b8a9cbe7270ec353c51",
-     "path": "scripts/scoring/rental7/skew.score.txt",
-     "line": 10
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L962",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 962
     }
    ],
-   "checked": "Recomputed from the scorer JSON"
+   "checked": "Matched results.json in the study handoff (2026-11-21) and the paper at 4ab341d9"
   },
   {
-   "id": "mk.decode",
-   "page": "home",
+   "id": "mk.calls",
+   "page": "work/moe-kernels",
    "shows": [
-    "11.4%",
-    "5 models unseen in decode",
-    "1.5%"
+    "2.5 million",
+    "2,547,743",
+    "304,894",
+    "411,121",
+    "388,618",
+    "246,636",
+    "174,320",
+    "235,234",
+    "378,847",
+    "408,073"
    ],
-   "means": "Decode blind test, pooled rms, against the bar registered then",
+   "means": "Decode calls scored in vLLM serving across the eight models",
    "value": {
-    "rms": 0.114,
-    "mean": 0.06,
-    "worst": 0.392,
-    "models": 5,
-    "bar": 0.015
+    "total": 2547743,
+    "ERNIE-4.5-21B-A3B": 304894,
+    "Qwen3-30B-A3B": 411121,
+    "GLM-4.7-Flash": 388618,
+    "Trinity-Mini": 246636,
+    "Ling-mini-2.0": 174320,
+    "LFM2-8B-A1B": 235234,
+    "Phi-mini-MoE": 378847,
+    "granite-4.0-h-small": 408073
    },
-   "conditions": "One rented GH200 per rental, bf16, 700 W, 220 cells. Predicted too slow on average, mean +6.0%, worst 39.2%. Per model: DeepSeek-V2-Lite 2.35%, Qwen1.5 5.3%, Phi-3.5 9.5%, Granite-3B 13.4%, JetMoE 19.5%. No model certified. Phi-3.5 was also in the v3 test, so unseen means unseen in decode",
+   "conditions": "2,547,743 is the sum of the eight per-model call counts in the paper's Table 17: ERNIE-4.5-21B-A3B 304,894, Qwen3-30B-A3B 411,121, GLM-4.7-Flash 388,618, Trinity-Mini 246,636, Ling-mini-2.0 174,320, LFM2-8B-A1B 235,234, Phi-mini-MoE 378,847, granite-4.0-h-small 408,073",
    "source": [
     {
      "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/b2fb34021eb6a2030cf76b8a9cbe7270ec353c51/scripts/scoring/decode/blind.score.txt#L11",
-     "commit": "b2fb34021eb6a2030cf76b8a9cbe7270ec353c51",
-     "path": "scripts/scoring/decode/blind.score.txt",
-     "line": 11
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L962",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 962
     }
    ],
-   "checked": "Recomputed from the scorer JSON"
+   "checked": "Sum recomputed from the paper's Table 17"
+  },
+  {
+   "id": "mk.serve.prefill",
+   "page": "work/moe-kernels",
+   "shows": [
+    "1.07% to 2.84%",
+    "5.46% to 6.73%",
+    "3.57% to 10.44%",
+    "22.37% to 43.82%",
+    "2.93%",
+    "1.39%",
+    "12.61%",
+    "6.73",
+    "6.15",
+    "5.46",
+    "2.84",
+    "1.60",
+    "1.07",
+    "73,298",
+    "120,704",
+    "341,880"
+   ],
+   "means": "Average error per prefill call in vLLM serving on v10's three blind models, beside Frontier and a roofline",
+   "value": {
+    "LFM2-8B-A1B": {
+     "calls": 73298,
+     "v10": 6.73,
+     "frontier_simpath": 2.84,
+     "frontier_cli": 10.44,
+     "frontier_cli_fills": 9.92,
+     "roofline": 39.75,
+     "v8": 2.93
+    },
+    "Phi-mini-MoE": {
+     "calls": 120704,
+     "v10": 6.15,
+     "frontier_simpath": 1.6,
+     "frontier_cli": 4.29,
+     "frontier_cli_fills": 4.27,
+     "roofline": 43.82,
+     "v8": 12.61
+    },
+    "granite-4.0-h-small": {
+     "calls": 341880,
+     "v10": 5.46,
+     "frontier_simpath": 1.07,
+     "frontier_cli": 3.75,
+     "frontier_cli_fills": 3.57,
+     "roofline": 22.37,
+     "v8": 1.39
+    }
+   },
+   "conditions": "Kernel-sum MAPE, every MoE call scored. vLLM 0.27.1 serving on one GH200, prefill tiles at a 1410 MHz lock. Frontier's simulator features are its simpath arm; its command-line features are its cli and cli-fills arms. Blind: v10's code was committed at f1a0c0c4 and pushed with its registration before the board launched (06:03Z and 07:35Z, 2026-11-21). v8, frozen beside v10, reads 2.93% on LFM2-8B-A1B, 12.61% on Phi-mini-MoE and 1.39% on granite-4.0-h-small. Frontier was profiled and trained per model on the same board; v10 was fit on none of the three. Granite's score has no G 16 calls. These three models are v10's only prefill test, reported per model, not pooled",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L834",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 834
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L980",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 980
+    }
+   ],
+   "checked": "Matched results.json in the study handoff (2026-11-21) and the paper at 4ab341d9"
+  },
+  {
+   "id": "mk.split",
+   "page": "work/moe-kernels",
+   "shows": [
+    "within 2% of a call",
+    "0.6% to 9.6% of a call"
+   ],
+   "means": "Where v10's prefill error sits, split by kernel on its three blind models",
+   "value": {
+    "non_gemm_pct_of_call": [
+     -1.2,
+     1.8
+    ],
+    "gemm_total_pct_of_call": [
+     -0.6,
+     -9.6
+    ]
+   },
+   "conditions": "150 sampled prefill calls per tile, six tiles on LFM2-8B-A1B, Phi-mini-MoE and granite-4.0-h-small, priced through the frozen code and compared with their own measured kernels. The non-matrix-multiply part of v10's price lands within -1.2% to +1.8% of a call of the measured kernels. The matrix-multiply terms read low on 11 of the 12 GEMMs, together -0.6% to -9.6% of a call per tile, by an amount that depends on the model",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L884",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 884
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L895",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 895
+    }
+   ],
+   "checked": "Matched the paper's section 8.4 and Table 18"
+  },
+  {
+   "id": "mk.cells",
+   "page": "work/moe-kernels",
+   "shows": [
+    "1.71%",
+    "2.99%",
+    "2.90%",
+    "6.70%",
+    "24.67%",
+    "11.80%"
+   ],
+   "means": "Average error in the blind cell tests on vLLM's own tiles, and the baselines registered with them",
+   "value": {
+    "prefill_B": 1.71,
+    "prefill_C": 2.99,
+    "decode_D": 6.7,
+    "decode_E": 2.9,
+    "test_tile_A": 0.45,
+    "roofline": {
+     "D": 8.22,
+     "E": 24.67
+    },
+    "ridge_regression": {
+     "D": 9.77,
+     "E": 11.8
+    }
+   },
+   "conditions": "MAPE. One GH200 per session, synthetic weights and routing. Blind: the frozen code and the per-cell predictions were committed publicly before each GPU launched. Prefill test B (round 5) 1.71% on 84 cells and test C (v7) 2.99% on 24, at 1410 MHz. Decode test E (v7) 2.90% on 125 cells at 1710 MHz; the earlier decode test D (v4d') read 6.70% on 220 cells, on other models. Baselines frozen in the same registrations, on test E's cells: roofline 24.67%, ridge regression 11.80% (8.22% and 9.77% on test D). On a fixed test tile vLLM does not select, test A read 0.45% on 84 cells",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L338",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 338
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L352",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 352
+    }
+   ],
+   "checked": "Matched results.json in the study handoff (2026-11-21) and the paper at 4ab341d9"
+  },
+  {
+   "id": "mk.cells537",
+   "page": "work/moe-kernels",
+   "shows": [
+    "537 cells"
+   ],
+   "means": "Cells predicted and published before the GPU that measured them was launched",
+   "value": {
+    "cells": 537,
+    "tests": 5,
+    "model_configurations": 10
+   },
+   "conditions": "Five blind cell tests over 10 model configurations: 84 + 24 + 220 + 125 + 84 cells (tests B, C, D, E and A). Each test's frozen code and per-cell predictions were committed to the public repository before the GPU fetched that commit and measured",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L70",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 70
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L142",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 142
+    }
+   ],
+   "checked": "Matched the paper's section 1 and Table 2"
+  },
+  {
+   "id": "mk.published",
+   "page": "work/moe-kernels",
+   "shows": [
+    "6.0% to 12.35%"
+   ],
+   "means": "Error reported by published GPU kernel-time predictors",
+   "value": {
+    "PipeWeave_seen": 6.0,
+    "PipeWeave_unseen": 11.5,
+    "NeuSight": 8.9,
+    "KernelSight-LM": 12.1,
+    "TileSight_GEMM": 12.35,
+    "TileSight_vLLM_MoE_wMAPE": 10.35
+   },
+   "conditions": "As reported in each paper, on its own kernels and GPUs, not re-run here, and none registered before measurement: PipeWeave 6.0% and 11.5% MAPE on seen and unseen GPUs, NeuSight 8.9%, KernelSight-LM 12.1%, TileSight 12.35% on 703 GEMM shapes and 10.35% wMAPE on vLLM MoE configurations. Frontier reports a median of 1.4% and a 95th percentile of 5.3% for MoE grouped GEMM on H800",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L362",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 362
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L105",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 105
+    }
+   ],
+   "checked": "Matched the paper's Tables 1 and 5"
+  },
+  {
+   "id": "mk.scope",
+   "page": "work/moe-kernels",
+   "shows": [
+    "vLLM 0.27.1",
+    "1710 MHz",
+    "1410 MHz"
+   ],
+   "means": "The setup every moe-kernels number holds in",
+   "value": {
+    "vllm": "0.27.1",
+    "gpu": "GH200 480GB",
+    "decode_lock_mhz": 1710,
+    "prefill_lock_mhz": 1410
+   },
+   "conditions": "One NVIDIA GH200 480GB per session on Lambda Cloud, 132 SMs, 60 MiB L2, default 700 W limit. SM clock locked at 1710 MHz for decode tiles and 1410 MHz for prefill tiles, where 1710 MHz does not hold under the power limit. vLLM 0.27.1, Triton backend, inference only",
+   "source": [
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L99",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 99
+    },
+    {
+     "type": "repo",
+     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/4ab341d95fcdd7c094619dc79b18b7b8f77dd84c/docs/paper-v2/paper-v2.md?plain=1#L496",
+     "commit": "4ab341d95fcdd7c094619dc79b18b7b8f77dd84c",
+     "path": "docs/paper-v2/paper-v2.md",
+     "line": 496
+    }
+   ],
+   "checked": "Matched the paper's sections 2.1 and 6.1"
   },
   {
    "id": "pr1223.kv",
@@ -1843,50 +2174,6 @@
     }
    ],
    "checked": "Matched the PR table"
-  },
-  {
-   "id": "mk.parts",
-   "page": "home",
-   "shows": [
-    "0.51%",
-    "0.69%",
-    "0.54%",
-    "2%",
-    "2.35%",
-    "5.3%",
-    "9.5%",
-    "13.4%",
-    "19.5%",
-    "Mixtral-8x7B",
-    "Phi-3.5-MoE"
-   ],
-   "means": "Per-model error behind the timing model chart",
-   "value": {
-    "v3": {
-     "mixtral-8x7b": 0.51,
-     "phi-3.5-moe": 0.69,
-     "olmoe-1b-7b": 0.54
-    },
-    "bar_v3": 2,
-    "decode": {
-     "deepseek-v2-lite": 2.35,
-     "qwen1.5": 5.3,
-     "phi-3.5": 9.5,
-     "granite-3b": 13.4,
-     "jetmoe": 19.5
-    }
-   },
-   "conditions": "One rented GH200 per rental, bf16, 700 W. v3 at 1710 MHz on the 32x64x64 test tile, bar rms at most 2%. Decode blind test, bar rms at most 1.5%",
-   "source": [
-    {
-     "type": "repo",
-     "url": "https://github.com/harshithkantamneni/moe-kernels/blob/b2fb34021eb6a2030cf76b8a9cbe7270ec353c51/scripts/scoring/decode/blind.score.txt#L18",
-     "commit": "b2fb34021eb6a2030cf76b8a9cbe7270ec353c51",
-     "path": "scripts/scoring/decode/blind.score.txt",
-     "line": 18
-    }
-   ],
-   "checked": "Recomputed from the scorer JSON"
   },
   {
    "id": "jet.decode",

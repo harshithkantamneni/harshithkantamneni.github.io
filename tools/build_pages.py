@@ -16,7 +16,7 @@ LANE = {
     'a': ('Agents', '#ch-a', 'var(--a)', '/resume/agents/Harshith_Kantamneni_Resume.pdf'),
 }
 # Up the stack, the same order as the home page
-ORDER = ['cudnn-hopper', 'stick-breaking-kernels', 'cudnn-gqa', 'priced-reads-not-hits', 'bert', 'lab-verification']
+ORDER = ['cudnn-hopper', 'stick-breaking-kernels', 'cudnn-gqa', 'moe-kernels', 'priced-reads-not-hits', 'bert', 'lab-verification']
 SCENE = {'cudnn-hopper': '#hopper', 'stick-breaking-kernels': '#kernels', 'cudnn-gqa': '#gqa', 'priced-reads-not-hits': '#seconds', 'bert': '#bert', 'lab-verification': '#lab'}
 # Not confirmed anywhere public, so it stays out of the write-up
 DROP = [' I noticed an empty PI folder next to the approvals.']
@@ -57,6 +57,7 @@ h1{font-size:clamp(40px,7.4vw,104px);line-height:1;font-weight:600;letter-spacin
 .prose a{color:var(--ink);text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent);text-underline-offset:3px}
 .prose a:hover{text-decoration-color:var(--c)}
 .prose a.n{font-family:var(--mono);font-size:.92em;color:var(--c);text-decoration:underline dotted;text-underline-offset:4px}
+.prose figure img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#fcfcfb}.prose figcaption{font-size:14px;line-height:1.55;color:var(--mid);margin-top:10px}
 .prose ul,.prose ol{padding-left:22px}.prose li{margin-top:8px}.prose li::marker{color:var(--dim)}
 .prose code{font-family:var(--mono);font-size:.86em;background:rgba(255,255,255,.06);border:1px solid var(--line);padding:1px 6px;border-radius:5px}
 .tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
@@ -159,12 +160,15 @@ for i, name in enumerate(ORDER):
     nxt = ORDER[i + 1] if i + 1 < len(ORDER) else None
     nx = (f'<a href="/work/{nxt}/"><small>Next, up the stack</small>{esc(cases[nxt]["title"])}</a>' if nxt
           else '<a href="/#about"><small>That\'s the top of the stack</small>Back to the home page</a>')
+    # Write-ups without a home-page scene get no motion links
+    motion = f'<a href="/{SCENE[name]}">See it in motion</a>' if name in SCENE else ''
+    interactive = f'<a href="/{SCENE[name]}"><small>On the home page</small>The interactive version</a>' if name in SCENE else ''
     body = f"""<main style="--c:{lane[2]}">
 <div class="op"><a class="crumb" href="/{lane[1]}">{lane[0]}</a><h1>{esc(c['title'])}</h1><p class="lead">{esc(c['lead'])}</p><p class="state">{esc(c['state'])}</p><div class="keys">{keys}</div></div>
 <div class="grid"><article class="prose">
 {rich(raw)}
-</article><aside class="toc" aria-label="On this page"><span>On this page</span>{nav}<a href="/{SCENE[name]}">See it in motion</a></aside></div>
-<div class="next"><a href="/{SCENE[name]}"><small>On the home page</small>The interactive version</a>{nx}</div>
+</article><aside class="toc" aria-label="On this page"><span>On this page</span>{nav}{motion}</aside></div>
+<div class="next">{interactive}{nx}</div>
 </main>"""
     out = SITE / 'work' / name / 'index.html'
     out.parent.mkdir(parents=True, exist_ok=True)
