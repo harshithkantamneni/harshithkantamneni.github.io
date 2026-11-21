@@ -1,0 +1,66 @@
+<h2>What it predicts</h2>
+<p>In a mixture-of-experts model, each token is sent to a few of many experts, so every expert's matrix multiply runs on a different number of rows. vLLM runs those multiplies in one Triton kernel, <code>fused_moe_kernel</code>. How long a call takes depends on how many tokens each expert receives, the tile vLLM picks, the order the kernel's thread blocks launch in, and what the GPU's L2 cache keeps between blocks that read the same weights. Serving schedulers, autotuners and capacity planners all need that time before the kernel runs.</p>
+<p>The model predicts it from the layer's shape and the per-expert token counts. It walks the kernel's thread blocks in launch order, works out which block fetches each expert's weights from memory and which finds them already in L2, and times each block from its compute and its memory traffic. On the tiles vLLM actually uses, measured terms replace the parts of that walk that don't hold. All measurements are on NVIDIA GH200s, one board per session.</p>
+
+<h2>Real serving, eight models</h2>
+<p>To see how it holds up on the calls a serving engine actually makes, I ran [[mk.scope|vLLM 0.27.1]] on eight MoE models with their real weights and routing, captured every MoE call, and scored each prediction against that call's measured kernel time. The model was fit on none of the eight.</p>
+<p>Next to it are two other predictors. Frontier is a published predictor built for simulating LLM serving, and it was profiled and trained on each model on the same GPU, as its paper intends. The third is a roofline estimate.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>Average error per decode call in vLLM serving, every MoE call scored. Frontier's column is its lowest arm on each model. [[mk.serve.decode]]</caption>
+<thead><tr><th>Model</th><th class="num">Calls</th><th>This model, v10 (%)</th><th>Frontier (%)</th><th class="num">Roofline (%)</th></tr></thead>
+<tbody>
+<tr><td>ERNIE-4.5-21B-A3B</td><td class="num">304,894</td><td class="num">{{bar:1.27/6.68}}</td><td class="num">{{bar:3.48/6.68}}</td><td class="num">14.97</td></tr>
+<tr><td>Qwen3-30B-A3B</td><td class="num">411,121</td><td class="num">{{bar:2.61/6.68}}</td><td class="num">{{bar:4.36/6.68}}</td><td class="num">22.95</td></tr>
+<tr><td>GLM-4.7-Flash</td><td class="num">388,618</td><td class="num">{{bar:2.20/6.68}}</td><td class="num">{{bar:2.60/6.68}}</td><td class="num">23.10</td></tr>
+<tr><td>Trinity-Mini</td><td class="num">246,636</td><td class="num">{{bar:2.40/6.68}}</td><td class="num">{{bar:3.84/6.68}}</td><td class="num">17.95</td></tr>
+<tr><td>Ling-mini-2.0</td><td class="num">174,320</td><td class="num">{{bar:4.04/6.68}}</td><td class="num">{{bar:6.68/6.68}}</td><td class="num">29.68</td></tr>
+<tr><td>LFM2-8B-A1B</td><td class="num">235,234</td><td class="num">{{bar:2.52/6.68}}</td><td class="num">{{bar:3.40/6.68}}</td><td class="num">22.82</td></tr>
+<tr><td>Phi-mini-MoE</td><td class="num">378,847</td><td class="num">{{bar:3.06/6.68}}</td><td class="num">{{bar:5.33/6.68}}</td><td class="num">36.02</td></tr>
+<tr><td>granite-4.0-h-small</td><td class="num">408,073</td><td class="num">{{bar:1.34/6.68}}</td><td class="num">{{bar:2.16/6.68}}</td><td class="num">12.60</td></tr>
+</tbody></table></div>
+<p>On decode, where the model generates tokens, its average error is [[mk.serve.decode|1.27% to 4.04%]] across the eight models, over [[mk.calls|2,547,743]] calls. On every model it is lower than every Frontier arm, whose lowest reads [[mk.serve.decode|2.16% to 6.68%]], and the roofline reads [[mk.serve.decode|12.60% to 36.02%]].</p>
+<p>What each comparison is: Frontier was trained on each model's own shapes on the same board. This model was fit on none of them, and its only input measured on that board is a short measurement of clock sag before each run. For six of the eight models, the frozen model code was public on GitHub before the GPU was launched. The first two runs, ERNIE and Qwen3, were frozen but not registered first.</p>
+
+<h2>Prefill, and what's next</h2>
+<p>Prefill, where the model reads the prompt, is the other half of serving. The final model's prefill was scored on three models captured after it was frozen, with its code public before the GPU launched. There, Frontier is closer: [[mk.serve.prefill|1.07% to 2.84%]] with the features its simulator uses, against [[mk.serve.prefill|5.46% to 6.73%]] for this model.</p>
+<div class="tw" tabindex="0"><table class="t"><caption>Average error per prefill call in vLLM serving on the final model's three blind models. [[mk.serve.prefill]]</caption>
+<thead><tr><th>Model</th><th class="num">Calls</th><th>This model, v10 (%)</th><th>Frontier, simulator features (%)</th></tr></thead>
+<tbody>
+<tr><td>LFM2-8B-A1B</td><td class="num">73,298</td><td class="num">{{bar:6.73/6.73}}</td><td class="num">{{bar:2.84/6.73}}</td></tr>
+<tr><td>Phi-mini-MoE</td><td class="num">120,704</td><td class="num">{{bar:6.15/6.73}}</td><td class="num">{{bar:1.60/6.73}}</td></tr>
+<tr><td>granite-4.0-h-small</td><td class="num">341,880</td><td class="num">{{bar:5.46/6.73}}</td><td class="num">{{bar:1.07/6.73}}</td></tr>
+</tbody></table></div>
+<p>With its command-line features, Frontier reads [[mk.serve.prefill|3.57% to 10.44%]] on these models, and the roofline reads [[mk.serve.prefill|22.37% to 43.82%]].</p>
+<p>The final version's change was on prefill. Earlier versions priced the small kernels around the matrix multiplies with a fitted constant, which charged more than those kernels take on the first five serving models. v9 and v10 replaced it with their measured cost, one prefill tile each. Splitting each prediction by kernel on these three models shows that part now lands [[mk.split|within 2% of a call]] of measurement. What remains is in the matrix-multiply part, which reads [[mk.split|0.6% to 9.6% of a call]] low here, by an amount that depends on the model. The earlier version, frozen beside v10 for this run, reads lower on two of the three models ([[mk.serve.prefill|2.93%]] and [[mk.serve.prefill|1.39%]]) and higher on Phi-mini-MoE ([[mk.serve.prefill|12.61%]]).</p>
+<p>So the prefill matrix-multiply terms are the next piece of work, and their claim has to come the same way v10's did: from models captured after the new version is frozen.</p>
+
+<h2>Tested before measured</h2>
+<p>When a model is revised while its held-out results are visible, a little of the test set leaks into it. A prediction committed before the measurement exists can't leak, so every cell test here followed the same order:</p>
+<ol>
+<li>Freeze the model code and compute every prediction.</li>
+<li>Commit both to the public GitHub repository, with the scorer, tested on synthetic data only.</li>
+<li>Launch a cloud GH200, which fetches that commit and refuses to run if it doesn't match, then measures.</li>
+<li>Run the registered scorer once on the results and commit its output.</li>
+</ol>
+<p>The model never changed between the commit and the score, and [[mk.cells537|537 cells]] across five tests were predicted this way. The paper's literature search found no earlier GPU kernel-time study that published its predictions before measuring.</p>
+
+<h2>The cell tests, beside published predictors</h2>
+<p>On synthetic weights and routing, on the tiles vLLM picks, the cell tests read [[mk.cells|1.71%]] and [[mk.cells|2.99%]] average error on prefill and [[mk.cells|2.90%]] on decode. An earlier decode version read [[mk.cells|6.70%]] on other models. Baselines frozen in the same registrations, on the same decode cells, read [[mk.cells|24.67%]] for a roofline and [[mk.cells|11.80%]] for a regression.</p>
+<p>Published GPU kernel-time predictors report [[mk.published|6.0% to 12.35%]] average error on their own kernels and GPUs. Those numbers are as reported, not re-run here, and their scopes are broader: many kernels and many GPUs, where this model covers one kernel on one GPU. None of them states that its predictions were registered before measurement.</p>
+<figure><a href="/assets/moe-kernels-figure-1.svg"><img src="/assets/moe-kernels-figure-1.svg" alt="Bar chart of average error. This study's five blind cell tests are the shortest bars, the baselines registered with them are longer, and published predictors' numbers, as reported on their own kernels and GPUs, sit in grey below." width="720" height="590"></a><figcaption>From the paper. Filled: this study's blind cell tests. Outlined: baselines frozen in the same registrations, on the same decode cells. Grey: other papers' numbers as reported, on their own kernels and GPUs. [[mk.cells]]</figcaption></figure>
+
+<h2>What it covers</h2>
+<ul>
+<li>One kernel, vLLM's Triton fused MoE kernel, on one GPU type, the GH200, in one vLLM version, [[mk.scope|vLLM 0.27.1]].</li>
+<li>Clocks locked at [[mk.scope|1710 MHz]] for decode and [[mk.scope|1410 MHz]] for prefill, so each tile is scored at the clock its constants were measured at.</li>
+<li>The inference forward pass only. Training isn't studied.</li>
+<li>The constants were fitted on measured calibration runs, so the tests are blind in their cells and runs, not in the model's history.</li>
+<li>Each prefill version was tested once, on three models, and the results are reported per model, not pooled.</li>
+</ul>
+
+<h2>Links</h2>
+<ul>
+<li><a href="https://github.com/harshithkantamneni/moe-kernels/blob/main/docs/paper-v2/paper-v2.md">The paper</a>, a draft, not peer reviewed</li>
+<li><a href="https://github.com/harshithkantamneni/moe-kernels">The repository</a>: model code, registrations, scorers and results</li>
+<li><a href="https://github.com/harshithkantamneni/moe-kernels/blob/main/scripts/r3_timing_model_v10.py">The final model, v10</a>, and <a href="https://github.com/harshithkantamneni/moe-kernels/blob/main/scripts/prod/REGISTRATION-v10.md">its registration</a>, public before its GPU launched</li>
+<li><a href="https://github.com/harshithkantamneni/moe-kernels/blob/main/docs/FINDINGS.md">The full study record</a>, every experiment and retraction</li>
+</ul>
